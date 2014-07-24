@@ -11,7 +11,7 @@
 		<content name="При первом включении нового ресивера, Первичная Установка будет запущена автоматически.[CR][CR]- УСТАНОВКИ ЯЗЫКА : Здесь имеется возможность выбрать основной язык меню.[CR]- A/V УСТАНОВКИ : Здесь имеется возможность задать настройки звука и изображения.[CR]- НАСТРОЙКИ АНТЕННЫ и СПУТНИКОВ : Выбор антенны и настройка параметров LNB для поиска каналов.[CR]- НАСТРОЙКИ ПОИСКА КАНАЛОВ : Поиск каналов по сконфигурированным спутникам.[CR]- НАСТРОЙКА ДАТЫ и ВРЕМЕНИ : Здесь имеется возможность задать настройки времени и даты. ">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -28,7 +28,7 @@
 		<content name="1. DISEQC 1.0 : DISEqC 1.0 переключатель позволяет подключать несколько антенн к приставке.[CR]2. DISEQC 1.1 : Переключатель DISEqC 1.1 позволяет использовать до 64 различных спутников.[CR]3. Мотор DISEqC 1.2 : Здесь можно управлять перемещением моторизированной антенны.[CR]4. Мотор USALS : Протокол USALS используется для управления моторизированной антенной.[CR]5. Один Конвертор LNB : Конфигурация Один Конвертор LNB выбирается при приеме одного спутника.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -45,7 +45,7 @@
 		<content name="1. АВТОМАТИЧЕСКОЕ СКАНИРОВАНИЕ : Автоматическое сканирование предполагает самый простой способ поиска каналов.[CR]2. СКАНИРОВАТЬ ВРУНУЮ : Ручное сканирование более уместно если имеются данные транспондеров и другое.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -62,7 +62,7 @@
 		<content name="Здесь предусмотрена возможность удалять, перемещать, выбирать, переименовывать или блокировать каналы.[CR][CR]1. Нажмите кнопку i в списке каналов для отображения контекстного меню.[CR]2. Выбрать РЕДАКТИРОВАТЬ КАНАЛЫ и нажать ОК.[CR]3. Выбрать каналы для удаления нажатием ОК.[CR]4. Нажать кнопку i еще раз и выбрать УДАЛИТЬ, нажать кнопку ОК.[CR]5. Нажать BACK, а затем СОХРАНИТЬ и ВЫЙТИ. Для подтверждения выбрать ДА.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -79,7 +79,7 @@
 		<content name="Обычно полный список каналов слишком большой и неудобный для навигации. Распределите часто используемые каналы в группы любимых каналов.[CR][CR]1. Выбрать СОЗДАТЬ ГРУППУ ЛЮБИМЫХ в контекстном меню и нажать ОК.[CR]2. Задать имя любимой группы.[CR]3. Выбрать и нажать ГОТОВО.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -96,7 +96,7 @@
 		<content name="1. Выбрать каналы для добавления в группу нажатием ОК.[CR]2. В контекстном меню выбрать ДОБАВИТЬ В ГРУППУ и нажать ОК.[CR]3. Выбрать желаемую группу каналов со списка.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -113,7 +113,7 @@
 		<content name="1. Нажать кнопку ВЛЕВО в списке каналов и выбрать ГРУППУ ЛЮБИМЫХ.[CR]2. Выбрать группу в которой необходимо удалить каналы.[CR]3. Выбрать каналы для удаления из группы нажатием ОК.[CR]4. Выбрать УДАЛИТЬ в контекстном меню для удаления каналов из группы.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -130,7 +130,7 @@
 		<content name="1. Вызвать контекстное меню в списке каналов нажатием кнопки i.[CR]2. Выбрать ПЕРЕИМЕНОВАТЬ ГРУППУ ЛЮБИМЫЕ.[CR]3. Выбрать каналы для удаления из группы нажатием ОК.[CR]4. Задать новое имя для группы.[CR]5. Выбрать и нажать ОК на кнопке ГОТОВО.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -147,7 +147,7 @@
 		<content name="1. Вызвать контекстное меню в списке каналов нажатием кнопки i.[CR]2. Выбрать УДАЛИТЬ ГРУППУ ЛЮБИМЫЕ.[CR]3. Выбрать саму группу для удаления.[CR]4. Нажать ОК для подтверждения.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -164,7 +164,7 @@
 		<content name="XBMC - это мультимедийный центр развлечений для удобного воспроизведения различного цифрового контента. В арзитектуре XBMC предусмотрена установка дополнений типа YouTube и др.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -181,13 +181,13 @@
 		<content name="Дополнения это пакеты, которые расширяют функциональность XBMC.[CR][CR]1. Выбрать PRISMCUBE ADD-ONS и нажать ОК.[CR]2. Выбрать желаемую категорию и нажать ОК.[CR]3. Выбрать требуемое дополнение для установки.[CR]4. Будет выведено окно с описанием возможностей дополнения.[CR]5. Выбрать УСТАНОВИТЬ для загрузки и установки дополнения.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="12" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
+	<page number="12" title="Updating Add-ons" location="(XBMC > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
 		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -198,7 +198,7 @@
 		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories.[CR]If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -215,7 +215,7 @@
 		<content name="После завершения установки возможно появление диалога на запуск дополнения. После этого дополнение появится в соответствующем разделе XMBC. (например YouTube будет в разделе Видео)">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -225,7 +225,7 @@
 		<content name="Для дополнительной информации о Prismcube,[CR]пожалуйста посетите наш сайт [B]www.prismcube.com[/B]">
 			<type>textbox_bigfont</type>
 			<posx>170</posx>
-			<posy>320</posy>
+			<posy>325</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>

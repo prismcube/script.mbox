@@ -11,7 +11,7 @@
 		<content name="1. STANDBY LED TLAČÍTKO : Stiskněte na 1 ~ 2 sec. k přepnutí mezi operačním a standby módem.[CR][CR]2. PŘEDNÍ DISPLEJ : Zobrazuje název kanálu v provozním režimu a zobrazuje aktuální čas v pohotovostním režimu.[CR][CR]3. ČTEČKA SMART KARET : Otevřete dvířka a vložte smart kartu do předního otvoru pro sledování placených služeb.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>900</width>
 			<height>160</height>
 		</content>
@@ -28,14 +28,14 @@
 		<content name="1. LNB 1 IN, LNB 2 IN : Připojení satelitní antény.[CR]2. VIDEO, AUDIO : Připojení k televizoru nebo videorekordéru pomocí kabelu RCA.[CR]3. S / PDIF : Připojení k audio systému pomocí S / PDIF kabelu.[CR]4. RS–232C : Připojení k PC.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="5. HDMI : Připojení k televizoru pomocí kabelu HDMI.[CR]6. ETHERNET : Lokální síťový port.[CR]7. USB HOST : Připojení k paměti USB.[CR]8. AC napájení : Slouží k připojení síťového konektoru.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -52,14 +52,14 @@
 		<content name="1. TV POWER : Slouží k vypnutí nebo zapnutí TV.[CR]2. STANDBY : Přepínání mezi zapnutým a pohotovostním režimem.[CR]3. BAREVNÉ : Přístup ke speciálním funkcím v některých nabídkách.[CR]4. ZDROJ : Ovládá výstupy TV.[CR]5. XBMC : Zobrazí XBMC Media Center.[CR]6. TV / RADIO : Přepíná mezi režimy TV a rádio.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="7. RECORD : Záznam živého vysílání.[CR]8. STOP : Zastaví nahrávání nebo přejde do aktuálního programu.[CR]9. PLAY / PAUSE : Pozastavení živého vysílání nebo nahrávání.[CR]10. RYCHLE PŘETOČIT VZAD : Rychlé přetáčení dozadu.[CR]11. RYCHLE PŘETOČIT VPŘED : Rychlé přetáčení dopředu.[CR]12. ARCHIV : Zobrazí okno Archivu.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -76,14 +76,14 @@
 		<content name="13. EPG : Zobrazí se okno EPG.[CR]14. TLAČÍTKA SE ŠIPKAMI : Pohyb v menu.[CR]15. OK : Vybere položku / Zobrazí seznam kanálů.[CR]16. ZPĚT : Přesune jeden krok zpět / Návrat na poslední kanál.[CR]17. MENU : Zobrazí se hlavní menu.[CR]18. VOL + / VOL - : Nastavení hlasitosti.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="19. I ( Informace) : Zobrazí informace o kanálu nebo kontextového menu.[CR]20. P + / P - : Změna kanálu.[CR]21. MUTE : Ztlumí zvuku.[CR]22. TELETEXT : Zobrazuje teletextové informace o aktuálním kanálu.[CR]23. TITULKY : Zobrazí volbu titulků.[CR]24. NUM LOCK : Aktivuje číselná tlačítka.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>570</width>
 			<height>160</height>
 		</content>
@@ -100,7 +100,7 @@
 		<content name="Dálkové ovládání boxu PRISMCUBE RUBY má funkci plné QWERTY klávesnice na zadní straně.[CR][CR]1. Držte ovládání horizontálně jako na obrázku nahoře.[CR]2. Zapněte QWERTY klávesnici stisknutím Num Lock tlačítka.[CR]3. Pište text přes klávesnici rychleji a efektivněji.">
 			<type>textbox_smallfont</type>
 			<posx>205</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -117,7 +117,7 @@
 		<content name="Pro co nejlepší využití všech vlastností PRISMCUBE RUBY, doporučujeme zapojit oba tunery najednou. To vám umožní prohlížet a zaznamenávat různé kanály a nahrávat dva kanály současně. Sledování druhého programu při nahrávání bude omezeno v případě zapojení pouze jednoho tuneru pomocí smyčky.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -134,7 +134,7 @@
 		<content name="Informace o kanálu se automaticky zobrazují na Info liště při přepínání kanálů.[CR][CR]1. AKTUÁLNÍ ČÍSLO KANÁLU A NÁZEV : Zobrazuje aktuální číslo a název TV / Radio kanálu.[CR]2. DATA EPG : Stiskněte tlačítko DOLŮ, poté stiskněte VLEVO / VPRAVO pro zobrazení předešlé / následující EPG události.[CR]3. PROGRESS BAR : Zobrazuje čas začátku / konce programu a také aktuální průběh.[CR]4. FUNKČNÍ TLAČÍTKA : Doplňující informace, teletext, titulky, Start / Stop záznamu, Mute a A / V nastavení.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -151,7 +151,7 @@
 		<content name="PIP (Obraz v obraze) umožňuje sledovat dva programy nezávisle. Nějaké typy na zapamatování při pouzívání PIP funkce.[CR][CR]- Zapnutí / vypnutí PIP funkce stiskem MODRÉHO tlačítka na dálkovém ovladači; malé okno se zobrazí v jednom rohu obrazovky.[CR]- Přepnutí kanálu v malém PIP okně stiskem čísla na dálkovém ovladači po stisknutí tlačítka Num Lock.[CR]- PIP lze zapnout a používat během přehrávání videa v XBMC části.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>980</width>
 			<height>160</height>
 		</content>
@@ -168,7 +168,7 @@
 		<content name="Při prvním zapnutí produktu proběhne prvotní instalace automaticky.[CR][CR]- NASTAVENÍ JAZYKA : Můžete vybrat jazyk MENU.[CR]- NASTAVENÍ VIDEO a AUDIO : Zde můžete konfigurovat video a audio výstup.[CR]- NASTAVENÍ Satelitní Antény : Můžete zvolit nastavení antény a LNB pro vyhledávání programů.[CR]- NASTAVENÍ VYHLEDÁVÁNÍ PROGRAMŮ : Zde můžete provést vyhledávání programů a družic.[CR]- NASTAVENÍ ČASU A DATA : Můžete nastavit lokální čas pro správné funkce časovače.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -185,7 +185,7 @@
 		<content name="1. DiSEqC 1.0 : Umožňuje více satelitů, které mohou být připojeny k přijímači současně. Můžete připojit až 4 satelity.[CR]2. DiSEqC 1.1 : Umožňuje připojit až 64 různých satelitů.[CR]3. DiSEqC 1.2 : Můžete nastavit pozici požadovaného satelitu pokud máte motorizovanou anténu.[CR]4. MOTORIZED USALS : Efektivní vyhledávání programů pomocí zadání vaší Zeměpisné polohy při použití motoru.[CR]5. SIMPLE LNB : Používá se, když je připojen pouze jeden satelit.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -202,7 +202,7 @@
 		<content name="1. AUTOMATICKÉ VYHLEDÁVÁNÍ : Je určena pro běžné uživatele a nejjednodušší způsob, jak vyhledat kanály.[CR]2. RUČNÍ VYHLEDÁVÁNÍ : Tento způsob je vhodnější, pokud víte, které satelity chcete vyhledat a také jejich parametry.[CR]3. FAST SCAN : You can search channels from service providers quickly.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -219,7 +219,7 @@
 		<content name="Můžete odstranit, přesunout, vybrat, přejmenovat nebo uzamknout kanály pohodlně v okně Seznamu kanálů.[CR][CR]1. Stisknutím tlačítka i zobrazíte seznam kanálů a z místní nabídky vyberte volbu Upravit kanály.[CR]2. Vyberte kanály, které chcete vymazat, stisknutím tlačítka OK.[CR]3. Stiskněte tlačítko i opět, vyberte volbu SMAZAT a stiskněte tlačítko OK pro vymazání dříve vybraných kanálů.[CR]4. Zvolte volbu Uložit a Ukončit v místní nabídce.[CR]5. Pokud se zobrazí výzva k potvrzení, stiskněte tlačítko ANO pro uložení.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -236,7 +236,7 @@
 		<content name="Některé kanály v seznamu kanálů jsou příliš často vyhledávány. Setřiďte kanály, které sledujete častěji do oblíbené skupiny kanálů.[CR][CR]1. Zvolte možnost Vytvořit novou oblíbenou skupinu v kontextovém menu Seznamu kanálů a stiskněte tlačítko OK.[CR]2. Zadejte název vaší oblíbené skupiny.[CR]3. Stisknutím tlačítka Hotovo potvrďte.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -253,7 +253,7 @@
 		<content name="1. Vyberte kanály, které chcete přidat do své oblíbené skupiny.[CR]2. Zvolte volbu PŘIDAT K OBLÍBENÉ SKUPINĚ v místní nabídce stiskněte tlačítko OK.[CR]3. Vyberte skupinu ze seznamu dostupných skupin oblíbených položek a stiskněte tlačítko OK.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -270,7 +270,7 @@
 		<content name="1. Stiskněte tlačítko vlevo na dálkovém ovladači a vyberte oblíbenou skupinu.[CR]2. Vyberte skupinu, ze které chcete odstranit kanály.[CR]3. Vyberte kanály, které chcete odstranit stisknutím tlačítka OK.[CR]4. V kontextovém menu zvolte volbu ODSTRANIT, pro vymazání všech dříve vybraných programů.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -287,7 +287,7 @@
 		<content name="1. Pro zobrazení kontextového menu seznamu kanálů, stiskněte tlačítko i.[CR]2. Zvolte volbu Přejmenovat oblíbenou skupinu.[CR]3. Vyberte oblíbenou skupinu, kterou chcete přejmenovat, a stiskněte tlačítko OK.[CR]4. Zadejte nový název pomocí klávesnice.[CR]5. Stisknutím Hotovo potvrďte.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -304,13 +304,13 @@
 		<content name="1. Pro zobrazení kontextové menu seznamu kanálů, stiskněte tlačítko i.[CR]2. Zvolte volbu Smazat oblíbenou skupinu.[CR]3. Vyberte oblíbenou skupinu, kterou chcete odstranit.[CR]4. Stiskněte OK pro potvrzení.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="18" title="XBMC" location="(MEDIA nebo STISKNĚTE TLAČÍTKO XBMC)">
+	<page number="18" title="XBMC" location="(XBMC nebo STISKNĚTE TLAČÍTKO XBMC)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -321,13 +321,13 @@
 		<content name="XBMC je zábavní centrum pro digitální média, které lze použít pro přehrávání téměř všech populárních audio a video formátů z pevného disku. XBMC umožňuje uživateli instalovat nové doplňky, jako jsou YouTube, Flickr, stejně jako různé skiny z instalovaného repozitáře.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="19" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
+	<page number="19" title="Instalace aplikace Firefox" location="(XBMC > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
 		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -338,13 +338,13 @@
 		<content name="Doplňky jsou balíky, které přidávají různé vlastnosti a funkce, které obvykle nejsou součástí XBMC.[CR][CR]1. Vyberte PRISMCUBE'S doplňky a stiskněte tlačítko OK.[CR]2. Přejděte dolů na požadovanou kategorii a stiskněte tlačítko OK.[CR]3. Vyberte doplněk, který chcete nainstalovat.[CR]4. Souhrnné dialogové okno umožňuje vidět různé vlastnosti doplňků.[CR]5. Zvolte možnost automatického stahování a instalace.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="20" title="Aktualizace doplňků" location="(MÉDIA> MANAŽER DOPLŇKŮ> STISKNĚTE ŠIPKU VLEVO nebo DOPRAVA)">
+	<page number="20" title="Aktualizace doplňků" location="(XBMC > MANAŽER DOPLŇKŮ> STISKNĚTE ŠIPKU VLEVO nebo DOPRAVA)">
 		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -355,13 +355,13 @@
 		<content name="Všechny nainstalované doplňky budou automaticky aktualizovány, pokud jsou v repozitářích dostupné nové verze.[CR]Pokud je automatická aktualizace vypnutá, měli byste v Manažeři doplňků vidět adresář 'Dostupné aktualizace', ve kterém je možné aktualizovat doplňky jednotlivě.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="21" title="Spuštění aplikace Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
+	<page number="21" title="Spuštění aplikace Firefox" location="(XBMC > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
 		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -372,7 +372,7 @@
 		<content name="Po ukončení stahování doplňku se vás XBMC zeptá, zda jej chcete začít používat. Doplňky se pak objeví v jejich příslušné části. (Např. Flickr v sekci obrázky, YouTube videa v sekci Media, atd.)">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -382,7 +382,7 @@
 		<content name="Pro více informací o Prismcube,[CR]prosím navštivte naše webové stránky [B]www.prismcube.com[/B]">
 			<type>textbox_bigfont</type>
 			<posx>170</posx>
-			<posy>320</posy>
+			<posy>325</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>

@@ -11,7 +11,7 @@
 		<content name="When powering on your product for the first time after purchase, the First Installation will operate automatically.[CR][CR]- LANGUAGE SETUP : You can select the language in which the menu would be displayed.[CR]- VIDEO and AUDIO SETUP : You can configure the video and audio output settings here.[CR]- ANTENNA and SATELLITE SETUP : You can select the antenna and LNB settings for channel searching.[CR]- CHANNEL SEARCH SETUP : Here, you can scan the configured satellites to search new TV/Radio channels.[CR]- TIME and DATE SETUP : You should set your local time for timer events.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -28,7 +28,7 @@
 		<content name="1. DISEQC 1.0 : It allows multiple antennas to be connected to the STB simultaneously. You can connect up to 4 satellites.[CR]2. DISEQC 1.1 : It allows you to connect up to 64 different satellites.[CR]3. MOTORIZED DISEQC 1.2 : You can set the position of your desired satellites if you have a motorized antenna.[CR]4. MOTORIZED USALS : You can set the motor antenna for efficient channel search in USALS.[CR]5. SIMPLE LNB : It is used when only one satellite is connected.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -45,7 +45,7 @@
 		<content name="1. AUTOMATIC SCAN : It is for general users and the easiest way to search channels.[CR]2. MANUAL SCAN : This is more appropriate if you know which satellites you want to search and their parameters.[CR]3. FAST SCAN : You can search channels from service providers quickly.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -62,7 +62,7 @@
 		<content name="You can delete, move, select, rename or lock the channels conveniently in the Channel List window.[CR][CR]1. Press the i button to display the channel list context menu and select EDIT CHANNELS.[CR]2. Select the channels you want to delete by pressing OK button.[CR]3. Press the i button again and select DELETE and press OK button to delete the channels previously selected.[CR]4. Press SAVE AND EXIT on the context menu.[CR]5. When a message asking for confirmation will appear, press YES to save.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -79,7 +79,7 @@
 		<content name="The entire channels in the channel list are often too many to navigate. Sort the channels that you watch more often in a favorite channel group.[CR][CR]1. Select CREATE NEW FAVORITE GROUP on the channel list context menu and Press OK button.[CR]2. Enter a name for your favorite channel group.[CR]3. Press DONE to confirm.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -96,7 +96,7 @@
 		<content name="1. Select channels you want to add to your favorite group[CR]2. Choose ADD TO FAVORITE GROUP on the context menu then press OK[CR]3. Select a group from the list of available favorite groups then press OK.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -113,7 +113,7 @@
 		<content name="1. Press the LEFT button on the remote control and select FAVORITE GROUPS.[CR]2. Select the group you want to remove channels from.[CR]3. Select the channels that you want to delete by pressing OK button.[CR]4. Select DELETE on the context menu to remove all the channels you have selected previously.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -130,7 +130,7 @@
 		<content name="1. To display the channel list's context menu, press the i button.[CR]2. Select RENAME FAVORITE GROUP on the menu.[CR]3. Select the favorite group you want to rename and press OK.[CR]4. Enter a new name using the keypad.[CR]5. Press DONE to confirm.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -147,13 +147,13 @@
 		<content name="1. Display the channel list's context menu by pressing the i button.[CR]2. Select DELETE FAVORITE GROUP on the menu.[CR]3. Select the favorite group you want to delete.[CR]4. Press OK to confirm.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="10" title="XBMC" location="(MEDIA or PRESS XBMC BUTTON)">
+	<page number="10" title="XBMC" location="(XBMC or PRESS XBMC BUTTON)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -164,13 +164,13 @@
 		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="11" title="Installing Add-ons" location="(MEDIA > ADD-ON MANAGER > GET ADD-ONS)">
+	<page number="11" title="Installing Add-ons" location="(XBMC > ADD-ON MANAGER > GET ADD-ONS)">
 		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -181,13 +181,13 @@
 		<content name="Add-ons are packages that add features and functions not normally included with XBMC.[CR][CR]1. Select PRISMCUBE'S ADD-ONS and press OK.[CR]2. Scroll down to the category you want and press OK.[CR]3. Select the add-on you want to install.[CR]4. A summary dialog will be brought up allowing you see various properties of the add-on.[CR]5. Select INSTALL to begin automatic downloading and installing.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="12" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
+	<page number="12" title="Updating Add-ons" location="(XBMC > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
 		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -198,13 +198,13 @@
 		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories.[CR]If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="13" title="Running Add-ons" location="(MEDIA > PICTURES, MUSIC, VIDEO or PROGRAMS)">
+	<page number="13" title="Running Add-ons" location="(XBMC > PICTURES, MUSIC, VIDEO or PROGRAMS)">
 		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -215,17 +215,17 @@
 		<content name="When the add-on has finished downloading, XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section. ( e.g. Flickr in the pictures, YouTube in the video section of Media, etc )">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>960</width>
 			<height>160</height>
 		</content>
 	</page>
 
 	<page number="14" title="Getting Further Help" location="( )">
-		<content name="For more information about Prismcube Ruby,[CR]please visit our website [B]www.prismcube.com[/B]">
+		<content name="For more information about Prismcube,[CR]please visit our website [B]www.prismcube.com[/B]">
 			<type>textbox_bigfont</type>
 			<posx>170</posx>
-			<posy>320</posy>
+			<posy>325</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>

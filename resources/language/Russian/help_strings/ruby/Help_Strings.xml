@@ -11,7 +11,7 @@
 		<content name="1. КНОПКА ЖДУЩЕГО РЕЖИМА : Переключает между рабочим и ждущим режимами.[CR][CR]2. ДИСПЛЕЙ : Отображает название канала в рабочем режиме или время в ждущем.[CR][CR]3. СЛОТ КАРТ : Предусмотрен для установки смарт-карт.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>870</width>
 			<height>160</height>
 		</content>
@@ -28,14 +28,14 @@
 		<content name="1. LNB 1 IN, LNB 2 IN : Входы сигнала спутниковой антенны.[CR]2. VIDEO, AUDIO : Аналоговые выходы RCA для ТВ или других устройств.[CR]3. S/PDIF : Цифровой оптический выход звука.[CR]4. RS-232C : Последовательный порт для подключения к компьютеру.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="5. HDMI : Цифровой выход для подключения к компьютеру.[CR]6. ETHERNET : Сетевой порт ETHERNET.[CR]7. USB HOST : Для подключения USB накопителей.[CR]8. ПИТАНИЕ : Подклюение адаптера 12В.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -52,14 +52,14 @@
 		<content name="1. ПИТАНИЕ ТВ : Включает/выключает телевизор.[CR]2. ПИТАНИЕ : Переключает приставку между рабочим и ждущим режимами.[CR]3. ЦВЕТНЫЕ : Используйте цветные кнопки для различных приложений.[CR]4. SOURCE : Выбор источника для ТВ.[CR]5. XBMC : Запуск медиацентра XBMC.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="6. TV/RADIO : Переключение между режимами ТВ и Радио.[CR]7. ЗАПИСЬ : Запись программ.[CR]8. СТОП : Остановка записи или переход в режим эфира.[CR]9. ВОСПР : Воспроизведение на нормальной скорости или пауза.[CR]10. ПЕРЕМОТКА НАЗАД : Перемотка назад.[CR]11. ПЕРЕМОТКА ВПЕРЕД : Перемотка вперед.[CR]12. ARCHIVE : Отображение архива имеющихся записей.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -76,14 +76,14 @@
 		<content name="13. EPG : ТВ Гид.[CR]14. КУРСОРНЫЕ : Для навигации в меню приставки.[CR]15. OK : Для подтверждения выбранного пункта меню или вызова списка каналов.[CR]16. BACK : Возврат на один шаг назад в меню.[CR]17. MENU : Выхов меню приставки.[CR]18. ГРОМКОСТЬ +/- : Настройка уровня громкости.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="19. i : Дополнительная информация, вызов контекстного меню.[CR]20. ПРОГРАММЫ +/- : Переключение программ (каналов).[CR]21. ОТКЛЮЧЕНИЕ ЗВУКА : Быстрое выключение/включение звука.[CR]22. ТЕЛЕТЕКСТ : Вывод информации телетекста при наличии в вещании.[CR]23. СУБТИТРЫ : Отображение субтитров при наличии в вещании.[CR]24. NUM LOCK : Перевод верхних кнопок в цифровой режим.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -100,7 +100,7 @@
 		<content name="Пульт дистанционного управления PRISMCUBE RUBY имеет полную клавиатуру QWERTY для ввода на ней текста.[CR][CR]1. Держите пульт дистанционного управления горизонтально, как показано на картинке.[CR]2. Включите QWERTY клавиатуру, нажав клавишу Num Lock.[CR]3. Вводите текст быстрее и эффективнее с помощью клавиатуры.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -117,7 +117,7 @@
 		<content name="Для получения максимальной свободы при использовании приставки, рекомендуется подключение двух независимых кабелей. Это позволить записывать или просматривать до звух различных каналов одновременно. Выбор второго канала для записи или просмотра будет ограничен при подключении одним кабелем.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -134,7 +134,7 @@
 		<content name="Информация о текущем канале автоматически отображается в инфопанели при нажатии кнопки i.[CR][CR]1. НАЗВАНИЕ И НОМЕР ТЕКУЩЕГО КАНАЛА : Отображает номер и название текущего ТВ или Радиоканала.[CR]2. ИНФОРМАЦИЯ О ПРЕДЫДУЩЕЙ/СЛЕДУЮЩЕЙ ПЕРЕДАЧЕ : предыдущее/следующее событие ТВ Гида.[CR]3. ШКАЛА ВРЕМЕНИ ПЕРЕДАЧИ : Отображает время начала и.[CR]4. ФУНКЦИОНАЛЬНЫЕ КНОПКИ : Описание, Телетекст, Субтитры, Начать Запись, Остановить Запись, Откл Звук, A/V Установки.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -151,7 +151,7 @@
 		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP are as follow.[CR][CR]- Engage the PIP feature by pressing BLUE button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP window by pressing number keys on the remote after turning Num Lock on.[CR]- You can also access and use the PIP while you are watching video in XBMC.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -168,7 +168,7 @@
 		<content name="При первом включении нового ресивера, Первичная Установка будет запущена автоматически.[CR][CR]- УСТАНОВКИ ЯЗЫКА : Здесь имеется возможность выбрать основной язык меню.[CR]- A/V УСТАНОВКИ : Здесь имеется возможность задать настройки звука и изображения.[CR]- НАСТРОЙКИ АНТЕННЫ и СПУТНИКОВ : Выбор антенны и настройка параметров LNB для поиска каналов.[CR]- НАСТРОЙКИ ПОИСКА КАНАЛОВ : Поиск каналов по сконфигурированным спутникам.[CR]- НАСТРОЙКА ДАТЫ и ВРЕМЕНИ : Здесь имеется возможность задать настройки времени и даты. ">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -185,7 +185,7 @@
 		<content name="1. DISEQC 1.0 : DISEqC 1.0 переключатель позволяет подключать несколько антенн к приставке.[CR]2. DISEQC 1.1 : Переключатель DISEqC 1.1 позволяет использовать до 64 различных спутников.[CR]3. Мотор DISEqC 1.2 : Здесь можно управлять перемещением моторизированной антенны.[CR]4. Мотор USALS : Протокол USALS используется для управления моторизированной антенной.[CR]5. Один Конвертор LNB : Конфигурация Один Конвертор LNB выбирается при приеме одного спутника.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -202,7 +202,7 @@
 		<content name="1. АВТОМАТИЧЕСКОЕ СКАНИРОВАНИЕ : Автоматическое сканирование предполагает самый простой способ поиска каналов.[CR]2. СКАНИРОВАТЬ ВРУНУЮ : Ручное сканирование более уместно если имеются данные транспондеров и другое.[CR]3. FAST SCAN : You can search channels from service providers quickly.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -219,7 +219,7 @@
 		<content name="Здесь предусмотрена возможность удалять, перемещать, выбирать, переименовывать или блокировать каналы.[CR][CR]1. Нажмите кнопку i в списке каналов для отображения контекстного меню.[CR]2. Выбрать РЕДАКТИРОВАТЬ КАНАЛЫ и нажать ОК.[CR]3. Выбрать каналы для удаления нажатием ОК.[CR]4. Нажать кнопку i еще раз и выбрать УДАЛИТЬ, нажать кнопку ОК.[CR]5. Нажать BACK, а затем СОХРАНИТЬ и ВЫЙТИ. Для подтверждения выбрать ДА.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -236,7 +236,7 @@
 		<content name="Обычно полный список каналов слишком большой и неудобный для навигации. Распределите часто используемые каналы в группы любимых каналов.[CR][CR]1. Выбрать СОЗДАТЬ ГРУППУ ЛЮБИМЫХ в контекстном меню и нажать ОК.[CR]2. Задать имя любимой группы.[CR]3. Выбрать и нажать ГОТОВО.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -253,7 +253,7 @@
 		<content name="1. Выбрать каналы для добавления в группу нажатием ОК.[CR]2. В контекстном меню выбрать ДОБАВИТЬ В ГРУППУ и нажать ОК.[CR]3. Выбрать желаемую группу каналов со списка.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -270,7 +270,7 @@
 		<content name="1. Нажать кнопку ВЛЕВО в списке каналов и выбрать ГРУППУ ЛЮБИМЫХ.[CR]2. Выбрать группу в которой необходимо удалить каналы.[CR]3. Выбрать каналы для удаления из группы нажатием ОК.[CR]4. Выбрать УДАЛИТЬ в контекстном меню для удаления каналов из группы.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -287,7 +287,7 @@
 		<content name="1. Вызвать контекстное меню в списке каналов нажатием кнопки i.[CR]2. Выбрать ПЕРЕИМЕНОВАТЬ ГРУППУ ЛЮБИМЫЕ.[CR]3. Выбрать каналы для удаления из группы нажатием ОК.[CR]4. Задать новое имя для группы.[CR]5. Выбрать и нажать ОК на кнопке ГОТОВО.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -304,7 +304,7 @@
 		<content name="1. Вызвать контекстное меню в списке каналов нажатием кнопки i.[CR]2. Выбрать УДАЛИТЬ ГРУППУ ЛЮБИМЫЕ.[CR]3. Выбрать саму группу для удаления.[CR]4. Нажать ОК для подтверждения.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -321,7 +321,7 @@
 		<content name="XBMC - это мультимедийный центр развлечений для удобного воспроизведения различного цифрового контента. В арзитектуре XBMC предусмотрена установка дополнений типа YouTube и др.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -338,13 +338,13 @@
 		<content name="Дополнения это пакеты, которые расширяют функциональность XBMC.[CR][CR]1. Выбрать PRISMCUBE ADD-ONS и нажать ОК.[CR]2. Выбрать желаемую категорию и нажать ОК.[CR]3. Выбрать требуемое дополнение для установки.[CR]4. Будет выведено окно с описанием возможностей дополнения.[CR]5. Выбрать УСТАНОВИТЬ для загрузки и установки дополнения.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="20" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
+	<page number="20" title="Updating Add-ons" location="(XBMC > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
 		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -355,7 +355,7 @@
 		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories.[CR]If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -372,7 +372,7 @@
 		<content name="После завершения установки возможно появление диалога на запуск дополнения. После этого дополнение появится в соответствующем разделе XMBC. (например YouTube будет в разделе Видео)">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -382,7 +382,7 @@
 		<content name="Для дополнительной информации о Prismcube,[CR]пожалуйста посетите наш сайт [B]www.prismcube.com[/B]">
 			<type>textbox_bigfont</type>
 			<posx>170</posx>
-			<posy>320</posy>
+			<posy>325</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
