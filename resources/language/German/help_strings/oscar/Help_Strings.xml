@@ -103,7 +103,7 @@
 	</page>
 		
 	<page number="7" title="Erstellen einer neuen Favoritengruppe" location="(SENDER BEARBEITEN>ERSTELLEN EINER NEUEN FAVORITENGRUPPE)">
-		<content name="create_fav.png">
+		<content name="creating_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -120,7 +120,7 @@
 	</page>
 
 	<page number="8" title="Sender zu einer Favoritengruppe hinzufügen" location="(SENDER BEARBEITEN > ZUR FAVORITENGRUPPE HINZUFÜGEN)">
-		<content name="add_channels.png">
+		<content name="adding_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -137,7 +137,7 @@
 	</page>
 	
 	<page number="9" title="Sender von einer Favoritengruppe entfernen" location="(VERSCHIEBENMENÜ > FAVORITENGRUPPE AUSWÄHLEN)">
-		<content name="remove_channels.png">
+		<content name="removing_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -154,7 +154,7 @@
 	</page>
 	
 	<page number="10" title="Umbenennen einer Favoritengruppe" location="(SENDER BEARBEITEN > FAVORITENGRUPPE UMBENENNEN)">
-		<content name="rename_fav.png">
+		<content name="renaming_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -171,7 +171,7 @@
 	</page>
 	
 	<page number="11" title="Favoritengruppe löschen" location="(SENDER BEARBEITEN > FAVORITENGRUPPE LÖSCHEN)">
-		<content name="delete_fav.png">
+		<content name="deleting_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -187,7 +187,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Media Center" location="(MEDIA oder DRÜCKE XBMC TASTE)">
+	<page number="12" title="XBMC" location="(MEDIA oder DRÜCKE XBMC TASTE)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -205,7 +205,7 @@
 	</page>
 	
 	<page number="13" title="Add-ons installieren" location="(MEDIEN > ADD-ON MANAGER > ADD-ONS LADEN)">
-		<content name="install_addons.png">
+		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -222,7 +222,7 @@
 	</page>
 
 	<page number="14" title="Aktualisieren von Add-ons" location="(MEDIA > ADD-ON MANAGER > DRÜCKE LINKS oder DRÜCKE RECHTS)">
-		<content name="update_addons.png">
+		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -239,7 +239,7 @@
 	</page>
 	
 	<page number="15" title="Add-ons ausführen" location="(MEDIEN > BILDER, MUSIK, VIDEO oder PROGRAMME)">
-		<content name="addons.png">
+		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>

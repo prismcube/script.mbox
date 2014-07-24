@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<help>
+	<page number="1" title="Front Panel" location="[COLOR blue]JET[/COLOR] - SET - WATCH - XBMC">
+		<content name="front_jet.png">
+			<type>image</type>
+			<posx>290</posx>
+			<posy>100</posy>
+			<width>680</width>
+			<height>493</height>
+		</content>
+		<content name="Status Light">
+			<type>label</type>
+			<posx>795</posx>
+			<posy>479</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="IR Receiver">
+			<type>label</type>
+			<posx>285</posx>
+			<posy>518</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+	</page>
+	
+	<page number="2" title="Rear Panel" location="[COLOR blue]JET[/COLOR] - SET - WATCH - XBMC">
+		<content name="rear_jet.png">
+			<type>image</type>
+			<posx>305</posx>
+			<posy>204</posy>
+			<width>650</width>
+			<height>326</height>
+		</content>
+		<content name="LNB In">
+			<type>label</type>
+			<posx>460</posx>
+			<posy>210</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="A/V">
+			<type>label</type>
+			<posx>395</posx>
+			<posy>175</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Smartcard">
+			<type>label</type>
+			<posx>640</posx>
+			<posy>200</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="12V AC Power">
+			<type>label</type>
+			<posx>810</posx>
+			<posy>200</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Micro SD">
+			<type>label</type>
+			<posx>300</posx>
+			<posy>515</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Gigabit Ethernet">
+			<type>label</type>
+			<posx>415</posx>
+			<posy>525</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="RS-232C">
+			<type>label</type>
+			<posx>540</posx>
+			<posy>500</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="HDMI">
+			<type>label</type>
+			<posx>650</posx>
+			<posy>520</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="S/PDIF">
+			<type>label</type>
+			<posx>700</posx>
+			<posy>485</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="2 x USB Ports">
+			<type>label</type>
+			<posx>820</posx>
+			<posy>520</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+	</page>
+	
+	<page number="3" title="Pluggable Tuners" location="[COLOR blue]JET[/COLOR] - SET - WATCH - XBMC">
+		<content name="pluggable_tuners.png">
+			<type>image</type>
+			<posx>305</posx>
+			<posy>30</posy>
+			<width>650</width>
+			<height>501</height>
+		</content>
+		<content name="PRISMCUBE JET supports a flexible pluggable tuner system allowing users to insert single DVB-S2 tuner, dual DVB-S2 tuner or DVB-C/T tuner. Now with the pluggable tuners, any DVB signals are easily accessible anywhere in the world.">
+			<type>textbox</type>
+			<posx>220</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="4" title="First Installation - Language Setup" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
+		<content name="language_setup.png">
+			<type>image</type>
+			<posx>185</posx>
+			<posy>80</posy>
+			<width>885</width>
+			<height>470</height>
+		</content>
+		<content name="A step-by-step installation wizard will appear when powering on your JET for the first time.[CR][CR]1. Select the language in which the menu would be displayed.">
+			<type>textbox</type>
+			<posx>185</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="5" title="First Installation - Video and Audio Setup" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
+		<content name="av_setup.png">
+			<type>image</type>
+			<posx>185</posx>
+			<posy>80</posy>
+			<width>885</width>
+			<height>470</height>
+		</content>
+		<content name="2. Configure the video and audio output settings.">
+			<type>textbox</type>
+			<posx>185</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="6" title="First Installation - Video Calibration" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
+		<content name="calibration_setup.png">
+			<type>image</type>
+			<posx>185</posx>
+			<posy>80</posy>
+			<width>885</width>
+			<height>470</height>
+		</content>
+		<content name="3. Calibrate the user interface by adjusting the overscan.">
+			<type>textbox</type>
+			<posx>185</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="7" title="First Installation - Antenna and Satellite Setup" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
+		<content name="antenna_setup_ss2.png">
+			<type>image</type>
+			<posx>185</posx>
+			<posy>80</posy>
+			<width>885</width>
+			<height>470</height>
+		</content>
+		<content name="4. Select the antenna and LNB settings for channel searching.[CR]- DiSEqC 1.0 : Multiple antennas can be connected to the STB simultaneously.[CR]- DiSEqC 1.1 : 64 different satellites can be connected.[CR]- Motorized : You can set the position of your desired satellites here.[CR]- USALS : Efficient channel search is possible by setting the motor antenna.[CR]- Simple LNB : This is used when only one satellite is connected.">
+			<type>textbox</type>
+			<posx>185</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="8" title="First Installation - Channel Search Setup" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
+		<content name="channel_search_oscar.png">
+			<type>image</type>
+			<posx>185</posx>
+			<posy>80</posy>
+			<width>885</width>
+			<height>470</height>
+		</content>
+		<content name="5. Scan the configured satellites to search new TV or Radio channels.">
+			<type>textbox</type>
+			<posx>185</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="9" title="First Installation - Time and Date Setup" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
+		<content name="time_setup.png">
+			<type>image</type>
+			<posx>185</posx>
+			<posy>80</posy>
+			<width>885</width>
+			<height>470</height>
+		</content>
+		<content name="6. Set your local time for timer events.">
+			<type>textbox</type>
+			<posx>185</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="10" title="Using Your Remote" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="remote1.png">
+			<type>image</type>
+			<posx>479</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="1. TV Power : Turns your TV on or off.[CR]2. Standby : Switches between operation and standby.[CR]3. Color : Access special functions in some menus.[CR]4. Source : Controls the outputs of TV.[CR]5. XBMC : Displays the XBMC Media Center.[CR]6. TV/Radio : Switches between TV and radio modes.">
+			<type>label</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="7. Record : Records live program.[CR]8. Stop : Stops a recording or goes to the live program.[CR]9. Play/Pause : Pauses the live program or recording.[CR]10. Fast Rewind : Rewinds at high speed.[CR]11. Fast Forward : Fasts forward at high speed.[CR]12. Archive : Displays the Archive window.">
+			<type>label</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="11" title="Using Your Remote" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="remote2.png">
+			<type>image</type>
+			<posx>478</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="13. EPG : Displays the EPG window.[CR]14. Arrows : Navigates through the menu options.[CR]15. OK : Selects an item/Displays the channel list.[CR]16. Back : Moves one step back.[CR]17. Menu : Displays the main menu.[CR]18. Vol+/Vol- : Adjusts the volume.">
+			<type>label</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="19. i : Displays context menu.[CR]20. P+/P- : Changes the channel.[CR]21. Mute : Switches the sound on or off.[CR]22. Teletext : Displays the teletext information.[CR]23. Subtitle : Displays the subtitle option.[CR]24. Num Lock : Enables/Disables the numeric keys.">
+			<type>label</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="12" title="Using QWERTY Keyboard" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>247</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="1. Hold your remote horizontally as picture above.[CR]2. Press the Num Lock key at the bottom left corner.[CR]3. Now with the keyboard, enter text faster and efficiently.">
+			<type>textbox</type>
+			<posx>380</posx>
+			<posy>565</posy>
+			<width>700</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="13" title="Info Plate" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="info_plate_oscar.png">
+			<type>image</type>
+			<posx>225</posx>
+			<posy>235</posy>
+			<width>800</width>
+			<height>250</height>
+		</content>
+		<content name="Channel Logo">
+			<type>label</type>
+			<posx>160</posx>
+			<posy>245</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Channel Number">
+			<type>label</type>
+			<posx>250</posx>
+			<posy>210</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Channel Name">
+			<type>label</type>
+			<posx>395</posx>
+			<posy>240</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Function Buttons">
+			<type>label</type>
+			<posx>540</posx>
+			<posy>210</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="CAS Info">
+			<type>label</type>
+			<posx>790</posx>
+			<posy>240</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Color Keys">
+			<type>label</type>
+			<posx>920</posx>
+			<posy>240</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Satellite Info">
+			<type>label</type>
+			<posx>230</posx>
+			<posy>450</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Current EPG Name">
+			<type>label</type>
+			<posx>450</posx>
+			<posy>450</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Start EPG Time">
+			<type>label</type>
+			<posx>690</posx>
+			<posy>445</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="A/V Info">
+			<type>label</type>
+			<posx>870</posx>
+			<posy>475</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="End EPG Time">
+			<type>label</type>
+			<posx>930</posx>
+			<posy>445</posy>
+			<width>200</width>
+			<height>30</height>
+		</content>
+		<content name="Info plate is automatically appeared when the channel is changed.">
+			<type>textbox</type>
+			<posx>225</posx>
+			<posy>565</posy>
+			<width>885</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="14" title="Editing Channels" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="editing_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="You can delete, move or rename the channels conveniently in the Channel List window.[CR][CR]To edit channels, go to Channel List -> i button -> Edit Channels -> i button">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="15" title="Creating New Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="creating_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="The entire channels in the channel list are often too many to navigate. Sort the channels that you watch more often in a favorite channel group.[CR][CR]To create new favorite group, go to Channel List -> i button -> Edit Channels -> Create New Favorite Group -> Enter a favorite channel group name -> Done">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="16" title="Adding Channels to a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="adding_fav_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="To add channels to a favorite group, go to Channel List -> i button -> Edit Channels -> Select the channels by pressing OK button -> i button -> Add channels to favorite group -> Select a favorite group">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="17" title="Removing Channels from a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="removing_fav_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="To remove channels from a favorite group, go to Channel List -> i button -> Edit Channels -> Left button -> Favorite Groups -> Select a favorite group -> Select the channels by pressing OK button -> i button -> Delete">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="18" title="Renaming a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="renaming_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="To rename a favorite group, go to Channel List -> i button -> Edit Channels -> i button -> Rename Favorite Group -> Select a favorite group -> Enter a new favorite group name -> DONE">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="19" title="Deleting a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="deleting_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="To delete a favorite group, go to Channel List -> i button -> Edit Channels -> i button -> Delete Favorite Group -> Select a favorite group -> OK button">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="20" title="PIP" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
+		<content name="pip.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (Picture in picture) is a function that allows you to watch two programs simultaneously.[CR]To Engage the PIP feature, press BLUE button on the remote. You can also open the PIP window while you are watching video in XBMC.">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="21" title="XBMC" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="xbmc.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="22" title="Installing Add-ons from a Repository" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="installing_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Add-ons are packages that add features and functions not normally included with XBMC.[CR][CR]To install add-ons, go to XBMC -> System -> Add-ons -> Get Add-ons -> Prismcube.com Add-ons -> Select a category -> Select an add-on -> Install">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="23" title="Updating Add-ons" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="updating_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories. If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="24" title="Empty Repository List" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="force_refresh.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="If the repository list is empty or you are suspect you don't receive any add-on updates you can try fixing it with Force refresh.[CR][CR]To fix an empty repository, press i button -> Force refresh">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="25" title="Running Add-ons" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="running_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="When the add-on has finished downloading, XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section. ( e.g. Flickr in the pictures, YouTube in the video section of Media, etc )">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="26" title="Changing Skins" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="changing_skins.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="As default, XBMC comes with the excellent skin Confluence, but there are plenty more to choose from.[CR][CR]To change the skin, go to XBMC -> System -> Add-ons -> Get Add-ons -> Prismcube.com Add-ons -> Select skin category -> Select a skin -> Install">
+			<type>textbox</type>
+			<posx>210</posx>
+			<posy>565</posy>
+			<width>832</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="27" title="Getting Further Help" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
+		<content name="For more information about Prismcube Ruby,[CR]please visit our website [B]www.prismcube.com[/B]">
+			<type>textbox_bigfont</type>
+			<posx>170</posx>
+			<posy>320</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+</help>

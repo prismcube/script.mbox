@@ -113,7 +113,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
 		#is avail timeshift
-		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and ( not playingRecord ) and ( not HasAvailableRecordingHDD( False, True ) ) :
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and ( not playingRecord ) and ( not HasAvailableRecordingHDD( False ) ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 			return
 		"""

@@ -1576,6 +1576,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
+		footerModeAll = E_TAG_FALSE
+		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+			footerModeAll = E_TAG_TRUE
+		self.UpdatePropertyGUI( 'ZappingModeInfo', footerModeAll )
 
 		#current zapping backup
 		#self.mDataCache.Channel_Backup( )
@@ -2223,6 +2227,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
+		footerModeAll = E_TAG_FALSE
+		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+			footerModeAll = E_TAG_TRUE
+		self.UpdatePropertyGUI( 'ZappingModeInfo', footerModeAll )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
