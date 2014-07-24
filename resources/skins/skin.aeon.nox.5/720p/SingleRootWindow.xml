@@ -3149,7 +3149,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label></label>
 							</control>
@@ -3168,7 +3168,7 @@
 								<posy>0</posy>
 								<width>80</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3187,7 +3187,7 @@
 								<posy>0</posy>
 								<width>50</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3206,7 +3206,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1124]</label>
 							</control>
@@ -3225,7 +3225,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1060]</label>
 							</control>
@@ -6179,14 +6179,14 @@
 
 				<!-- Item & Page Number -->
 				<control type="label">
-					<posx>897</posx>
-					<posy>56r</posy>
-					<width>340</width>
+					<posx>1275</posx>
+					<posy>42</posy>
+					<width>240</width>
 					<height>20</height>
-					<font>font13_title</font>
-					<textcolor>grey</textcolor>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
 					<scroll>false</scroll>
-					<align>left</align>
+					<align>right</align>
 					<aligny>center</aligny>
 					<label>$INFO[Container(4601001).NumItems] $ADDON[script.mbox 1106][COLOR grey3] | $INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR]</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
