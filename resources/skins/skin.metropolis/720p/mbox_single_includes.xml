@@ -103,7 +103,7 @@
 			<texturefocus>black-back.png</texturefocus>
 		</control>
 	</include>
-
+	<!--sblee-update also-->
 	<include name="DefaultSettingMainWindow">
 		<control type="group">
 			<posx>-80</posx>
@@ -4185,7 +4185,7 @@
 					<control type="label">
 						<posx>125</posx>
 						<posy>32</posy>
-						<width>460</width>
+						<width>405</width>
 						<height>40</height>
 						<font>METF_HomeMenuSmall</font>
 						<textcolor>white</textcolor>
@@ -4330,7 +4330,7 @@
 					<control type="label">
 						<posx>125</posx>
 						<posy>32</posy>
-						<width>460</width>
+						<width>405</width>
 						<height>40</height>
 						<font>METF_HomeMenuSmall</font>
 						<textcolor>white</textcolor>
@@ -5879,13 +5879,13 @@
 				<!-- EPG Info -->
 				<control type="label" id="3703503">
 					<description>EPG info</description>
-					<posx>0</posx>
-					<posy>560</posy>
-					<width>760</width>
+					<posx>-110</posx>
+					<posy>570</posy>
+					<width>840</width>
 					<height>40</height>
 					<font>METF_HomeMenu</font>
-					<textcolor>eef8cd22</textcolor>
-					<align>left</align>
+					<textcolor>white</textcolor>
+					<align>center</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
 					<scrollspeed>70</scrollspeed>

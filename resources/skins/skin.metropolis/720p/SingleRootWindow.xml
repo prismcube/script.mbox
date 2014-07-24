@@ -2816,7 +2816,7 @@ Search for window name
 					</control>
 					<control type="label" id="1400703">
 						<description>EPG Name</description>
-						<posx>-44</posx>
+						<posx>-40</posx>
 						<posy>15</posy>
 						<width>340</width>
 						<font>METF_SettingsDetail</font>
@@ -4875,8 +4875,8 @@ Search for window name
 
 				<!-- Global Info -->
 				<control type="group">
-					<posx>13</posx>
-					<posy>7</posy>
+					<!--posx>13</posx>
+					<posy>7</posy-->
 					<!--include>Global_Weather</include-->
 					<include>Global_Time</include>
 					<include>Global_Heading</include>
@@ -5059,6 +5059,14 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<control type="image">
 					<posx>-13</posx>
+					<posy>552</posy>
+					<width>1306</width>
+					<height>187</height>
+					<texture>black-back_noAlpha.png</texture>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+				</control>
+				<control type="image">
+					<posx>-13</posx>
 					<posy>-7</posy>
 					<width>1306</width>
 					<height>734</height>
@@ -5111,6 +5119,53 @@ Search for window name
 				<width>440</width>
 				<height>32</height>
 				<visible>substring(Window.Property(EPGFootor),True) + [substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)]+!substring(Window.Property(EPGMode),grid)</visible>
+				<control type="image">
+					<posx>35</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>70</posx>
+					<posy>4</posy>
+					<width>160</width>
+					<height>20</height>
+					<font>METF_HelpText</font>
+					<textcolor>WeatherHeading</textcolor>
+					<label>$ADDON[script.mbox 1139]</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>470</posx>
+				<posy>40r</posy>
+				<width>440</width>
+				<height>32</height>
+				<visible>substring(Window.Property(EPGFootor),True) + substring(Window.Property(EPGMode),grid)</visible>
+				<control type="image">
+					<posx>20</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>OSDIconInfoNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>55</posx>
+					<posy>4</posy>
+					<width>160</width>
+					<height>20</height>
+					<font>METF_HelpText</font>
+					<textcolor>WeatherHeading</textcolor>
+					<label>$ADDON[script.mbox 1101]</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>760</posx>
+				<posy>40r</posy>
+				<width>440</width>
+				<height>32</height>
+				<visible>substring(Window.Property(EPGFootor),True) + substring(Window.Property(EPGMode),grid)</visible>
 				<control type="image">
 					<posx>35</posx>
 					<posy>0</posy>
