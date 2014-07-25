@@ -2704,8 +2704,9 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetMessage( self, aName ) :
-		newName = aName.encode('utf-8')
-		self.mCommander.Frontdisplay_SetMessage( newName )
+		if E_FRONT_DISPLAY_ENABLE :
+			newName = aName.encode('utf-8')
+			self.mCommander.Frontdisplay_SetMessage( newName )
 
 
 	def Frontdisplay_SetCurrentMessage( self ) :
@@ -2720,7 +2721,8 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
-		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
+		if E_FRONT_DISPLAY_ENABLE :
+			self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
 
 
 	def Frontdisplay_Resolution( self, aResolution = None ) :
