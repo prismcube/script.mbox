@@ -169,11 +169,7 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 				elif aControlId == BUTTON_ID_ANTENNA_SETUP :
-					#if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-					#elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
-					#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
-
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
 					if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )

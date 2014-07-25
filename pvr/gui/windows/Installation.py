@@ -96,10 +96,7 @@ class Installation( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP :
-			#if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-			#elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
-			#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
 			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :

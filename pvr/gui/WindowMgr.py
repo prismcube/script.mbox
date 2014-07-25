@@ -61,7 +61,6 @@ WIN_ID_FAST_SCAN					= 37
 WIN_ID_PIP_WINDOW					= 38
 WIN_ID_ADVANCED						= 39
 WIN_ID_CHANNEL_SCAN_DVBT			= 40
-WIN_ID_DVBT_TUNER_SETUP				= 41
 
 WIN_ID_HIDDEN_TEST					= 99
 
@@ -271,7 +270,6 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.AntennaSetup import AntennaSetup
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			from pvr.gui.windows.ChannelScanDVBT import ChannelScanDVBT
-			from pvr.gui.windows.DVBTTunerSetup import DVBTTunerSetup
 			from pvr.HiddenTest import HiddenTest
 
 			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( self.mRootWindow )
@@ -309,7 +307,6 @@ class WindowMgr( object ) :
 			self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
 			self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
 			self.mWindows[WIN_ID_CHANNEL_SCAN_DVBT] = ChannelScanDVBT( self.mRootWindow )
-			self.mWindows[WIN_ID_DVBT_TUNER_SETUP] = DVBTTunerSetup( self.mRootWindow )
 			#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )
 			self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
 			self.mWindows[WIN_ID_ADVANCED] = Advanced( self.mRootWindow )
