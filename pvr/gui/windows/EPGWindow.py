@@ -2199,19 +2199,29 @@ class EPGWindow( BaseWindow ) :
 		return False
 	
 
-	def IsRunningTimer( self, aTimer ) :
+	def IsRunningTimer( self, aTimer, aCheckWeekly = True ) :
 		if aTimer == None :
 			return False
 
 		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
 		if runningTimers == None :
 			return False
-			
+
+		isRunning = False
 		for timer in runningTimers :
 			if timer.mTimerId == aTimer.mTimerId :
-				return True
+				isRunning = True
+				if aCheckWeekly :
+					weekTimer, weekOffset = self.FindWeeklyTimer( timer, 0, False )
+					if weekTimer :
+						showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
+						currentWeekStart = int( showingTime / ONE_DAY_SECONDS ) * ONE_DAY_SECONDS
+						weekStart = weekTimer.mStartTime + currentWeekStart
+						if weekStart > self.mDataCache.Datetime_GetLocalTime( ) :
+							isRunning = False
+			break
 
-		return False
+		return isRunning
 			
 
 	def Tune( self ) :
@@ -2976,24 +2986,21 @@ class EPGWindow( BaseWindow ) :
 		timerCount2 = 0
 		#not runningTimer
 		if self.mTimerList and len( self.mTimerList ) > 0  :
-			try :	
+			try :
 				for i in range( len( self.mTimerList ) ) :
 					timer = self.mTimerList[i]
 					start = timer.mStartTime - localOffset
 					end = start + timer.mDuration
-					weekTimer = None
-					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
-					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
-						LOG_TRACE( 'type[%s] id[%s] name[%s] weekly count[%s] showoffset[%s]'% ( timer.mTimerType, timer.mTimerId, timer.mName, timer.mWeeklyTimerCount, self.mShowingOffset ) )
-						weekTimer,weekOffset = self.FindWeeklyTimer( timer )
-						if weekTimer :
-							start = weekTimer.mStartTime + weekOffset
-							end = start + weekTimer.mDuration
-							LOG_TRACE( '[EPGWindow]weekTimer date[%s] start[%s] end[%s] duration[%s]'% ( weekTimer.mDate, \
-							  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
-							  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
-							  TimeToString( weekTimer.mDuration, TimeFormatEnum.E_HH_MM_SS )
-							  ) )
+					LOG_TRACE( 'type[%s] id[%s] name[%s] weekly count[%s] showoffset[%s]'% ( timer.mTimerType, timer.mTimerId, timer.mName, timer.mWeeklyTimerCount, self.mShowingOffset ) )
+					weekTimer, weekOffset = self.FindWeeklyTimer( timer )
+					if weekTimer :
+						start = weekTimer.mStartTime + weekOffset
+						end = start + weekTimer.mDuration
+						#LOG_TRACE( '[EPGWindow]weekTimer date[%s] start[%s] end[%s] duration[%s]'% ( weekTimer.mDate, \
+						#  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+						#  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+						#  TimeToString( weekTimer.mDuration, TimeFormatEnum.E_HH_MM_SS )
+						#  ) )
 
 					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
 					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
@@ -3011,6 +3018,7 @@ class EPGWindow( BaseWindow ) :
 						if channel and channel.mSid == timer.mSid and channel.mTsid == timer.mTsid and channel.mOnid == timer.mOnid :
 							#find
 							isRunning = self.IsRunningTimer( timer )
+							#LOG_TRACE( '----------------running[%s]'% isRunning )
 							if isRunning :
 								if timer.mFromEPG :
 									start = start - self.mPreRecTime
@@ -3018,8 +3026,7 @@ class EPGWindow( BaseWindow ) :
 
 							if start < self.mShowingGMTTime + self.mShowingOffset :
 								start = self.mShowingGMTTime + self.mShowingOffset
-								if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
-								   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+								if not isRunning :
 									weekTimer,weekOffset = self.FindWeeklyTimer( timer, ONE_DAY_SECONDS )
 									if weekTimer :
 										start = weekTimer.mStartTime + weekOffset
@@ -3150,9 +3157,21 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( 'traceback=%s' %traceback.format_exc( ) )
 
 
-	def FindWeeklyTimer( self, aTimer, aNextDays = 0 ) :
+	def FindWeeklyTimer( self, aTimer, aNextDays = 0, aCheckRunning = True ) :
+		timer = None
+		weekOffset = 0
+
 		if aTimer == None :
-			return None
+			return timer, weekOffset
+
+		isWeekly = False
+		if aTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+		   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+			isWeekly = True
+
+		if not isWeekly :
+			#LOG_TRACE( '[EPGWindow]once timer' )
+			return timer, weekOffset
 
 		weekList = {'Sun':0,'Mon':1,'Tue':2,'Wed':3,'Thu':4,'Fri':5,'Sat':6}
 		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
@@ -3167,14 +3186,17 @@ class EPGWindow( BaseWindow ) :
 		#     TimeToString( self.mDeltaTime, TimeFormatEnum.E_HH_MM ), self.mDeltaTime
 		#     ) )
 
-		timer = None
-		weekOffset = 0
 		for i in range( aTimer.mWeeklyTimerCount ) :
 			weeklyTimer = aTimer.mWeeklyTimer[i]
 
 			if aTimer.mWeeklyTimer[i].mDate == weekList.get( weekday, -1 ) :
 				timer = weeklyTimer
 				weekOffset = currentWeekStart# + ( ONE_DAY_SECONDS * weeklyTimer.mDate )
+
+				#start already? next week
+				if aCheckRunning and not self.IsRunningTimer( aTimer, False ) and \
+				   weeklyTimer.mStartTime + currentWeekStart <= self.mDataCache.Datetime_GetLocalTime( ) :
+					weekOffset += ONE_DAY_SECONDS * WEEKLY_DEFALUT_EXPIRE_DAYS
 				break
 
 		return timer, weekOffset
