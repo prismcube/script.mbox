@@ -11,7 +11,7 @@
 		<content name="Pri prvom zapnutí produktu prebehne prvotná inštalácia automaticky.[CR][CR]- NASTAVENIE JAZYKA : Môžete vybrať jazyk MENU.[CR]- NASTAVENIE VIDEO a AUDIO : Tu môžete konfigurovať video a audio výstup.[CR]- NASTAVENIE Satelitnej Antény : Môžete zvoliť nastavenie antény a LNB pre vyhľadávanie programov.[CR]- NASTAVENIE VYHĽADÁVANIA PROGRAMOV : Tu môžete vykonať vyhľadávanie programov a družíc.[CR]- NASTAVENIE ČASU A DÁTUMU : Môžete nastaviť lokálny čas pre správne funkcie časovača.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -28,7 +28,7 @@
 		<content name="1. DiSEqC 1.0 : Umožňuje viac satelitov, ktoré môžu byť pripojené k prijímaču súčasne. Môžete pripojiť až 4 satelity.[CR]2. DiSEqC 1.1 : Umožňuje pripojiť až 64 rôznych satelitov.[CR]3. DiSEqC 1.2 : Môžete nastaviť pozíciu požadovaného satelitu ak máte motorizovanú anténu.[CR]4. MOTORIZED USALS : Efektívne vyhľadávanie programov pomocou zadania vašej Zemepisnej polohy pri použití motora.[CR]5. SIMPLE LNB : Používa sa, keď je pripojený len jeden satelit.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -45,7 +45,7 @@
 		<content name="1. Automatické Vyhľadávanie : Je určená pre bežných užívateľov a najjednoduchší spôsob, ako vyhľadať kanály.[CR]2. Ručné Vyhľadávanie : Tento spôsob je vhodnejší, ak viete, ktoré satelity chcete vyhľadať a aj ich parametre.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -62,7 +62,7 @@
 		<content name="Môžete odstrániť, presunúť, vybrať, premenovať alebo uzamknúť kanály pohodlne v okne Zoznamu kanálov.[CR][CR]1. Stlačením tlačidla i zobrazíte zoznam kanálov a z kontextovej ponuky vyberte voľbu Upraviť kanály.[CR]2. Vyberte kanály, ktoré chcete vymazať, stlačením tlačidla OK.[CR]3. Stlačte tlačidlo i opäť, vyberte voľbu VYMAZAŤ a stlačte tlačidlo OK pre vymazanie predtým vybraných kanálov.[CR]4. Zvoľte voľbu Uložiť a Ukončiť v kontextovej ponuke.[CR]5. Ak sa zobrazí výzva na potvrdenie, stlačte tlačidlo ÁNO pre uloženie.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -79,7 +79,7 @@
 		<content name="Niektoré kanály v zozname kanálov sú príliš často vyhľadávané. Zotrieďte kanály, ktoré sledujete častejšie do Obľúbenej skupiny kanálov.[CR][CR]1. Zvoľte možnosť Vytvoriť novú obľúbenú skupinu v kontextovom menu Zozname kanálov a stlačte tlačidlo OK.[CR]2. Zadajte názov vašej obľúbenej skupiny.[CR]3. Stlačením tlačidla Hotovo potvrďte.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -96,7 +96,7 @@
 		<content name="1. Vyberte kanály , ktoré chcete pridať do svojej obľúbenej skupiny.[CR]2. Zvoľte voľbu PRIDAŤ K OBĽÚBENEJ SKUPINE v kontextovej ponuke kliknite na tlačidlo OK.[CR]3. Vyberte skupinu zo zoznamu dostupných skupín obľúbených položiek a stlačte tlačidlo OK.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -113,7 +113,7 @@
 		<content name="1. Stlačte tlačidlo vľavo na diaľkovom ovládači a vyberte obľúbenú skupinu.[CR]2. Vyberte skupinu, z ktorej chcete odstrániť kanály.[CR]3. Vyberte kanály, ktoré chcete odstrániť stlačením tlačidla OK.[CR]4. V kontextovom menu zvoľte voľbu ODSTRÁNIŤ, pre vymazanie všetkých skôr vybraných programov.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -130,7 +130,7 @@
 		<content name="1. Pre zobrazenie kontextové menu zoznamu kanálov, stlačte tlačidlo i.[CR]2. Zvoľte voľbu Premenovať obľúbenú skupinu.[CR]3. Vyberte obľúbenú skupinu, ktorú chcete premenovať, a stlačte tlačidlo OK.[CR]4. Zadajte nový názov pomocou klávesnice.[CR]5. Stlačením Hotovo potvrďte.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -147,13 +147,13 @@
 		<content name="1. Pre zobrazenie kontextové menu zoznamu kanálov, stlačte tlačidlo i.[CR]2. Zvoľte voľbu Zmazať obľúbenú skupinu.[CR]3. Vyberte obľúbenú skupinu, ktorú chcete odstrániť.[CR]4. Stlačte OK pre potvrdenie.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="10" title="XBMC" location="(MEDIA alebo STLAČTE TLAČIDLO XBMC)">
+	<page number="10" title="XBMC" location="(XBMC alebo STLAČTE TLAČIDLO XBMC)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -164,13 +164,13 @@
 		<content name="XBMC je zábavné centrum pre digitálne médiá, ktoré možno použiť pre prehrávanie takmer všetkých populárnych audio a video formátov z pevného disku. XBMC umožňuje užívateľovi inštalovať nové doplnky, ako sú YouTube, Flickr, rovnako ako rôzne skiny z inštalovaného repozitára.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="11" title="Inštalácia aplikácie Firefox" location="(MÉDIÁ > SPRÁVCA DOPLNKOV > ZÍSKAŤ DOPLNKY)">
+	<page number="11" title="Inštalácia aplikácie Firefox" location="(XBMC > SPRÁVCA DOPLNKOV > ZÍSKAŤ DOPLNKY)">
 		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -181,13 +181,13 @@
 		<content name="Doplnky sú balíky, ktoré pridávajú rôzne vlastnosti a funkcie, ktoré zvyčajne nie sú súčasťou XBMC.[CR][CR]1. Vyberte PRISMCUBE'S doplnky a stlačte tlačidlo OK.[CR]2. Prejdite nadol na požadovanú kategóriu a stlačte tlačidlo OK.[CR]3. Vyberte doplnok, ktorý chcete nainštalovať.[CR]4. Súhrnné dialógové okno umožňuje vidieť rôzne vlastnosti doplnkov.[CR]5. Zvoľte možnosť automatického sťahovania a inštalácie.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="12" title="Aktualizácia doplnkov" location="(MÉDIA > MANAŽÉR DOPLNKOV > STLAČTE ŠÍPKU DOĽAVA alebo DOPRAVA)">
+	<page number="12" title="Aktualizácia doplnkov" location="(XBMC > MANAŽÉR DOPLNKOV > STLAČTE ŠÍPKU DOĽAVA alebo DOPRAVA)">
 		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -198,13 +198,13 @@
 		<content name="Všetky nainštalované doplnky budú automaticky aktualizované, ak sú v repozitároch dostupné nové verzie.[CR]Ak je automatická aktualizácia vypnutá, mali by ste v Manažéri doplnkov vidieť adresár 'Dostupné aktualizácie', v ktorom je možné aktualizovať doplnky jednotlivo.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="13" title="Spustenie aplikácie Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO ALEBO PROGRAMY)">
+	<page number="13" title="Spustenie aplikácie Firefox" location="(XBMC > FOTOGRAFIE, HUDBA, VIDEO ALEBO PROGRAMY)">
 		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -215,7 +215,7 @@
 		<content name="Po ukončení sťahovania doplnku sa vás XBMC spýta, či ho chcete začať používať. Doplnky sa potom objavia v ich príslušnej časti. (Napr. Flickr v sekcii obrázky, YouTube videá v sekcii Media, atď.)">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -225,7 +225,7 @@
 		<content name="Pre viac informácií o Prismcube,[CR]prosím navštívte naše webové stránky [B]www.prismcube.com[/B]">
 			<type>textbox_bigfont</type>
 			<posx>170</posx>
-			<posy>320</posy>
+			<posy>325</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>

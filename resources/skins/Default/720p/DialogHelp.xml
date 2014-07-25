@@ -45,8 +45,8 @@
 				<posy>230</posy>
 				<width>260</width>
 				<height>260</height>
-				<texturefocus border="1">01_focus.png</texturefocus>
-				<texturenofocus border="1">01_nofocus.png</texturenofocus>
+				<texturefocus>JET_focus.png</texturefocus>
+				<texturenofocus>JET_nofocus.png</texturenofocus>
 				<onleft>2005</onleft>
 				<onright>2003</onright>
 			</control>
@@ -55,8 +55,8 @@
 				<posy>230</posy>
 				<width>260</width>
 				<height>260</height>
-				<texturefocus border="1">02_focus.png</texturefocus>
-				<texturenofocus border="1">02_nofocus.png</texturenofocus>
+				<texturefocus>SET_focus.png</texturefocus>
+				<texturenofocus>SET_nofocus.png</texturenofocus>
 				<onleft>2002</onleft>
 				<onright>2004</onright>
 			</control>
@@ -65,8 +65,8 @@
 				<posy>230</posy>
 				<width>260</width>
 				<height>260</height>
-				<texturefocus border="1">03_focus.png</texturefocus>
-				<texturenofocus border="1">03_nofocus.png</texturenofocus>
+				<texturefocus>WATCH_focus.png</texturefocus>
+				<texturenofocus>WATCH_nofocus.png</texturenofocus>
 				<onleft>2003</onleft>
 				<onright>2005</onright>
 			</control>
@@ -75,8 +75,8 @@
 				<posy>230</posy>
 				<width>260</width>
 				<height>260</height>
-				<texturefocus border="1">04_focus.png</texturefocus>
-				<texturenofocus border="1">04_nofocus.png</texturenofocus>
+				<texturefocus>XBMC_focus.png</texturefocus>
+				<texturenofocus>XBMC_nofocus.png</texturenofocus>
 				<onleft>2004</onleft>
 				<onright>2002</onright>
 			</control>
@@ -220,14 +220,14 @@
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
-					<!-- Textbox_font16 -->
+					<!-- Textbox Big Font Size -->
 					<control type="textbox" id="1230">
 						<font>font30</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(textbox_bigfont_0)]</label>
 						<align>center</align>
 					</control>
-					<!-- Textbox_font12 -->
+					<!-- Textbox Small Font Size -->
 					<control type="textbox" id="1240">
 						<font>font12</font>
 						<textcolor>white</textcolor>
@@ -240,7 +240,7 @@
 						<label>$INFO[Window.Property(textbox_smallfont_1)]</label>
 						<align>left</align>
 					</control>
-					<!-- Textbox_font13 -->
+					<!-- Textbox Common Font Size -->
 					<control type="textbox" id="1250">
 						<font>font13</font>
 						<textcolor>white</textcolor>

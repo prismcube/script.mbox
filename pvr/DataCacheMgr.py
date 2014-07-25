@@ -2623,6 +2623,26 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_EditViewTimer( aTimerId, aNewStartTime )
 
 
+	def Timer_AddViewWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer ) :
+		return self.mCommander.Timer_AddViewWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer )
+
+
+	def Timer_AddOneViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration = 10 ) :
+		return self.mCommander.Timer_AddViewWeeklyTimerItem( aTimerId, aDate, aStartTime, aDuration )
+
+
+	def Timer_EditViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aNewStartTime, aDuration = 10, aNewDuration = 10 ) :
+		return self.mCommander.Timer_EditViewWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration )
+
+
+	def Timer_EditOneViewWeeklyTimer( self, aTimerId, aStartTime, aDuration, aNewStartTime, aNewDuration ) :
+		return self.mCommander.Timer_EditOneViewWeeklyTimer( aTimerId, aStartTime, aDuration, aNewStartTime, aNewDuration )
+
+
+	def Timer_DeleteOneViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration = 10 ) :
+		return self.mCommander.Timer_EditViewWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
+
+
 	def Teletext_Show( self ) :
 		return self.mCommander.Teletext_Show( )
 
@@ -2684,8 +2704,9 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetMessage( self, aName ) :
-		newName = aName.encode('utf-8')
-		self.mCommander.Frontdisplay_SetMessage( newName )
+		if E_FRONT_DISPLAY_ENABLE :
+			newName = aName.encode('utf-8')
+			self.mCommander.Frontdisplay_SetMessage( newName )
 
 
 	def Frontdisplay_SetCurrentMessage( self ) :
@@ -2700,7 +2721,8 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
-		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
+		if E_FRONT_DISPLAY_ENABLE :
+			self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
 
 
 	def Frontdisplay_Resolution( self, aResolution = None ) :

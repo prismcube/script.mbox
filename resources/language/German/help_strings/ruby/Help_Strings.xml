@@ -11,7 +11,7 @@
 		<content name="1. STANDBY LED-Taste: Umschalten zwischen Normalbetrieb und Standby-Modus durch Drücken der Taste für 1 ~ 2 Sekunden.[CR][CR]2. FRONT DISPLAY : Zeigt den Sendernamen im Betrieb und die Uhrzeit im Standby Modus.[CR][CR]3. SMARTCARD EINSCHUB : Klappe öffnen und Smartcard in den Einschub stecken um Pay TV zu sehen.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>990</width>
 			<height>160</height>
 		</content>
@@ -28,14 +28,14 @@
 		<content name="1. LNB 1 IN, LNB 2 IN : Mit dem Satellitenantennenkabel verbinden.[CR]2. VIDEO, AUDIO : Verbindet das TV-Gerät oder einen Videorecorder mittels RCA Kabel.[CR]3. S/PDIF : Connects to the audio system using an S/PDIF cable.[CR]4. RS-232C : Verbindung zum PC.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="5. HDMI : Verbindung zum TV Gerät mittels HDMI Kabel.[CR]6. ETHERNET : LAN port.[CR]7. USB HOST : Verbindung zu einem USB Speicher.[CR]8. AC MAINS : Verbindung zum externen Netzteil.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -52,14 +52,14 @@
 		<content name="1. TV POWER : Schaltet das TV-Gerät ein/aus.[CR]2. STANDBY : Schaltet um zwischen AN und Standby.[CR]3. COLOR : Zugriff zu speziellen Funktionen in einigen Menüs.[CR]4. SOURCE : Schaltet um zwischen HDMI und RCA.[CR]5. XBMC : Zeigt das XBMC Media Center.[CR]6. TV/RADIO : Schaltet zwischen TV und Radio Modus um.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="7. RECORD : Zeichnet das laufende Programm auf.[CR]8. STOP : Stopt die Aufnahme oder geht zurück zum Liveprogramm.[CR]9. PLAY/PAUSE : Pause der Wiedergabe oder Aufnahme.[CR]10. FAST REWIND : Schneller Rücklauf.[CR]11. FAST FORWARD : Schneller Vorlauf.[CR]12. ARCHIVE : Zeigt das Archivfenster.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
@@ -76,14 +76,14 @@
 		<content name="13. EPG : Zeigt das EPG Fenster.[CR]14. ARROW BUTTONS : Navigiert durch die Menüoptionen.[CR]15. OK : Wählt aus/Zeigt die Senderliste.[CR]16. BACK : Geht einen Menüpunkt zurück/Wechselt zum letzten Sender.[CR]17. MENU : Zeigt das Hauptmenü.[CR]18. VOL+/VOL- : Verändert die Lautstärke.">
 			<type>textbox_smallfont</type>
 			<posx>80</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
 		<content name="19. i (Information) : Zeigt die Senderinformation oder das Kontextmenü.[CR]20. P+/P- : Wechselt den Kanal.[CR]21. MUTE : Schaltet den Ton Stumm oder wieder an.[CR]22. TELETEXT : Zeigt den Teletext des aktuellen Senders.[CR]23. SUBTITLE : Zeigt die Untertitel Optionen.[CR]24. NUM LOCK : Erlaubt den Senderwechsel mittels Nummerntasten.">
 			<type>textbox_smallfont</type>
 			<posx>680</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>570</width>
 			<height>160</height>
 		</content>
@@ -100,7 +100,7 @@
 		<content name="Die PRISMCUBE RUBY Fernbedienung verfügt über eine vollständige QWERTY Tastatur für die Texteingabe auf der Rückseite.[CR][CR]1. Halten Sie die Fernbedienung horizontal wie oben im Bild.[CR]2. Schalten Sie QWERTY Tastatur durch Drücken der entsperr Taste unten links ein.[CR]3. Geben Sie den Text schneller und effizienter mit der Tastatur ein.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -117,7 +117,7 @@
 		<content name="Um alle Features ihrer PRISMCUBE RUBY nutzen zu können, empfehlen wir Ihnen die Verbindung mit zwei Antennenkabeln zu ihrer Satellitenanlage. Das erlaubt Ihnen das gleichzeitige Sehen und Aufnehme unterschiedlicher Sender zur gleichen Zeit. Das sehen eines zweiten Kanals während einer Aufnahme ist beschränkt, wenn nur ein Antennekabel mit loop through Option verbunden wurde.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -134,7 +134,7 @@
 		<content name="Die Senderinformation wird automatisch angezeigt beim Senderwechsel.[CR][CR]1. AKTUELLE KANALNUMMER UND NAME : Zeigt die laufende TV/Radio Kanalnummer und Name an.[CR]2. EPG DATEN : Drücken Sie die DOWN Taste, dann die LEFT/RIGHT Tasten, um jetzt/nächst EPG Informationen zu sehen.[CR]3. FORTSCHRITTANZEIGE : Zeigt die Startzeit des Programms, Endzeit und Fortschritt.[CR]4. FUNKTIONSTASTEN : Erweiterte Information, Teletext, Untertitel, Start/Stop Aufnahme, Mute und A/V Einstellungen.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -151,7 +151,7 @@
 		<content name="PIP (Bild im Bild) ist eine Funktion, mit der Sie zwei Programme gleichzeitig sehen können.[CR]Einige Tipps bei der Verwendung von PIP zu erinnern, sind wie folgt :[CR][CR]- Aktivieren Sie den PIP-Funktion, indem Sie die BLAUE Taste auf der Fernbedienung drücken. Eine kleine Box sollte in einer Ecke des Bildschirms angezeigt werden.[CR]- Ändern Sie die Sender im PIP-Fenster durch drücken der Zifferntasten auf der Fernbedienung nach Einschalten des Num Lock.[CR]- Sie können auch PIP während Sie der Wiedergabe eines Videos in XBMC nutzen.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>960</width>
 			<height>160</height>
 		</content>
@@ -168,7 +168,7 @@
 		<content name="Beim ersten Einschalten nach dem Kauf, startet die Erstinstallation automatisch.[CR][CR]- SPRACHAUSWAHL : Sie können die Menüsprache auswählen.[CR]- VIDEO und AUDIOEiINSTELLUNGEN : Sie können hier die Video und Audio Ausgänge konfigurieren.[CR]- ANTENNEN und SATELLITEN EINSTELLUNGEN : Sie können die Satellien und LNB einstellen für den Kanalsuchlauf.[CR]- KANALSUCHLAUF EINSTELLUNGEN : Hier können Sie auf den vorkonfigurierten Satelliten nach neuen TV/Radio Kanälen suchen.[CR]- ZEIT und DATUM EINSTELLUNGEN : Sie sollten Ihre Ortszeit einstellen um die Timer reibungslos verwenden zu können.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>980</width>
 			<height>160</height>
 		</content>
@@ -185,7 +185,7 @@
 		<content name="1. DISEQC 1.0 : Erlaubt es mehrere Satellitenantennen gleichzeitig an Ihren STB anzuschließen. Sie können bis zu 4 LNB`s anschließen.[CR]2. DISEQC 1.1 : Erlaubt Ihnen bis zu 64 LNB`s anzuschließen.[CR]3. MOTORISIERTES DISEQC 1.2 : Sie können die Positionen ihrer Lieblingssatelliten einstellen wenn Sie eine motorisierte Antenne haben.[CR]4. USALS : Sie können die Rotoranlage zum effizienten suchen voreinstellen bei USALS.[CR]5. UNIVERSAL LNB : Wird benutzt, wenn nur ein LNB angeschlossen ist.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -202,7 +202,7 @@
 		<content name="1. AUTOMATISCHER SCAN : Für den normalen User und die einfachste Art Sender zu suchen.[CR]2. MANUELLER SCAN : Angemessener, wenn Sie wissen welchen Satelliten Sie absuchen wollen und die genauen Parameter kennen.[CR]3. FAST SCAN : You can search channels from service providers quickly.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>970</width>
 			<height>160</height>
 		</content>
@@ -219,7 +219,7 @@
 		<content name="Sie können in der Senderliste bequem Sender löschen, verschieben, auswählen, umbenennen oder festlegen.[CR][CR]1. Drücken Sie die i Taste,  um das Kontextmenü anzuzeigen und wählen Sie SENDER BEARBEITEN.[CR]2. Wählen Sie mit der OK Taste die Sender aus, die Sie löschen wollen.[CR]3. Drücken Sie die i Taste noch einmalund wählen Sie LÖSCHEN. Drücken Sie die OK Taste um die Sender wirklich zu löschen.[CR]4. Wählen Sie SICHERN UND BEENDEN im Kontextmenü.[CR]5. Wenn eine Bestätigungsnachricht erscheint, drücken Sie JA zum speichern.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>970</width>
 			<height>160</height>
 		</content>
@@ -236,7 +236,7 @@
 		<content name="Alle Sender in der Kanallistesind oft zu zahlreich zum navigieren. Sortieren Sie deshalb ihre Lieblingssender in einer Favoritengruppe.[CR][CR]1. Wählen Sie ERSTELLEN EINER NEUEN FAVORITENGRUPPE im Kontextmenü der Kanalliste und drücken Sie die OK Taste.[CR]2. Geben Sie einen Namen für die Favoritengruppe ein.[CR]3. FERTIG drücken zum bestätigen.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -253,7 +253,7 @@
 		<content name="1. Sender auswählen, die Sie der Favoritengruppe hinzufügen wollen.[CR]2. Wählen Sie ZUR FAVORITENGRUPPE HINZUFÜGEN im Kontextmenü und drücken Sie die OK Taste.[CR]3. Wählen Sie eine Grppe aus den verfügbaren Favoritengruppen aus und drücken Sie OK.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -270,7 +270,7 @@
 		<content name="1. Drücken Sie die LINKS Taste auf der Fernbedienung und wählen Sie FAVORITENGRUPPE.[CR]2. Wählen Sie die Gruppe aus der Sie Sender entfernen wollen.[CR]3. Wählen Sie mit der OK Taste die Sender aus die Sie entfernen wollen.[CR]4. Wählen Sie LÖSCHEN im Kontextmenü um alle Sender zu löschen die sie ausgewählt haben.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -287,7 +287,7 @@
 		<content name="1. Um das Kontextmenü der Senderliste anzuzeigen,drücken Sie die i Taste.[CR]2. Wählen Sie FAVORITENGRUPPE UMBENENNEN im Menü aus.[CR]3. Wählen Sie die Gruppe aus, die Sie umbenennen wollen und drücken Sie die OK.[CR]4. Geben Sie auf dem Keypad einen Namen ein.[CR]5. Drücken Sie FERTIG zur Bestätigung.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -304,13 +304,13 @@
 		<content name="1. Zeigt das Senderlisten Kontextmenü durch Tastendruck.[CR]2. Wähle LÖSCHEN FAVORITENGRUPPE im Menü.[CR]3. Wählen Sie die Favoritemgruppe, die Sie löschen wollen.[CR]4. Zum Bestätigen OK drücken.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="18" title="XBMC" location="(MEDIA oder DRÜCKE XBMC TASTE)">
+	<page number="18" title="XBMC" location="(XBMC oder DRÜCKE XBMC TASTE)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -321,13 +321,13 @@
 		<content name="XBMC ist eine Entertainment Drehscheibe für digitale Medien mit der man fast alle populärenr Audio und Video Formate von der Festplatte abspielen kann. XBMC erlaubt dem Anwender neue Add-ons nachzuinstallieren, wie z.B. YouTube, Flickr, sowie Skins aus Datenbanken.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="19" title="Add-ons installieren" location="(MEDIEN > ADD-ON MANAGER > ADD-ONS LADEN)">
+	<page number="19" title="Add-ons installieren" location="(XBMC > ADD-ON MANAGER > ADD-ONS LADEN)">
 		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -338,13 +338,13 @@
 		<content name="Add-ons sind Pakete die Features und Functionen hinzufügen, die nicht normalerweise schon in XBMC enthalten sind.[CR][CR]1. Runter scrollen zu der gewünschten Kategorie und OK drücken.[CR]2. Das Add-on auswählen, das Sie installieren wollen.[CR]3. Eine Inhaltsübersicht wird angezeigt, die es Ihnen erlaubt verschiedene Einstellungen des Add-ons durchzuführen.[CR]4. INSTALLation auswählen um automatisch mit dem Download und der Installation zu beginnen.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 
-	<page number="20" title="Aktualisieren von Add-ons" location="(MEDIA > ADD-ON MANAGER > DRÜCKE LINKS oder DRÜCKE RECHTS)">
+	<page number="20" title="Aktualisieren von Add-ons" location="(XBMC > ADD-ON MANAGER > DRÜCKE LINKS oder DRÜCKE RECHTS)">
 		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -355,13 +355,13 @@
 		<content name="Alle installierten Add-ons werden automatisch aktualisiert, wenn neue Versionen verfügbar sind aus den Repositories.[CR]Wenn die automatische Aktualisierung deaktiviert ist sollten, sehen Sie im Add-on-Manager einen Ordner mit Verfügbaren Updates. Diese Add-ons können Sie dann einzeln aktualisieren.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
 	</page>
 	
-	<page number="21" title="Add-ons ausführen" location="(MEDIEN > BILDER, MUSIK, VIDEO oder PROGRAMME)">
+	<page number="21" title="Add-ons ausführen" location="(XBMC > BILDER, MUSIK, VIDEO oder PROGRAMME)">
 		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -372,7 +372,7 @@
 		<content name="Wenn das Add-on herunter geladen wurde, schaltet XBMC es ein oder das Add-on fragt ob es starten soll. Add-ons erscheinen dann in ihrem zuständigen Bereich. (z.B. Flickr in der Bilder, YouTube in dem Video Bereich von Medien, usw.)">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
-			<posy>565</posy>
+			<posy>562</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>
@@ -382,7 +382,7 @@
 		<content name="Um mehr über die Prismcube zu erfahren,[CR]besuchen Sie bitte unsere Website [B]www.prismcube.com[/B]">
 			<type>textbox_bigfont</type>
 			<posx>170</posx>
-			<posy>320</posy>
+			<posy>325</posy>
 			<width>940</width>
 			<height>160</height>
 		</content>

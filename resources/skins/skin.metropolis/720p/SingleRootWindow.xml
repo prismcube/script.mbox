@@ -837,7 +837,52 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- Color Keys : Deprecated -->
+				<!-- Prev & Next Group -->
+				<control type="group">
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
+					<control type="group">
+						<posx>155</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>35</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>OSDRewindNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>70</posx>
+							<posy>4</posy>
+							<width>160</width>
+							<height>20</height>
+							<font>METF_HelpText</font>
+							<textcolor>WeatherHeading</textcolor>
+							<label>$ADDON[script.mbox 1202]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>155</posx>
+						<posy>40</posy>
+						<control type="image">
+							<posx>35</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>OSDForwardNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>70</posx>
+							<posy>4</posy>
+							<width>160</width>
+							<height>20</height>
+							<font>METF_HelpText</font>
+							<textcolor>WeatherHeading</textcolor>
+							<label>$ADDON[script.mbox 1203]</label>
+						</control>
+					</control>
+				</control>
+
+				<!-- Color Keys : Reserved -->
 				<control type="group">
 					<posx>190</posx>
 					<posy>4</posy>
@@ -929,49 +974,6 @@ Search for window name
 							<font>METF_HelpText</font>
 							<align>left</align>
 							<label>$ADDON[script.mbox 1206]</label>
-						</control>
-					</control>
-				</control>
-				<control type="group">
-					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
-					<control type="group">
-						<posx>155</posx>
-						<posy>0</posy>
-						<control type="image">
-							<posx>35</posx>
-							<posy>0</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>OSDRewindNF.png</texture>
-						</control>
-						<control type="label">
-							<posx>70</posx>
-							<posy>4</posy>
-							<width>160</width>
-							<height>20</height>
-							<font>METF_HelpText</font>
-							<textcolor>WeatherHeading</textcolor>
-							<label>$ADDON[script.mbox 1202]</label>
-						</control>
-					</control>
-					<control type="group">
-						<posx>155</posx>
-						<posy>40</posy>
-						<control type="image">
-							<posx>35</posx>
-							<posy>0</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>OSDForwardNF.png</texture>
-						</control>
-						<control type="label">
-							<posx>70</posx>
-							<posy>4</posy>
-							<width>160</width>
-							<height>20</height>
-							<font>METF_HelpText</font>
-							<textcolor>WeatherHeading</textcolor>
-							<label>$ADDON[script.mbox 1203]</label>
 						</control>
 					</control>
 				</control>
