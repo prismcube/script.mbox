@@ -47,8 +47,9 @@ class Installation( BaseWindow ) :
 		self.mLeftGroupItems.append( MR_LANG( 'First Installation' ) )
 		self.mDescriptionList.append( MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ) )
 
-		self.mLeftGroupItems.append( MR_LANG( 'Antenna Setup' ) )
-		self.mDescriptionList.append( MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ) )
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+			self.mLeftGroupItems.append( MR_LANG( 'Antenna Setup' ) )
+			self.mDescriptionList.append( MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ) )
 
 		self.mLeftGroupItems.append( MR_LANG( 'Channel Search' ) )
 		self.mDescriptionList.append( MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ) )
@@ -86,17 +87,16 @@ class Installation( BaseWindow ) :
 	def onClick( self, aControlId ) :
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		if self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_SINGLE and self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_DUAL :
-			if selectedId > MENU_ID_CHANNEL_SEARCH :
-				selectedId = selectedId + 2
+			if selectedId == MENU_ID_ANTENNA_SETUP :
+				selectedId = selectedId + 1
+			elif selectedId > MENU_ID_ANTENNA_SETUP :
+				selectedId = selectedId + 3
 
 		if selectedId == MENU_ID_FIRSTINSTALLATION :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP :
-			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-			elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
 			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :

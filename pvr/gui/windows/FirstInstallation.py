@@ -53,6 +53,8 @@ class FirstInstallation( FTIWindow ) :
 		self.mDVBT_Manual = ElisIDVBTCarrier( )
 		self.mDVBT_Auto = []
 		self.mTerrestria = 'None'
+		self.mEnable5v		= 0
+		self.mTunerType		= E_TUNER_T
 		self.SetTerrestriaInfo( 0 )
 
 		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
@@ -447,22 +449,37 @@ class FirstInstallation( FTIWindow ) :
 		elif aStep == E_STEP_CHANNEL_SEARCH_CONFIG_DVBT :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
-			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ) ], self.mIsManualSetup, MR_LANG( 'Select channel search mode' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mTerrestria, MR_LANG( 'Select Terrerstria' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT_Manual.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
-			self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )
-			self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mDVBT_Manual.mIsDVBT2, MR_LANG( 'Select tuner type' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
-			networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
-			self.AddEnumControl( E_SpinEx04, 'Network Search', None, networkSearchDescription )
-			self.AddEnumControl( E_SpinEx05, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the channel search setup page' ) )
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
-			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input05 ]
-			self.SetVisibleControls( hideControlIds, False )
+
+			if self.mTunerType == E_TUNER_T or self.mTunerType == E_TUNER_T2 :
+				self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mTunerType, MR_LANG( 'Select tuner type' ) )
+				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ) ], self.mIsManualSetup, MR_LANG( 'Select channel search mode' ) )
+				self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mTerrestria, MR_LANG( 'Select Terrerstria' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT_Manual.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
+				self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )				
+				self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
+				self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Enable 5V for active antenna' ), USER_ENUM_LIST_ON_OFF, self.mEnable5v, MR_LANG( 'Select enable 5v for active antenna' ) )		
+				networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+				self.AddEnumControl( E_SpinEx05, 'Network Search', None, networkSearchDescription )
+				self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
+				self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the channel search setup page' ) )
+
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input04 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+				hideControlIds = [ E_SpinEx07, E_Input03, E_Input05 ]
+				self.SetVisibleControls( hideControlIds, False )
+
+			elif self.mTunerType == E_TUNER_C :
+				self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mTunerType, MR_LANG( 'Select tuner type' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Not support' ), '', MR_LANG( 'Not support' ) )
+				self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the channel search setup page' ) )
+
+				visibleControlIds = [ E_SpinEx03, E_Input01 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				self.SetVisibleControls( hideControlIds, False )
+
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
@@ -622,14 +639,8 @@ class FirstInstallation( FTIWindow ) :
 				self.SetEnableControl( E_SpinEx01, True )
 
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG_DVBT :
-			if aControlID == None or aControlID == E_SpinEx03 :
-				if self.mDVBT_Manual.mIsDVBT2 == E_TUNER_T2 :
-					self.SetEnableControl( E_Input02, True )
-				else :
-					self.SetEnableControl( E_Input02, False )
-
-			if aControlID == None or aControlID == E_SpinEx01 :
-				disablecontrols = [ E_Input01, E_Input02, E_SpinEx02, E_SpinEx03 ]
+			if aControlID == None or aControlID == E_SpinEx01 or aControlID == E_SpinEx03 :
+				disablecontrols = [ E_Input01, E_Input02, E_SpinEx02 ]
 				if self.mIsManualSetup == 0 :
 					self.SetEnableControls( disablecontrols, False )
 					self.SetEnableControl( E_Input04, True )
@@ -639,6 +650,10 @@ class FirstInstallation( FTIWindow ) :
 					ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 					self.SetEnableControls( disablecontrols, True )
 					self.SetEnableControl( E_Input04, False )
+					if self.mTunerType == E_TUNER_T2 :
+						self.SetEnableControl( E_Input02, True )
+					else :
+						self.SetEnableControl( E_Input02, False )
 
 		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			if self.mHasChannel == False :
@@ -1100,6 +1115,29 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def ChannelSearchConfigDVBT( self, aControlId ) :
+		# Tuner type
+		if aControlId == E_SpinEx03 :
+			if ( self.mTunerType == E_TUNER_T or self.mTunerType == E_TUNER_T2 ) and self.GetSelectedIndex( E_SpinEx03 ) == E_TUNER_C :
+				isChanged = True
+			elif ( self.GetSelectedIndex( E_SpinEx03 ) == E_TUNER_T or self.GetSelectedIndex( E_SpinEx03 ) == E_TUNER_T2 ) and self.mTunerType == E_TUNER_C :
+				isChanged = True
+			else :
+				isChanged = False
+
+			self.mTunerType = self.GetSelectedIndex( E_SpinEx03 )
+			if isChanged :
+				self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG_DVBT )
+			else :
+				self.DisableControl( )
+			return
+
+		if self.mTunerType == E_TUNER_T or self.mTunerType == E_TUNER_T2 :
+			self.OperationDVBT( aControlId )
+		elif self.mTunerType == E_TUNER_C :
+			self.OperationDVBC( aControlId )
+
+
+	def OperationDVBT( self, aControlId ) :
 		# Manual Setup
 		if aControlId == E_SpinEx01 :
 			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx01 )
@@ -1162,60 +1200,61 @@ class FirstInstallation( FTIWindow ) :
 		elif aControlId == E_SpinEx02 :
 			self.mDVBT_Manual.mBand = self.GetSelectedIndex( E_SpinEx02 )
 
-		# Tuner type
-		elif aControlId == E_SpinEx03 :
-			self.mDVBT_Manual.mIsDVBT2 = self.GetSelectedIndex( E_SpinEx03 )
-			self.DisableControl( E_SpinEx03 )
+		elif aControlId == E_SpinEx04 :
+			self.mEnable5v = self.GetSelectedIndex( E_SpinEx04 )
 
-		elif aControlId == E_SpinEx04 or aControlId == E_SpinEx05 :
+		elif aControlId == E_SpinEx05 or aControlId == E_SpinEx06 :
 			self.ControlSelect( )
 			return
 
 		# Start Search
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
-			if self.mDVBT_Manual.mIsDVBT2 == E_TUNER_C :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support' ) )
+			self.OpenBusyDialog( )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
+
+			if self.mIsManualSetup == 1 :
+				carrierList = []
+				carrierList.append( self.GetElisICarrier( ) )
+
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.SetCarrier( carrierList )
 				dialog.doModal( )
+				self.SetListControl( E_STEP_DATE_TIME )
 				return
+				#self.setProperty( 'ViewProgress', 'True' )
 
-			else :
-				self.OpenBusyDialog( )
-				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
-
-				if self.mIsManualSetup == 1 :
-					carrierList = []
-					carrierList.append( self.GetElisICarrier( ) )
-
-					self.CloseBusyDialog( )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-					dialog.SetCarrier( carrierList )
+			elif self.mIsManualSetup == 0 :
+				if self.mTerrestria == 'None' or len( self.mDVBT_Auto ) == 0 :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestria first' ) )
 					dialog.doModal( )
-					self.SetListControl( E_STEP_DATE_TIME )
-					return
-					#self.setProperty( 'ViewProgress', 'True' )
-
-				elif self.mIsManualSetup == 0 :
-					if self.mTerrestria == 'None' or len( self.mDVBT_Auto ) == 0 :
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestria first' ) )
-						dialog.doModal( )
-						self.CloseBusyDialog( )
-						return
-
 					self.CloseBusyDialog( )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-					dialog.SetCarrier( self.mDVBT_Auto )
-					dialog.doModal( )
-					self.SetListControl( E_STEP_DATE_TIME )
 					return
+
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.SetCarrier( self.mDVBT_Auto )
+				dialog.doModal( )
+				self.SetListControl( E_STEP_DATE_TIME )
+				return
 
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 
 
+	def OperationDVBC( self, aControlId ) :
+		# Start Search
+		if aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support' ) )
+			dialog.doModal( )
+			self.SetListControl( E_STEP_DATE_TIME )
+			return
+
+
 	def GetElisICarrier( self ) :
 		ICarrier = ElisICarrier( )
-		if self.mDVBT_Manual.mIsDVBT2 == E_TUNER_T or self.mDVBT_Manual.mIsDVBT2 == E_TUNER_T2 :
+		if self.mTunerType == E_TUNER_T or self.mTunerType == E_TUNER_T2 :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBT
 		else :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBC
