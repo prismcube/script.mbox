@@ -27,6 +27,8 @@ Search for window name
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
 	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
+	<onload>SetProperty(SettingsLargeListPos,70)</onload>
+	<onunload>SetProperty(SettingsLargeListPos,)</onunload>
 	<controls>
 
 		<!-- Default Background Image -->
@@ -2450,22 +2452,22 @@ Search for window name
 
 				<!-- Recording Info -->
 				<control type="group">
-					<posx>768</posx>
-					<posy>620</posy>
+					<posx>775</posx>
+					<posy>623</posy>
 					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
 					<control type="group">
 						<control type="image" id="1400010">
-							<posx>0</posx>
-							<posy>-15</posy>
-							<width>50</width>
-							<height>22</height>
-							<texture>i_record.png</texture>
+							<posx>2</posx>
+							<posy>-14</posy>
+							<width>20</width>
+							<height>20</height>
+							<texture>new/PVR-IsRecording.png</texture>
 							<visible>substring(Window.Property(ViewRecord1),true)</visible>
 						</control>
 						<control type="label" id="1400011">
-							<posx>55</posx>
+							<posx>25</posx>
 							<posy>-16</posy>
-							<width>260</width>
+							<width>280</width>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
@@ -2473,17 +2475,17 @@ Search for window name
 					</control>
 					<control type="group">
 						<control type="image" id="1400015">
-							<posx>0</posx>
-							<posy>13</posy>
-							<width>50</width>
-							<height>22</height>
-							<texture>i_record.png</texture>
+							<posx>2</posx>
+							<posy>14</posy>
+							<width>20</width>
+							<height>20</height>
+							<texture>new/PVR-IsRecording.png</texture>
 							<visible>substring(Window.Property(ViewRecord2),true)</visible>
 						</control>
 						<control type="label" id="1400016">
-							<posx>55</posx>
+							<posx>25</posx>
 							<posy>13</posy>
-							<width>260</width>
+							<width>280</width>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
@@ -2511,8 +2513,8 @@ Search for window name
 						<description>Channel Logo Background</description>
 						<posx>-20</posx>
 						<posy>-45</posy>
-						<width>87</width>
-						<height>49</height>
+						<width>100</width>
+						<height>60</height>
 						<texture>Logo_Background.png</texture>
 						<colordiffuse>FFEFEFEF</colordiffuse>
 						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
@@ -2521,33 +2523,33 @@ Search for window name
 						<description>Channel Logo Icon</description>
 						<posx>-20</posx>
 						<posy>-45</posy>
-						<width>87</width>
-						<height>49</height>
+						<width>100</width>
+						<height>60</height>
 						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 						<colordiffuse>FFEFEFEF</colordiffuse>
 					</control>
 					<control type="label" id="1400601">
 						<description>Channel Number</description>
-						<posx>75</posx>
-						<posy>-47</posy>
-						<width>300</width>
+						<posx>82</posx>
+						<posy>-52</posy>
+						<width>200</width>
 						<height>50</height>
 						<align>left</align>
-						<font>METF_MusicVizTitle</font>
+						<font>METF_WeatherHigh</font>
 						<textcolor>Temp</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="label" id="1400602">
 						<description>Channel Name</description>
-						<posx>-20</posx>
-						<posy>4</posy>
-						<width>340</width>
+						<posx>-19</posx>
+						<posy>16</posy>
+						<width>343</width>
 						<height>50</height>
 						<scroll>true</scroll>
 						<align>left</align>
-						<font>METF_Date</font>
+						<font>METF_MusicVizTitle</font>
 						<textcolor>Date</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -2573,25 +2575,29 @@ Search for window name
 							<width>70</width>
 							<height>30</height>
 							<texture>icon_radio2.png</texture>
-							<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
+							<!--visible>substring(Window.Property(ServiceTypeRadio),true)</visible-->
+							<visible>false</visible>
 						</control>
 					</control>
 
 					<!-- Button Icons -->
-					<include>DefaultInfoPlateGroup</include>
+					<control type="group">
+						<posx>-95</posx>
+						<include>DefaultInfoPlateGroup</include>
+					</control>
 
 					<!-- CAS Icons -->
 					<control type="group">
-						<posx>385</posx>
-						<posy>25</posy>
+						<posx>-77</posx>
+						<posy>88</posy>
 						<include>CASInfo</include>
 					</control>
 
 					<!-- Color Keys -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
-							<posx>460</posx>
-							<posy>-2</posy>
+							<posx>747</posx>
+							<posy>-37</posy>
 							<width>300</width>
 							<height>40</height>
 							<itemgap>2</itemgap>
@@ -2697,7 +2703,7 @@ Search for window name
 
 					<!-- AV Info -->
 					<control type="group">
-						<posx>437</posx>
+						<posx>342</posx>
 						<posy>62</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2885,12 +2891,12 @@ Search for window name
 
 				<!-- EPG Info -->
 				<control type="group" id="1400700">
-					<posx>70</posx>
-					<posy>625</posy>
+					<posx>440</posx>
+					<posy>595</posy>
 					<control type="label" id="1400701">
 						<description>Longitude info</description>
-						<posx>-40</posx>
-						<posy>63</posy>
+						<posx>-410</posx>
+						<posy>79</posy>
 						<width>270</width>
 						<height>15</height>
 						<font>METF_PlotTextMedium</font>
@@ -2916,8 +2922,8 @@ Search for window name
 					<control type="label" id="1400703">
 						<description>EPG Name</description>
 						<posx>-40</posx>
-						<posy>15</posy>
-						<width>340</width>
+						<posy>10</posy>
+						<width>360</width>
 						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
@@ -2934,7 +2940,7 @@ Search for window name
 						<description>progress control</description>
 						<posx>36</posx>
 						<posy>48</posy>
-						<width>190</width>
+						<width>210</width>
 						<height>12</height>
 						<overlaytexture></overlaytexture>
 						<texturebg>osd/osd_progress_back2.png</texturebg>
@@ -2945,13 +2951,13 @@ Search for window name
 					</control>
 					<control type="label" id="1400705">
 						<description>EPG End Time</description>
-						<posx>233</posx>
+						<posx>253</posx>
 						<posy>41</posy>
 						<font>METF_PlotTextSmall</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="button" id="1400706">
-						<posx>278</posx>
+						<posx>298</posx>
 						<posy>45</posy>
 						<align>right</align>
 						<width>25</width>
@@ -3121,16 +3127,16 @@ Search for window name
 						<posy>50</posy>
 						<control type="image" id="2900010">
 							<posx>55</posx>
-							<posy>7</posy>
-							<width>55</width>
-							<height>22</height>
-							<texture>i_record.png</texture>
+							<posy>10</posy>
+							<width>20</width>
+							<height>20</height>
+							<texture>new/PVR-IsRecording.png</texture>
 							<visible>substring(Window.Property(ViewRecord1),true)</visible>
 						</control>
 						<control type="label" id="2900011">
-							<posx>116</posx>
+							<posx>77</posx>
 							<posy>7</posy>
-							<width>260</width>
+							<width>275</width>
 							<height>25</height>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
@@ -3142,16 +3148,16 @@ Search for window name
 						<posy>75</posy>
 						<control type="image" id="2900015">
 							<posx>55</posx>
-							<posy>7</posy>
-							<width>55</width>
-							<height>22</height>
-							<texture>i_record.png</texture>
+							<posy>10</posy>
+							<width>20</width>
+							<height>20</height>
+							<texture>new/PVR-IsRecording.png</texture>
 							<visible>substring(Window.Property(ViewRecord2),true)</visible>
 						</control>
 						<control type="label" id="2900016">
-							<posx>116</posx>
+							<posx>77</posx>
 							<posy>7</posy>
-							<width>260</width>
+							<width>275</width>
 							<height>25</height>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
@@ -3780,9 +3786,9 @@ Search for window name
 				<!-- Menu List -->
 				<control type="list" id="1509000">
 					<posx>3</posx>
-					<posy>130</posy>
+					<posy>80</posy>
 					<width>500</width>
-					<height>351</height>
+					<height>401</height>
 					<onup>1509000</onup>
 					<ondown>1509000</ondown>
 					<itemlayout height="50" width="270">
@@ -3841,7 +3847,7 @@ Search for window name
 					<control type="label" id="1501003">
 						<posx>40</posx>
 						<posy>-3</posy>
-						<width>655</width>
+						<width>675</width>
 						<height>30</height>
 						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
@@ -3853,7 +3859,7 @@ Search for window name
 					</control>
 					<control type="group">
 						<posx>-20</posx>
-						<posy>310r</posy>
+						<posy>325r</posy>
 						<control type="group" id="1501300">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -5237,8 +5243,8 @@ Search for window name
 			</control>
 
 			<control type="group">
-				<posx>470</posx>
-				<posy>40r</posy>
+				<posx>43</posx>
+				<posy>600</posy>
 				<width>440</width>
 				<height>32</height>
 				<visible>substring(Window.Property(EPGFootor),True) + substring(Window.Property(EPGMode),grid)</visible>
@@ -5260,8 +5266,8 @@ Search for window name
 				</control>
 			</control>
 			<control type="group">
-				<posx>760</posx>
-				<posy>40r</posy>
+				<posx>28</posx>
+				<posy>655</posy>
 				<width>440</width>
 				<height>32</height>
 				<visible>substring(Window.Property(EPGFootor),True) + substring(Window.Property(EPGMode),grid)</visible>
@@ -5579,14 +5585,14 @@ Search for window name
 			<!-- Item Position and Page Number for grid mode -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>65</posx>
+				<posx>26r</posx>
 				<posy>160r</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>METF_HeadingDetails</font>
 				<textcolor>FFc89008</textcolor>
 				<scroll>false</scroll>
-				<align>left</align>
+				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
 				<!--label>([COLOR=blue]$INFO[Window.Property(GridSelectedPosition)] / $INFO[Window.Property(GridNumItems)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Window.Property(GridCurrentPage)]/$INFO[Window.Property(GridNumPages)][/COLOR])</label-->
