@@ -534,8 +534,6 @@ E_V1_9_APPLY_WEEKLY_VIEW_TIMER = False
 #JET configuration
 E_FRONT_DISPLAY_ENABLE = True
 
-LOG_TRACE( '------------isPrismCube[%s]'% pvr.Platform.GetPlatform( ).IsPrismCube( ) )
-
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 		E_FRONT_DISPLAY_ENABLE = False
