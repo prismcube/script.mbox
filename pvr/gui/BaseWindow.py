@@ -188,6 +188,7 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mIsActivate = False
 		self.mRelayAction = None
 		self.setProperty( 'IsCustomWindow', 'True' )
+		self.mLargeListPos = 120
 
 
 	@classmethod
@@ -672,7 +673,14 @@ class BaseWindow( BaseObjectWindow ) :
 			scrambleLabel.setPosition( 930, 250 )
 			noServiceLabel.setPosition( 930, 250 )
 
-			settingControlGroup.setPosition( 80, 120 )
+			largeListPos = self.mLargeListPos
+			largePos = self.getProperty( 'SettingsLargeListPos' )
+
+			if largePos :
+				largeListPos = int( largePos )
+			LOG_TRACE( 'largePos=%d' %largeListPos )
+
+			settingControlGroup.setPosition( 80, largeListPos )
 
 		elif aWindowId == WinMgr.WIN_ID_DVBT_TUNER_SETUP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 			self.setProperty( 'SettingBackground', 'True' )
