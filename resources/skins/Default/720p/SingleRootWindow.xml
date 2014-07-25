@@ -951,101 +951,7 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- Color Keys : Deprecated -->
-				<control type="group">
-					<posx>420</posx>
-					<posy>5</posy>
-					<!--visible>substring(Window.Property(ZappingModeInfo),true)</visible-->
-					<visible>false</visible>
-					<control type="group">
-						<posx>0</posx>
-						<posy>0</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>12</width>
-							<height>12</height>
-							<colordiffuse>FFFF0000</colordiffuse>
-							<texture>Logo_Background.png</texture>
-						</control>
-						<control type="label">
-							<posx>15</posx>
-							<posy>0</posy>
-							<width>100</width>
-							<height>15</height>
-							<textcolor>grey2</textcolor>
-							<font>font10</font>
-							<align>left</align>
-							<label>$ADDON[script.mbox 1204]</label>
-						</control>
-					</control>
-					<control type="group">
-						<posx>120</posx>
-						<posy>0</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>12</width>
-							<height>12</height>
-							<colordiffuse>FF00FF00</colordiffuse>
-							<texture>Logo_Background.png</texture>
-						</control>
-						<control type="label">
-							<posx>15</posx>
-							<posy>0</posy>
-							<width>100</width>
-							<height>15</height>
-							<textcolor>grey2</textcolor>
-							<font>font10</font>
-							<align>left</align>
-							<label>$ADDON[script.mbox 1003]</label>
-						</control>
-					</control>
-					<control type="group">
-						<posx>240</posx>
-						<posy>0</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>12</width>
-							<height>12</height>
-							<colordiffuse>FFFFFF00</colordiffuse>
-							<texture>Logo_Background.png</texture>
-						</control>
-						<control type="label">
-							<posx>15</posx>
-							<posy>0</posy>
-							<width>100</width>
-							<height>15</height>
-							<textcolor>grey2</textcolor>
-							<font>font10</font>
-							<align>left</align>
-							<label>$ADDON[script.mbox 1205]</label>
-						</control>
-					</control>
-					<control type="group">
-						<posx>360</posx>
-						<posy>0</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>12</width>
-							<height>12</height>
-							<colordiffuse>FF0050FF</colordiffuse>
-							<texture>Logo_Background.png</texture>
-						</control>
-						<control type="label">
-							<posx>15</posx>
-							<posy>0</posy>
-							<width>100</width>
-							<height>15</height>
-							<textcolor>grey2</textcolor>
-							<font>font10</font>
-							<align>left</align>
-							<label>$ADDON[script.mbox 1206]</label>
-						</control>
-					</control>
-				</control>
+				<!-- Prev & Next Group -->
 				<control type="group">
 					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 					<control type="group">
@@ -1086,6 +992,98 @@ Search for window name
 							<height>20</height>
 							<font>font10</font>
 							<label>$ADDON[script.mbox 1203]</label>
+						</control>
+					</control>
+				</control>
+
+				<!-- Color Keys : Reserved -->
+				<control type="group">
+					<posx>420</posx>
+					<posy>5</posy>
+					<!--visible>substring(Window.Property(ZappingModeInfo),true)</visible-->
+					<visible>false</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFF0000</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1204]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>120</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF00FF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1003]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>240</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFFFF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1205]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>360</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF0050FF</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1206]</label>
 						</control>
 					</control>
 				</control>
