@@ -1995,3 +1995,32 @@ def CalculateProgress( aCurrentTime, aEpgStart, aDuration  ) :
 	return percent
 
 
+def GetXBMCResolutionWeightBySkin( ) :
+	defHeight = 720
+
+	try :
+		xmlFile = os.path.join( xbmcaddon.Addon( xbmc.getSkinDir() ).getAddonInfo( 'path'), 'addon.xml' )
+		parseTree = ElementTree.parse( xmlFile )
+		treeRoot = parseTree.getroot( )
+		getHeight = ''
+		for node in treeRoot.findall( 'extension' ) :
+			#LOG_TRACE( 'id[%s] text[%s]'% ( node.get( 'point' ), node.text ) )
+			if getHeight : break
+			for ele in node :
+				#LOG_TRACE( 'id[%s] tag[%s]'% ( ele.get( 'height' ), ele.tag ) )
+				if ele.tag.lower() == 'res' :
+					getHeight = ele.get( 'height' )
+					break
+
+		if getHeight :
+			defHeight = int( getHeight )
+
+	except Exception, e :
+		defHeight = 720
+		LOG_ERR( 'except[%s]'% e )
+
+	resWeight = int( defHeight ) / 720.0
+
+	return resWeight
+
+
