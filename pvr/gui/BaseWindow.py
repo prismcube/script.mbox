@@ -951,13 +951,11 @@ class BaseWindow( BaseObjectWindow ) :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 				self.setProperty( 'SettingPIG', 'False' )
-				print 'daniel ------------- SettingPIG False'
 
 			else :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 				self.setProperty( 'SettingPIG', 'True' )
-				print 'daniel ------------- SettingPIG True'
 
 				overlayImage.setPosition( 362, 112 )
 				overlayImage.setWidth( 798 )
