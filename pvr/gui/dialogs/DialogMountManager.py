@@ -545,7 +545,12 @@ class DialogMountManager( SettingDialog ) :
 		self.mDefaultPathVolume = None
 		defaultPath = E_DEFAULT_PATH_INTERNAL_HDD
 		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
-		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+
+		self.mMode = E_NETWORK_VOLUME_SELECT
+		if not self.mNetVolumeList or len( self.mNetVolumeList ) < 1 :
+			self.mMode = E_NETWORK_VOLUME_ADD
+
+		else :
 			for netVolume in self.mNetVolumeList :
 				selectIdx += 1
 				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
@@ -573,8 +578,6 @@ class DialogMountManager( SettingDialog ) :
 				self.mDefaultPathVolume.mIsDefaultSet = 1
 				self.mDataCache.Record_SetDefaultVolume( self.mDefaultPathVolume )
 				ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( E_DEFAULT_PATH_NETWORK_VOLUME )
-
-		self.mMode = E_NETWORK_VOLUME_SELECT
 
 		#ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
 

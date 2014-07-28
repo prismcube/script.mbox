@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<help>
+	<page number="1" title="Przód" location="( )">
+		<content name="front_ruby.png">
+			<type>image</type>
+			<posx>240</posx>
+			<posy>225</posy>
+			<width>785</width>
+			<height>243</height>
+		</content>
+		<content name="1. WYŁĄCZNIK CZUWANIA LED : Przełącza pomiędzy trybami pracy i czuwania.[CR][CR]2. WYŚWIETLACZ : Wyświetla nazwę kanału w trybie pracy i aktualny czas w trybie czuwania.[CR][CR]3. CZYTNIK SMARTCARD : Aby oglądać kanały kodowane, otwórz pokrywę i włóż kartę do przedniego gniazda chipem do dołu.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>950</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="2" title="Tył" location="( )">
+		<content name="rear_ruby.png">
+			<type>image</type>
+			<posx>240</posx>
+			<posy>270</posy>
+			<width>780</width>
+			<height>177</height>
+		</content>
+		<content name="1. LNB 1 IN, LNB 2 IN : Podłącz kable od anteny satelitarnej.[CR]2. VIDEO, AUDIO : Podłącz do telewizora lub magnetowidu za pomocą kabli RCA.[CR]3. S/PDIF : Podłącz do urządzenia z dźwiękiem S/PDIF.[CR]4. RS-232C : Podłącz do PC.">
+			<type>textbox_smallfont</type>
+			<posx>80</posx>
+			<posy>562</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="5. HDMI : Podłącz do telewizora za pomocą kabla HDMI.[CR]6. ETHERNET : Podłącz do sieci lokalnej.[CR]7. USB : Podłącz urządzenie z pamięcią USB.[CR]8. ZASILANIE : Podłącz przewód od zasilacza sieciowego.">
+			<type>textbox_smallfont</type>
+			<posx>680</posx>
+			<posy>562</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="3" title="Pilot" location="( )">
+		<content name="remote1.png">
+			<type>image</type>
+			<posx>479</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="1. TV : Włącza, lub wyłącza telewizor.[CR]2. POWER : Przełącza pomiędzy trybami pracy i czuwania.[CR]3. KOLOROWE PRZYCISKI : Dostęp do specjalnych funkcji odbiornika.[CR]4. SOURCE : Kontroluje wejścia telewizora.[CR]5. XBMC : Wyświetla XBMC Media Center.[CR]6. TV/RADIO : Przełącza pomiędzy trybami TV i Radio.">
+			<type>textbox_smallfont</type>
+			<posx>80</posx>
+			<posy>562</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="7. NAGRYWANIE : Zapisuje program na żywo.[CR]8. STOP : Wstrzymuje nagrywanie i przechodzi do programu.[CR]9. ODTWARZANIE/PAUZA : Wstrzymuje odtwarzanie programu na żywo, lub nagranego pliku.[CR]10. PRZEWIJANIE W TYŁ : Przewija do tyłu z dużą prędkością.[CR]11. PRZEWIJANIE W PRZÓD : Przewija do przodu z dużą prędkością.[CR]12. ARCHIVE : Wyświetla okno nagranych programów.">
+			<type>textbox_smallfont</type>
+			<posx>680</posx>
+			<posy>562</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="4" title="Pilot" location="( )">
+		<content name="remote2.png">
+			<type>image</type>
+			<posx>478</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="13. EPG : Wyświetla okno EPG.[CR]14. STRZAŁKI : Umożliwiają poruszanie się po opcjach menu.[CR]15. OK : Zatwierdza pozycję/wyświetla listę kanałów.[CR]16. DO TYŁU : Przesuwa o jeden krok wstecz/powraca do ostatniego kanału.[CR]17. MENU : Wyświetla menu główne.[CR]18. VOL + / VOL - : Regulacja głośności.">
+			<type>textbox_smallfont</type>
+			<posx>80</posx>
+			<posy>562</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="19. i (Informacje) : Wyświetla informacje o kanale, lub menu edycji.[CR]20. P + / P - : Zmienia kanały.[CR]21. MUTE : Włącza lub wyłącza dźwięk.[CR]22. TELETEKST : Wyświetla informacje teletekstu bieżącego kanału.[CR]23. NAPISY : Wyświetla opcje napisów.[CR]24. NUMERACJA : Pozwala wybrać kanał za pomocą klawiszy numerycznych.">
+			<type>textbox_smallfont</type>
+			<posx>680</posx>
+			<posy>562</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="5" title="Pilot - Klawiatura QWERTY" location="( )">
+		<content name="remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>240</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="Pilot PRISMCUBE Ruby posiada na odwrocie pełną klawiaturę QWERTY do wprowadzania tekstu.[CR][CR]1. Trzymaj pilota poziomo jak na zdjęciu powyżej.[CR]2. Włącz klawiaturę QWERTY, naciskając klawisz Num Lock.[CR]3. Wpisz tekst szybko i sprawnie za pomocą rozmieszczonych znaków.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="6" title="Instalacja STB - Podłączenie anteny" location="( )">
+		<content name="connecting_STB.png">
+			<type>image</type>
+			<posx>245</posx>
+			<posy>275</posy>
+			<width>770</width>
+			<height>160</height>
+		</content>
+		<content name="Aby jak najlepiej korzystać z wszystkich funkcji PRISMCUBE RUBY, koniecznie zaleca się podłączenie dwóch kabli z tej samej anteny satelitarnej. Pozwoli to na oglądanie i nagrywanie dwóch różnych kanałów jednocześnie. Przy podłączeniu jednym kablem i zastosowaniu pętli, oglądanie drugiego kanału podczas nagrywania programu na żywo może być ograniczone.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="7" title="Baner informacyjny" location="( )">
+		<content name="info_plate_ruby.png">
+			<type>image</type>
+			<posx>225</posx>
+			<posy>300</posy>
+			<width>800</width>
+			<height>107</height>
+		</content>
+		<content name="Informacja o kanale jest automatycznie wyświetlana na banerze informacyjnym przy zmianie kanałów.[CR][CR]1. AKTUALNY NUMER I NAZWA KANAŁU : Wyświetla aktualny numer kanału TV/Radio, oraz nazwę.[CR]2. EPG : Naciśnij przycisk DÓŁ, a następnie przycisk LEWY/PRAWY, aby wyświetlić poprzednie/następne EPG.[CR]3. PASEK POSTĘPU : Wyświetla czas rozpoczęcia i zakończenia programu, oraz aktualny stan postępu.[CR]4. PRZYCISKI FUNKCYJNE : Rozszerzona informacja, teletekst, napisy, start/stop nagrywania, ściszenie i ustawienia A/V.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="8" title="PIP" location="(WCIŚNIJ NIEBIESKI PRZYCISK)">
+		<content name="pip.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (obraz w obrazie) jest funkcją, która pozwala na oglądanie dwóch programów jednocześnie.[CR]Kilka porad, o których należy pamiętać podczas korzystania z PIP.[CR][CR]- Włącz funkcję PIP, wciskając przycisk niebieski na pilocie; powinno pojawić się małe okno w rogu ekranu.[CR]- Zmień kanał w oknie PIP, naciskając przyciski numeryczne na pilocie, po wcześniejszym włączeniu Num Lock.[CR]- Dostęp do PIP można również uzyskać podczas oglądania wideo w XBMC.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="9" title="Pierwsza instalacja" location="(INSTALACJA > PIERWSZA INSTALACJA)">
+		<content name="language_setup.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="Przy pierwszym włączeniu odbiornika po zakupie, uruchomi się automatyczna instalacja.[CR][CR]- USTAWIENIA JĘZYKA : Możesz wybrać język, w którym będzie wyświetlane menu.[CR]- USTAWIENIA OBRAZU I DŹWIĘKU : Możesz tutaj skonfigurować ustawienia wyjść audio i wideo.[CR]- USTAWIENIA ANTENY I SATELITÓW : Możesz tutaj wybrać anteny i LNB do skanowania.[CR]- WYSZUKIWANIE KANAŁÓW : Tutaj można przeskanować wybrane satelity, oraz przeprowadzić nowe wyszukiwanie kanałów.[CR]- USTAWIENIA CZASU I DATY : Tutaj należy ustawić czas lokalny dla swojej strefy czasowej.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>970</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="10" title="Ustawienia anteny i satelitów" location="(INSTALACJA > USTAWIENIA ANTENY)">
+		<content name="antenna_setup.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. DISEQC 1.0 : Pozwala na korzystanie z wielu anten podłączonych do odbiornika równocześnie. Można podłączyć max. 4 satelity.[CR]2. DISEQC 1.1 : Pozwala na podłączenie do 64 różnych satelitów.[CR]3. OBROTNICA DISEQC 1.2 : Można tutaj ustawić określone pozycje żądanych satelitów.[CR]4. OBROTNICA USALS : Pozwala ustawić silnik obrotnicy w dowolnej pozycji, służy do efektywnego wyszukiwania kanałów.[CR]5. POJEDYNCZY LNB : Należy użyć, gdy podłączony jest tylko jeden satelita.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>980</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="11" title="Wyszukanie kanałów" location="(INSTALACJA > WYSZUKIWANIE KANAŁÓW)">
+		<content name="channel_search.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. AUTOMATYCZNE SKANOWANIE : Dla zwykłych użytkowników jest to najprostszy sposób na wyszukanie kanałów.[CR]2. SKANOWANIE RĘCZNE : Jest bardziej odpowiednie, jeśli znasz parametry i wiesz z jakiej satelity chcesz je wyszukać.[CR]3. FAST SCAN : You can search channels from service providers quickly.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="12" title="Lista kanałów - Edytuj kanały" location="(LISTA KANAŁÓW > MENU EDYCJI (i) > EDYTUJ KANAŁY)">
+		<content name="editing_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Możesz wygodnie usunąć, przesunąć, wybrać, zmienić, lub zablokować kanały w oknie listy kanałów.[CR][CR]1. Naciśnij przycisk i, aby wyświetlić listę kanałów w menu edycji, następnie wybierz Edycja kanałów.[CR]2. Wybierz kanały, które chcesz usunąć, naciskając przycisk OK.[CR]3. Naciśnij przycisk i, ponownie i, wybierz Usuń i naciśnij OK, aby usunąć poprzednio wybrane kanały.[CR]4. Naciśnij przycisk Zapisz i wyjdź z menu edycji.[CR]5. Po pojawieniu się wiadomości z prośbą o potwierdzenie, wybierz TAK, aby zapisać.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="13" title="Tworzenie nowej grupy ulubionych" location="(EDYTUJ KANAŁY > UTWÓRZ GRUPĘ)">
+		<content name="creating_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Najczęściej ilość kanałów w liście jest zbyt duża, aby móc się nią komfortowo posługiwać. Dlatego możesz je posortować, dodając do grupy ulubionych.[CR][CR]1. Wybierz Utwórz nową grupę ulubionych w menu edycji listy kanałów i naciśnij przycisk OK.[CR]2. Wprowadź nazwę dla grupy.[CR]3. Naciśnij przycisk DONE, aby zatwierdzić.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="14" title="Dodawanie kanałów do grupy ulubionych" location="(EDYTUJ KANAŁY > DODAJ DO ULUBIONYCH)">
+		<content name="adding_fav_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Wybierz kanały, które chcesz dodać do swojej ulubionej grupy.[CR]2. Wybierz w menu edycji Dodaj do ulubionych, a następnie naciśnij przycisk OK.[CR]3. Wybierz grupę z listy dostępnych grup ulubionych i wciśnij przycisk OK.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="15" title="Usuwanie kanałów z grupy ulubionych" location="(WYSUWANE MENU > WYBIERZ GRUPĘ ULUBIONYCH > USUŃ)">
+		<content name="removing_fav_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Naciśnij na pilocie lewy przycisk i wybierz Ulubione.[CR]2. Następnie wybierz grupę z kanałami, które chcesz usunąć.[CR]3. Zaznacz kanały, które chcesz usunąć, naciskając przycisk OK.[CR]4. Wybierz polecenie Usuń w menu edycji, aby usunąć kanały, które zostały wcześniej zaznaczone.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="16" title="Zmiana nazwy grupy ulubionych" location="(EDYTUJ KANAŁY > ZMIEŃ NAZWĘ GRUPY)">
+		<content name="renaming_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Aby wyświetlić listę kanałów w menu edycji, naciśnij przycisk i.[CR]2. Wybierz w menu Zmień nazwę grupy ulubionych.[CR]3. Wybierz ulubioną grupę, którą chcesz zmienić, a następnie naciśnij OK.[CR]4. Wprowadź nową nazwę za pomocą klawiatury.[CR]5. Naciśnij przycisk DONE, aby potwierdzić.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="17" title="Usuwanie grupy ulubionych" location="(EDYTUJ KANAŁY > USUŃ GRUPĘ)">
+		<content name="deleting_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Wyświetl listę kanałów w menu edycji, naciskając przycisk i.[CR]2. Wybierz Usuń grupę.[CR]3. Wybierz ulubioną grupę, którą chcesz usunąć.[CR]4. Naciśnij OK, aby zatwierdzić.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="18" title="XBMC" location="(XBMC lub WCIŚNIJ PRZYCISK XBMC)">
+		<content name="xbmc.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="XBMC to multimedialne centrum rozrywki, za pomocą którego można odtwarzać niemal wszystkie najpopularniejsze formaty plików audio i video zapisane na twardym dysku. Pozwala użytkownikowi zainstalować oficjalne i tworzone przez konsumentów dodatki, takie jak YouTube, Flickr, a także skórki z zainstalowanego repozytorium.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="19" title="Instalacja dodatków" location="(XBMC > MENEDŻER PLIKÓW > DODAJ ŹRÓDŁO)">
+		<content name="installing_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Dodatki to pakiety, które rozszerzają działanie XBMC.[CR][CR]1. Wybierz PRISMCUBE'S dodatki i naciśnij OK.[CR]2. Przewiń w dół do żądanej kategorii i naciśnij OK.[CR]3. Wybierz dodatek, który chcesz zainstalować.[CR]4. Dialog Podsumowanie, pozwoli Ci zapoznać się z właściwościami dodatku.[CR]5. Wybierz opcję Zainstaluj, aby rozpocząć automatyczne pobieranie i instalowanie.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="20" title="Aktualizacja dodatków" location="(XBMC > MENADŻER DODATKÓW > WCIŚNIJ LEWY LUB PRAWY PRZYCISK)">
+		<content name="updating_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Wszystkie zainstalowane dodatki będą automatycznie aktualizowane w przypadku pojawienia sie nowych wersji.[CR]Jeżeli Automatyczna aktualizacja jest wyłączona, zobacz w menadżerze dodatków czy dostępne są aktualizacje. Jeżeli tak, to zainstaluj je ręcznie.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="21" title="Uruchamienie dodatków" location="(XBMC > ZDJĘCIA, MUZYKA, WIDEO lub PROGRAMY)">
+		<content name="running_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Po zakończeniu pobierania, XBMC w zależności od dodatku zapyta, czy chcesz zacząć go używać. Dodatki będą dostępne w odpowiedniej sekcji. (Np. Flickr w Zdjęciach, YouTube w Wideo, itd.)">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>562</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="22" title="Uzyskiwanie pomocy" location="( )">
+		<content name="Aby uzyskać więcej informacji na temat Prismcube,[CR]odwiedź naszą stronę internetową [B]www.prismcube.com[/B]">
+			<type>textbox_bigfont</type>
+			<posx>170</posx>
+			<posy>325</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+</help>

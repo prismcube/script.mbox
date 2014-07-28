@@ -607,8 +607,7 @@ class Configure( SettingWindow ) :
 				self.RefreshByVolumeList( )
 
 			else :
-				if groupId == E_SpinEx03 or groupId == E_SpinEx04 :
-					self.ControlSelect( )
+				self.ControlSelect( )
 
 	 	elif selectedId == E_ETC :
 	 		self.ETCSetting( groupId )
@@ -976,7 +975,7 @@ class Configure( SettingWindow ) :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
 			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR or \
-			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( True ) :
+			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( ) :
 				self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected' ) )
 				self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )				
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]

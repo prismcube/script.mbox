@@ -28,8 +28,6 @@ E_WINDOW_HEIGHT		= 720
 PRISMCUBE_SERVER_ADDON	= 'http://addon.prismcube.com'
 PRISMCUBE_SERVER_FW_UPDATE = 'http://update.prismcube.com'
 PRISMCUBE_REQUEST_FW_PATH = 'ruby_v1.xxx.xxx'
-if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-	PRISMCUBE_REQUEST_FW_PATH = 'jet_v1.xxx.xxx'
 
 # custom logo
 CUSTOM_LOGO_PATH					= xbmc.translatePath( "special://profile/channellogo" )
@@ -405,6 +403,12 @@ E_CHECK_PARENTLOCK		= 1
 E_PIP_STOP				= 1
 E_PIP_CHECK_FORCE		= 2
 
+#timer
+E_TIMER_MODE_RECORD		= 0
+E_TIMER_MODE_VIEW 		= 1
+ONE_DAY_SECONDS			= 3600 * 24
+WEEKLY_DEFALUT_EXPIRE_DAYS = 7
+
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'
@@ -525,6 +529,17 @@ E_SUPPORT_MEDIA_PLAY_AV_SWITCH = True
 E_SUPPORT_EXTEND_RECORD_PATH = True
 
 E_V1_6_PIP_SINGLE_TONE = True
+E_V1_9_APPLY_WEEKLY_VIEW_TIMER = False
+
+#JET configuration
+E_FRONT_DISPLAY_ENABLE = True
+
+if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+	if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+		E_FRONT_DISPLAY_ENABLE = False
+		PRISMCUBE_REQUEST_FW_PATH = 'jet_v1.xxx.xxx'
+
+
 
 ############################ Global Function For GUI ############################
 

@@ -240,7 +240,7 @@ class SettingDialog( BaseDialog ) :
 				control.selectItem( ctrlItem.mSelecteItem )
 
 
-	def UpdateLocation( self ) :
+	def UpdateLocation( self, aExtraX = 0, aExtraY = 0 ) :
 		pos = 0	
 		for ctrlItem in self.mControlList :
 			if ctrlItem.mVisible == False or ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
@@ -252,15 +252,15 @@ class SettingDialog( BaseDialog ) :
 				self.getControl( ctrlItem.mControlId ).setPosition( 277, pos + 93 )
 			else :
 				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
-				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 33)
+				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 33 )
 	
 		if self.mIsAutomaicHeight == True :
 			if self.mIsOkCancelType == True :
-				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 165 )
+				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 165 + aExtraY )
 			else :
-				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 )
+				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 + aExtraY )
 
-		height = self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).getHeight( )
+		height = self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).getHeight( ) + aExtraY
 		start_x = E_WINDOW_WIDTH / 2 - 610 / 2
 		start_y = E_WINDOW_HEIGHT / 2 - height / 2
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setPosition( start_x, start_y )
@@ -462,10 +462,11 @@ class SettingDialog( BaseDialog ) :
 
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
-				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL or \
+				   ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
 				elif ctrlItem.mControlType == ctrlItem.E_LABEL_CONTROL :
-					self.getControl( ctrlItem.mControlId ).setLabel( aLabel )				
+					self.getControl( ctrlItem.mControlId ).setLabel( aLabel )
 
 		return -1
 
@@ -478,7 +479,7 @@ class SettingDialog( BaseDialog ) :
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL or \
-				ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+				   ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					self.getControl( ctrlItem.mControlId + 1 ).setLabel( aLabel )
 
 		return -1

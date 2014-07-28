@@ -572,13 +572,13 @@ def CheckDirectory( aPath ) :
 	return os.path.exists( aPath )
 
 
-def CheckHdd( aCheckForce = False ) :
+def CheckHdd( aMicroSD = False ) :
 	import pvr.ElisMgr
-	mCount = 0
-	if not aCheckForce :
+	mCount = 2
+	if aMicroSD :
 		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
 		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-			mCount = 1	#1: microSD, 3: usbHDD
+			mCount = 0	#1: microSD, 3: deadcated format HDD
 
 	isMounted = False
 	retList = pvr.ElisMgr.GetInstance( ).GetCommander( ).HDD_GetMountPath( )
@@ -588,13 +588,13 @@ def CheckHdd( aCheckForce = False ) :
 	return isMounted
 
 
-def	HasAvailableRecordingHDD( aCheckVolume = True, aCheckForce = False ) :
+def	HasAvailableRecordingHDD( aCheckVolume = True, aMicroSD = False ) :
 	import pvr.gui.DialogMgr as DiaMgr
 	from pvr.gui.GuiConfig import E_SUPPORT_EXTEND_RECORD_PATH
 	import pvr.DataCacheMgr
 	dataCache = pvr.DataCacheMgr.GetInstance( )
 
-	if not CheckHdd( aCheckForce ) :
+	if not CheckHdd( aMicroSD ) :
 		if E_SUPPORT_EXTEND_RECORD_PATH and aCheckVolume and dataCache.Record_GetNetworkVolume( True ) :
 			return True
 
