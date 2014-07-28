@@ -947,24 +947,31 @@ class BaseWindow( BaseObjectWindow ) :
 			settingControlGroup.setPosition( 80, 120 )
 
 		elif aWindowId == WinMgr.WIN_ID_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-			self.setProperty( 'SettingBackground', 'True' )
-			self.setProperty( 'DafultBackgroundImage', 'True' )
-			self.setProperty( 'SettingPIG', 'True' )
+			if self.getProperty( 'NoInstallationPIG' ) == 'True':
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'DafultBackgroundImage', 'True' )
+				self.setProperty( 'SettingPIG', 'False' )
+
+			else :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'DafultBackgroundImage', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
+
+				overlayImage.setPosition( 362, 112 )
+				overlayImage.setWidth( 798 )
+				overlayImage.setHeight( 446 )
+
+				radioImage.setPosition( 362, 112 )
+				radioImage.setWidth( 798 )
+				radioImage.setHeight( 446 )
+
+				nosignalLabel.setPosition( 645, 313 )
+				scrambleLabel.setPosition( 645, 313 )
+				noServiceLabel.setPosition( 645, 313 )
+
 			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 			for i in range( len( hideControlIds ) ) :
 				self.getControl( hideControlIds[i] ).setVisible( False )
-			
-			overlayImage.setPosition( 362, 112 )
-			overlayImage.setWidth( 798 )
-			overlayImage.setHeight( 446 )
-
-			radioImage.setPosition( 362, 112 )
-			radioImage.setWidth( 798 )
-			radioImage.setHeight( 446 )
-
-			nosignalLabel.setPosition( 645, 313 )
-			scrambleLabel.setPosition( 645, 313 )
-			noServiceLabel.setPosition( 645, 313 )
 
 		elif aWindowId == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 			self.setProperty( 'SettingPIG', 'True' )

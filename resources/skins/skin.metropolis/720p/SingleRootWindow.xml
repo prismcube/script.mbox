@@ -28,7 +28,9 @@ Search for window name
 	<onload>SetProperty(currentPosY,590)</onload>
 	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
 	<onload>SetProperty(SettingsLargeListPos,70)</onload>
+	<onload>SetProperty(NoInstallationPIG,True)</onload>
 	<onunload>SetProperty(SettingsLargeListPos,)</onunload>
+	<onunload>SetProperty(NoInstallationPIG,False)</onunload>
 	<controls>
 
 		<!-- Default Background Image -->
@@ -2534,7 +2536,7 @@ Search for window name
 					</control>
 					<control type="label" id="1400601">
 						<description>Channel Number</description>
-						<posx>82</posx>
+						<posx>85</posx>
 						<posy>-53</posy>
 						<width>200</width>
 						<height>50</height>
@@ -4112,21 +4114,22 @@ Search for window name
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-150</posy>
-				<width>1306</width>
-				<height>256</height>
-				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)</visible>
-				<texture flipy="true">HomeNowPlayingBack.png</texture>
-			</control>
-			<control type="image">
-				<posx>-13</posx>
-				<posy>230r</posy>
-				<width>1306</width>
-				<height>238</height>
-				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)</visible>
-				<texture>HomeNowPlayingBack.png</texture>
+			<control type="group">
+				<visible>substring(Window.Property(PvrPlay),True) + [substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)]</visible>
+				<control type="image">
+					<posx>-13</posx>
+					<posy>-150</posy>
+					<width>1366</width>
+					<height>256</height>
+					<texture flipy="true">HomeNowPlayingBack.png</texture>
+				</control>
+				<control type="image">
+					<posx>-13</posx>
+					<posy>230r</posy>
+					<width>1366</width>
+					<height>238</height>
+					<texture>HomeNowPlayingBack.png</texture>
+				</control>
 			</control>
 
 			<!-- Window Name -->
@@ -4979,8 +4982,6 @@ Search for window name
 			<visible>substring(Window.Property(CurrentWindow),3500000)</visible>
 			<defaultcontrol always="true">3509000</defaultcontrol>
 
-				<include>DefaultSettingsBackground</include>
-
 				<!-- Global Info -->
 				<control type="group">
 					<!--posx>13</posx>
@@ -5130,19 +5131,6 @@ Search for window name
 							<onclick>SendClick(1290100)</onclick>
 						</item>
 					</content>
-				</control>
-
-				<!-- Window Title -->
-				<control type="label">
-					<posx>28</posx>
-					<posy>16</posy>
-					<width>450</width>
-					<height>30</height>
-					<align>left</align>
-					<aligny>center</aligny>
-					<font>METF_Heading</font>
-					<textcolor>GlobalHeading</textcolor>
-					<label>$ADDON[script.mbox 1073]</label>
 				</control>
 
 				<!-- Menu Descriptions -->
@@ -6539,7 +6527,7 @@ Search for window name
 		<include>NullWindowDateTime</include>
 		<include>DefaultCommonLiveStatus</include>
 
-		<!-- PIP in Radio Mode -->
+		<!-- PIG Image & Radio Mode -->
 		<control type="group">
 			<control type="image" id="1008800">
 				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),5000000)</visible>
