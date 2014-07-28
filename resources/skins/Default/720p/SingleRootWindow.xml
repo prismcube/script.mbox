@@ -4398,7 +4398,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
+				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
 
