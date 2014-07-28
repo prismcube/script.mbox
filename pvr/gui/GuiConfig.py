@@ -304,6 +304,11 @@ else :
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
 E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
 
+RESOLUTION_WEIGHT = pvr.GuiHelper.GetXBMCResolutionWeightBySkin( )
+def InitResolutionWeightByReload( ) :
+	global RESOLUTION_WEIGHT
+	RESOLUTION_WEIGHT = pvr.GuiHelper.GetXBMCResolutionWeightBySkin( )
+
 
 def InitTranslateByEnumList( ) :
 	global USER_ENUM_LIST_ON_OFF, USER_ENUM_LIST_YES_NO, USER_ENUM_LIST_DHCP_STATIC, USER_ENUM_LIST_NETWORK_TYPE, USER_ENUM_LIST_VIDEO_OUTPUT

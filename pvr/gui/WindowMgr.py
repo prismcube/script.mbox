@@ -343,7 +343,7 @@ class WindowMgr( object ) :
 			self.CheckSkinChange( )
 			self.CopyIncludeFile( )
 			self.AddDefaultFont( )		
-			xbmc.executebuiltin('XBMC.ReloadSkin()')		
+			xbmc.executebuiltin('XBMC.ReloadSkin()')
 			self.ResetAllWindows( )
 			#self.RootWindow( )
 			self.ShowWindow( aWindowId, aParentId )
@@ -365,14 +365,14 @@ class WindowMgr( object ) :
 			return True
 
 		return False
-			
+
 
 	def CheckSkinChange( self ) :
-	
 		currentSkinName = XBMC_GetCurrentSkinName( )
 		if self.mSkinName != currentSkinName :
 			LOG_TRACE( 'change skin name' )
 			self.mSkinName = currentSkinName
+			InitResolutionWeightByReload( )
 			return True
 
 		return False
