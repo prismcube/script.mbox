@@ -512,11 +512,18 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			if groupId == E_Input04 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
-				dialog.doModal( )
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					self.DedicatedFormat( FORMAT_SD_MEMORY )
+				SDExist = self.mCommander.MMC_MountCheck( )
+				print 'dhkim test SDExist = %s' % SDExist
+				if SDExist :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.DedicatedFormat( FORMAT_SD_MEMORY )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a SD memory card' ) )
+					dialog.doModal( )
 				return
 
 			elif groupId == E_Input05 :
@@ -1997,7 +2004,12 @@ class Configure( SettingWindow ) :
 			splitName = splitName[ len( splitName ) - 1 ]
 			print 'dhkim test splitName = %s' % splitName
 			self.OpenBusyDialog( )
-			self.mCommander.Make_Exclusive_HDD( splitName )
+			ret = self.mCommander.Make_Exclusive_HDD( splitName )
+			if ret == False :
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Format drive fail to complete' ) )
+				dialog.doModal( )
 
 
 	def ETCSetting( self, aGroupId ) :

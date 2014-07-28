@@ -347,11 +347,11 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventExclusiveHDDSetStatus.getName( ) :
 			print 'dhkim test event ElisEventExclusiveHDDSetStatus status = %s' % aEvent.mStatus
 			if aEvent.mStatus == ElisEnum.E_EXCLUSIVE_FORMAT_START :
-				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Now formatting...' ) ) )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Now formatting...' ) ) )
 			elif aEvent.mStatus == ElisEnum.E_EXCLUSIVE_BACKUP_START :
-				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Now backup data...' ) ) )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Now backup data...' ) ) )
 			elif aEvent.mStatus == ElisEnum.E_EXCLUSIVE_SETTING_END :
-				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Format drive done. reboot STB' ) ) )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Format drive done. reboot STB' ) ) )
 
 		#for HBBTV
 		elif E_SUPPROT_HBBTV == True :
