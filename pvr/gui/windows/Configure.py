@@ -513,7 +513,6 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FORMAT_HDD :
 			if groupId == E_Input04 :
 				SDExist = self.mCommander.MMC_MountCheck( )
-				print 'dhkim test SDExist = %s' % SDExist
 				if SDExist :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
@@ -528,9 +527,6 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input05 :
 				driveList = self.mCommander.USB_GetMountPath( )
-				print 'dhkim test driveList = %s' % driveList
-				for drive in driveList :
-					print 'dhkim test drive real name = %s' % drive.mParam
 				if driveList and len( driveList ) > 0 and driveList[0].mError == 0 :
 					context = []
 					for i in range( len( driveList ) ) :
@@ -2000,9 +1996,13 @@ class Configure( SettingWindow ) :
 		dialog.SetDialogProperty( MR_LANG( 'Format your drive?' ), MR_LANG( 'Everything on your drive will be erased' ), MR_LANG( 'This will take a while' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC addon and userdata move this drive' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetProp( 3 )
 			splitName = aDriveList[ aNumber ].mParam.split( '/' )
 			splitName = splitName[ len( splitName ) - 1 ]
-			print 'dhkim test splitName = %s' % splitName
 			self.OpenBusyDialog( )
 			ret = self.mCommander.Make_Exclusive_HDD( splitName )
 			if ret == False :

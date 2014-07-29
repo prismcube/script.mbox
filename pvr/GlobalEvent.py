@@ -345,7 +345,7 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( cmd )
 
 		elif aEvent.getName( ) == ElisEventExclusiveHDDSetStatus.getName( ) :
-			print 'dhkim test event ElisEventExclusiveHDDSetStatus status = %s' % aEvent.mStatus
+			LOG_TRACE( 'event ElisEventExclusiveHDDSetStatus status = %s' % aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_EXCLUSIVE_FORMAT_START :
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Now formatting...' ) ) )
 			elif aEvent.mStatus == ElisEnum.E_EXCLUSIVE_BACKUP_START :
