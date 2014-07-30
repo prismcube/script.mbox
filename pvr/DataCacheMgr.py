@@ -168,6 +168,8 @@ class DataCacheMgr( object ) :
 		self.mStandByStatus						= ElisEnum.E_STANDBY_POWER_ON
 		self.mSearchNewChannel					= False
 		self.mUSBAttatched						= False
+		self.mUSBMountStatus					= False
+		self.mMicroSDAttatched					= False
 		self.mChangedByViewTimer				= False
 		self.mDelaySettingWindow				= True
 		self.mTimerList							= self.Timer_GetTimerList( )
@@ -3173,6 +3175,22 @@ class DataCacheMgr( object ) :
 	@DataLock
 	def SetUSBAttached( self, aAttached = False ) :
 		self.mUSBAttatched = aAttached
+
+
+	def GetMicroSDAttached( self ) :
+		return self.mMicroSDAttatched
+
+
+	def SetMicroSDAttached( self, aAttached = False ) :
+		self.mMicroSDAttatched = aAttached
+
+
+	def GetUsbMountStatus( self ) :
+		return self.mUSBMountStatus
+
+
+	def SetUsbMountStatus( self, aAttached = False ) :
+		self.mUSBMountStatus = aAttached
 
 
 	def SetRootWindowId( self, aId ) :

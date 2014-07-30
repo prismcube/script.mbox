@@ -353,6 +353,13 @@ class GlobalEvent( object ) :
 			elif aEvent.mStatus == ElisEnum.E_EXCLUSIVE_SETTING_END :
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Format drive done. reboot STB' ) ) )
 
+		elif aEvent.getName( ) == ElisEventMMCStatusCheck.getName( ) :
+			print '------------------------ ElisEventMMCStatusCheck status[%s]' % aEvent.mStatus
+			self.mDataCache.SetMicroSDAttached( True )
+			thread = threading.Timer( 0, self.AsyncCheckByMMC, [aEvent.mStatus] )
+			thread.start( )
+
+
 		#for HBBTV
 		elif E_SUPPROT_HBBTV == True :
 			LOG_TRACE("HBBTEST 11111111111111111 %s" % aEvent.getName( ) )
@@ -383,6 +390,48 @@ class GlobalEvent( object ) :
 					LOG_TRACE( 'HbbTV Disable Event' )
 					self.mDataCache.SetHbbTVEnable( False )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideRedButton( )	
+
+
+
+	def AsyncCheckByMMC( self, aStatus ) :
+		isReboot = False
+		if aStatus == ElisEnum.E_MMC_ATTACH or aStatus == ElisEnum.E_MMC_DETACH :
+			selectMMC = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetProp( )
+
+			attach = True
+			if aStatus == ElisEnum.E_MMC_DETACH :
+				attach = False
+				if selectMMC == 1 :
+					isReboot = True
+					#ToDO : media mount : no reboot, storage mount : reboot
+
+			self.mDataCache.SetMicroSDAttached( attach )
+			thread = threading.Timer( 0, self.ShowAttatchDialog, [attach, True] )
+			thread.start( )
+
+		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
+			mTitle = MR_LANG( 'SD Card Fail' )
+			mLines = MR_LANG( 'Try again insert card' )
+			self.mDataCache.SetUsbMountStatus( aStatus )
+
+			if aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS :
+				mTitle = MR_LANG( 'SD Card Mounted' )
+				mLines = MR_LANG( 'Addon Storage in XBMC' )
+				if selectMMC == 0 or selectMMC == 1 :
+					isReboot = True
+
+			xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mTitle, mLines ) )
+
+		if isReboot :
+			mTitle = MR_LANG( 'Restart Required' )
+			mLines = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( mTitle, mLines )
+			dialog.SetButtonVisible( False )
+			dialog.SetAutoCloseTime( 5 )
+			dialog.doModal( )
+			#self.mDataCache.System_Reboot( )
+
 
 
 	def StopLoading( self ) :
@@ -636,16 +685,22 @@ class GlobalEvent( object ) :
 				LOG_TRACE( 'except close dialog' )
 
 
-	def ShowAttatchDialog( self, aAttatch = False ) :
+	def ShowAttatchDialog( self, aAttatch = False, aMicroSD = False ) :
 		#if xbmcgui.getCurrentWindowDialogId( ) != 9999 :
 		#	LOG_TRACE( 'Another dialog aready popuped!!' )
 		#	return
 
-		msg = MR_LANG( 'Connected' )
+		useIcon = 'USB.png'
+		mTitle = MR_LANG( 'USB Device' )
+		mLine = MR_LANG( 'Connected' )
 		if not aAttatch :
-			msg = MR_LANG( 'Removed' )
+			mLine = MR_LANG( 'Removed' )
 
-		xbmc.executebuiltin( 'Notification(%s, %s, 3000, USB.png)' % ( MR_LANG( 'USB Device' ), msg ) )
+		if aMicroSD :
+			useIcon = 'MicroSD.png'
+			mTitle = MR_LANG( 'SD Card Device' )
+
+		xbmc.executebuiltin( 'Notification(%s, %s, 3000, %s)' % ( mTitle, mLine, useIcon ) )
 
 
 	def ShowEventDialog( self, aEvent ) :
