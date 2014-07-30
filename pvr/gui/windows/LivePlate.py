@@ -901,11 +901,12 @@ class LivePlate( LivePlateWindow ) :
 				#if ch.mIsCA :
 				UpdateCasInfo( self, ch )
 
-				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
-				if mTPnum == 0 :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
-				elif mTPnum == 1 :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+					mTPnum = self.mDataCache.Channel_GetViewingTuner( )
+					if mTPnum == 0 :
+						self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+					elif mTPnum == 1 :
+						self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
