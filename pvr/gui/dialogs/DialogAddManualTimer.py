@@ -570,7 +570,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.SetEnableControl( E_DialogInput03, isEnable_EndTime )
 			self.SetEnableControl( E_DialogSpinEx01, isEnable_Weekly )
 
-			self.SetAutoHeight( True )
+			self.SetAutoHeight( False )
 			self.InitControl( )
 			
 			self.ChangeRecordMode( )
