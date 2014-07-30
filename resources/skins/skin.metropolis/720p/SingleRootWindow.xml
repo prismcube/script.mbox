@@ -2206,7 +2206,7 @@ Search for window name
 								</control>
 								<!-- FastScan Icon -->
 								<control type="image">
-									<posx>197</posx>
+									<posx>200</posx>
 									<posy>12</posy>
 									<width>26</width>
 									<height>18</height>
@@ -2216,7 +2216,7 @@ Search for window name
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>212</width>
+									<width>192</width>
 									<height>40</height>
 									<font>METF_PlotText</font>
 									<textcolor>white</textcolor>
@@ -2236,7 +2236,7 @@ Search for window name
 								</control>
 								<!-- FastScan Icon -->
 								<control type="image">
-									<posx>197</posx>
+									<posx>200</posx>
 									<posy>12</posy>
 									<width>26</width>
 									<height>18</height>
@@ -2246,7 +2246,7 @@ Search for window name
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>212</width>
+									<width>185</width>
 									<height>40</height>
 									<font>METF_PlotText</font>
 									<textcolor>eef8cd22</textcolor>
@@ -4641,7 +4641,7 @@ Search for window name
 								<width>210</width>
 								<height>40</height>
 								<texture border="1">ButtonFO2.png</texture>
-								<visible>!Control.HasFocus(3309050)</visible>
+								<visible>Control.HasFocus(3309050)</visible>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -4651,7 +4651,7 @@ Search for window name
 								<align>left</align>
 								<aligny>center</aligny>
 								<font>METF_SettingsDetail</font>
-								<textcolor>white</textcolor>
+								<textcolor>eef8cd22</textcolor>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 						</focusedlayout>

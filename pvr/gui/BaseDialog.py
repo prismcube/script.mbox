@@ -209,7 +209,7 @@ class SettingDialog( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mControlList		= []
 		self.mFocusId			= -1
-		self.mIsAutomaicHeight	= False
+		self.mIsAutomaticHeight	= False
 		self.mIsOkCancelType	= False
 		self.mResetInput		= True
 
@@ -254,7 +254,7 @@ class SettingDialog( BaseDialog ) :
 				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
 				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 33 )
 	
-		if self.mIsAutomaicHeight == True :
+		if self.mIsAutomaticHeight == True :
 			if self.mIsOkCancelType == True :
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 165 + aExtraY )
 			else :
@@ -268,7 +268,7 @@ class SettingDialog( BaseDialog ) :
 	
 
 	def SetAutoHeight( self, mMode ) :
-		self.mIsAutomaicHeight = mMode
+		self.mIsAutomaticHeight = mMode
 
 
 	def ResetAllControl( self ) :
