@@ -32,13 +32,13 @@
 
 			<control type="list" id="102">
 				<posx>20</posx>
-				<posy>5</posy>
+				<posy>-2</posy>
 				<width>330</width>
 				<height>480</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<itemlayout width="310" height="40" >
 					<control type="image">
 						<posx>0</posx>
-						<posy>1</posy>
+						<posy>0</posy>
 						<width>330</width>
 						<height>38</height>
 						<texture border="5">button-nofocus.png</texture>
@@ -72,7 +72,7 @@
 				<focusedlayout width="310" height="40">
 					<control type="image">
 						<posx>0</posx>
-						<posy>1</posy>
+						<posy>0</posy>
 						<width>330</width>
 						<height>38</height>
 						<texture border="5">button-nofocus.png</texture>
@@ -104,19 +104,6 @@
 						<scroll>true</scroll>
 					</control>
 				</focusedlayout>
-			</control>
-
-			<control type="button" id="301">
-				<description>OK</description>
-				<width>186</width>
-				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
-				<label>$ADDON[script.mbox 1022]</label>
 			</control>
 		</control>
 	</controls>
