@@ -201,6 +201,9 @@ class FirstInstallation( FTIWindow ) :
 			elif groupId == E_Input01 :
 				self.ShowHdmiFormat( )
 
+			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
+				self.ControlSelect( )
+
 		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
 			if groupId == E_SpinEx01 :
 				self.mTunerConnection = self.GetSelectedIndex( E_SpinEx01 )

@@ -342,6 +342,15 @@ class GlobalEvent( object ) :
 			cmd = 'AlarmClock(%s,RunScript(%s),%d,True)' % ( 'crossepg', script, 0.2 )
 			xbmc.executebuiltin( cmd )
 
+		elif aEvent.getName( ) == ElisEventExclusiveHDDSetStatus.getName( ) :
+			LOG_TRACE( 'event ElisEventExclusiveHDDSetStatus status = %s' % aEvent.mStatus )
+			if aEvent.mStatus == ElisEnum.E_EXCLUSIVE_FORMAT_START :
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Now formatting...' ) ) )
+			elif aEvent.mStatus == ElisEnum.E_EXCLUSIVE_BACKUP_START :
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Now backup data...' ) ) )
+			elif aEvent.mStatus == ElisEnum.E_EXCLUSIVE_SETTING_END :
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Exclusive format' ), MR_LANG( 'Format drive done. reboot STB' ) ) )
+
 		#for HBBTV
 		elif E_SUPPROT_HBBTV == True :
 			LOG_TRACE("HBBTEST 11111111111111111 %s" % aEvent.getName( ) )

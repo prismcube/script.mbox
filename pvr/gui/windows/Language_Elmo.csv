@@ -538,6 +538,10 @@
 "Internal";"Intern";"Interní";"Interný";"Internal";;;;;;;;;;2359
 "Cross EPG Enabled";"Cross EPG Aktiviert";"Cross EPG zapnuto";"Cross EPG zapnuté";;;;;;;;;;;2360
 "Cross EPG ByStandby";"Cross EPG im Standby";"Cross EPG v úsporném režimu";"Cross EPG v úspornom režime";;;;;;;;;;;2361
+"Xbmc Save Storage";;;;;;;;;;;;;;2362
+"Micro SD Card";;;;;;;;;;;;;;2363
+"USB Storage";;;;;;;;;;;;;;2364
+"Exclusive HDD";;;;;;;;;;;;;;2365
 "No EPG information available";"Keine EPG Informationen verfügbar";"Žádná EPG informace není k dispozici";"Žiadna EPG informácia nie je k dispozícii";"Brak dostępnych informacji EPG";"Нет данных ТВ Гида";"Немає даних ТВ Гіда";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"No EPG information available";"No EPG information available";"No EPG information available";"No EPG information available";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Záznam je v rozporu s";"Záznam je v rozpore s";"Nagranie w konflikcie z";"Таймер конфликтует с";"Таймер конфліктує з";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"That recording conflicts with";"That recording conflicts with";"That recording conflicts with";"That recording conflicts with";3002
 "Error";"Fehler";"Chyba";"Chyba";"Błąd";"Ошибка";"Помилка";"Erreur";"Errore";"Error";"Error";"Error";"Error";"Error";3003
@@ -714,8 +718,6 @@
 "Days";"Tage";"Dní";"Dní";"Dni";"Ежедневно";"Щодня";"Days";"Giorni";"Dias";"Days";"Days";"Days";"Days";3174
 "Once";"Einmalig";"Jednou";"Raz";"Raz";"Один Раз";"Один Раз";"Une fois";"Una Volta";"Hasta";"Once";"Once";"Once";"Once";3175
 "Weekly";"Wöchentlich";"Týdně";"Týždenne";"Co tydzień";"Еженедельно";"Щотижня";"Chaque semaine";"Settimanale";"Semanal";"Weekly";"Weekly";"Weekly";"Weekly";3176
-"Add View Timer";"View Timer hinzufügen";"Přidat časovač zobrazení";"Pridať časovač zobrazenia";"Dodaj timer oglądania";"Добавить Таймер";"Додати Таймер";"Ajouter affichage minuterie";"Aggiungi Timer";"Añadir vistas temporizador";"Add View Timer";"Add View Timer";"Add View Timer";"Add View Timer";3177
-"Edit View Timer";"View Timer bearbeiten";"Upravit časovač zobrazení";"Upraviť časovač zobrazenia";"Edytuj timer oglądania";"Изменить Таймер";"Змінити Таймер";"Modifier l'affichage minuterie";"Edita Timer";"Editar vistas temporizador";"Edit View Timer";"Edit View Timer";"Edit View Timer";"Edit View Timer";3178
 "Name";"Name";"Název";"Názov";"Nazwa";"Название";"Назва";"Nom";"Nome";"Nombre";"Name";"Name";"Name";"Name";3179
 "Record Name";"Aufnahmetitel";"Název záznamu";"Názov záznamu";"Nazwa nagrania";"Название Записи";"Назва Запису";"Nom d'enregistrement";"Nome Registrazione";"Nombre grabación";"Record Name";"Record Name";"Record Name";"Record Name";3180
 "Start Date";"Start Datum";"Datum zahájení";"Dátum začatia";"Data rozpoczęcia";"Дата Начала";"Дата Початку";"Date de début";"Inizio Data";"Fecha inicio";"Start Date";"Start Date";"Start Date";"Start Date";3181
@@ -1046,7 +1048,6 @@
 "Delete timer";"Timer löschen";"Vymazat časovač";"Vymazať časovač";"Usuń timer";"Удалить таймер";"Видалити таймер";"Supprimer minuteur";"Eliminare il timer";"Borrar temporizador";"Delete timer";"Delete timer";"Delete timer";"Delete timer";3506
 "Add timer";"Timer hinzufügen";"Přidání časovače";"Pridanie časovača";"Dodaj timer";"Добавить таймер";"Додати таймер";"Ajouter minuteur";"Aggiungi timer";"Añadir temporizador";"Add timer";"Add timer";"Add timer";"Add timer";3507
 "Add manual timer";"Manuellen Timer hinzufügen";"Přidat manuální časovač";"Pridať manuálny časovač";"Dodaj timer ręcznie";"Добавить таймер вручную";"Додати таймер вручну";"Ajouter minuteur manuel";"Aggiungi timer manuale";"Añadir temporizador manualmente";"Add manual timer";"Add manual timer";"Add manual timer";"Add manual timer";3508
-"Add view timer";"View Timer hinzufügen";"Přidat zobrazen časovač";"Pridať zobrazený časovač";"Dodaj timer oglądania";"Добавить таймер";"Додати таймер";"Add view timer";"Aggiungi visualizzare timer";"Añadir vista temporizador";"Add view timer";"Add view timer";"Add view timer";"Add view timer";3509
 "Delete all timers";"Alle Timer löschen";"Odstranit všechny časovače";"Odstrániť všetky časovače";"Usuń wszystkie timery";"Удалить все таймеры";"Видалити Всі Таймери";"Supprimer tous les minuteurs";"Cancella tutti i timer";"Borrar todos los temporizadores";"Delete all timers";"Delete all timers";"Delete all timers";"Delete all timers";3510
 "Show all timers";"Alle Timer anzeigen";"Zobrazit všechny časovače";"Zobraziť všetky časovače";"Pokaż wszystkie timery";"Показать все таймеры";"Показати всі таймери";"Visualiser tous les minuteurs";"Mostra tutti i timer";"Mostrar todos los temporizadores";"Show all timers";"Show all timers";"Show all timers";"Show all timers";3511
 "First EPG Data";"Erste EPG Daten";"První EPG data";"Prvé EPG dáta";"Najpierw dane EPG";"Первое Событие ТВ Гида";"Перша Подія ТВ Гіда";"Première donnée EPG";"Primi dati EPG";"Datos del primer EPG";"First EPG Data";"First EPG Data";"First EPG Data";"First EPG Data";3512
@@ -1068,16 +1069,13 @@
 "When set to 'On', the system will descramble up to 2 scrambled channels on same transponder simultaneously";"Wenn auf 'An', werden bis zu 2 Kanälen gleichzeitig von einem Transponder entschlüsselt";"Pokud je nastavena volba 'Zap', systém bude dekódovat až 2 kódované programy na stejném transpondéru současně";"Ak je nastavená voľba 'Zap', systém bude dekódovať až 2 kódované programy na rovnakom transpondéri súčasne";"Jeśli włączone, odbiornik spróbuje zdekodować do 2 kanałów z jednej częstotliwości przez moduł";"Когда установлено 'Вкл', система декодирует до 2-х каналов на том же транспондере одновременно";"Коли встановлено 'Увімкнути', система декодує до 2 -х каналів на тому ж транспондері одночасно";"Lorsque la valeur est sur 'On', le système peut décrypter jusqu'à 2 canaux cryptés sur un même transpondeur simultanément";"Quando è impostato su 'On', il sistema decodifica contemporaneamente fino a 2 canali criptati sullo stesso transponder";"Cuando se establece en 'On', el sistema descodifica hasta 2 canales codificados sobre el mismo transpondedor simultáneamente";"When set to 'On', the system will descramble up to 2 scrambled channels on same transponder simultaneously";"When set to 'On', the system will descramble up to 2 scrambled channels on same transponder simultaneously";"When set to 'On', the system will descramble up to 2 scrambled channels on same transponder simultaneously";"When set to 'On', the system will descramble up to 2 scrambled channels on same transponder simultaneously";3528
 "Rotate Antenna";"Antenne drehen";"Otočení antény";"Otočenie antény";"Obrót anteną";"Перемещать Антенну";"Переміщати Антену";"Déplacer l'antenne";"Ruotare antenna";"Girar antena";"Rotate Antenna";"Rotate Antenna";"Rotate Antenna";"Rotate Antenna";3529
 "You can control the movements of the motorized antenna here";"Sie können die Bewegungen der Rotorantenne hier steuern";"Zde můžete ovládat pohyb motorizovaného antény";"Tu môžete ovládať pohyb Motorizovanej antény";"Można tu kontrolować poruszaniem się anteny w układzie obrotowym";"Здесь можно управлять перемещением моторизированной антенны";"Тут можна керувати переміщенням моторизованої антени";"Vous pouvez contrôler les mouvements de l'antenne motorisée ici";"È possibile controllare i movimenti della antenna motorizzata";"Tu puedes controlar los movimientos de la antena motorizada aqui";"You can control the movements of the motorized antenna here";"You can control the movements of the motorized antenna here";"You can control the movements of the motorized antenna here";"You can control the movements of the motorized antenna here";3530
-"Tuner Setup";;;;"Ustawienia tunera";;;;;;;;;;3531
-"DVB-C";;;;"DVB-C";;;;;;;;;;3532
-"DVB-T";;;;"DVB-T";;;;;;;;;;3533
-"DVB-T2";;;;"DVB-T2";;;;;;;;;;3534
-"Select tuner type";;;;"Wybierz typ tunera";;;;;;;;;;3535
-"Tuner Type";;;;"Typ tunera";;;;;;;;;;3536
-"Input frequency";;;;"Częstotliwość wejściowa";;;;;;;;;;3537
-"Terrestrial provider";;;;"Operator naziemny";;;;;;;;;;3538
-"Enable 5V for active antenna";;;;"5V dla aktywnej anteny";;;;;;;;;;3539
-"Select enable 5v for active antenna";;;;"Wybierz +5V dla aktywnej anteny";;;;;;;;;;3540
+"DVB-C";"DVB-C";;;"DVB-C";;;;;;;;;;3532
+"DVB-T";"DVB-T";;;"DVB-T";;;;;;;;;;3533
+"DVB-T2";"DVB-T2";;;"DVB-T2";;;;;;;;;;3534
+"Select tuner type";"Wähle Tuner Typ";;;"Wybierz typ tunera";;;;;;;;;;3535
+"Input frequency";"Frequenz Eingabe";;;"Częstotliwość wejściowa";;;;;;;;;;3537
+"Enable 5V for active antenna";"5V aktivieren für aktive Antennen";;;"5V dla aktywnej anteny";;;;;;;;;;3539
+"Select enable 5v for active antenna";"5V aktivieren für aktive Antennen wählen";;;"Wybierz +5V dla aktywnej anteny";;;;;;;;;;3540
 "Try again after stopping playback%s and timeshift";"Nochmal versuchen nach dem Anhalten von Playback%s und Timeshift";"Zkuste to znovu po zastavení přehrávání %s a timeshiftu";"Skúste to znova po zastavení prehrávania%s a timeshiftu";"Spróbuj ponownie po zatrzymaniu odtwarzania%s i timeshiftu";"Попробуйте еще раз после остановки%s воспроизведения или тайм-шифта";"Спробуйте ще раз після зупинки%s відтворення або тайм- шифт";"Réessayer après avoir stoppé la lecture%s et le timeshift";"Riprovare dopo l'arresto della riproduzione%s e timeshift";"Inténtelo de nuevo después de detener%s la reproducción y Timeshift";"Try again after stopping playback%s and timeshift";"Try again after stopping playback%s and timeshift";"Try again after stopping playback%s and timeshift";"Try again after stopping playback%s and timeshift";3541
 "Thumbnail";"Thumbnail";"Náhled";"Náhľad";"Miniatury";"Миниатюра";"Thumbnail";"Vignette";"Thumbnail";"Miniatura";"Thumbnail";"Thumbnail";"Thumbnail";"Thumbnail";3542
 "Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Sfera";"Заставка";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";3543
@@ -1473,20 +1471,18 @@
 "Channel is changed by view timer";"Sender wurde umgeschaltet durch den View Timer";"Program je změněn časovačem zobrazení ";"Program je zmenený časovačom zobrazenia ";"Kanał będzie przełączany według wskazań timera";"Канал изменен просмотром таймера";"Channel is changed by view timer";"Changez de chaîne par l'affichage de la minuterie";"Ulteriore assistenza";"Canales esta cambiando por view timer";"Channel is changed by view timer";"Channel is changed by view timer";"Channel is changed by view timer";"Channel is changed by view timer";3933
 "DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 přepínač";"DiSEqC 1.0 prepínač";"Przełącznik DiSEqC 1.0";"DiSEqC 1.0 Переключатель";"DiSEqC 1.0 Перемикач";"Commutateur DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";3934
 "Select the DiSEqC switch which your satellite is connected to";"Wählen Sie den DiSEqC switch mit dem Ihre Anlage ausgerüstet ist";"Vyberte DiSEqC přepínač, který používáte";"Vyberte DiSEqC prepínač, ktorý používate";"Wybierz przełącznik DiSEqC wykorzystywany w instalacji antenowej";"Задайте соответствующие настройки DISEqC переключателя для спутника";"Задайте відповідні налаштування DISEqC перемикача для супутника";"Choisissez le commutateur DiSEqC auquel votre satellite est connecté";"Selezionare il DiSEqC collegato al";"Seleccione el conmutador DiSEqC que su satélite está conectado a";"Select the DiSEqC switch which your satellite is connected to";"Select the DiSEqC switch which your satellite is connected to";"Select the DiSEqC switch which your satellite is connected to";"Select the DiSEqC switch which your satellite is connected to";3935
-"DVBT Scan";;;;"Skanowanie DVBT";;;;;;;;;;3936
-"Select Terrestria";;;;"Wybierz telewizję naziemną";;;;;;;;;;3937
-"list not found";;;;"Nie znaleziono listy";;;;;;;;;;3938
-"Enter Frequency";;;;"Wpisz częstotliwość";;;;;;;;;;3939
-"Enter PLP ID";;;;"Wpisz PLP ID";;;;;;;;;;3940
-"No support";;;;"Brak wsparcia";;;;;;;;;;3941
-"Select terrestria first";;;;"Wybierz najpierw telewizję naziemną";;;;;;;;;;3942
+"Select Terrestria";"Wähle Terrestrisch";;;"Wybierz telewizję naziemną";;;;;;;;;;3937
+"list not found";"keine Liste gefunden";;;"Nie znaleziono listy";;;;;;;;;;3938
+"Enter Frequency";"Frequenz eingeben";;;"Wpisz częstotliwość";;;;;;;;;;3939
+"Enter PLP ID";"PLP ID eingeben";;;"Wpisz PLP ID";;;;;;;;;;3940
+"Select terrestria first";"Wählen Sie Terrestrisch zuerst";;;"Wybierz najpierw telewizję naziemną";;;;;;;;;;3942
 "Search Mode";"Suchmodus";"Mód vyhledávání";"Mód vyhľadávania";"Tryb wyszukiwania";"Режим поиска";;"Mode de recherche";;;;;;;3943
-"Select channel search mode";;;;"Wybierz tryb wyszukiwania kanałów";;;;;;;;;;3944
-"Select Terrerstria";;;;"Wybierz telewizję naziemną";;;;;;;;;;3945
-"Terrestrial frequency list";;;;"Lista częstotliwości telewizji naziemnej";;;;;;;;;;3946
-"Select bandwidth";;;;"Wybierz pasmo";;;;;;;;;;3947
-"Input PLP ID";;;;"Wejście PLP ID";;;;;;;;;;3948
-"PLP ID";;;;"PLP ID";;;;;;;;;;3949
+"Select channel search mode";"Wählen Sie den Kanal-Suchmodus";;;"Wybierz tryb wyszukiwania kanałów";;;;;;;;;;3944
+"Select Terrerstria";"Terrestrisch wählen";;;"Wybierz telewizję naziemną";;;;;;;;;;3945
+"Terrestrial frequency list";"Terrestrische Frequenzliste";;;"Lista częstotliwości telewizji naziemnej";;;;;;;;;;3946
+"Select bandwidth";"Bandbreite wählen";;;"Wybierz pasmo";;;;;;;;;;3947
+"Input PLP ID";"PLP-ID Eingabe";;;"Wejście PLP ID";;;;;;;;;;3948
+"PLP ID";"PLP ID";;;"PLP ID";;;;;;;;;;3949
 "System";"System";"Systém";"Systém";"System";"Система";"System";"Système";"System";"Sistema";"System";"System";"System";"System";3950
 "STB Information";"STB Informationen";"STB informace";"STB informácie";"Informacje o odbiorniku";"О Системе";"Про Систему";"Informations sur l'appareil";"Informazioni STB";"Información STB";"STB Information";"STB Information";"STB Information";"STB Information";3951
 "Product Name";"Produktname";"Název produktu";"Názov produktu";"Nazwa produktu";"Название";"Назва";"Nom du produit";"Nome Prodotto";"Nombre del producto";"Product Name";"Product Name";"Product Name";"Product Name";3952
@@ -1546,3 +1542,23 @@
 "Finish";"Ende";"Dokončit";"Dokončiť";"Zakończ";"Окончание";"Закінчення";"Terminer";"Terminare";"Final";"Finish";"Finish";"Finish";"Finish";4006
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Přejít na stránku nastavení vyhledávání kanálů";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Przejdź do konfiguracji wyszukiwania kanałów";"Перейти к поиску каналов";"Перейти до пошуку каналів";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";4007
 "Do you want to set the recording path now?";"Wollen Sie die Aufnahmepfad jetzt einstellen?";;"Chcete nastaviť cestu nahrávania teraz?";"Czy chcesz teraz ustawić ścieżkę nagrywania?";;;;;;;;;;4008
+"Now formatting...";;;;;;;;;;;;;;4009
+"Exclusive format";;;;;;;;;;;;;;4010
+"Now backup data...";;;;;;;;;;;;;;4011
+"Format drive done. reboot STB";;;;;;;;;;;;;;4012
+"Viewing";;;;;;;;;;;;;;4013
+"View Timer";;;;;;;;;;;;;;4014
+"Everything on your SD card will be erased";;;;;;;;;;;;;;4015
+"Format your SD memory card?";;;;;;;;;;;;;;4016
+"Could not find a SD memory card";;;;;;;;;;;;;;4017
+"Could not find a exclusive drive";;;;;;;;;;;;;;4018
+"Format SD Card";;;;;;;;;;;;;;4019
+"Press OK button to erase your SD memory card";;;;;;;;;;;;;;4020
+"Format exclusive drive";;;;;;;;;;;;;;4021
+"Press OK button to erase your exclusive drive";;;;;;;;;;;;;;4022
+"Everything on your drive will be erased";;;;;;;;;;;;;;4023
+"Format your drive?";;;;;;;;;;;;;;4024
+"Using XBMC storage this drive?";;;;;;;;;;;;;;4025
+"XBMC addon and userdata move this drive";;;;;;;;;;;;;;4026
+"XBMC storage";;;;;;;;;;;;;;4027
+"Format drive fail to complete";;;;;;;;;;;;;;4028

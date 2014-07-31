@@ -8,7 +8,6 @@ DIALOG_MIDDLE_IMAGE_ID		= 100
 DIALOG_BOTTOM_IMAGE_ID		= 101
 
 DIALOG_LIST_ID				= 102
-DIALOG_BUTTON_OK_ID		= 301
 
 MAX_ITEM					= 12
 
@@ -44,11 +43,10 @@ class DialogHotkeys( BaseDialog ) :
 
 		# Set Dialog Size
 		realcnt = self.mItemCount
-		okButtonHeight = 50
 		if realcnt > MAX_ITEM :
 			realcnt = MAX_ITEM
 		height = ( realcnt * itemHeight )
-		self.getControl( DIALOG_MIDDLE_IMAGE_ID ).setHeight( height + okButtonHeight )
+		self.getControl( DIALOG_MIDDLE_IMAGE_ID ).setHeight( height )
 
 		# Set Dialog Bottom Image
 		middle_y, empty = self.getControl( DIALOG_MIDDLE_IMAGE_ID ).getPosition( )
@@ -59,9 +57,6 @@ class DialogHotkeys( BaseDialog ) :
 		start_x = E_WINDOW_WIDTH / 2 - DIALOG_WIDTH / 2
 		start_y = E_WINDOW_HEIGHT / 2 - middley_height / 2
 		self.getControl( DIALOG_MAIN_GROUP_ID ).setPosition( start_x, start_y )
-
-		# Set OK Button Position
-		self.getControl( DIALOG_BUTTON_OK_ID ).setPosition( DIALOG_WIDTH / 4 , height + 11 )
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
 
@@ -80,9 +75,7 @@ class DialogHotkeys( BaseDialog ) :
 			
 
 	def onClick( self, aControlId ) :
-		if aControlId == DIALOG_BUTTON_OK_ID :
-			self.Close( )
-
+		pass
 
 	def onFocus( self, aControlId ) :
 		pass

@@ -190,7 +190,7 @@
 	</page>
 
 	<page number="8" title="First Installation - Channel Search Setup" location="JET - [COLOR yellow]SET[/COLOR] - WATCH - XBMC">
-		<content name="channel_search_oscar.png">
+		<content name="channel_search_setup.png">
 			<type>image</type>
 			<posx>185</posx>
 			<posy>80</posy>
@@ -289,7 +289,7 @@
 	</page>
 
 	<page number="13" title="Info Plate" location="JET - SET - [COLOR yellow]WATCH[/COLOR] - XBMC">
-		<content name="info_plate_oscar.png">
+		<content name="info_plate_jet.png">
 			<type>image</type>
 			<posx>225</posx>
 			<posy>235</posy>
