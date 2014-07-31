@@ -430,7 +430,36 @@ class EPGWindow( BaseWindow ) :
 			else :
 				return
 
+		if 0 : #TEST CODE
+			if actionId == Action.REMOTE_0 : 
+				local = time.time()
+				local += 10*60 #10 min
+				self.mCommander.Datetime_SetSystemUTCTime( int(local) )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
+				
+			elif actionId == Action.REMOTE_1 : 
+				local = time.time()
+				local += 60 #1 min
+				self.mCommander.Datetime_SetSystemUTCTime( int(local) )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 
+			elif actionId == Action.REMOTE_3 : 
+				local = time.time()
+				local -= 10*60 #10 min
+				self.mCommander.Datetime_SetSystemUTCTime( int(local) )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
+
+			elif actionId == Action.REMOTE_4 : 
+				local = time.time()
+				local -= 60 #10 min
+				self.mCommander.Datetime_SetSystemUTCTime( int(local) )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
+				
+		
 	def onClick( self, aControlId ) :
 		if aControlId  == LIST_ID_GRID_CHANNEL :
 			self.Tune( )
@@ -2391,6 +2420,19 @@ class EPGWindow( BaseWindow ) :
 		if self.mEnableAysncTimer == False :
 			LOG_WARN( 'EnableAysncTimer is False' )		
 			return
+
+
+		#check time is over epg time range
+		screenEndTime = self.mShowingGMTTime + self.mShowingOffset + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime + self.mDataCache.Datetime_GetLocalOffset( )
+		currentTime = self.mDataCache.Datetime_GetLocalTime( )
+
+		LOG_TRACE( 'screenTime : %s' %TimeToString( screenEndTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )		
+		LOG_TRACE( 'currentTime : %s' %TimeToString( currentTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )				
+		
+		if  screenEndTime <= currentTime :
+			if ( self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT ) < E_MAX_EPG_DAYS :
+				self.UpdateAllEPGList( )
+				return
 
 		self.Load( )
 
