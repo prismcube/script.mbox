@@ -1,0 +1,328 @@
+<window>
+	<defaultcontrol always="true">104</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<posx>40</posx>
+			<posy>60</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1200</width>
+				<height>640</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>10</posx>
+				<posy>12</posy>
+				<width>1180</width>
+				<height>93</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="button" id="104">
+				<description>Close Window</description>
+				<posx>1100</posx>
+				<posy>14</posy>
+				<width>64</width>
+				<height>32</height>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<onleft>400</onleft>
+				<onright>402</onright>
+				<onup>400</onup>
+				<ondown>400</ondown>
+				<visible>system.getbool(input.enablemouse)</visible>
+			</control>
+			<control type="label" id="100">
+				<description>Title</description>
+				<posx>0</posx>
+				<posy>10</posy>
+				<width>1200</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<label>$ADDON[script.mbox 1017]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="101">
+				<description>TV List</description>
+				<posx>85</posx>
+				<posy>60</posy>
+				<width>500</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<label>$ADDON[script.mbox 1018]</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="103">
+				<description>Radio List</description>
+				<posx>620</posx>
+				<posy>60</posy>
+				<width>500</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<label>$ADDON[script.mbox 1019]</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<!-- TV List -->
+			<control type="list" id="400">
+				<posx>85</posx>
+				<posy>100</posy>
+				<width>470</width>
+				<height>360</height>
+				<onleft>403</onleft>
+				<onright>401</onright>
+				<onup>104</onup>
+				<ondown>104</ondown>
+				<scrolltime>200</scrolltime>
+				<pagecontrol>401</pagecontrol>
+				<itemlayout height="40" width="470">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>470</width>
+						<height>41</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="image">
+						<posx>430</posx>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1g.png</texture>
+						<visible>substring(ListItem.Property(IsCas),True)</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="470">
+					<control type="image">
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(400)">Conditional</animation>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>470</width>
+						<height>41</height>
+						<texture border="0,2,0,2">MenuItemFO.png</texture>
+					</control>
+					<control type="label">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="image">
+						<posx>430</posx>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1w.png</texture>
+						<visible>substring(ListItem.Property(IsCas),True)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+
+            <!-- TV Scrollbar -->
+			<control type="scrollbar" id="401">
+				<posx>550</posx>
+				<posy>95</posy>
+				<width>25</width>
+				<height>375</height>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<onleft>400</onleft>
+				<onright>402</onright>
+				<ondown>104</ondown>
+				<onup>104</onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+
+			<control type="label">
+				<posx>550</posx>
+				<posy>467</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>font12</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(400)</visible>
+			</control>
+			
+			<!-- Radio List -->
+			<control type="list" id="402">
+				<posx>620</posx>
+				<posy>100</posy>
+				<width>470</width>
+				<height>360</height>
+				<onleft>401</onleft>
+				<onright>403</onright>
+				<onup>104</onup>
+				<ondown>104</ondown>
+				<pagecontrol>403</pagecontrol>
+				<itemlayout height="40" width="470">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>470</width>
+						<height>41</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="image">
+						<posx>430</posx>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1g.png</texture>
+						<visible>substring(ListItem.Property(IsCas),True)</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="470">
+					<control type="image">
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(402)">Conditional</animation>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>470</width>
+						<height>41</height>
+						<texture border="0,2,0,2">MenuItemFO.png</texture>
+					</control>
+					<control type="label">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="image">
+						<posx>430</posx>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1w.png</texture>
+						<visible>substring(ListItem.Property(IsCas),True)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+
+	        <!-- Radio Scrollbar -->
+			<control type="scrollbar" id="403">
+				<posx>1082</posx>
+				<posy>95</posy>
+				<width>25</width>
+				<height>375</height>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<onleft>402</onleft>
+				<onright>400</onright>
+				<ondown>104</ondown>
+				<onup>104</onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+
+			<control type="label">
+				<posx>1062</posx>
+				<posy>467</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>font12</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(402)</visible>
+			</control>
+
+			<!--  Transponder Info -->
+			<control type="label" id="404">
+				<description>Transponder Info</description>
+				<posx>55</posx>
+				<posy>510</posy>
+				<width>1000</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<label>$ADDON[script.mbox 1020]</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<!-- Progress Bar -->
+			<control type="progress" id="200">
+				<posx>55</posx>
+				<posy>550</posy>
+				<width>1090</width>
+				<height>30</height>
+			</control>
+			<control type="label" id="405">
+				<description>Transponder Info</description>
+				<posx>90</posx>
+				<posy>583</posy>
+				<width>1000</width>
+				<height>40</height>
+				<font>font10</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="image">
+				<posx>55</posx>
+				<posy>588</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture>OSDBackNF.png</texture>
+			</control>
+		</control>
+	</controls>
+</window>
