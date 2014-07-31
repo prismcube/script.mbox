@@ -1576,6 +1576,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
+		footerModeAll = E_TAG_FALSE
+		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+			footerModeAll = E_TAG_TRUE
+		self.UpdatePropertyGUI( 'ZappingModeInfo', footerModeAll )
 
 		#current zapping backup
 		#self.mDataCache.Channel_Backup( )
@@ -2223,6 +2227,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
+		footerModeAll = E_TAG_FALSE
+		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+			footerModeAll = E_TAG_TRUE
+		self.UpdatePropertyGUI( 'ZappingModeInfo', footerModeAll )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -2373,13 +2381,14 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
 					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
 
-				mTPnum = self.mTPListByChannelHash.get( iChannel.mNumber, -1 )
-				if mTPnum == E_CONFIGURED_TUNER_1 :
-					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
-				elif mTPnum == E_CONFIGURED_TUNER_2 :
-					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
-				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-					listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
+				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+					mTPnum = self.mTPListByChannelHash.get( iChannel.mNumber, -1 )
+					if mTPnum == E_CONFIGURED_TUNER_1 :
+						listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+					elif mTPnum == E_CONFIGURED_TUNER_2 :
+						listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+					elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+						listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
 
 				if epgEvent :
 					listItem.setProperty( 'percent', '%s'% self.GetEPGDurationProgress( epgEvent.mStartTime, epgEvent.mDuration ) )
@@ -2802,7 +2811,7 @@ class ChannelListWindow( BaseWindow ) :
 		updateEnd = ( updateStart + self.mItemCount )
 		if aUpdateAll :
 			updateStart = 0
-			updateEnd = len( self.mListItems ) - 1
+			updateEnd = len( self.mListItems )
 
 		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( GetOffsetPosition( self.mCtrlListCHList ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
@@ -2939,13 +2948,14 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mIsHD and E_V1_1_HD_ICON_USE :
 				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
 
-			mTPnum = self.mTPListByChannelHash.get( iChannel.mNumber, -1 )
-			if mTPnum == E_CONFIGURED_TUNER_1 :
-				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
-			elif mTPnum == E_CONFIGURED_TUNER_2 :
-				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
-			elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-				listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+				mTPnum = self.mTPListByChannelHash.get( iChannel.mNumber, -1 )
+				if mTPnum == E_CONFIGURED_TUNER_1 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
+				elif mTPnum == E_CONFIGURED_TUNER_2 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
 
 			#LOG_TRACE( '[Edit] move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 			self.mListItems.append( listItem )

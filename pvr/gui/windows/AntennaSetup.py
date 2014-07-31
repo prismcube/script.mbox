@@ -10,16 +10,19 @@ E_ANTENNA_SETUP_DEFAULT_FOCUS_ID	=  E_ANTENNA_SETUP_SUBMENU_LIST_ID
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
-			self.mTunerConnection		= E_TUNER_ONECABLE
-			self.mTunerSignal			= E_SAMEWITH_TUNER
-			self.mTuner1Control			= E_DISEQC_1_0
-			self.mTuner2Control			= E_DISEQC_1_0
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+			if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
+				self.mTunerConnection		= E_TUNER_ONECABLE
+				self.mTunerSignal			= E_SAMEWITH_TUNER
+				self.mTuner1Control			= E_DISEQC_1_0
+				self.mTuner2Control			= E_DISEQC_1_0
+			else :
+				self.mTunerConnection		= ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
+				self.mTunerSignal			= ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
+				self.mTuner1Control			= ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
+				self.mTuner2Control			= ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
 		else :
-			self.mTunerConnection		= ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
-			self.mTunerSignal			= ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
-			self.mTuner1Control			= ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
-			self.mTuner2Control			= ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
+			self.mTuner1Control	= ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
 
 
 	def onInit( self ) :
@@ -234,25 +237,31 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def SetTunerProperty( self ) :
-		if self.mTunerConnection == E_TUNER_ONECABLE :
-			ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).SetProp( E_TUNER_LOOPTHROUGH )
-			ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).SetProp( self.mTunerSignal )
-			ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).SetProp( E_ONE_CABLE )
-			ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).SetProp( E_ONE_CABLE )
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+			if self.mTunerConnection == E_TUNER_ONECABLE :
+				ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).SetProp( E_TUNER_LOOPTHROUGH )
+				ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).SetProp( self.mTunerSignal )
+				ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).SetProp( E_ONE_CABLE )
+				ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).SetProp( E_ONE_CABLE )
+			else :
+				ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).SetProp( self.mTunerConnection )
+				ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).SetProp( self.mTunerSignal )
+				ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).SetProp( self.mTuner1Control )
+				ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).SetProp( self.mTuner2Control )
 		else :
-			ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).SetProp( self.mTunerConnection )
-			ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).SetProp( self.mTunerSignal )
 			ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).SetProp( self.mTuner1Control )
-			ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).SetProp( self.mTuner2Control )
 
 
 	def LoadTunerProperty( self ) :
-		if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
-			self.mTunerConnection		= E_TUNER_ONECABLE
-			self.mTunerSignal			= E_SAMEWITH_TUNER
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+			if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
+				self.mTunerConnection		= E_TUNER_ONECABLE
+				self.mTunerSignal			= E_SAMEWITH_TUNER
+			else :
+				self.mTunerConnection		= ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
+				self.mTunerSignal			= ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
+				self.mTuner1Control			= ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
+				self.mTuner2Control			= ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
 		else :
-			self.mTunerConnection		= ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
-			self.mTunerSignal			= ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
-			self.mTuner1Control			= ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
-			self.mTuner2Control			= ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
+			self.mTuner1Control	= ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
 

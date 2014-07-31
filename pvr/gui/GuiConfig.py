@@ -296,13 +296,18 @@ E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6
 
 E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'UniCable' ) ]
 E_LIST_TUNER2_SIGNAL				= [ MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) ]
-if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
+if pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 	E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) ]
-elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+else :
 	E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ), MR_LANG( 'UniCable' ) ]
 
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
 E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
+
+RESOLUTION_WEIGHT = pvr.GuiHelper.GetXBMCResolutionWeightBySkin( )
+def InitResolutionWeightByReload( ) :
+	global RESOLUTION_WEIGHT
+	RESOLUTION_WEIGHT = pvr.GuiHelper.GetXBMCResolutionWeightBySkin( )
 
 
 def InitTranslateByEnumList( ) :
@@ -402,6 +407,12 @@ E_CHECK_PARENTLOCK		= 1
 
 E_PIP_STOP				= 1
 E_PIP_CHECK_FORCE		= 2
+
+#timer
+E_TIMER_MODE_RECORD		= 0
+E_TIMER_MODE_VIEW 		= 1
+ONE_DAY_SECONDS			= 3600 * 24
+WEEKLY_DEFALUT_EXPIRE_DAYS = 7
 
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
@@ -517,14 +528,23 @@ E_V1_2_APPLY_VIEW_TIMER = True
 E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 E_V1_2_APPLY_PIP = True
-if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-	E_V1_2_APPLY_PIP = False
 
 E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 E_SUPPORT_MEDIA_PLAY_AV_SWITCH = True
 E_SUPPORT_EXTEND_RECORD_PATH = True
 
 E_V1_6_PIP_SINGLE_TONE = True
+E_V1_9_APPLY_WEEKLY_VIEW_TIMER = False
+
+#JET configuration
+E_FRONT_DISPLAY_ENABLE = True
+
+if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+	if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+		E_FRONT_DISPLAY_ENABLE = False
+		PRISMCUBE_REQUEST_FW_PATH = 'jet_v1.xxx.xxx'
+
+
 
 ############################ Global Function For GUI ############################
 

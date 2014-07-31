@@ -765,6 +765,22 @@
 		<font>font13</font>
 	</include>
 
+	<include name="ColorKeyImageCommonValues">
+		<posx>0</posx>
+		<posy>5</posy>
+		<width>12</width>
+		<height>12</height>
+	</include>
+
+	<include name="ColorKeyLabelCommonValues">
+		<posx>15</posx>
+		<posy>0</posy>
+		<width>130</width>
+		<height>20</height>
+		<font>font13</font>
+		<align>left</align>
+	</include>
+
 	<include name="RunningRecCommonValues">
 		<height>60</height>
 		<width>250</width>
@@ -5832,6 +5848,687 @@
 					<aspectratio aligny="top">keep</aspectratio>
 					<fadetime>IconCrossfadeTime</fadetime>
 					<texture diffuse="diffuse_mirror3.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+				</control>
+			</control>
+		</control>
+	</include>
+
+	<include name="EPGGridViewType">
+		<control type="group">
+			<!-- Timeline -->
+			<control type="grouplist" id="3701000">
+				<posx>65</posx>
+				<posy>54</posy>
+				<width>1170</width>
+				<height>30</height>
+				<align>left</align>
+				<itemgap>0</itemgap>
+				<orientation>Horizontal</orientation>
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+
+				<control type="button" id="3701010">
+					<height>30</height>
+					<width>270</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>250</textwidth>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+				</control>
+				<control type="button" id="3701001">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701002">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701003">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701004">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701005">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701006">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701007">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701008">
+					<include>TimelineCommonValues</include>
+					<label>-</label>
+				</control>
+			</control>
+			<control type="group">
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+				<control type="list" id="3702000">
+					<posx>65</posx>
+					<posy>110</posy>
+					<width>270</width>
+					<height>504</height>
+					<align>left</align>
+					<onleft></onleft>
+					<onright></onright>
+					<onup>3702000</onup>
+					<ondown>3702000</ondown>
+					<viewtype label="535">list</viewtype>
+					<scrolltime>0</scrolltime>
+					<itemlayout height="63" width="270">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>270</width>
+							<height>60</height>
+							<texture border="5">button-nofocus.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+						</control>
+						<!-- Channel Number -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>2</posy>
+							<width>185</width>
+							<height>30</height>
+							<font>font14</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>white</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<scroll>false</scroll>
+						</control>
+						<!-- Channel Name -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>32</posy>
+							<width>185</width>
+							<height>20</height>
+							<font>font14</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>white</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<scroll>false</scroll>
+							<scrollspeed>70</scrollspeed>
+						</control>
+					</itemlayout>
+					<focusedlayout height="63" width="270">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>270</width>
+							<height>60</height>
+							<texture border="5">button-nofocus.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+						</control>
+						<!-- Channel Number -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>2</posy>
+							<width>185</width>
+							<height>30</height>
+							<font>font14</font>
+							<textcolor>FF6db9e5</textcolor>
+							<selectedcolor>FF6db9e5</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<scroll>false</scroll>
+						</control>
+						<!-- Channel Name -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>32</posy>
+							<width>185</width>
+							<height>20</height>
+							<font>font14</font>
+							<textcolor>FF6db9e5</textcolor>
+							<selectedcolor>FF6db9e5</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<scroll>false</scroll>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+			
+			<!-- Grid EPG -->
+			<control type="group" id="3703000">
+				<posx>335</posx>
+				<posy>110</posy>
+				<width>800</width>
+				<height>550</height>
+				<align>left</align>
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+
+				<!-- CAS -->
+				<control type="group">
+					<posx>-269</posx>
+					<posy>504</posy>
+					<include>CASInfo</include>
+				</control>
+
+				<!-- EPG Info -->
+				<control type="label" id="3703503">
+					<posx>0</posx>
+					<posy>501</posy>
+					<width>800</width>
+					<height>40</height>
+					<font>font14</font>
+					<textcolor>FF6db9e5</textcolor>
+					<align>left</align>						
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				
+				<!-- Running Timer -->
+				<control type="button" id="3703601">
+					<include>RunningRecCommonValues</include>
+				</control>
+				<control type="button" id="3703602">
+					<include>RunningRecCommonValues</include>
+				</control>
+
+				<!-- Scheduled Timer -->
+				<control type="button" id="3703701">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703702">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703703">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703704">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703705">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703706">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703707">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703708">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703709">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703710">
+					<include>TimerCommonValues</include>
+				</control>
+
+				<control type="button" id="3703711">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703712">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703713">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703714">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703715">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703716">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703717">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703718">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703719">
+					<include>TimerCommonValues</include>
+				</control>
+				<control type="button" id="3703720">
+					<include>TimerCommonValues</include>
+				</control>
+
+				<!-- Scheduled ViewTimer -->
+				<control type="button" id="3703801">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703802">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703803">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703804">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703805">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703806">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703807">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703808">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703809">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703810">
+					<include>ViewTimerCommonValues</include>
+				</control>
+
+				<control type="button" id="3703811">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703812">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703813">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703814">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703815">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703816">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703817">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703818">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703819">
+					<include>ViewTimerCommonValues</include>
+				</control>
+				<control type="button" id="3703820">
+					<include>ViewTimerCommonValues</include>
+				</control>
+
+				<!-- Normal Grid EPG -->					
+				<control type="button" id="3703001">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703002">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703003">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703004">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703005">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703006">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703007">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703008">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703009">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703010">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703011">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703012">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703013">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703014">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703015">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703016">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703017">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703018">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703019">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703020">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703021">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703022">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703023">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703024">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703025">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703026">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703027">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703028">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703029">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703030">
+					<include>GridCommonValues</include>
+				</control>
+				
+				<control type="button" id="3703031">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703032">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703033">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703034">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703035">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703036">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703037">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703038">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703039">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703040">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703041">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703042">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703043">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703044">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703045">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703046">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703047">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703048">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703049">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703050">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703051">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703052">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703053">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703054">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703055">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703056">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703057">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703058">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703059">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703060">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703061">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703062">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703063">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703064">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703065">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703066">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703067">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703068">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703069">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703070">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703071">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703072">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703073">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703074">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703075">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703076">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703077">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703078">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703079">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703080">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703081">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703082">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703083">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703084">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703085">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703086">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703087">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703088">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703089">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703090">
+					<include>GridCommonValues</include>
+				</control>
+
+				<control type="button" id="3703091">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703092">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703093">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703094">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703095">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703096">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703097">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703098">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703099">
+					<include>GridCommonValues</include>
+				</control>
+				<control type="button" id="3703100">
+					<include>GridCommonValues</include>
+				</control>
+
+				<!-- Hidden Focus Button -->
+				<control type="button" id="3703501">
+					<height>60</height>
+					<width>270</width>
+					<textoffsetx>85</textoffsetx>
+					<textwidth>185</textwidth>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<texturefocus border="5">StackFO_white2.png</texturefocus>
+					<texturenofocus border="5">StackFO_white2.png</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<colordiffuse>75FFFFFF</colordiffuse>
+				</control>				
+
+				<!-- Current Time Indicator -->
+				<control type="image" id="3703500">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>498</height>
+					<texture>HomeSeperatorRed.png</texture>
+					<visible>substring(Window.Property(EPGMode),grid) + substring(Window.Property(EPGTimeSeperator),True)</visible>
 				</control>
 			</control>
 		</control>

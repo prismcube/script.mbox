@@ -173,7 +173,7 @@
 							<posy>6</posy>
 							<width>50</width>
 							<height>10</height>
-							<font>font15</font>
+							<font>METF_PlotTextSmall</font>
 							<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 						</control>
 					</control>

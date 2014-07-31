@@ -1575,7 +1575,7 @@
 			<control type="grouplist">
 				<posx>260</posx>
 				<posy>665</posy>
-				<width>850</width>
+				<width>1020</width>
 				<height>32</height>
 				<align>left</align>
 				<itemgap>0</itemgap>
@@ -1591,7 +1591,10 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
+
+				<!-- Prev & Next Group -->
 				<control type="group">
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -1603,6 +1606,7 @@
 					</control>
 				</control>
 				<control type="group">
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -1611,6 +1615,66 @@
 					<control type="label">
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1203]</label>
+					</control>
+				</control>
+
+				<!-- Color Keys : Reserved -->
+				<control type="group">
+					<posx>0</posx>
+					<posy>0</posy>
+					<!--visible>substring(Window.Property(ZappingModeInfo),true)</visible-->
+					<visible>false</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FFFF0000</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1204]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>150</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FF00FF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1003]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>300</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FFFFFF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1205]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>450</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FF0050FF</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1206]</label>
+						</control>
 					</control>
 				</control>
 			</control>
@@ -4997,10 +5061,11 @@
 
 			<control type="group" id="3709003">
 				<include>DefaultWindowFade</include>
-				<include>DefaultCommonEPGView</include> <!-- Default Common EPG View ID 	= 3500 -->
-				<include>DefaultBigEPGView</include>	<!-- Default Big EPG View ID		= 3510 -->
-				<include>DefaultGridEPGView</include>	<!-- Default Grid EPG View ID		= 2000 -->
+				<include>DefaultCommonEPGView</include> 	<!-- Common EPG View ID 	= 3500 -->
+				<include>DefaultBigEPGView</include>		<!-- Big EPG View ID		= 3510 -->
 			</control>
+
+			<include>DefaultGridEPGView</include>			<!-- Grid View id 		= 2000 -->
 
 			<!-- Current Channel Name in Channel Mode -->
 			<control type="group">
@@ -6192,7 +6257,7 @@
 		<include>DefaultCommonDateTime</include>
 		<include>DefaultCommonLiveStatus</include>
 
-		<!-- PIG Image & Radio Background Image -->
+		<!-- PIG Image & Radio Mode -->
 		<control type="group">
 			<control type="image" id="1008800">
 				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),5000000)</visible>

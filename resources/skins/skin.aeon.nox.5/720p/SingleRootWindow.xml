@@ -1608,11 +1608,12 @@
 			<control type="grouplist">
 				<posx>80</posx>
 				<posy>675</posy>
-				<width>850</width>
+				<width>1020</width>
 				<height>32</height>
 				<align>left</align>
 				<itemgap>0</itemgap>
 				<orientation>Horizontal</orientation>
+				<!-- Context Menu & Extra Options -->
 				<control type="group">
 					<include>FooterCommonValues</include>
 					<control type="image">
@@ -1635,7 +1636,10 @@
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
 				</control>
+
+				<!-- Prev & Next Group -->
 				<control type="group">
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 					<include>FooterCommonValues</include>
 					<control type="image">
 						<include>FooterImageCommonValues</include>
@@ -1647,6 +1651,7 @@
 					</control>
 				</control>
 				<control type="group">
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 					<include>FooterCommonValues</include>
 					<control type="image">
 						<include>FooterImageCommonValues</include>
@@ -1655,6 +1660,66 @@
 					<control type="label">
 						<include>FooterLabelCommonValues</include>
 						<label>$ADDON[script.mbox 1203]</label>
+					</control>
+				</control>
+
+				<!-- Color Keys : Reserved -->
+				<control type="group">
+					<posx>0</posx>
+					<posy>0</posy>
+					<!--visible>substring(Window.Property(ZappingModeInfo),true)</visible-->
+					<visible>false</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FFFF0000</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1204]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>150</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FF00FF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1003]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>300</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FFFFFF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1205]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>450</posx>
+						<posy>0</posy>
+						<control type="image">
+							<include>ColorKeyImageCommonValues</include>
+							<colordiffuse>FF0050FF</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<include>ColorKeyLabelCommonValues</include>
+							<label>$ADDON[script.mbox 1206]</label>
+						</control>
 					</control>
 				</control>
 			</control>
@@ -3051,7 +3116,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label></label>
 							</control>
@@ -3070,7 +3135,7 @@
 								<posy>0</posy>
 								<width>80</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3089,7 +3154,7 @@
 								<posy>0</posy>
 								<width>50</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3108,7 +3173,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1124]</label>
 							</control>
@@ -3127,7 +3192,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font13</font>
+								<font>font12</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1060]</label>
 							</control>
@@ -3665,7 +3730,6 @@
 					<control type="group" id="1501300">
 						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
 						<control type="progress" id="1501301">
-							<description>Progressbar</description>
 							<posx>0</posx>
 							<posy>13</posy>
 							<width>100</width>
@@ -3675,7 +3739,7 @@
 						<control type="label" id="1501302">
 							<posx>105</posx>
 							<posy>0</posy>
-							<width>150</width>
+							<width>200</width>
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -4355,17 +4419,17 @@
 						<width>490</width>
 						<height>720</height>
 						<texture border="40">mediamenu_back.png</texture>
-						<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
 					</control>
 				</control>
 
 				<control type="group" id="3309001">
 					<posx>-220</posx>
 					<posy>0</posy>
-					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3309001).HasFocus + !Control.HasFocus(3300104) + !Control.HasFocus(3300105)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">WindowClose</animation>
-					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3309001).HasFocus + !Control.HasFocus(3300105)">conditional</animation>
+					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">WindowClose</animation>
+					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
 					<control type="button">
 						<description>Invisible button for mouse</description>
 						<posx>-15</posx>
@@ -4376,27 +4440,6 @@
 						<texturenofocus>-</texturenofocus>
 						<texturefocus>-</texturefocus>
 						<visible>true</visible>
-					</control>
-					<control type="grouplist" id="3309010">
-						<posx>10</posx>
-						<posy>210</posy>
-						<width>240</width>
-						<height>550</height>
-						<onleft>3309000</onleft>
-						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
-						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
-						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3309010</onup>
-						<ondown>3309010</ondown>
-						<itemgap>0</itemgap>
-						<control type="radiobutton" id="3300200">
-							<description>Hide Watched</description>
-							<textwidth>170</textwidth>
-							<include>SlideMenuButtonValues</include>
-							<label>$ADDON[script.mbox 1008]</label>
-						</control>
-						<visible>Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus</visible>
 					</control>
 					<control type="list" id="3309050">
 						<posx>0</posx>
@@ -4410,7 +4453,6 @@
 						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
 						<onup>3309020</onup>
 						<ondown>3309020</ondown>
-						<visible>![Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus]</visible>
 						<itemlayout height="40" width="150">
 							<control type="image">
 								<posx>0</posx>
@@ -4914,685 +4956,7 @@
 				<include>EPGCurrentViewType</include>		<!-- Current & Following View ID		= 3510 -->
 			</control>
 
-			<!-- EPG Grid Mode -->
-			<control type="group">
-				<!-- Timeline -->
-				<control type="grouplist" id="3701000">
-					<posx>65</posx>
-					<posy>54</posy>
-					<width>1170</width>
-					<height>30</height>
-					<align>left</align>
-					<itemgap>0</itemgap>
-					<orientation>Horizontal</orientation>
-					<visible>substring(Window.Property(EPGMode),grid)</visible>
-
-					<control type="button" id="3701010">
-						<height>30</height>
-						<width>270</width>
-						<textoffsetx>10</textoffsetx>
-						<textwidth>250</textwidth>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font13</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
-						<texturenofocus border="5">button-nofocus.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-					</control>
-					<control type="button" id="3701001">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701002">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701003">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701004">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701005">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701006">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701007">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-					<control type="button" id="3701008">
-						<include>TimelineCommonValues</include>
-						<label>-</label>
-					</control>
-				</control>
-				<control type="group">
-					<visible>substring(Window.Property(EPGMode),grid)</visible>
-					<control type="list" id="3702000">
-						<posx>65</posx>
-						<posy>110</posy>
-						<width>270</width>
-						<height>504</height>
-						<align>left</align>
-						<onleft></onleft>
-						<onright></onright>
-						<onup>3702000</onup>
-						<ondown>3702000</ondown>
-						<viewtype label="535">list</viewtype>
-						<scrolltime>0</scrolltime>
-						<itemlayout height="63" width="270">
-							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>270</width>
-								<height>60</height>
-								<texture border="5">button-nofocus.png</texture>
-							</control>
-							<control type="image">
-								<posx>0</posx>
-								<posy>5</posy>
-								<width>80</width>
-								<height>50</height>
-								<texture>Logo_Background.png</texture>
-							</control>
-							<control type="image">
-								<posx>0</posx>
-								<posy>5</posy>
-								<width>80</width>
-								<height>50</height>
-								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
-							</control>
-							<!-- Channel Number -->
-							<control type="label">
-								<posx>85</posx>
-								<posy>2</posy>
-								<width>185</width>
-								<height>30</height>
-								<font>font14</font>
-								<textcolor>white</textcolor>
-								<selectedcolor>white</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<label>$INFO[ListItem.Label]</label>
-								<scroll>false</scroll>
-							</control>
-							<!-- Channel Name -->
-							<control type="label">
-								<posx>85</posx>
-								<posy>32</posy>
-								<width>185</width>
-								<height>20</height>
-								<font>font14</font>
-								<textcolor>white</textcolor>
-								<selectedcolor>white</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<label>$INFO[ListItem.Label2]</label>
-								<scroll>false</scroll>
-								<scrollspeed>70</scrollspeed>
-							</control>
-						</itemlayout>
-						<focusedlayout height="63" width="270">
-							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>270</width>
-								<height>60</height>
-								<texture border="5">button-nofocus.png</texture>
-							</control>
-							<control type="image">
-								<posx>0</posx>
-								<posy>5</posy>
-								<width>80</width>
-								<height>50</height>
-								<texture>Logo_Background.png</texture>
-							</control>
-							<control type="image">
-								<posx>0</posx>
-								<posy>5</posy>
-								<width>80</width>
-								<height>50</height>
-								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
-							</control>
-							<!-- Channel Number -->
-							<control type="label">
-								<posx>85</posx>
-								<posy>2</posy>
-								<width>185</width>
-								<height>30</height>
-								<font>font14</font>
-								<textcolor>FF6db9e5</textcolor>
-								<selectedcolor>FF6db9e5</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<label>$INFO[ListItem.Label]</label>
-								<scroll>false</scroll>
-							</control>
-							<!-- Channel Name -->
-							<control type="label">
-								<posx>85</posx>
-								<posy>32</posy>
-								<width>185</width>
-								<height>20</height>
-								<font>font14</font>
-								<textcolor>FF6db9e5</textcolor>
-								<selectedcolor>FF6db9e5</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<label>$INFO[ListItem.Label2]</label>
-								<scroll>false</scroll>
-							</control>
-						</focusedlayout>
-					</control>
-				</control>
-				
-				<!-- Grid EPG -->
-				<control type="group" id="3703000">
-					<posx>335</posx>
-					<posy>110</posy>
-					<width>800</width>
-					<height>550</height>
-					<align>left</align>
-					<visible>substring(Window.Property(EPGMode),grid)</visible>
-
-					<!-- CAS -->
-					<control type="group">
-						<posx>-269</posx>
-						<posy>504</posy>
-						<include>CASInfo</include>
-					</control>
-
-					<!-- EPG Info -->
-					<control type="label" id="3703503">
-						<posx>0</posx>
-						<posy>501</posy>
-						<width>800</width>
-						<height>40</height>
-						<font>font14</font>
-						<textcolor>FF6db9e5</textcolor>
-						<align>left</align>						
-						<aligny>center</aligny>
-						<label></label>
-					</control>
-					
-					<!-- Running Timer -->
-					<control type="button" id="3703601">
-						<include>RunningRecCommonValues</include>
-					</control>
-					<control type="button" id="3703602">
-						<include>RunningRecCommonValues</include>
-					</control>
-
-					<!-- Scheduled Timer -->
-					<control type="button" id="3703701">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703702">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703703">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703704">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703705">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703706">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703707">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703708">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703709">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703710">
-						<include>TimerCommonValues</include>
-					</control>
-
-					<control type="button" id="3703711">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703712">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703713">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703714">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703715">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703716">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703717">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703718">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703719">
-						<include>TimerCommonValues</include>
-					</control>
-					<control type="button" id="3703720">
-						<include>TimerCommonValues</include>
-					</control>
-
-					<!-- Scheduled ViewTimer -->
-					<control type="button" id="3703801">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703802">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703803">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703804">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703805">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703806">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703807">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703808">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703809">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703810">
-						<include>ViewTimerCommonValues</include>
-					</control>
-
-					<control type="button" id="3703811">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703812">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703813">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703814">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703815">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703816">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703817">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703818">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703819">
-						<include>ViewTimerCommonValues</include>
-					</control>
-					<control type="button" id="3703820">
-						<include>ViewTimerCommonValues</include>
-					</control>
-
-					<!-- Normal Grid EPG -->					
-					<control type="button" id="3703001">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703002">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703003">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703004">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703005">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703006">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703007">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703008">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703009">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703010">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703011">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703012">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703013">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703014">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703015">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703016">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703017">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703018">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703019">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703020">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703021">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703022">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703023">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703024">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703025">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703026">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703027">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703028">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703029">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703030">
-						<include>GridCommonValues</include>
-					</control>
-					
-					<control type="button" id="3703031">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703032">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703033">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703034">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703035">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703036">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703037">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703038">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703039">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703040">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703041">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703042">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703043">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703044">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703045">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703046">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703047">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703048">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703049">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703050">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703051">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703052">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703053">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703054">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703055">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703056">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703057">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703058">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703059">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703060">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703061">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703062">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703063">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703064">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703065">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703066">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703067">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703068">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703069">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703070">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703071">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703072">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703073">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703074">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703075">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703076">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703077">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703078">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703079">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703080">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703081">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703082">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703083">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703084">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703085">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703086">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703087">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703088">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703089">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703090">
-						<include>GridCommonValues</include>
-					</control>
-
-					<control type="button" id="3703091">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703092">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703093">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703094">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703095">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703096">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703097">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703098">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703099">
-						<include>GridCommonValues</include>
-					</control>
-					<control type="button" id="3703100">
-						<include>GridCommonValues</include>
-					</control>
-
-					<!-- Hidden Focus Button -->
-					<control type="button" id="3703501">
-						<height>60</height>
-						<width>270</width>
-						<textoffsetx>85</textoffsetx>
-						<textwidth>185</textwidth>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font13</font>
-						<texturefocus border="5">StackFO_white2.png</texturefocus>
-						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-						<colordiffuse>75FFFFFF</colordiffuse>
-					</control>				
-
-					<!-- Current Time Indicator -->
-					<control type="image" id="3703500">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1</width>
-						<height>498</height>
-						<texture>HomeSeperatorRed.png</texture>
-						<visible>substring(Window.Property(EPGMode),grid) + substring(Window.Property(EPGTimeSeperator),True)</visible>
-					</control>
-				</control>
-			</control>
+			<include>EPGGridViewType</include>				<!-- Grid View ID 					= 2000 -->
 
 			<!-- Current Channel Name in Channel Mode -->
 			<control type="group">
@@ -6759,14 +6123,14 @@
 
 				<!-- Item & Page Number -->
 				<control type="label">
-					<posx>897</posx>
-					<posy>56r</posy>
-					<width>340</width>
+					<posx>1275</posx>
+					<posy>42</posy>
+					<width>240</width>
 					<height>20</height>
-					<font>font13_title</font>
-					<textcolor>grey</textcolor>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
 					<scroll>false</scroll>
-					<align>left</align>
+					<align>right</align>
 					<aligny>center</aligny>
 					<label>$INFO[Container(4601001).NumItems] $ADDON[script.mbox 1106][COLOR grey3] | $INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR]</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
@@ -6788,7 +6152,7 @@
 		<include>DefaultTime</include>
 		<include>DefaultCommonLiveStatus</include>
 
-		<!-- PIP in Radio Mode -->
+		<!-- PIG Image & Radio Mode -->
 		<control type="group">
 			<control type="image" id="1008800">
 				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),5000000)</visible>

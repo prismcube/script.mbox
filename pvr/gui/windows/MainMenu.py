@@ -95,9 +95,11 @@ class MainMenu( BaseWindow ) :
 		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 			self.getControl( BUTTON_ID_EDIT_SATELLITE).setVisible( True )
 			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( True )
+			self.getControl( BUTTON_ID_ANTENNA_SETUP).setVisible( True )
 		else :
 			self.getControl( BUTTON_ID_EDIT_SATELLITE).setVisible( False )
 			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( False )
+			self.getControl( BUTTON_ID_ANTENNA_SETUP).setVisible( False )
 
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
@@ -167,11 +169,7 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 				elif aControlId == BUTTON_ID_ANTENNA_SETUP :
-					if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-					elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
-
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
 					if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )

@@ -109,6 +109,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCurrentChannel.mError = -1
 		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
 
+
 	def onInit( self ) :
 		#self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -142,7 +143,8 @@ class DialogPIP( BaseDialog ) :
 
 		#init tunable list : loop though or record full
 		if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or \
-		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH :
+		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH or \
+		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 			self.mDataCache.PIP_SetTunableList( )
 			LOG_TRACE( '[PIP] init tunable list. loopthough or rec full' )
 
@@ -610,7 +612,16 @@ class DialogPIP( BaseDialog ) :
 			#base overlay for radio mode
 			bh = h - 10
 			bw = w - 10
-			self.mCtrlBasePIPGroup.setPosition( x, y )
+			ax = x
+			ay = y
+			#rootWindow calibration pos, width by change skins 1080p
+			if self.mDataCache.GetMediaCenter( ) :
+				bh = int( ( h - 10 ) * RESOLUTION_WEIGHT )
+				bw = int( ( w - 10 ) * RESOLUTION_WEIGHT )
+				ax = int( x * RESOLUTION_WEIGHT )
+				ay = int( y * RESOLUTION_WEIGHT )
+
+			self.mCtrlBasePIPGroup.setPosition( ax, ay )
 			self.mCtrlBasePIPImageOverlay.setWidth( bw )
 			self.mCtrlBasePIPImageOverlay.setHeight( bh )
 			self.mCtrlBasePIPLabelLock.setWidth( bw )
@@ -645,6 +656,11 @@ class DialogPIP( BaseDialog ) :
 			if self.mDataCache.GetMediaCenter( ) :
 				WinMgr.GetInstance( ).LoadSkinPosition( )
 				self.mLastWindow = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+				currentSkinName = XBMC_GetCurrentSkinName( )
+				if WinMgr.GetInstance( ).mSkinName != currentSkinName :
+					#LOG_TRACE( 'change skin name[%s]'% currentSkinName )
+					InitResolutionWeightByReload( )
+
 				LOG_TRACE( '[PIP] Check current window[%s]'% xbmcgui.getCurrentWindowId() )
 			self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
 			self.mCtrlBasePIPImageBlank     = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_BLANK )
@@ -687,6 +703,10 @@ class DialogPIP( BaseDialog ) :
 
 			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
 			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
+
+		#ToDO: problem audio sync in JET
+		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+			mute = False
 
 		self.mHotKeyAvailableGreen = full
 		self.mHotKeyAvailableYellow= mute
@@ -1400,21 +1420,31 @@ class DialogPIP( BaseDialog ) :
 		#base overlay for radio mode
 		bh = h - 10
 		bw = w - 10
-		self.mCtrlBasePIPGroup.setPosition( x, y )
-		self.mCtrlBasePIPImageOverlay.setWidth( bw )
-		self.mCtrlBasePIPImageOverlay.setHeight( bh )
-		self.mCtrlBasePIPLabelLock.setWidth( bw )
-		self.mCtrlBasePIPLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		self.mCtrlBasePIPLabelScramble.setWidth( bw )
-		self.mCtrlBasePIPLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		self.mCtrlBasePIPLabelNoSignal.setWidth( bw )
-		self.mCtrlBasePIPLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		self.mCtrlBasePIPLabelNoService.setWidth( bw )
-		self.mCtrlBasePIPLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		#self.mCtrlLabelChannel.setPosition( 5, bh - 25 )
+		ah = bh
+		aw = bw
+		ax = x
+		ay = y
+		#rootWindow calibration pos, width by change skins 1080p
+		if self.mDataCache.GetMediaCenter( ) :
+			ah = int( (h - 10) * RESOLUTION_WEIGHT )
+			aw = int( (w - 10) * RESOLUTION_WEIGHT )
+			ax = int( x * RESOLUTION_WEIGHT )
+			ay = int( y * RESOLUTION_WEIGHT )
+		self.mCtrlBasePIPGroup.setPosition( ax, ay )
+		self.mCtrlBasePIPImageOverlay.setWidth( aw )
+		self.mCtrlBasePIPImageOverlay.setHeight( ah )
+		self.mCtrlBasePIPLabelLock.setWidth( aw )
+		self.mCtrlBasePIPLabelLock.setPosition( 0, int( ( ah - 10 ) / 2 ) )
+		self.mCtrlBasePIPLabelScramble.setWidth( aw )
+		self.mCtrlBasePIPLabelScramble.setPosition( 0, int( ( ah - 10 ) / 2 ) )
+		self.mCtrlBasePIPLabelNoSignal.setWidth( aw )
+		self.mCtrlBasePIPLabelNoSignal.setPosition( 0, int( ( ah - 10 ) / 2 ) )
+		self.mCtrlBasePIPLabelNoService.setWidth( aw )
+		self.mCtrlBasePIPLabelNoService.setPosition( 0, int( ( ah - 10 ) / 2 ) )
+		#self.mCtrlLabelChannel.setPosition( 5, ah - 25 )
 
-		self.mCtrlBasePIPImageBlank.setWidth( bw )
-		self.mCtrlBasePIPImageBlank.setHeight( bh )
+		self.mCtrlBasePIPImageBlank.setWidth( aw )
+		self.mCtrlBasePIPImageBlank.setHeight( ah )
 
 		"""
 		if self.mDataCache.GetMediaCenter( ) :

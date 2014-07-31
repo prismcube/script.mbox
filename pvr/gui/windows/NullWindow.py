@@ -588,11 +588,9 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			#self.DialogPopupOK( actionId )
 			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			#self.DialogPopupOK( actionId )
 			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :

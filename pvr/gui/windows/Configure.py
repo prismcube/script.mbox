@@ -513,7 +513,6 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FORMAT_HDD :
 			if groupId == E_Input04 :
 				SDExist = self.mCommander.MMC_MountCheck( )
-				print 'dhkim test SDExist = %s' % SDExist
 				if SDExist :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
@@ -528,9 +527,6 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input05 :
 				driveList = self.mCommander.USB_GetMountPath( )
-				print 'dhkim test driveList = %s' % driveList
-				for drive in driveList :
-					print 'dhkim test drive real name = %s' % drive.mParam
 				if driveList and len( driveList ) > 0 and driveList[0].mError == 0 :
 					context = []
 					for i in range( len( driveList ) ) :
@@ -652,6 +648,9 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input03 :
 				self.RefreshByVolumeList( )
+
+			else :
+				self.ControlSelect( )
 
 	 	elif selectedId == E_ETC :
 	 		self.ETCSetting( groupId )
@@ -1017,19 +1016,19 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
+
+			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR or \
+			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( ) :
 				self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected' ) )
 				self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )				
-			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
-			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
-			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
-
-			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			else :
 				visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
+			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
+			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
 
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
@@ -2007,9 +2006,13 @@ class Configure( SettingWindow ) :
 		dialog.SetDialogProperty( MR_LANG( 'Format your drive?' ), MR_LANG( 'Everything on your drive will be erased' ), MR_LANG( 'This will take a while' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC addon and userdata move this drive' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetProp( 3 )
 			splitName = aDriveList[ aNumber ].mParam.split( '/' )
 			splitName = splitName[ len( splitName ) - 1 ]
-			print 'dhkim test splitName = %s' % splitName
 			self.OpenBusyDialog( )
 			ret = self.mCommander.Make_Exclusive_HDD( splitName )
 			if ret == False :

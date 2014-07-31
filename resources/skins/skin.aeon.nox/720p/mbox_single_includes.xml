@@ -851,6 +851,22 @@
 		<font>Font_Reg14</font>
 	</include>
 
+	<include name="ColorKeyImageCommonValues">
+		<posx>0</posx>
+		<posy>5</posy>
+		<width>12</width>
+		<height>12</height>
+	</include>
+
+	<include name="ColorKeyLabelCommonValues">
+		<posx>15</posx>
+		<posy>0</posy>
+		<width>130</width>
+		<height>20</height>
+		<font>font13</font>
+		<align>left</align>
+	</include>
+
 	<include name="DefaultButtonGridChannelValues">
 		<height>60</height>
 		<width>270</width>

@@ -950,44 +950,141 @@ Search for window name
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
 				</control>
+
+				<!-- Prev & Next Group -->
 				<control type="group">
-					<posx>400</posx>
-					<posy>0</posy>
-					<control type="image">
-						<posx>20</posx>
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
+					<control type="group">
+						<posx>400</posx>
 						<posy>0</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>OSDRewindNF.png</texture>
+						<control type="image">
+							<posx>20</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>OSDRewindNF.png</texture>
+						</control>
+						<control type="label">
+							<description>Previous Group</description>
+							<posx>58</posx>
+							<posy>5</posy>
+							<width>160</width>
+							<height>20</height>
+							<font>font10</font>
+							<label>$ADDON[script.mbox 1202]</label>
+						</control>
 					</control>
-					<control type="label">
-						<description>Previous Group</description>
-						<posx>58</posx>
-						<posy>5</posy>
-						<width>160</width>
-						<height>20</height>
-						<font>font10</font>
-						<label>$ADDON[script.mbox 1202]</label>
+					<control type="group">
+						<posx>600</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>20</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>OSDForwardNF.png</texture>
+						</control>
+						<control type="label">
+							<description>Next Group</description>
+							<posx>58</posx>
+							<posy>5</posy>
+							<width>160</width>
+							<height>20</height>
+							<font>font10</font>
+							<label>$ADDON[script.mbox 1203]</label>
+						</control>
 					</control>
 				</control>
+
+				<!-- Color Keys : Reserved -->
 				<control type="group">
-					<posx>600</posx>
-					<posy>0</posy>
-					<control type="image">
-						<posx>20</posx>
+					<posx>420</posx>
+					<posy>5</posy>
+					<!--visible>substring(Window.Property(ZappingModeInfo),true)</visible-->
+					<visible>false</visible>
+					<control type="group">
+						<posx>0</posx>
 						<posy>0</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>OSDForwardNF.png</texture>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFF0000</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1204]</label>
+						</control>
 					</control>
-					<control type="label">
-						<description>Next Group</description>
-						<posx>58</posx>
-						<posy>5</posy>
-						<width>160</width>
-						<height>20</height>
-						<font>font10</font>
-						<label>$ADDON[script.mbox 1203]</label>
+					<control type="group">
+						<posx>120</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF00FF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1003]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>240</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFFFF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1205]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>360</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF0050FF</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1206]</label>
+						</control>
 					</control>
 				</control>
 			</control>
@@ -4028,8 +4125,24 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="image">
+							<posx>-50</posx>
+							<posy>5</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-50</posx>
+							<posy>5</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
 						<control type="progress" id="1501301">
-							<posx>0</posx>
+							<posx>-20</posx>
 							<posy>15</posy>
 							<width>100</width>
 							<height>16</height>
@@ -4037,7 +4150,7 @@ Search for window name
 							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
 						</control>
 						<control type="label" id="1501302">
-							<posx>105</posx>
+							<posx>85</posx>
 							<posy>2</posy>
 							<width>150</width>
 							<height>40</height>
@@ -4046,22 +4159,6 @@ Search for window name
 							<label>$INFO[Window.Property(NetVolumeUse)]</label>
 							<textcolor>grey3</textcolor>
 							<font>font12</font>
-						</control>
-						<control type="image">
-							<posx>-30</posx>
-							<posy>5</posy>
-							<width>25</width>
-							<height>25</height>
-							<texture>connected.png</texture>
-							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
-						</control>
-						<control type="image">
-							<posx>-30</posx>
-							<posy>5</posy>
-							<width>25</width>
-							<height>25</height>
-							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
-							<texture>disconnected.png</texture>
 						</control>
 					</control>
 				</control>
@@ -4301,7 +4398,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
+				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
 
@@ -5554,8 +5651,9 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<include>DefaultCommonEPGView</include>		<!-- Common View id = 3500	-->
 				<include>DefaultBigEPGView</include>		<!-- Big View id = 3510		-->
-				<include>DefaultGridEPGView</include>		<!-- Grid View id = 2000		-->
 			</control>
+
+			<include>DefaultGridEPGView</include>			<!-- Grid View id = 2000		-->
 
 			<!-- Slide Menu -->
 			<control type="group">

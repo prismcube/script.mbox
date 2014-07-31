@@ -252,6 +252,8 @@ class FastScan( SettingWindow ) :
 
 
 	def DisableControl( self ) :
+		if self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_DUAL :
+			self.SetEnableControl( E_Input01, False )
 		if self.mProviderStruct.mHasHDList == 0 :
 			self.SetEnableControl( E_SpinEx01, False )
 		else :
