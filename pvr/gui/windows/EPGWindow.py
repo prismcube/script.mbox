@@ -2361,16 +2361,19 @@ class EPGWindow( BaseWindow ) :
 
 
 		#check time is over epg time range
-		screenEndTime = self.mShowingGMTTime + self.mShowingOffset + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime + self.mDataCache.Datetime_GetLocalOffset( )
-		currentTime = self.mDataCache.Datetime_GetLocalTime( )
+		if self.mEPGMode == E_VIEW_GRID  and self.mShowingOffset == 0 :
+			screenEndTime = self.mShowingGMTTime + self.mShowingOffset + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime + self.mDataCache.Datetime_GetLocalOffset( )
+			currentTime = self.mDataCache.Datetime_GetLocalTime( )
 
-		LOG_TRACE( 'screenTime : %s' %TimeToString( screenEndTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )		
-		LOG_TRACE( 'currentTime : %s' %TimeToString( currentTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )				
-		
-		if  screenEndTime <= currentTime :
-			if ( self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT ) < E_MAX_EPG_DAYS :
-				self.UpdateAllEPGList( )
-				return
+			LOG_TRACE( 'screenTime : %s' %TimeToString( screenEndTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )		
+			LOG_TRACE( 'currentTime : %s' %TimeToString( currentTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )				
+			
+			if  screenEndTime <= currentTime :
+				if ( self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT ) < E_MAX_EPG_DAYS :
+					self.mGridKeepFocus = True
+					self.UpdateAllEPGList( )
+					self.RestartEPGUpdateTimer( )					
+					return
 
 		self.Load( )
 
