@@ -31,6 +31,9 @@ E_ETC					= 10
 E_ETHERNET				= 100
 E_WIFI					= 101
 
+FORMAT_HARD_DISK		= 0
+FORMAT_SD_MEMORY		= 1
+
 
 TIME_SEC_CHECK_NET_STATUS = 0.05
 HDD_RESERVED_USE		= 70
@@ -231,6 +234,8 @@ class Configure( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.getFocusId( ) == E_CONFIGURE_SUBMENU_LIST_ID :
+			return
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 
@@ -506,6 +511,38 @@ class Configure( SettingWindow ) :
 	 			self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FORMAT_HDD :
+			if groupId == E_Input04 :
+				SDExist = self.mCommander.MMC_MountCheck( )
+				if SDExist :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.DedicatedFormat( FORMAT_SD_MEMORY )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a SD memory card' ) )
+					dialog.doModal( )
+				return
+
+			elif groupId == E_Input05 :
+				driveList = self.mCommander.USB_GetMountPath( )
+				if driveList and len( driveList ) > 0 and driveList[0].mError == 0 :
+					context = []
+					for i in range( len( driveList ) ) :
+						context.append( ContextItem( driveList[i].mParam, i ) )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+					dialog.SetProperty( context )
+					dialog.doModal( )
+					contextAction = dialog.GetSelectedAction( )
+					if contextAction >= 0 :
+						self.StartExclusiveFormat( driveList, contextAction )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a exclusive drive' ) )
+					dialog.doModal( )
+				return
+
 			if CheckHdd( ) :
 				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -535,7 +572,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Format your hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.DedicatedFormat( )
+						self.DedicatedFormat( FORMAT_HARD_DISK )
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -607,8 +644,7 @@ class Configure( SettingWindow ) :
 				self.RefreshByVolumeList( )
 
 			else :
-				if groupId == E_SpinEx03 or groupId == E_SpinEx04 :
-					self.ControlSelect( )
+				self.ControlSelect( )
 
 	 	elif selectedId == E_ETC :
 	 		self.ETCSetting( groupId )
@@ -976,7 +1012,7 @@ class Configure( SettingWindow ) :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
 			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR or \
-			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( True ) :
+			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( ) :
 				self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected' ) )
 				self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )				
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
@@ -1253,6 +1289,9 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press OK button to remove everything in the media partition' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.AddInputControl( E_Input04, MR_LANG( 'Format SD Card' ), '', MR_LANG( 'Press OK button to erase your SD memory card' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Format exclusive drive' ), '', MR_LANG( 'Press OK button to erase your exclusive drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -1262,8 +1301,16 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, False )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
+
+			externcontrols = [ E_Input04, E_Input05 ]
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.SetVisibleControls( externcontrols, True )
+				self.SetEnableControls( externcontrols, True )
+			else :
+				self.SetVisibleControls( externcontrols, False )
+				self.SetEnableControls( externcontrols, False )
 
 			self.InitControl( )
 
@@ -1795,14 +1842,14 @@ class Configure( SettingWindow ) :
 			time.sleep( TIME_SEC_CHECK_NET_STATUS )
 
 
-	def DedicatedFormat( self ) :
+	def DedicatedFormat( self, aType ) :
 		self.mUseUsbBackup = False
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' )% NEW_LINE )
+		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' ) % NEW_LINE )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
-				self.BackupAndFormat( )
+				self.BackupAndFormat( aType )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find backup data' ) )
@@ -1812,10 +1859,10 @@ class Configure( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Start formatting without making a backup?' ), MR_LANG( 'Formatting HDD cannot be undone!' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.MakeDedicate( )
+				self.MakeDedicate( aType )
 
 
-	def BackupAndFormat( self ) :
+	def BackupAndFormat( self, aType ) :
 		usbpath = self.mDataCache.USB_GetMountPath( )
 		if usbpath :
 			size_addons = GetDirectorySize( '/mnt/hdd0/program/.xbmc/addons' )
@@ -1826,15 +1873,15 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
 				dialog.doModal( )
 			else :
-				self.CopyBackupData( usbpath )
+				self.CopyBackupData( usbpath, aType )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert a USB flash memory' ) )
 			dialog.doModal( )
 
 
-	def CopyBackupData( self, aUsbpath ) :
-		self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Now backing up your user data' ), ING ), 30 )
+	def CopyBackupData( self, aUsbpath, aType ) :
+		self.mProgressThread = self.ShowProgress( '%s%s' % ( MR_LANG( 'Now backing up your user data' ), ING ), 30 )
 		if CheckDirectory( aUsbpath + '/RubyBackup/' ) :
 			RemoveDirectory( aUsbpath + '/RubyBackup/' )
 
@@ -1847,7 +1894,7 @@ class Configure( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Start formatting HDD?' ), MR_LANG( 'Press OK button to format your HDD now' ) )
 			dialog.doModal( )
 			self.mUseUsbBackup = True
-			self.MakeDedicate( )
+			self.MakeDedicate( aType )
 		else :
 			self.CloseProgress( )
 			time.sleep( 0.5 )
@@ -1856,38 +1903,47 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 
 
-	def MakeDedicate( self ) :
-		maxsize = self.GetMaxMediaSize( )
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
-		dialog.doModal( )
-
-		mediadefault = 100
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
-		dialog.doModal( )
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			mediadefault = dialog.GetString( )
-
-		if maxsize < int( mediadefault ) :
+	def MakeDedicate( self, aType ) :
+		if aType == FORMAT_HARD_DISK :
+			maxsize = self.GetMaxMediaSize( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
 			dialog.doModal( )
-			return
 
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
-		dialog.doModal( )
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			mediadefault = 100
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				mediadefault = dialog.GetString( )
+
+			if maxsize < int( mediadefault ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+				dialog.doModal( )
+				return
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.OpenBusyDialog( )
+				ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
+				ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
+				self.mDataCache.Player_AVBlank( True )
+				if self.mUseUsbBackup :
+					self.MakeBackupScript( )
+					CreateDirectory( E_DEFAULT_BACKUP_PATH )
+					os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
+				self.mCommander.Make_Dedicated_HDD( )
+		else :
 			self.OpenBusyDialog( )
-			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
-			ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 			self.mDataCache.Player_AVBlank( True )
 			if self.mUseUsbBackup :
 				self.MakeBackupScript( )
 				CreateDirectory( E_DEFAULT_BACKUP_PATH )
 				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
-			self.mCommander.Make_Dedicated_HDD( )
+			self.mCommander.Format_Micro_Card( )
 
 
 	def GetMaxMediaSize( self ) :
@@ -1936,6 +1992,27 @@ class Configure( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+
+
+	def StartExclusiveFormat( self, aDriveList, aNumber ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'Format your drive?' ), MR_LANG( 'Everything on your drive will be erased' ), MR_LANG( 'This will take a while' ) )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC addon and userdata move this drive' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetProp( 3 )
+			splitName = aDriveList[ aNumber ].mParam.split( '/' )
+			splitName = splitName[ len( splitName ) - 1 ]
+			self.OpenBusyDialog( )
+			ret = self.mCommander.Make_Exclusive_HDD( splitName )
+			if ret == False :
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Format drive fail to complete' ) )
+				dialog.doModal( )
 
 
 	def ETCSetting( self, aGroupId ) :

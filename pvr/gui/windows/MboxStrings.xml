@@ -541,6 +541,10 @@
 	<string id="2359">LCN Search</string>
 	<string id="2360">Record Default Path Change</string>
 	<string id="2361">Internal</string>
+	<string id="2362">Xbmc Save Storage</string>
+	<string id="2363">Micro SD Card</string>
+	<string id="2364">USB Storage</string>
+	<string id="2365">Exclusive HDD</string>
 </property>
 <strings>
 	<string id="3001">No EPG information available</string>
@@ -719,8 +723,6 @@
 	<string id="3174">Days</string>
 	<string id="3175">Once</string>
 	<string id="3176">Weekly</string>
-	<string id="3177">Add View Timer</string>
-	<string id="3178">Edit View Timer</string>
 	<string id="3179">Name</string>
 	<string id="3180">Record Name</string>
 	<string id="3181">Start Date</string>
@@ -1051,7 +1053,6 @@
 	<string id="3506">Delete timer</string>
 	<string id="3507">Add timer</string>
 	<string id="3508">Add manual timer</string>
-	<string id="3509">Add view timer</string>
 	<string id="3510">Delete all timers</string>
 	<string id="3511">Show all timers</string>
 	<string id="3512">First EPG Data</string>
@@ -1073,14 +1074,11 @@
 	<string id="3528">When set to 'On', the system will descramble up to 2 scrambled channels on same transponder simultaneously</string>
 	<string id="3529">Rotate Antenna</string>
 	<string id="3530">You can control the movements of the motorized antenna here</string>
-	<string id="3531">Tuner Setup</string>
 	<string id="3532">DVB-C</string>
 	<string id="3533">DVB-T</string>
 	<string id="3534">DVB-T2</string>
 	<string id="3535">Select tuner type</string>
-	<string id="3536">Tuner Type</string>
 	<string id="3537">Input frequency</string>
-	<string id="3538">Terrestrial provider</string>
 	<string id="3539">Enable 5V for active antenna</string>
 	<string id="3540">Select enable 5v for active antenna</string>
 	<string id="3541">Try again after stopping playback%s and timeshift</string>
@@ -1478,12 +1476,10 @@
 	<string id="3933">Channel is changed by view timer</string>
 	<string id="3934">DiSEqC 1.0 Switch</string>
 	<string id="3935">Select the DiSEqC switch which your satellite is connected to</string>
-	<string id="3936">DVBT Scan</string>
 	<string id="3937">Select Terrestria</string>
 	<string id="3938">list not found</string>
 	<string id="3939">Enter Frequency</string>
 	<string id="3940">Enter PLP ID</string>
-	<string id="3941">No support</string>
 	<string id="3942">Select terrestria first</string>
 	<string id="3943">Search Mode</string>
 	<string id="3944">Select channel search mode</string>
@@ -1551,4 +1547,24 @@
 	<string id="4006">Finish</string>
 	<string id="4007">Go to the channel search setup page</string>
 	<string id="4008">Do you want to set the recording path now?</string>
+	<string id="4009">Now formatting...</string>
+	<string id="4010">Exclusive format</string>
+	<string id="4011">Now backup data...</string>
+	<string id="4012">Format drive done. reboot STB</string>
+	<string id="4013">Viewing</string>
+	<string id="4014">View Timer</string>
+	<string id="4015">Everything on your SD card will be erased</string>
+	<string id="4016">Format your SD memory card?</string>
+	<string id="4017">Could not find a SD memory card</string>
+	<string id="4018">Could not find a exclusive drive</string>
+	<string id="4019">Format SD Card</string>
+	<string id="4020">Press OK button to erase your SD memory card</string>
+	<string id="4021">Format exclusive drive</string>
+	<string id="4022">Press OK button to erase your exclusive drive</string>
+	<string id="4023">Everything on your drive will be erased</string>
+	<string id="4024">Format your drive?</string>
+	<string id="4025">Using XBMC storage this drive?</string>
+	<string id="4026">XBMC addon and userdata move this drive</string>
+	<string id="4027">XBMC storage</string>
+	<string id="4028">Format drive fail to complete</string>
 </strings>

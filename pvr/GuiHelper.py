@@ -572,13 +572,13 @@ def CheckDirectory( aPath ) :
 	return os.path.exists( aPath )
 
 
-def CheckHdd( aCheckForce = False ) :
+def CheckHdd( aMicroSD = False ) :
 	import pvr.ElisMgr
-	mCount = 0
-	if not aCheckForce :
+	mCount = 2
+	if aMicroSD :
 		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
 		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-			mCount = 1	#1: microSD, 3: usbHDD
+			mCount = 0	#1: microSD, 3: deadcated format HDD
 
 	isMounted = False
 	retList = pvr.ElisMgr.GetInstance( ).GetCommander( ).HDD_GetMountPath( )
@@ -588,13 +588,13 @@ def CheckHdd( aCheckForce = False ) :
 	return isMounted
 
 
-def	HasAvailableRecordingHDD( aCheckVolume = True, aCheckForce = False ) :
+def	HasAvailableRecordingHDD( aCheckVolume = True, aMicroSD = False ) :
 	import pvr.gui.DialogMgr as DiaMgr
 	from pvr.gui.GuiConfig import E_SUPPORT_EXTEND_RECORD_PATH
 	import pvr.DataCacheMgr
 	dataCache = pvr.DataCacheMgr.GetInstance( )
 
-	if not CheckHdd( aCheckForce ) :
+	if not CheckHdd( aMicroSD ) :
 		if E_SUPPORT_EXTEND_RECORD_PATH and aCheckVolume and dataCache.Record_GetNetworkVolume( True ) :
 			return True
 
@@ -1993,5 +1993,34 @@ def CalculateProgress( aCurrentTime, aEpgStart, aDuration  ) :
 
 	#LOG_TRACE( 'Percent[%s]'% percent )
 	return percent
+
+
+def GetXBMCResolutionWeightBySkin( ) :
+	defHeight = 720
+
+	try :
+		xmlFile = os.path.join( xbmcaddon.Addon( xbmc.getSkinDir() ).getAddonInfo( 'path'), 'addon.xml' )
+		parseTree = ElementTree.parse( xmlFile )
+		treeRoot = parseTree.getroot( )
+		getHeight = ''
+		for node in treeRoot.findall( 'extension' ) :
+			#LOG_TRACE( 'id[%s] text[%s]'% ( node.get( 'point' ), node.text ) )
+			if getHeight : break
+			for ele in node :
+				#LOG_TRACE( 'id[%s] tag[%s]'% ( ele.get( 'height' ), ele.tag ) )
+				if ele.tag.lower() == 'res' :
+					getHeight = ele.get( 'height' )
+					break
+
+		if getHeight :
+			defHeight = int( getHeight )
+
+	except Exception, e :
+		defHeight = 720
+		LOG_ERR( 'except[%s]'% e )
+
+	resWeight = int( defHeight ) / 720.0
+
+	return resWeight
 
 

@@ -5,6 +5,7 @@
 	<texture>backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/settings.jpg</texture>
+	<texture>backgrounds/RADIOSKIN.jpg</texture>
 	<!-- null window -->
 	<texture>multifeed.png</texture>
 	<texture>hbbtv4.png</texture>
@@ -103,6 +104,7 @@
 	<texture>IconTimerV.png</texture>
 	<texture>OSDProgressMid1.png</texture>
 	<texture>DefaultLogo.png</texture>
+	<texture>DefaultLogo_radio.png</texture>
 	<texture>IconEmpty.png</texture>
 	<!-- channel list-->
 	<texture>IconCas1g.png</texture>
@@ -183,6 +185,14 @@
 	<!-- help -->
 	<texture>HeaderBack.png</texture>
 	<texture>FooterBack.png</texture>
+	<texture>JET_focus.png</texture>
+	<texture>JET_nofocus.png</texture>
+	<texture>SET_focus.png</texture>
+	<texture>SET_nofocus.png</texture>
+	<texture>WATCH_focus.png</texture>
+	<texture>WATCH_nofocus.png</texture>
+	<texture>XBMC_focus.png</texture>
+	<texture>XBMC_nofocus.png</texture>
 	<!-- pip -->
 	<texture>StackFO_white2.png</texture>
 	<texture>StackNF.png</texture>
