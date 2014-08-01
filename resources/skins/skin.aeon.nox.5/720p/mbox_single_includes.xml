@@ -228,7 +228,7 @@
 		<!-- TV ( EPG and Channel List ) -->
 		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
-			<visible>[substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | [substring(Window.Property(CurrentWindow),1300000) + substring(Window.Property(TVRadio),false)] | substring(Window.Property(CurrentWindow),4400000) | substring(Window.Property(CurrentWindow),4000000)</visible>
+			<visible>[substring(Window.Property(CurrentWindow),1300000) + substring(Window.Property(TVRadio),false)] | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid) + substring(Window.Property(TVRadio),false)] | [substring(Window.Property(CurrentWindow),4400000) + substring(Window.Property(TVRadio),false)] | [substring(Window.Property(CurrentWindow),4000000) + substring(Window.Property(TVRadio),false)]</visible>
 			<posx>-8</posx>
 			<posy>0</posy>
 			<width>21</width>

@@ -7410,7 +7410,6 @@
 		<!-- Installation, System Info -->
 		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
-			<description>Section header image</description>
 			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000) | substring(Window.Property(CurrentWindow),4700000) | substring(Window.Property(CurrentWindow),4900000) | substring(Window.Property(CurrentWindow),5000000)</visible>
 			<posx>20</posx>
 			<posy>3</posy>
@@ -7422,8 +7421,7 @@
 		<!-- EPG, Channel List TV Mode -->
 		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
-			<description>Section header image</description>
-			<visible>[substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | substring(Window.Property(CurrentWindow),1300000) | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000)</visible>
+			<visible>[substring(Window.Property(CurrentWindow),1300000) + substring(Window.Property(TVRadio),false)] | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid) + substring(Window.Property(TVRadio),false)] | [substring(Window.Property(CurrentWindow),4400000) + substring(Window.Property(TVRadio),false)] | [substring(Window.Property(CurrentWindow),4000000) + substring(Window.Property(TVRadio),false)]</visible>
 			<posx>20</posx>
 			<posy>8</posy>
 			<width>35</width>
@@ -7434,7 +7432,6 @@
 		<!-- EPG, Channel List Radio Mode -->
 		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
-			<description>Section header image</description>
 			<visible>[substring(Window.Property(CurrentWindow),1300000) + substring(Window.Property(TVRadio),true)] | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid) + substring(Window.Property(TVRadio),true)]</visible>
 			<posx>20</posx>
 			<posy>3</posy>
