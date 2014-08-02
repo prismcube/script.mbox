@@ -482,11 +482,13 @@ def GetInstanceSkinPosition( ):
 	return gSkinPosition
 
 
-def CreateDirectory( aPath ) :
+def CreateDirectory( aPath, aPermitPath = None ) :
 	if os.path.exists( aPath ) :
 		return
 
 	os.makedirs( aPath, 0755 )
+	if aPermitPath :
+		shutil.copystat( aPermitPath, aPath )
 
 
 def CreateFile( aPath ) :
@@ -568,8 +570,16 @@ def RemoveUnzipFiles( aUsbPath, aZipFile = False, aReqFile = False ) :
 	return True
 
 
-def CheckDirectory( aPath ) :
-	return os.path.exists( aPath )
+def CheckDirectory( aPath, isDir = False ) :
+	isExist = os.path.exists( aPath )
+	if isDir :
+		mode = os.stat( aPath ).st_mode
+		if stat.S_ISDIR( mode ) :
+			isExist = True
+		else :
+			isExist = False
+
+	return isExist
 
 
 def CheckHdd( aMicroSD = False ) :
@@ -904,17 +914,30 @@ def GetDirectorySize( aPath ) :
 	return dir_size
 
 
-def GetDirectoryAllFilePathList( aPathList ) :
+def GetDirectoryAllFilePathList( aPathList, aExceptList = [] ) :
 	path_ret = []
+	exthash = {}
+	for dName in aExceptList :
+		exthash[dName] = dName
+
+	dirCount = 0
+	fileCount = 0
 	for pathlist in aPathList :
-		if not os.path.exists( pathlist ) :
-			LOG_ERR( 'path not exists = %s' % pathlist )
-		else :
+		if CheckDirectory( pathlist ) :
 			for ( path, dirs, files ) in os.walk( pathlist ) :
+				if exthash.get( path, -1 ) == path :
+					LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
+					continue
+				path_ret.append( path )
+				dirCount += 1
 				for file in files :
 					filename = os.path.join( path, file )
 					path_ret.append( filename )
+					fileCount += 1
 
+		else :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+	print '---------------------------dirCount[%s] fileCount[%s]'% (dirCount, fileCount)
 	return path_ret
 
 
@@ -1322,6 +1345,69 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 		isNTFS = False
 
 	return isNTFS
+
+
+def GetMountExclusiveDevice( ) :
+	hddinfo = "cat /proc/scsi/sg/device_strs | awk '{print $1}'"
+	hddsize = "fdisk -l | grep Disk | awk '/sda/ {print $5}'"
+	mmcsize = "fdisk -l | grep Disk | awk '/mmc/ {print $5}'"
+	hddinfo_ = ExecuteShell( hddinfo ).rstrip( )
+	hddsize_ = ExecuteShell( hddsize ).rstrip( )
+	mmcsize_ = ExecuteShell( mmcsize ).rstrip( )
+	LOG_TRACE( 'mmcsize[%s] hddsize[%s] hddinfo[%s]'% ( mmcsize_, hddsize_, hddinfo_ ) )
+
+	mmcsize = '0Byte'
+	hddsize = '0Byte'
+	hddinfo = MR_LANG( 'unknown' )
+	if hddinfo_ :
+		hddinfo = hddinfo_
+
+	try :
+		if hddsize_ :
+			iSize = int(hddsize_)
+			if iSize < ( 1000000 * 1000 ) :
+				hddsize = '%0.1fMb'% float( 1.0 * iSize / 1000000 )
+			else :
+				hddsize = '%0.1fGb'% float( 1.0 * iSize / ( 1000000 * 1000 ) )
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+	try :
+		if mmcsize_ :
+			iSize = int(mmcsize_)
+			if iSize < ( 1000000 * 1000 ) :
+				mmcsize = '%0.1fMb'% float( 1.0 * iSize / 1000000 )
+			else :
+				mmcsize = '%0.1fGb'% float( 1.0 * iSize / ( 1000000 * 1000 ) )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+	LOG_TRACE( 'mmcsize[%s] hddsize[%s] hddinfo[%s]'% ( mmcsize, hddsize, hddinfo ) )
+	return mmcsize, hddsize, hddinfo
+	
+
+def CheckMountType( aMountPath ) :
+	mntType = ''
+	try :
+		mpos = aMountPath.split('/')
+		aToken= mpos[-1]
+		cmd = "mount | awk '/%s/ {print $5}'"% aToken
+		if sys.version_info < ( 2, 7 ) :
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			ret = p.stdout.read( ).strip( )
+			p.stdout.close( )
+
+		else :
+			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+			( ret, err ) = p.communicate( )
+			mntType = ret.strip( )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+		mntType = ''
+
+	return mntType
 
 
 def ExecuteShell( cmd = '' ) :

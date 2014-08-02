@@ -394,31 +394,26 @@ class GlobalEvent( object ) :
 	def AsyncCheckByMMC( self, aStatus ) :
 		isReboot = False
 		if aStatus == ElisEnum.E_MMC_ATTACH or aStatus == ElisEnum.E_MMC_DETACH :
-			selectMMC = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetProp( )
-
 			attach = True
 			if aStatus == ElisEnum.E_MMC_DETACH :
 				attach = False
-				if selectMMC == 1 :
-					isReboot = True
-					#ToDO : media mount : no reboot, storage mount : reboot
+				#ToDO : media mount : no reboot, storage mount : reboot
+				#if storage detach? :
+				#	isReboot = True
 
 			self.mDataCache.SetMicroSDAttached( attach )
 			thread = threading.Timer( 0, self.ShowAttatchDialog, [attach, True] )
 			thread.start( )
 
 		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
-			mTitle = MR_LANG( 'SD Card Fail' )
-			mLines = MR_LANG( 'Try again insert card' )
+			mTitle = MR_LANG( 'SD Card Mounted' )
+			mLines = MR_LANG( 'Addon Storage in XBMC' )
 			self.mDataCache.SetUsbMountStatus( aStatus )
 
-			if aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS :
-				mTitle = MR_LANG( 'SD Card Mounted' )
-				mLines = MR_LANG( 'Addon Storage in XBMC' )
-				if selectMMC == 0 or selectMMC == 1 :
-					isReboot = True
-
-			xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mTitle, mLines ) )
+			if aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
+				mTitle = MR_LANG( 'SD Card Fail' )
+				mLines = MR_LANG( 'Try again insert card' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mTitle, mLines ) )
 
 		if isReboot :
 			mTitle = MR_LANG( 'Restart Required' )
