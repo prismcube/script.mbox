@@ -4399,11 +4399,11 @@
 				<posy>102</posy>
 				<width>25</width>
 				<height>423</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>1003400</onleft>
 				<onright>3300100</onright>
 				<showonepage>false</showonepage>
@@ -4648,11 +4648,11 @@
 				<posy>98</posy>
 				<width>25</width>
 				<height>435</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="2,16,2,16">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="2,16,2,16">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="2,16,2,16">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="2,16,2,16">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>1003410</onleft>
 				<onright>3300100</onright>
 				<showonepage>false</showonepage>
@@ -4845,11 +4845,11 @@
 				<posy>510</posy>
 				<width>880</width>
 				<height>25</height>
-				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
-				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="14,0,14,0">ScrollBarH_Default.png</texturesliderbackground>
+				<texturesliderbar border="14,0,14,0">ScrollBarH_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onup>1003420</onup>
 				<ondown>3309000</ondown>
 				<showonepage>false</showonepage>
@@ -5161,11 +5161,11 @@
 				<posy>250</posy>
 				<width>660</width>
 				<height>25</height>
-				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
-				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="14,0,14,0">ScrollBarH_Default.png</texturesliderbackground>
+				<texturesliderbar border="14,0,14,0">ScrollBarH_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onup>1003430</onup>
 				<ondown>3300100</ondown>
 				<showonepage>false</showonepage>
@@ -5364,11 +5364,11 @@
 				<posy>102</posy>
 				<width>25</width>
 				<height>428</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>1003500</onleft>
 				<onright>3700100</onright>
 				<showonepage>false</showonepage>
@@ -5649,11 +5649,11 @@
 				<posy>101</posy>
 				<width>25</width>
 				<height>424</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>1003510</onleft>
 				<onright>3700100</onright>
 				<showonepage>false</showonepage>
@@ -6584,11 +6584,11 @@
 				<posy>102</posy>
 				<width>25</width>
 				<height>423</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>1003610</onleft>
 				<onright>4000100</onright>
 				<showonepage>false</showonepage>
@@ -6980,11 +6980,11 @@
 			<width>25</width>
 			<height>424</height>
 			<include>DefaultWindowFade</include>
-			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-			<textureslidernib>ScrollBarNib.png</textureslidernib>
-			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+			<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+			<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+			<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+			<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 			<onleft>1003960</onleft>
 			<onright>1003960</onright>
 			<ondown></ondown>
@@ -7236,11 +7236,11 @@
 			<width>25</width>
 			<height>411</height>
 			<include>DefaultWindowFade</include>
-			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-			<textureslidernib>ScrollBarNib.png</textureslidernib>
-			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+			<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+			<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+			<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+			<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 			<onleft>1003950</onleft>
 			<onright>1003950</onright>
 			<ondown></ondown>

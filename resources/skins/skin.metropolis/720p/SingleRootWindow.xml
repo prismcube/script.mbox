@@ -1524,11 +1524,11 @@ Search for window name
 				<width>25</width>
 				<height>427</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>1300049</onleft>
 				<onright>1300101</onright>
 				<ondown>1300061</ondown>
@@ -2402,11 +2402,11 @@ Search for window name
 							<height>401</height>
 							<visible>![Container(1300102).HasFocus(6) | ControlGroup(1300200).HasFocus]</visible>
 							<include>DefaultWindowFade</include>
-							<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-							<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-							<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-							<textureslidernib>ScrollBarNib.png</textureslidernib>
-							<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+							<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+							<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+							<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+							<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+							<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 							<showonepage>false</showonepage>
 							<orientation>vertical</orientation>
 							<onleft>1300112</onleft>
@@ -4090,11 +4090,11 @@ Search for window name
 					<posy>65</posy>
 					<width>20</width>
 					<height>395</height>
-					<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-					<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-					<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-					<textureslidernib>ScrollBarNib.png</textureslidernib>
-					<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+					<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+					<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+					<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+					<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+					<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 					<onleft>1709000</onleft>
 					<onright>1709000</onright>
 					<showonepage>false</showonepage>
