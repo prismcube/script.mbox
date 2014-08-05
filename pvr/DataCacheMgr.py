@@ -2585,9 +2585,13 @@ class DataCacheMgr( object ) :
 		return ret
 
 
-	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer ) :
-		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer )
+	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer, aVolumeId = 0 ) :
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			ret = self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aVolumeId, aWeeklyTimerCount, aWeeklyTimer )
+		else :
+			ret = self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer )
 
+		return ret
 
 	def Timer_AddSeriesTimer( self, aEPGEvent ) :
 		return self.mCommander.Timer_AddSeriesTimer( aEPGEvent )

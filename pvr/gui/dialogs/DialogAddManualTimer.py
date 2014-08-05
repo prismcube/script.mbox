@@ -1099,7 +1099,10 @@ class DialogAddManualTimer( SettingDialog ) :
 				"""
 
 				if self.mTimerMode == E_TIMER_MODE_RECORD :
-					ret = self.mDataCache.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, self.mWeeklyStart, self.mWeeklyEnd, self.mRecordName, True, len( weeklyTimerList ), weeklyTimerList )
+					volumeId = 0
+					if E_SUPPORT_EXTEND_RECORD_PATH and self.mNetVolume :
+						volumeId = self.mNetVolume.mIndexID
+					ret = self.mDataCache.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, self.mWeeklyStart, self.mWeeklyEnd, self.mRecordName, True, len( weeklyTimerList ), weeklyTimerList, volumeId )
 				else :
 					ret = self.mDataCache.Timer_AddViewWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, self.mWeeklyStart, self.mWeeklyEnd, self.mRecordName, True, len( weeklyTimerList ), weeklyTimerList )
 				LOG_TRACE( 'ret=%s' %ret )

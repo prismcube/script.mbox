@@ -405,7 +405,7 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0, self.ShowAttatchDialog, [attach, True] )
 			thread.start( )
 
-		elif aStatus == ElisEnum.E_MMC_UMOUNT_MMC or aStatus == ElisEnum.E_MMC_UMOUNT_MNT :
+		elif aStatus == ElisEnum.E_MMC_UMOUNT_MNT :
 			isReboot = True
 			self.mDataCache.SetMicroSDAttached( False )
 			thread = threading.Timer( 0, self.ShowAttatchDialog, [False, True] )
