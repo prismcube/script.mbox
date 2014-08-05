@@ -759,7 +759,7 @@ class GlobalEvent( object ) :
 			self.mDataCache.LoadZappingmode( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
-			self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType.mServiceType, False )
+			self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetRadioScreen( )
 
 		self.mDataCache.Channel_SetCurrentByUpdateSync( aEvent.mChannelNo, aEvent.mServiceType )
