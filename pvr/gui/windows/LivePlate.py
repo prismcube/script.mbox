@@ -793,7 +793,7 @@ class LivePlate( LivePlateWindow ) :
 				iEPGList = None
 
 				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
-				gmtFrom  = self.mDataCache.Datetime_GetLocalTime( )
+				gmtFrom  = self.mDataCache.Datetime_GetGMTTime( )
 				gmtUntil = gmtFrom + E_MAX_EPG_DAYS
 
 				maxCount = 1000
