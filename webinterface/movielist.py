@@ -1,5 +1,6 @@
 import dbopen
 from webinterface import Webinterface
+from xml.sax.saxutils import escape, unescape
 
 class ElmoMovieList( Webinterface ) :
 
@@ -22,11 +23,11 @@ class ElmoMovieList( Webinterface ) :
 		for row in self.results :
 			xmlstr += '  <e2movie>\n'
 			xmlstr += '      <e2servicereference>1:0:0:0:0:0:0:0:0:0:/Archive/' + str(row[4]) +'</e2servicereference>\n'
-			xmlstr += '      <e2title>'+row[1]+'</e2title>\n'
+			xmlstr += '      <e2title>'+escape(row[1])+'</e2title>\n'
 
 			xmlstr += '      <e2description/>\n'
 			xmlstr += '      <e2descriptionextended/>\n'
-			xmlstr += '      <e2servicename>'+row[0]+'</e2servicename>\n'
+			xmlstr += '      <e2servicename>'+escape(row[0])+'</e2servicename>\n'
 			# xmlstr += '      <e2servicename>ElmoStation</e2servicename>'
 			xmlstr += '      <e2time>'+str( row[2] )+'</e2time>\n'
 			xmlstr += '      <e2length>'+self.DurationInHMS( row[3] )+'</e2length>\n'
