@@ -1772,6 +1772,7 @@ class EPGWindow( BaseWindow ) :
 				return
 		"""
 
+		"""
 		isAvail, isConfiguration = self.HasDefaultRecordPath( )
 		if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
 			if isConfiguration :
@@ -1781,7 +1782,7 @@ class EPGWindow( BaseWindow ) :
 
 		if not HasAvailableRecordingHDD( ) :
 			return
-
+		"""
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 
 

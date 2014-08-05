@@ -197,8 +197,12 @@ class DialogAddManualTimer( SettingDialog ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
-			if self.DoAddTimer( ) == False :
+			ret = self.DoAddTimer( )
+			if ret == False :
 				self.mIsOk = E_DIALOG_STATE_ERROR
+			elif ret == None :
+				return
+
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
@@ -897,6 +901,9 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def DoAddTimer( self ) :
 		try :
+			if not self.CheckRecordPath( ) :
+				return None
+
 			if self.mTimer :
 				LOG_TRACE( 'Edit Mode' )
 				if self.mTimerMode == E_TIMER_MODE_RECORD and self.mIsRunningTimer and self.mRecordingMode == E_ONCE :
@@ -911,7 +918,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					LOG_TRACE( 'endTime=%s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )						
 					ret = self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
 					LOG_TRACE( 'RET=%s' %ret )
-					if ret[0].mParam == -1 or ret[0].mError == -1 :					
+					if ret[0].mParam == -1 or ret[0].mError == -1 :
 						self.mConflictTimer = ret
 						self.mErrorMessage = MR_LANG( 'Unable to edit the timer' )
 						return False
@@ -1312,4 +1319,21 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mRecordName = self.mChannel.mName
 			self.SetControlLabel2String( E_DialogInput01, self.mRecordName )			
 
-	
+
+	def CheckRecordPath( self ) :
+		ret = True
+		if E_SUPPORT_EXTEND_RECORD_PATH and self.mTimerMode == E_TIMER_MODE_RECORD :
+			if not self.mHDDStatus and ( not self.mNetVolumeList or len( self.mNetVolumeList ) < 1 ) :
+				ret = False
+				lblTitle = MR_LANG( 'No recording path' )
+				lblLine  = MR_LANG( 'Do you want to set the recording path now?' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( lblTitle, lblLine )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.CloseDialog( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+
+		return ret
+
+

@@ -549,26 +549,8 @@ class MainMenu( BaseWindow ) :
 
 
 	def ShowAddTimerDialog( self ) :
-		"""
-		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if not HasAvailableRecordingHDD( ) :
-			return
-
-		isOK = False
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-		dialog.SetManualMode( True )
-		dialog.doModal( )
-
-		isOK = dialog.IsOK( )
-		if isOK == E_DIALOG_STATE_YES :
-			isOK = True
-
-		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-			RecordConflict( dialog.GetConflictTimer( ) )
-		"""
-		if not HasAvailableRecordingHDD( ) :
-			return
+		#if not HasAvailableRecordingHDD( ) :
+		#	return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 		dialog.EnableSelectChannel( True )
