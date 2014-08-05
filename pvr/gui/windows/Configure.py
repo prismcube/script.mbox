@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.windows.ExclusiveSettings import ExclusiveSettings
 from subprocess import *
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
@@ -31,8 +32,8 @@ E_ETC					= 10
 E_ETHERNET				= 100
 E_WIFI					= 101
 
-FORMAT_HARD_DISK		= 0
 FORMAT_SD_MEMORY		= 1
+FORMAT_HARD_DISK		= 3
 
 
 TIME_SEC_CHECK_NET_STATUS = 0.05
@@ -108,6 +109,11 @@ class Configure( SettingWindow ) :
 		self.OpenBusyDialog( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+		hddMenu = MR_LANG( 'HDD Format' )
+		hddDescript = MR_LANG( 'Delete everything off your hard drive' )
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			hddMenu = MR_LANG( 'Storage' )
+			hddDescript = MR_LANG( 'Delete everything off your storage drive or select storage' )
 
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
@@ -118,7 +124,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Network Setting' ),
 		MR_LANG( 'Time Setting' ),
 		MR_LANG( 'EPG Setting' ),
-		MR_LANG( 'HDD Format' ),
+		hddMenu,
 		MR_LANG( 'Factory Reset' ),
 		MR_LANG( 'Miscellaneous' ) ]
 
@@ -135,7 +141,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
 		MR_LANG( 'Configure EPG grabber settings' ),
-		MR_LANG( 'Delete everything off your hard drive' ),
+		hddDescript,
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
@@ -511,36 +517,11 @@ class Configure( SettingWindow ) :
 	 			self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FORMAT_HDD :
-			if groupId == E_Input04 :
-				SDExist = self.mCommander.MMC_MountCheck( )
-				if SDExist :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
-					dialog.doModal( )
-					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.DedicatedFormat( FORMAT_SD_MEMORY )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a SD memory card' ) )
-					dialog.doModal( )
-				return
-
-			elif groupId == E_Input05 :
-				driveList = self.mCommander.USB_GetMountPath( )
-				if driveList and len( driveList ) > 0 and driveList[0].mError == 0 :
-					context = []
-					for i in range( len( driveList ) ) :
-						context.append( ContextItem( driveList[i].mParam, i ) )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-					dialog.SetProperty( context )
-					dialog.doModal( )
-					contextAction = dialog.GetSelectedAction( )
-					if contextAction >= 0 :
-						self.StartExclusiveFormat( driveList, contextAction )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a exclusive drive' ) )
-					dialog.doModal( )
+			if groupId == E_Input04 or groupId == E_Input05 :
+				contextMenu = 1     #format
+				if groupId == E_Input05 :
+					contextMenu = 2 #select storage
+				ExclusiveSettings( ).ShowContextMenu( contextMenu )
 				return
 
 			if CheckHdd( ) :
@@ -1286,14 +1267,19 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press OK button to remove everything in the media partition' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
-			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
-				self.AddInputControl( E_Input04, MR_LANG( 'Format SD Card' ), '', MR_LANG( 'Press OK button to erase your SD memory card' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Format exclusive drive' ), '', MR_LANG( 'Press OK button to erase your exclusive drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
+			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press OK button to remove everything in the media partition' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				selectStorage = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropString( )
+				self.AddInputControl( E_Input04, MR_LANG( 'Format storage' ), '', MR_LANG( 'Press OK button to erase your Micro SD memory card or USB drive' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Current storage' ), selectStorage, MR_LANG( 'Press OK button to use your storage drive' ) )
+				visibleControlIds = [ E_Input01, E_Input02 ]
+
+			else :
+				self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
+
 			self.SetVisibleControls( visibleControlIds, True )
 
 			if CheckHdd( ) :
@@ -1306,6 +1292,7 @@ class Configure( SettingWindow ) :
 
 			externcontrols = [ E_Input04, E_Input05 ]
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.SetVisibleControl( E_Input03, False )
 				self.SetVisibleControls( externcontrols, True )
 				self.SetEnableControls( externcontrols, True )
 			else :
@@ -1936,6 +1923,7 @@ class Configure( SettingWindow ) :
 					CreateDirectory( E_DEFAULT_BACKUP_PATH )
 					os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
 				self.mCommander.Make_Dedicated_HDD( )
+
 		else :
 			self.OpenBusyDialog( )
 			self.mDataCache.Player_AVBlank( True )
@@ -1943,7 +1931,7 @@ class Configure( SettingWindow ) :
 				self.MakeBackupScript( )
 				CreateDirectory( E_DEFAULT_BACKUP_PATH )
 				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
-			self.mCommander.Format_Micro_Card( )
+			self.mCommander.Format_Micro_Card( 0 )
 
 
 	def GetMaxMediaSize( self ) :
@@ -2002,6 +1990,7 @@ class Configure( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC addon and userdata move this drive' ) )
 			dialog.doModal( )
+			defStorageIdx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetProp( 3 )
 			splitName = aDriveList[ aNumber ].mParam.split( '/' )
@@ -2010,6 +1999,7 @@ class Configure( SettingWindow ) :
 			ret = self.mCommander.Make_Exclusive_HDD( splitName )
 			if ret == False :
 				self.CloseBusyDialog( )
+				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetProp( defStorageIdx )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Format drive fail to complete' ) )
 				dialog.doModal( )
