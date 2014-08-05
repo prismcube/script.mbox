@@ -109,6 +109,11 @@ class Configure( SettingWindow ) :
 		self.OpenBusyDialog( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+		hddMenu = MR_LANG( 'HDD Format' )
+		hddDescript = MR_LANG( 'Delete everything off your hard drive' )
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			hddMenu = MR_LANG( 'Storage' )
+			hddDescript = MR_LANG( 'Delete everything off your storage drive or select storage' )
 
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
@@ -119,7 +124,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Network Setting' ),
 		MR_LANG( 'Time Setting' ),
 		MR_LANG( 'EPG Setting' ),
-		MR_LANG( 'HDD Format' ),
+		hddMenu,
 		MR_LANG( 'Factory Reset' ),
 		MR_LANG( 'Miscellaneous' ) ]
 
@@ -136,7 +141,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
 		MR_LANG( 'Configure EPG grabber settings' ),
-		MR_LANG( 'Delete everything off your hard drive' ),
+		hddDescript,
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
@@ -1262,14 +1267,19 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press OK button to remove everything in the media partition' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
-			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
-				self.AddInputControl( E_Input04, MR_LANG( 'Format drive' ), '', MR_LANG( 'Press OK button to erase your Micro SD memory card or USB HDD drive' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Select storage drive' ), '', MR_LANG( 'Press OK button to use your storage drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
+			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press OK button to remove everything in the media partition' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				selectStorage = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropString( )
+				self.AddInputControl( E_Input04, MR_LANG( 'Format storage' ), '', MR_LANG( 'Press OK button to erase your Micro SD memory card or USB drive' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Current storage' ), selectStorage, MR_LANG( 'Press OK button to use your storage drive' ) )
+				visibleControlIds = [ E_Input01, E_Input02 ]
+
+			else :
+				self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
+
 			self.SetVisibleControls( visibleControlIds, True )
 
 			if CheckHdd( ) :
@@ -1282,6 +1292,7 @@ class Configure( SettingWindow ) :
 
 			externcontrols = [ E_Input04, E_Input05 ]
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.SetVisibleControl( E_Input03, False )
 				self.SetVisibleControls( externcontrols, True )
 				self.SetEnableControls( externcontrols, True )
 			else :

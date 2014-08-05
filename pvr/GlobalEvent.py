@@ -405,6 +405,12 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0, self.ShowAttatchDialog, [attach, True] )
 			thread.start( )
 
+		elif aStatus == ElisEnum.E_MMC_UMOUNT_MMC or aStatus == ElisEnum.E_MMC_UMOUNT_MNT :
+			isReboot = True
+			self.mDataCache.SetMicroSDAttached( False )
+			thread = threading.Timer( 0, self.ShowAttatchDialog, [False, True] )
+			thread.start( )
+
 		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
 			mTitle = MR_LANG( 'SD Card Mounted' )
 			mLines = MR_LANG( 'Addon Storage in XBMC' )
@@ -416,14 +422,14 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mTitle, mLines ) )
 
 		if isReboot :
-			mTitle = MR_LANG( 'Restart Required' )
+			mTitle = MR_LANG( 'Storage Disconnected' )
 			mLines = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( mTitle, mLines )
 			dialog.SetButtonVisible( False )
 			dialog.SetAutoCloseTime( 5 )
 			dialog.doModal( )
-			#self.mDataCache.System_Reboot( )
+			self.mDataCache.System_Reboot( )
 
 
 

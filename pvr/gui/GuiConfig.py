@@ -513,6 +513,12 @@ E_DEFAULT_RECORD_PATH_NOT_AVAILABLE = -1 #do not recording
 E_DEFAULT_RECORD_PATH_NOT_SELECT    = -2 #avail recording : do not selected
 E_DEFAULT_RECORD_PATH_RESERVED      = 1  #avail recording
 
+E_PATH_MMC = '/media/mmc'
+E_PATH_HDD = '/media/hdd0'
+E_PATH_FLASH_BASE    = '/mnt/hdd0'
+E_PATH_FLASH_PVR     = '%s/pvr'% E_PATH_FLASH_BASE
+E_PATH_FLASH_PROGRAM = '%s/program'% E_PATH_FLASH_BASE
+
 
 #patch v1.1
 E_V1_1_UPDATE_NOTIFY        = False

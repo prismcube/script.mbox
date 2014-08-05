@@ -1,14 +1,10 @@
 from pvr.gui.WindowImport import *
+import pvr.DataCacheMgr
 import shutil
 
 
-E_PATH_MMC = '/media/mmc'
-E_PATH_HDD = '/media/hdd0'
-E_PATH_FLASH_BASE    = '/mnt/hdd0'
-E_PATH_FLASH_PVR     = '%s/pvr'% E_PATH_FLASH_BASE
-E_PATH_FLASH_PROGRAM = '%s/program'% E_PATH_FLASH_BASE
-
 E_STORAGE_DONE = 0
+E_STORAGE_FORMAT_DONE = 1
 E_STORAGE_ERROR_NOT_MEDIA = -1
 E_STORAGE_ERROR_MOUNT_TYPE = -3
 E_STORAGE_ERROR_CANCEL = -4
@@ -16,12 +12,24 @@ E_STORAGE_ERROR_STORAGE = -5
 E_STORAGE_ERROR_FORMAT = -6
 E_STORAGE_ERROR_SPACE = -7
 E_STORAGE_ERROR_COPY_FAIL = -8
-E_STORAGE_ERROR_NOT_USB = -9
+E_STORAGE_ERROR_NOT_SUPPORT_STORAGE = -9
+E_STORAGE_ERROR_NOT_USB = -10
+E_STORAGE_ERROR_NOT_MMC = -11
+E_STORAGE_ERROR_NOT_HDD = -12
+E_STORAGE_ERROR_USED_MMC = -13
+E_STORAGE_ERROR_USED_HDD = -14
+E_STORAGE_ERROR_NOT_USB_AVAIL = -15
+E_STORAGE_ERROR_USB_INSERT = -16
+E_STORAGE_ERROR_RESTORE_FAIL = -17
+E_STORAGE_ERROR_FORMAT_CANCEL = -18
 
 E_CONTEXT_MENU_FORMAT = 1
 E_CONTEXT_MENU_STORAGE = 2
-E_STORAGE_FORMAT_SD = 1
-E_STORAGE_FORMAT_HDD = 3
+
+E_SELECT_STORAGE_NONE = 0
+E_SELECT_STORAGE_MMC = 1
+E_SELECT_STORAGE_USB = 2
+E_SELECT_STORAGE_HDD = 3
 
 E_FORMAT_BY_REBOOT = 0
 E_FORMAT_BY_NOT_REBOOT = 1
@@ -30,6 +38,7 @@ E_FORMAT_BY_NOT_REBOOT = 1
 class ExclusiveSettings( object ) :
 	def __init__( self ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mSelectAction = -1
 
 
@@ -49,19 +58,73 @@ class ExclusiveSettings( object ) :
 		return self.mSelectAction
 
 
+	def ResultDialog( self, aErrorNo ) :
+		LOG_TRACE( '--------------------error[%s]'% aErrorNo )
+		mTitle = MR_LANG( 'Error' )
+		mLines = ''
+		if aErrorNo == E_STORAGE_DONE :
+			mTitle = MR_LANG( 'Success' )
+			mLines = MR_LANG( 'Complete' )
+		elif aErrorNo == E_STORAGE_FORMAT_DONE :
+			mTitle = MR_LANG( 'Success' )
+			mLines = MR_LANG( 'Complete formated' )
+		elif aErrorNo == E_STORAGE_ERROR_FORMAT_CANCEL :
+			mTitle = MR_LANG( 'Attention' )
+			mLines = MR_LANG( 'Format is canceled' )
+		elif aErrorNo == E_STORAGE_ERROR_CANCEL :
+			mTitle = MR_LANG( 'Attention' )
+			mLines = MR_LANG( 'storage appointment is canceled' )
+		elif aErrorNo == E_STORAGE_ERROR_SPACE :
+			mLines = MR_LANG( 'Not enough space on USB flash memory' )
+		elif aErrorNo == E_STORAGE_ERROR_USB_INSERT :
+			mLines = MR_LANG( 'Please insert a USB flash memory' )
+		elif aErrorNo == E_STORAGE_ERROR_NOT_USB_AVAIL :
+			mLines = MR_LANG( 'Check your USB device' )
+		elif aErrorNo == E_STORAGE_ERROR_NOT_USB :
+			mLines = MR_LANG( 'Check your USB memory' )
+		elif aErrorNo == E_STORAGE_ERROR_NOT_MMC :
+			mLines = MR_LANG( 'Check your Micro SD card' )
+		elif aErrorNo == E_STORAGE_ERROR_NOT_HDD :
+			mLines = MR_LANG( 'Check your USB HDD' )
+		elif aErrorNo == E_STORAGE_ERROR_MOUNT_TYPE :
+			mLines = MR_LANG( 'Unknown filesystem or not formated' )
+		elif aErrorNo == E_STORAGE_ERROR_STORAGE :
+			mLines = MR_LANG( 'Can not appoint storage' )
+		elif aErrorNo == E_STORAGE_ERROR_FORMAT :
+			mLines = MR_LANG( 'Format drive fail to complete' )
+		elif aErrorNo == E_STORAGE_ERROR_COPY_FAIL :
+			mLines = MR_LANG( 'Fail to copy addons' )
+		elif aErrorNo == E_STORAGE_ERROR_RESTORE_FAIL :
+			mLines = MR_LANG( 'Fail to restore addons or user data' )
+		elif aErrorNo == E_STORAGE_ERROR_NOT_SUPPORT_STORAGE :
+			mLines = MR_LANG( 'Not support USB memory' )
+		elif aErrorNo == E_STORAGE_ERROR_USED_MMC :
+			mLines = MR_LANG( 'Already using Micro SD card' )
+		elif aErrorNo == E_STORAGE_ERROR_USED_HDD :
+			mLines = MR_LANG( 'Already using USB HDD' )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( mTitle, mLines )
+		dialog.doModal( )
+
+
 	def GetContextMenu( self, aMenu ) :
 		context = []
+		mntinfo = []
 
 		if aMenu == E_CONTEXT_MENU_FORMAT :
-			mmcsize, hddsize, hddmodel = GetMountExclusiveDevice( )
-			SDExist = self.mCommander.MMC_MountCheck( )
-			if SDExist :
-				mLines = '%s(%s)'% ( MR_LANG( 'Micro SD Card' ), mmcsize )
-				context.append( ContextItem( mLines, E_STORAGE_FORMAT_SD ) )
+			mntinfo = GetMountExclusiveDevice( )
+			#SDExist = self.mCommander.MMC_MountCheck( )
+			#if SDExist :
+			#	mLines = '%s(%s)'% ( MR_LANG( 'Micro SD Card' ), mmcsize )
+			#	context.append( ContextItem( mLines, E_SELECT_STORAGE_MMC ) )
 
-			if hddsize :
-				mLines = '%s-%s(%s)'% ( MR_LANG( 'USB' ), hddmodel, hddsize )
-				context.append( ContextItem( mLines, E_STORAGE_FORMAT_HDD ) )
+			LOG_TRACE( '-------------mntinfo[%s]'% mntinfo )
+			mntidx = 0
+			for ele in mntinfo :
+				mLines = '%s-%s(%s)'% ( MR_LANG( 'USB' ), ele[0], ele[1] )
+				context.append( ContextItem( mLines, mntidx ) )
+				mntidx += 1
 
 		else :
 			defSelect = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetProp( )
@@ -79,11 +142,11 @@ class ExclusiveSettings( object ) :
 				#	deviceName = '[COLOR ff2E2E2E]%s[/COLOR]'% deviceName
 				context.append( ContextItem( deviceName, i ) )
 
-		return context
+		return context, mntinfo
 
 
 	def ShowContextMenu( self, aMenu = E_CONTEXT_MENU_STORAGE ) :
-		contextList = self.GetContextMenu( aMenu )
+		contextList, mntinfo = self.GetContextMenu( aMenu )
 
 		selectAction = -1
 		if contextList and len( contextList ) > 0 :
@@ -102,65 +165,110 @@ class ExclusiveSettings( object ) :
 		#	LOG_TRACE( '[Exclusive] pass, select same' )
 		#	return
 
-		LOG_TRACE( '--------------------select[%s]'% contextList[selectAction].mDescription )
+		#LOG_TRACE( '--------------------select[%s]'% contextList[selectAction].mDescription )
 
 		if aMenu == E_CONTEXT_MENU_FORMAT :
-			self.FormatStorage( selectAction, False )
+			mntPath = GetMountPathByDevice( -1, mntinfo[selectAction][2] )
+			self.FormatStorage( mntPath )
 
 		elif aMenu == E_CONTEXT_MENU_STORAGE :
 			self.SelectStorage( selectAction )
 
 
-	def FormatStorage( self, aSelect, aCheckDevice = True ) :
-		isFail = False
+	def FormatStorage( self, aSelect ) :
+		isFail = E_STORAGE_FORMAT_DONE
 		mTitle = MR_LANG( 'Error' )
-		mLines = MR_LANG( 'Could not find a SD memory card' )
+		mLines = MR_LANG( 'Could not find a Micro SD card' )
+		mntPath = aSelect
+		#LOG_TRACE( '--------------------select mntpath[%s]'% mntPath )
 
-		if aSelect == E_STORAGE_FORMAT_SD :
-			SDExist = True
-			if aCheckDevice : 
-				SDExist = self.mCommander.MMC_MountCheck( )
-
-			if SDExist :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Format your SD memory card?' ), MR_LANG( 'Everything on your SD card will be erased' ) )
-				dialog.doModal( )
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					configure = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_CONFIGURE )
-					configure.DedicatedFormat( E_STORAGE_FORMAT_SD )
-
-			else :
-				isFail = True
-
-		elif aSelect == E_STORAGE_FORMAT_HDD :
-			driveList = self.mCommander.USB_GetMountPath( )
-			if driveList and len( driveList ) > 0 and driveList[0].mError == 0 :
-				context = []
-				for i in range( len( driveList ) ) :
-					context.append( ContextItem( driveList[i].mParam, i ) )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				contextAction = dialog.GetSelectedAction( )
-				if contextAction >= 0 :
-					self.mSelectAction = contextAction
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_CONFIGURE ).StartExclusiveFormat( driveList, contextAction )
-
-			else :
-				isFail = True
-				mLines = MR_LANG( 'Could not find a exclusive drive' )
+		if mntPath :
+			ret = self.DoFormatStorage( mntPath )
+			self.ResultDialog( ret )
 
 
-		if isFail :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( mTitle, mLines )
+	def DoFormatStorage( self, aMntPath ) :
+		isbackup = False
+		isformat = False
+		doResult = E_STORAGE_ERROR_FORMAT
+
+		usbPath  = ''
+		#mntPath  = GetMountPathByDevice( aMntPath )
+		xbmcPath = '%s/program/.xbmc'% aMntPath
+
+		mTitle = MR_LANG( 'Format your drive?' )
+		mLine1 = MR_LANG( 'Everything on your drive will be erased' )
+		mLine2 = MR_LANG( 'This will take a while' )
+
+		if aMntPath == E_SELECT_STORAGE_MMC or aMntPath == E_PATH_MMC :
+			mTitle = MR_LANG( 'Format your SD memory card?' )
+			mLine1 = MR_LANG( 'Everything on your SD card will be erased' )
+			mLine2 = ''
+
+		#1. check .xbmc ?
+		#if CheckMountType( aMntPath ).lower( ) == 'ext4' :
+		if CheckDirectory( xbmcPath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' ) % NEW_LINE )
 			dialog.doModal( )
+			ret = dialog.IsOK( )
+			if ret == E_DIALOG_STATE_YES :
+				isbackup = True
 
+			elif ret == E_DIALOG_STATE_CANCEL :
+				return E_STORAGE_ERROR_FORMAT_CANCEL
+
+		#ToDO : force dedicated format reboot ? <-- factory empty ?
+
+		#2. backup xbmc data
+		if isbackup :
+			isformat = True
+			usbPath = self.mDataCache.USB_GetMountPath( )
+			if usbPath :
+				if CheckDirectory( usbPath + '/RubyBackup/' ) :
+					RemoveDirectory( usbPath + '/RubyBackup/' )
+				CreateDirectory( usbPath + '/RubyBackup/' )
+
+				sourceList = [ '%s/userdata'% xbmcPath, '%s/addons'% xbmcPath ]
+				targetPath = '%s/RubyBackup'% usbPath
+				doResult = self.CopyXBMCData( sourceList, targetPath, '', MR_LANG( 'Now backing up your user data' ), usbPath )
+				if doResult != E_STORAGE_DONE :
+					isformat = False
+
+			else :
+				isformat = False
+				doResult = E_STORAGE_ERROR_USB_INSERT
+
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( mTitle, mLine1, mLine2 )
+			dialog.doModal( )
+			ret = dialog.IsOK( ) == E_DIALOG_STATE_YES
+			if ret == E_DIALOG_STATE_YES :
+				isformat = True
+			elif ret == E_DIALOG_STATE_NO :
+				doResult = E_STORAGE_ERROR_FORMAT_CANCEL
+			else :
+				doResult = E_STORAGE_ERROR_FORMAT_CANCEL
+
+		#3. format
+		if isformat :
+			doResult = self.MakeDedicateForJET( aMntPath )
+			if doResult == E_STORAGE_DONE :
+				#4. resotre backup
+				if isbackup :
+					sourceList = [ '%s/RubyBackup/userdata'% usbPath, '%s/addons'% xbmcPath ]
+					targetPath = xbmcPath
+					doResult = self.CopyXBMCData( sourceList, targetPath, '', MR_LANG( 'Now restoring up your user data' ), aMntPath )
+					if doResult == E_STORAGE_ERROR_COPY_FAIL :
+						doResult = E_STORAGE_ERROR_RESTORE_FAIL
+
+		return doResult
 
 
 	def SelectStorage( self, aSelect ) :
 		ret = False
-		if aSelect == 0 :
+		if aSelect == E_SELECT_STORAGE_NONE :
 			ret = E_STORAGE_DONE
 		else :
 			ret = self.ChangeStorage( aSelect )
@@ -168,61 +276,60 @@ class ExclusiveSettings( object ) :
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
 			LOG_TRACE( '--------------------Save ElisPropertyEnum[%s]'% aSelect )
+			msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
+			self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
+			self.mDialogShowInit.SetButtonVisible( False )
+			self.mDialogShowInit.SetDialogType( 'update' )
+			self.mDialogShowInit.SetAutoCloseTime( 5 )
+			self.mDialogShowInit.doModal( )
+			self.mDataCache.System_Reboot( )
 
 		else :
-			LOG_TRACE( '--------------------error[%s]'% ret )
-			mTitle = MR_LANG( 'Error' )
-			mLines = ''
-			if ret == E_STORAGE_ERROR_SPACE :
-				mLines = MR_LANG( 'Not enough space on USB flash memory' )
-			elif ret == E_STORAGE_ERROR_NOT_MEDIA :
-				mLines = MR_LANG( 'Check your USB device' )
-			elif ret == E_STORAGE_ERROR_MOUNT_TYPE :
-				mLines = MR_LANG( 'Unknown filesystem or not formated' )
-			elif ret == E_STORAGE_ERROR_STORAGE :
-				mLines = MR_LANG( 'Can not appoint storage' )
-			elif ret == E_STORAGE_ERROR_FORMAT :
-				mLines = MR_LANG( 'Format drive fail to complete' )
-			elif ret == E_STORAGE_ERROR_COPY_FAIL :
-				mLines = MR_LANG( 'Fail to copy addons' )
-			elif ret == E_STORAGE_ERROR_CANCEL :
-				mTitle = MR_LANG( 'Attention' )
-				mLines = MR_LANG( 'storage appointment is canceled' )
-			elif ret == E_STORAGE_ERROR_NOT_USB :
-				mLines = MR_LANG( 'Not support USB memory' )
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( mTitle, mLines )
-			dialog.doModal( )
+			self.ResultDialog( ret )
 
 
 	def ChangeStorage( self, aSelect ) :
-		mediaPath = E_PATH_MMC
-		if aSelect == 3 :
+		mediaPath = ''
+		exceptList = [ '%s/download'% E_PATH_FLASH_PROGRAM ]
+		sourceList = [ E_PATH_FLASH_PVR, E_PATH_FLASH_PROGRAM ]
+		targetPath = ''
+		hddpath = self.mDataCache.HDD_GetMountPath( )
+		#LOG_TRACE( '-------------------------HDD_GetMountPath len[%s]'% len( hddpath ) )
+		if aSelect == E_SELECT_STORAGE_MMC :
+			mediaPath = E_PATH_MMC
+			#SDExist = self.mCommander.MMC_MountCheck( )
+			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_MMC ) )
+
+			if mntPath == E_PATH_FLASH_BASE or hddpath and len( hddpath ) < 2 :
+				return E_STORAGE_ERROR_USED_MMC
+
+		elif aSelect == E_SELECT_STORAGE_USB :
+			return E_STORAGE_ERROR_NOT_SUPPORT_STORAGE
+
+		elif aSelect == E_SELECT_STORAGE_HDD :
 			mediaPath = E_PATH_HDD
+			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_HDD ) )
+			if mntPath == E_PATH_HDD or hddpath and len( hddpath ) > 2 :
+				return E_STORAGE_ERROR_USED_HDD
+			#if not CheckDirectory( mediaPath ) :
+			#	return E_STORAGE_ERROR_NOT_HDD
 
-		elif aSelect == 2 :
-			return E_STORAGE_ERROR_NOT_USB
-
-		if not CheckDirectory( mediaPath ) :
-			return E_STORAGE_ERROR_NOT_MEDIA
+		targetPath = mediaPath
 
 		mTitle = MR_LANG( 'Error' )
 		mLines = MR_LANG( 'Changed Fail to Storage' )
-		isChanged = E_STORAGE_DONE
+		doResult = E_STORAGE_DONE
 
 		try :
 			mType = CheckMountType( mediaPath ).lower( )
 			if mType :
-				isFormat = False
-				isCopyData = True
-
 				if mType == 'ext4' :
-					xbmcPath = '%s/%s/.xbmc'% ( mediaPath, os.path.dirname( E_PATH_FLASH_PROGRAM ) )
+					xbmcPath = '%s/program/.xbmc'% mediaPath
 					if CheckDirectory( xbmcPath ) :
 						mTitle = MR_LANG( 'Attention' )
 						mLines = MR_LANG( 'Can you remove old addons in Micro SD Card?' )
-						if aSelect == 3 :
+						if aSelect == E_SELECT_STORAGE_HDD :
 							mLines = MR_LANG( 'Can you remove old addons in USB HDD?' )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 						dialog.SetDialogProperty( mTitle, mLines )
@@ -230,75 +337,62 @@ class ExclusiveSettings( object ) :
 
 						ret = dialog.IsOK( )
 						if ret == E_DIALOG_STATE_CANCEL :
-							isChanged = E_STORAGE_ERROR_CANCEL
+							doResult = E_STORAGE_ERROR_CANCEL
 
 						elif ret == E_DIALOG_STATE_YES :
 							RemoveDirectory( xbmcPath )
 
-						else :
-							isCopyData = False
+						elif ret == E_DIALOG_STATE_NO :
+							exceptList.append( '%s/.xbmc'% E_PATH_FLASH_PROGRAM )
 
 				else :
 					#vfat, ntfs, ... etc
-					isFormat = False
+					doResult = self.DoFormatStorage( aSelect )
 
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Format your drive?' ), MR_LANG( 'Everything on your drive will be erased' ), MR_LANG( 'This will take a while' ) )
-					dialog.doModal( )
-					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						isFormat = True
-					elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
-						isChanged = E_STORAGE_ERROR_STORAGE
-					else :
-						isChanged = E_STORAGE_ERROR_CANCEL
-
-				if isChanged == E_STORAGE_DONE :
+				if doResult == E_STORAGE_DONE :
 					#copy to data
-					isChanged = self.CopyXBMCData( mediaPath, isCopyData, isFormat )
+					doResult = self.CopyXBMCData( sourceList, targetPath, exceptList )
 
 			else :
 				#check except
-				isChanged = E_STORAGE_ERROR_MOUNT_TYPE
+				doResult = E_STORAGE_ERROR_MOUNT_TYPE
+
+				#ToDO : force dedicated format reboot ?
+				pass
+
 
 		except Exception, e :
 			LOG_ERR( '[Storage]except[%s]'% e )
-			isChanged = E_STORAGE_ERROR_STORAGE
+			doResult = E_STORAGE_ERROR_STORAGE
 
-		return isChanged
+		return doResult
 
 
-	def CopyXBMCData( self, aMediaPath, isCopyData = True, isFormat = False ) :
-		if isFormat :
-			self.OpenBusyDialog( )
-			self.mProcessing = True
-			tShowProcess = threading.Timer( 0, self.AsyncProgressing )
-			tShowProcess.start( )
-
-			ret = False
-			if mediaPath == E_PATH_MMC :
-				ret = self.mCommander.Format_Micro_Card( E_FORMAT_BY_NOT_REBOOT )
-			elif mediaPath == E_PATH_HDD :
-				ret = self.mCommander.Make_Exclusive_HDD( mediaPath )
-
-			self.mProcessing = False
-			if tShowProcess :
-				tShowProcess.join( )
-			self.CloseBusyDialog( )
-			if not ret :
-				return E_STORAGE_ERROR_FORMAT
-
-		if not isCopyData :
-			return E_STORAGE_DONE
-
+	def CopyXBMCData( self, aSourceList, aTargetPath, aExceptList = [], aTitle = '', aTargetDevice = None ) :
 		ret = E_STORAGE_DONE
-		sourceSize = GetDirectorySize( E_PATH_FLASH_PVR ) + GetDirectorySize( E_PATH_FLASH_PROGRAM )
-		targetSize = GetDeviceSize( aMediaPath )
-		LOG_TRACE( '---------------size /media/mmc[%s] /mnt/hdd0[%s]'% ( targetSize, sourceSize ) )
+		if not aSourceList or len( aSourceList ) < 1 :
+			return ret
+
+		sourceSize = 0
+		exceptSize = 0
+		for sPath in aSourceList :
+			sourceSize += GetDirectorySize( sPath )
+		for ePath in aExceptList :
+			exceptSize += GetDirectorySize( ePath )
+		sourceSize -= exceptSize
+		targetSize = GetDeviceSize( aTargetPath )
+		if aTargetDevice :
+			targetSize = GetDeviceSize( aTargetDevice )
+		#LOG_TRACE( '---------------size target[%s][%s][%s] source[%s][%s] exceptList[%s:%s]'% ( targetSize, aTargetDevice, aTargetPath, sourceSize, aSourceList, exceptSize, aExceptList ) )
 		if targetSize < sourceSize :
 			return E_STORAGE_ERROR_SPACE
 
+		copyList = []
+		mTitle = MR_LANG( 'XBMC Data Copy' )
+		if aTitle :
+			mTitle = aTitle
 		self.OpenBusyDialog( )
-		pathlist = GetDirectoryAllFilePathList( [ E_PATH_FLASH_BASE ], ['%s/download'% E_PATH_FLASH_PROGRAM] )
+		pathlist = GetDirectoryAllFilePathList( aSourceList, aExceptList )
 		self.CloseBusyDialog( )
 		progressDialog = None
 		try :
@@ -306,49 +400,56 @@ class ExclusiveSettings( object ) :
 			strReady = MR_LANG( 'Ready to start' ) + '...'
 			percent = 0
 			progressDialog = xbmcgui.DialogProgress( )
-			progressDialog.create( MR_LANG( 'XBMC Data Copy' ), strInit )
+			progressDialog.create( mTitle, strInit )
 			progressDialog.update( percent, strReady )
 
 			count = 1
 			totlen = len( pathlist )
-			for sourcePath in pathlist :
+			for fData in pathlist :
 				percent = int( 1.0 * count / totlen * 100 )
 
 				if progressDialog.iscanceled( ) :
 					strCancel = MR_LANG( 'Canceling' ) + '...'
 					progressDialog.update( percent, strCancel )
 					self.OpenBusyDialog( )
-					RemoveDirectory( '%s/%s'% ( aMediaPath, os.path.dirname( E_PATH_FLASH_PVR ) ) )
-					RemoveDirectory( '%s/%s'% ( aMediaPath, os.path.dirname( E_PATH_FLASH_PROGRAM ) ) )
+					for sPath in aSourceList :
+						RemoveDirectory( '%s/%s'% ( aTargetPath, sPath[len(E_PATH_FLASH_BASE)+1:] ) )
+						#LOG_TRACE( '----------------------removePath[%s/%s]'% ( aTargetPath, sPath[len(E_PATH_FLASH_BASE)+1:] ) )
+
+					#RemoveDirectory( '%s/%s'% ( aMediaPath, os.path.dirname( E_PATH_FLASH_PVR ) ) )
+					#RemoveDirectory( '%s/%s'% ( aMediaPath, os.path.dirname( E_PATH_FLASH_PROGRAM ) ) )
 					self.CloseBusyDialog( )
 					progressDialog.update( 0, '', '' )
 					progressDialog.close( )
 					return E_STORAGE_ERROR_CANCEL
 
 				strData = MR_LANG( 'Copying data' ) + '...'
-				progressDialog.update( percent, strData, '%s'% sourcePath[len(E_PATH_FLASH_BASE)+1:], ' ' )
+				progressDialog.update( percent, strData, '%s'% fData[len(E_PATH_FLASH_BASE)+1:], ' ' )
 
-				destPathCopy = '%s%s'% ( aMediaPath, sourcePath[ len( E_PATH_FLASH_BASE ) : ] )
-				if CheckDirectory( sourcePath, True ) :
-					CreateDirectory( destPathCopy, sourcePath )
+				destPathCopy = '%s%s'% ( aTargetPath, fData[len(E_PATH_FLASH_BASE):] )
+				copyList.append( destPathCopy )
+				if CheckDirectory( fData, True ) :
+					CreateDirectory( destPathCopy, fData )
 
 				else :
-					shutil.copy( sourcePath, destPathCopy )
-					#os.system( 'cp -af %s %s'% ( sourcePath, destPathCopy ) )
+					shutil.copy( fData, destPathCopy )
+					#os.system( 'cp -af %s %s'% ( aSourceList, destPathCopy ) )
 				if not CheckDirectory( destPathCopy ) :
 					os.system( 'sync' )
 				count = count + 1
 
 			os.system( 'sync' )
-			progressDialog.update( 100, MR_LANG( 'XBMC Data Copy' ), MR_LANG( 'Complete' ) )
+			progressDialog.update( 100, mTitle, MR_LANG( 'Complete' ) )
 			time.sleep( 1 )
 			progressDialog.update( 0, '', '' )
 			progressDialog.close( )
 
 		except Exception, e :
 			LOG_ERR( '[Storage]except[%s]' % e )
-			RemoveDirectory( '%s/%s'% ( aMediaPath, os.path.dirname( E_PATH_FLASH_PVR ) ) )
-			RemoveDirectory( '%s/%s'% ( aMediaPath, os.path.dirname( E_PATH_FLASH_PROGRAM ) ) )
+			for sPath in aSourceList :
+				RemoveDirectory( '%s/%s'% ( aTargetPath, sPath[len(E_PATH_FLASH_BASE)+1:] ) )
+				#LOG_TRACE( '----------------------removePath[%s/%s]'% ( aTargetPath, sPath[len(E_PATH_FLASH_BASE)+1:] ) )
+
 			if progressDialog :
 				progressDialog.close( )
 			self.CloseBusyDialog( )
@@ -384,106 +485,110 @@ class ExclusiveSettings( object ) :
 		progressDialog.close( )
 
 
-	def DedicatedFormat( self, aType ) :
-		self.mUseUsbBackup = False
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' ) % NEW_LINE )
-		dialog.doModal( )
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
-				self.BackupAndFormat( aType )
-			else :
+	def MakeDedicateForJET( self, aMntPath ) :
+		#for /mnt/hdd0 on usb
+		doResult = E_STORAGE_ERROR_FORMAT
+		mmcReboot = E_FORMAT_BY_NOT_REBOOT
+		if aMntPath == E_PATH_HDD or aMntPath == E_PATH_FLASH_BASE :
+			hddpath = self.mDataCache.HDD_GetMountPath( )
+			#hddsize = self.GetMaxMediaSize( )
+			mntinfo = GetMountExclusiveDevice( )
+			hddsize = 0
+			LOG_TRACE( '----------------------------formatMnt[%s] mminfo[%s]'% ( aMntPath, mntinfo ) )
+			for ele in mntinfo :
+				if GetMountPathByDevice( -1, ele[2] ) == aMntPath :
+					#hddsize = ele[1]
+					hddsize = GetMountExclusiveDevice( ele[2] )
+
+					#mmc format /mnt/hdd0: reboot, /media/hdd0: non-reboot
+					if os.path.basename( ele[2] ) == os.path.basename( E_PATH_MMC ) :
+						aMntPath = E_PATH_MMC
+						mmcReboot = E_FORMAT_BY_REBOOT
+					break
+
+			if aMntPath != E_PATH_MMC :
+				#LOG_TRACE( '-----------------------size[%s]'% hddsize )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find backup data' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( float( hddsize ) / ( 1000000 * 1000 ) ) )
 				dialog.doModal( )
-		else :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Start formatting without making a backup?' ), MR_LANG( 'Formatting HDD cannot be undone!' ) )
-			dialog.doModal( )
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.MakeDedicate( aType )
 
-
-	def BackupAndFormat( self, aType ) :
-		usbpath = self.mDataCache.USB_GetMountPath( )
-		if usbpath :
-			size_addons = GetDirectorySize( '/mnt/hdd0/program/.xbmc/addons' )
-			size_udata = GetDirectorySize( '/mnt/hdd0/program/.xbmc/userdata' )
-			usbfreesize = GetDeviceSize( usbpath )
-			if ( size_addons + size_udata ) > usbfreesize :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+				mediadefault = 100
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
 				dialog.doModal( )
-			else :
-				self.CopyBackupData( usbpath, aType )
-		else :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert a USB flash memory' ) )
-			dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					mediadefault = dialog.GetString( )
 
+				#LOG_TRACE( '-----------------------size[%s] input[%s]'% ( hddsize, int( mediadefault ) * ( 1000000 * 1024 ) ) )
+				if int( hddsize ) < int( mediadefault ) * ( 1000000 * 1024 ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+					dialog.doModal( )
+					return E_STORAGE_ERROR_FORMAT_CANCEL
 
-	def CopyBackupData( self, aUsbpath, aType ) :
-		self.mProgressThread = self.ShowProgress( '%s%s' % ( MR_LANG( 'Now backing up your user data' ), ING ), 30 )
-		if CheckDirectory( aUsbpath + '/RubyBackup/' ) :
-			RemoveDirectory( aUsbpath + '/RubyBackup/' )
-
-		ret_udata = CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/RubyBackup/userdata' )
-		ret_addons = CopyToDirectory( '/mnt/hdd0/program/.xbmc/addons', aUsbpath + '/RubyBackup/addons' )
-		if ret_udata and ret_addons :
-			self.CloseProgress( )
-			time.sleep( 0.5 )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Start formatting HDD?' ), MR_LANG( 'Press OK button to format your HDD now' ) )
-			dialog.doModal( )
-			self.mUseUsbBackup = True
-			self.MakeDedicate( aType )
-		else :
-			self.CloseProgress( )
-			time.sleep( 0.5 )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
-			dialog.doModal( )
-
-
-	def MakeDedicate( self, aType ) :
-		if aType == FORMAT_HARD_DISK :
-			maxsize = self.GetMaxMediaSize( )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
-			dialog.doModal( )
-
-			mediadefault = 100
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
-			dialog.doModal( )
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				mediadefault = dialog.GetString( )
-
-			if maxsize < int( mediadefault ) :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
 				dialog.doModal( )
-				return
+				dialog.IsOK( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
+					ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
-			dialog.doModal( )
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.OpenBusyDialog( )
-				ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
-				ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
-				self.mDataCache.Player_AVBlank( True )
-				if self.mUseUsbBackup :
-					self.MakeBackupScript( )
-					CreateDirectory( E_DEFAULT_BACKUP_PATH )
-					os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
-				self.mCommander.Make_Dedicated_HDD( )
-		else :
-			self.OpenBusyDialog( )
+				else :
+					return E_STORAGE_ERROR_FORMAT_CANCEL
+
+		self.OpenBusyDialog( )
+		self.mProcessing = True
+		tShowProcess = threading.Timer( 0, self.AsyncProgressing )
+		tShowProcess.start( )
+
+		ret = False
+		if aMntPath == E_PATH_MMC :
+			ret = self.mCommander.Format_Micro_Card( mmcReboot )
+			#LOG_TRACE( '-------------active-----micro format[%s] reboot[%s]'% ( aMntPath, mmcReboot ) )
+
+		elif aMntPath == E_PATH_HDD :
+			ret = self.mCommander.Make_Exclusive_HDD( aMntPath )
+			#LOG_TRACE( '-------------active-----exclusive format[%s]'% aMntPath )
+
+		elif aMntPath == E_PATH_FLASH_BASE :
 			self.mDataCache.Player_AVBlank( True )
-			if self.mUseUsbBackup :
-				self.MakeBackupScript( )
-				CreateDirectory( E_DEFAULT_BACKUP_PATH )
-				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
-			self.mCommander.Format_Micro_Card( )
+			self.MakeBackupScript( )
+			CreateDirectory( E_DEFAULT_BACKUP_PATH )
+			os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
+			ret = self.mCommander.Make_Dedicated_HDD( ) # reboot and format
+			#LOG_TRACE( '-------------active-----dedicate format[%s]'% aMntPath )
+
+		self.mProcessing = False
+		if tShowProcess :
+			tShowProcess.join( )
+		self.CloseBusyDialog( )
+
+		if ret :
+			doResult = E_STORAGE_FORMAT_DONE
+		else :
+			doResult = E_STORAGE_ERROR_FORMAT
+
+		return doResult
+
+
+	def MakeBackupScript( self ) :
+		try :
+			scriptFile = '%s.sh' % E_DEFAULT_BACKUP_PATH
+			fd = open( scriptFile, 'w' )
+			if fd :
+				fd.writelines( '#!/bin/sh\n' )
+				#fd.writelines( 'modprobe usb_storage\n' )
+				#fd.writelines( 'sleep 3\n' )
+				#fd.writelines( 'mount /dev/sdb1 /media/usb/sdb1\n' )
+				usbpath = self.mDataCache.USB_GetMountPath( )
+				fd.writelines( 'mkdir -p /mnt/hdd0/program/.xbmc/userdata\n' )
+				fd.writelines( 'mkdir -p /mnt/hdd0/program/.xbmc/addons\n' )
+				fd.writelines( 'cp -rf %s/RubyBackup/userdata/* /mnt/hdd0/program/.xbmc/userdata/\n' % usbpath )
+				fd.writelines( 'cp -rf %s/RubyBackup/addons/* /mnt/hdd0/program/.xbmc/addons/\n' % usbpath )
+				fd.close( )
+				os.chmod( scriptFile, 0755 )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
