@@ -1372,9 +1372,21 @@ def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :
 				mountDev = 'None'
 				if dev and bool( re.search( '/dev/sd', dev[0], re.IGNORECASE ) ) :
 					mountDev = '/dev/sda'
+					mountPos = [mountDev,mountPos]					
 				elif dev and bool( re.search( '/dev/mmc', dev[0], re.IGNORECASE ) ) :
 					mountDev = '/dev/mmc'
-				mountPos = [mountDev,mountPos]
+					mountPos = [mountDev,mountPos]
+
+		if not mountPos: #check partitions
+			if aDevName == '/dev/mmc' :
+				cmd = "cat /proc/partitions |awk '/%s/ {print $4}'" %'mmcblk0'
+				ret = ExecuteShell( cmd ).split( '\n' )
+				for partition in ret :
+					if partition == 'mmcblk0' :
+						mountDev = '/dev/mmc'
+						mountPos = '/media/mmc'
+						return mountPos
+		
 		#LOG_TRACE( '---------------find dev[%s] mnt[%s]'% ( aDevName, mountPos) )
 
 	if aDevice == 1 :
