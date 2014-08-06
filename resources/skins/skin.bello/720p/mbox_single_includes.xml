@@ -5,7 +5,24 @@
 			<posy>-7</posy>
 			<width>1306</width>
 			<height>734</height>
-			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+			<texture>bg/SKINDEFAULT.jpg</texture>
+<!--			<texture background="true">windows/bg/bg_vignette.png</texture>-->
+			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
+		</control>
+	</include>
+
+	<include name="DefaultBackgroundVignette">
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>windows/bg/bg_vignette.png</texture>
+			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
+		</control>
+		<control type="image">
+			<include>FullscreenDimensions</include>
+			<texture>windows/bg/bg_diffuse.png</texture>
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
 		</control>
 	</include>
