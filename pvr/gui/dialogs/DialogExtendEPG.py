@@ -150,7 +150,7 @@ class DialogExtendEPG( BaseDialog ) :
 			self.mEPGListIdx = -1
 
 			#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
-			gmtFrom  = self.mDataCache.Datetime_GetLocalTime( )
+			gmtFrom  = self.mDataCache.Datetime_GetGMTTime( )
 			gmtUntil = gmtFrom + E_MAX_EPG_DAYS
 			maxCount = 1000
 			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
@@ -179,11 +179,11 @@ class DialogExtendEPG( BaseDialog ) :
 			#LOG_TRACE('new EPG received, not exist in EPGList')
 			idx = 0
 			for idx in range( len( self.mEPGList ) ) :
-				if self.mEPG.mStartTime < self.mEPGList[idx].mStartTime :
+				if self.mEPG.mStartTime <= self.mEPGList[idx].mStartTime :
 					break
 
 			self.mEPGListIdx = idx
-			self.mEPGList = self.mEPGList[:idx]+[self.mEPG]+self.mEPGList[idx:]
+			#self.mEPGList = self.mEPGList[:idx]+[self.mEPG]+self.mEPGList[idx:]
 
 
 	def EPGListMoveToIndex( self ) :
