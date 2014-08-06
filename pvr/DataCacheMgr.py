@@ -15,7 +15,7 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage, CheckDirectory, ParseStringInPattern, RemoveDirectory
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage, CheckDirectory, ParseStringInPattern, RemoveDirectory, GetMountPathByDevice
 
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
@@ -297,6 +297,9 @@ class DataCacheMgr( object ) :
 		#init record path
 		if E_SUPPORT_EXTEND_RECORD_PATH :
 			self.InitNetworkVolume( )
+
+		if E_STORAGE_BOOT_ON_INITIALIZE :
+			self.InitStorageProperty( )
 
 	
 	def InitNetwork( self ) :
@@ -2466,6 +2469,29 @@ class DataCacheMgr( object ) :
 			self.Record_GetNetworkVolume( )
 
 		return failCount, lblLine
+
+
+	def InitStorageProperty( self ) :
+		checked = 0
+		curIdx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
+		if curIdx == 0 : #None
+			return
+
+		lenBase = len( E_PATH_FLASH_BASE )
+		mntPath = GetMountPathByDevice( curIdx )
+		#hddpath = self.mDataCache.HDD_GetMountPath( )
+		#1. mount /mnt/hdd0 ?
+		if mntPath and lenBase < len( mntPath ) and mntPath[:lenBase] == E_PATH_FLASH_BASE :
+			mntPathList = GetMountPathByDevice( -1, mntPath, True )
+			#2.check matched device
+			if mntPathList :
+				if mntPathList[0] == '/dev/mmc' :
+					checked = 1
+				elif mntPathList[0] == '/dev/sda' :
+					checked = 3
+
+		if checked != curIdx :
+			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( checked )
 
 
 	def Timer_StopRecordingByRecordKey( self, aKey ) :

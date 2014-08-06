@@ -5,23 +5,26 @@ import shutil
 
 E_STORAGE_DONE = 0
 E_STORAGE_FORMAT_DONE = 1
+
 E_STORAGE_ERROR_NOT_MEDIA = -1
-E_STORAGE_ERROR_MOUNT_TYPE = -3
-E_STORAGE_ERROR_CANCEL = -4
-E_STORAGE_ERROR_STORAGE = -5
-E_STORAGE_ERROR_FORMAT = -6
-E_STORAGE_ERROR_SPACE = -7
-E_STORAGE_ERROR_COPY_FAIL = -8
-E_STORAGE_ERROR_NOT_SUPPORT_STORAGE = -9
-E_STORAGE_ERROR_NOT_USB = -10
-E_STORAGE_ERROR_NOT_MMC = -11
-E_STORAGE_ERROR_NOT_HDD = -12
-E_STORAGE_ERROR_USED_MMC = -13
-E_STORAGE_ERROR_USED_HDD = -14
-E_STORAGE_ERROR_NOT_USB_AVAIL = -15
-E_STORAGE_ERROR_USB_INSERT = -16
-E_STORAGE_ERROR_RESTORE_FAIL = -17
-E_STORAGE_ERROR_FORMAT_CANCEL = -18
+E_STORAGE_ERROR_MOUNT_TYPE = -2
+E_STORAGE_ERROR_CANCEL = -3
+E_STORAGE_ERROR_STORAGE = -4
+E_STORAGE_ERROR_SPACE = -5
+E_STORAGE_ERROR_COPY_FAIL = -6
+E_STORAGE_ERROR_NOT_SUPPORT_STORAGE = -7
+E_STORAGE_ERROR_NOT_USB = -8
+E_STORAGE_ERROR_NOT_MMC = -9
+E_STORAGE_ERROR_NOT_HDD = -10
+E_STORAGE_ERROR_USED_MMC = -11
+E_STORAGE_ERROR_USED_HDD = -12
+E_STORAGE_ERROR_NOT_USB_AVAIL = -13
+E_STORAGE_ERROR_USB_INSERT = -14
+E_STORAGE_ERROR_RESTORE_FAIL = -15
+E_STORAGE_ERROR_FORMAT = -16
+E_STORAGE_ERROR_FORMAT_CANCEL = -17
+E_STORAGE_ERROR_FORMAT_NOT_FOUND = -18
+
 
 E_CONTEXT_MENU_FORMAT = 1
 E_CONTEXT_MENU_STORAGE = 2
@@ -102,6 +105,9 @@ class ExclusiveSettings( object ) :
 			mLines = MR_LANG( 'Already using Micro SD card' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_HDD :
 			mLines = MR_LANG( 'Already using USB HDD' )
+		elif aErrorNo == E_STORAGE_ERROR_FORMAT_NOT_FOUND :
+			mLines = MR_LANG( 'Not found device, Please insert device again' )
+
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -123,6 +129,8 @@ class ExclusiveSettings( object ) :
 			mntidx = 0
 			for ele in mntinfo :
 				mLines = '%s-%s(%s)'% ( MR_LANG( 'USB' ), ele[0], ele[1] )
+				if ele[2] == '/dev/mmc' :
+					mLines = '%s(%s)'% ( ele[0], ele[1] )
 				context.append( ContextItem( mLines, mntidx ) )
 				mntidx += 1
 
@@ -131,16 +139,18 @@ class ExclusiveSettings( object ) :
 			deviceList = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).mProperty
 			LOG_TRACE( '-------------------def ElisPropertyEnum[%s]'% deviceList[defSelect][1] )
 
+			context.append( ContextItem( MR_LANG('Internal Storage'), E_SELECT_STORAGE_NONE ) )
+			context.append( ContextItem( MR_LANG('Micro SD Card'), E_SELECT_STORAGE_MMC ) )
+			context.append( ContextItem( MR_LANG('USB Memory'), E_SELECT_STORAGE_USB ) )
+			context.append( ContextItem( MR_LANG('USB HDD'), E_SELECT_STORAGE_HDD ) )
+			"""
 			for i in range( len( deviceList ) ) :
-				#if i == 2 :
-				#	#'not support USB Stick'
-				#	continue
-
 				deviceName = deviceList[i][1]
 				#if i == defSelect :
 				#	selectItem = i + 1
 				#	deviceName = '[COLOR ff2E2E2E]%s[/COLOR]'% deviceName
 				context.append( ContextItem( deviceName, i ) )
+			"""
 
 		return context, mntinfo
 
@@ -180,11 +190,14 @@ class ExclusiveSettings( object ) :
 		mTitle = MR_LANG( 'Error' )
 		mLines = MR_LANG( 'Could not find a Micro SD card' )
 		mntPath = aSelect
-		#LOG_TRACE( '--------------------select mntpath[%s]'% mntPath )
+		LOG_TRACE( '--------------------select mntpath[%s]'% mntPath )
 
 		if mntPath :
 			ret = self.DoFormatStorage( mntPath )
 			self.ResultDialog( ret )
+
+		#unknown or not formated ?
+		return E_STORAGE_ERROR_FORMAT_NOT_FOUND
 
 
 	def DoFormatStorage( self, aMntPath ) :
@@ -283,7 +296,7 @@ class ExclusiveSettings( object ) :
 			self.mDialogShowInit.SetDialogType( 'update' )
 			self.mDialogShowInit.SetAutoCloseTime( 5 )
 			self.mDialogShowInit.doModal( )
-			self.mDataCache.System_Reboot( )
+			#self.mDataCache.System_Reboot( )
 
 		else :
 			self.ResultDialog( ret )
@@ -298,9 +311,11 @@ class ExclusiveSettings( object ) :
 		#LOG_TRACE( '-------------------------HDD_GetMountPath len[%s]'% len( hddpath ) )
 		if aSelect == E_SELECT_STORAGE_MMC :
 			mediaPath = E_PATH_MMC
-			#SDExist = self.mCommander.MMC_MountCheck( )
-			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_MMC ) )
+			SDExist = self.mCommander.MMC_MountCheck( )
+			if not SDExist :
+				return E_STORAGE_ERROR_NOT_MMC
 
+			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_MMC ) )
 			if mntPath == E_PATH_FLASH_BASE or hddpath and len( hddpath ) < 2 :
 				return E_STORAGE_ERROR_USED_MMC
 

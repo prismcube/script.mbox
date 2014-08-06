@@ -544,11 +544,13 @@ E_V1_9_APPLY_WEEKLY_VIEW_TIMER = False
 
 #JET configuration
 E_FRONT_DISPLAY_ENABLE = True
+E_STORAGE_BOOT_ON_INITIALIZE = False
 
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 		E_FRONT_DISPLAY_ENABLE = False
 		PRISMCUBE_REQUEST_FW_PATH = 'jet_v1.xxx.xxx'
+		E_STORAGE_BOOT_ON_INITIALIZE = True
 
 
 

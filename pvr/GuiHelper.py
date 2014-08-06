@@ -923,11 +923,18 @@ def GetDirectoryAllFilePathList( aPathList, aExceptList = [] ) :
 	dirCount = 0
 	fileCount = 0
 	for pathlist in aPathList :
+		ePath = ''
 		if CheckDirectory( pathlist ) :
 			for ( path, dirs, files ) in os.walk( pathlist ) :
 				if exthash.get( path, -1 ) == path :
 					LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
 					continue
+
+				if ePath : # not copy subdirectories
+					if len( ePath ) < len( path ) and ePath == path[:len(ePath)] :
+						#LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
+						continue
+
 				path_ret.append( path )
 				dirCount += 1
 				for file in files :
@@ -1347,7 +1354,7 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 	return isNTFS
 
 
-def GetMountPathByDevice( aDevice = 3, aDevName = None ) :
+def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :
 	#aDevice 1: mmc, 2: usb memory, 3: hdd
 	mountPos = ''
 	if aDevName :
@@ -1359,6 +1366,15 @@ def GetMountPathByDevice( aDevice = 3, aDevName = None ) :
 			else :
 				mountPos = ret[0]
 
+			if aReqDevice :
+				cmd = "mount | awk '/%s/ {print $1}'"% os.path.basename( aDevName )
+				dev = ExecuteShell( cmd ).split( '\n' )
+				mountDev = 'None'
+				if dev and bool( re.search( '/dev/sd', dev[0], re.IGNORECASE ) ) :
+					mountDev = '/dev/sda'
+				elif dev and bool( re.search( '/dev/mmc', dev[0], re.IGNORECASE ) ) :
+					mountDev = '/dev/mmc'
+				mountPos = [mountDev,mountPos]
 		#LOG_TRACE( '---------------find dev[%s] mnt[%s]'% ( aDevName, mountPos) )
 
 	if aDevice == 1 :
@@ -1400,7 +1416,7 @@ def GetMountExclusiveDevice( aElementSize = None ) :
 			else :
 				mmcsize = '%0.1fGb'% float( 1.0 * iSize / ( 1000000 * 1000 ) )
 
-			mntinfo.append( ['Micro SD Card', mmcsize, '/dev/mmc'] )
+			mntinfo.append( [MR_LANG( 'Micro SD Card' ), mmcsize, '/dev/mmc'] )
 
 	except Exception, e :
 		LOG_ERR( 'except[%s]'% e )

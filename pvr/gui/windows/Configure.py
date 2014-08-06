@@ -1272,9 +1272,10 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press OK button to remove everything in the media partition' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
-				selectStorage = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropString( )
+				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
+				selectStorage = [MR_LANG('Internal Storage'), MR_LANG('Micro SD Card'), MR_LANG('USB Memory'), MR_LANG('USB HDD')]
 				self.AddInputControl( E_Input04, MR_LANG( 'Format storage' ), '', MR_LANG( 'Press OK button to erase your Micro SD memory card or USB drive' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Current storage' ), selectStorage, MR_LANG( 'Press OK button to use your storage drive' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Current storage' ), selectStorage[selectidx], MR_LANG( 'Press OK button to use your storage drive' ) )
 				visibleControlIds = [ E_Input01, E_Input02 ]
 
 			else :
