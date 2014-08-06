@@ -41,7 +41,6 @@ class Launcher( object ):
 			try:
 				time.sleep( 1 )
 				self.InitElisMgr( )
-				self.InitTunerType( )
 				self.DoElisTest( )
 				self.InitCacheMgr( )
 				#if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
@@ -66,26 +65,6 @@ class Launcher( object ):
 				self.Run( )
 		finally:
 			print 'Launcher end'
-
-
-	def InitTunerType( self ) :
-		import pvr.Platform
-		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
-			pvr.Platform.GetPlatform( ).SetTunerType( TUNER_TYPE_DVBS_DUAL )
-
-		elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-			tunerType = pvr.ElisMgr.GetInstance( ).GetCommander( ).System_GetFrontEndType( )
-			if tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBS :
-				pvr.Platform.GetPlatform( ).SetTunerType( TUNER_TYPE_DVBS_SINGLE )
-			elif tunerType == ElisEnum.E_FRONTEND_DUAL_DVBS :
-				pvr.Platform.GetPlatform( ).SetTunerType( TUNER_TYPE_DVBS_DUAL )
-			elif tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBT or tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBC :
-				pvr.Platform.GetPlatform( ).SetTunerType( TUNER_TYPE_DVBT )
-			else :
-				pvr.Platform.GetPlatform( ).SetTunerType( TUNER_TYPE_DVBS_SINGLE )
-
-		else :
-			pvr.Platform.GetPlatform( ).SetTunerType( TUNER_TYPE_DVBS_DUAL )
 
 
 	def InitElisMgr( self ):

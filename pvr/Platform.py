@@ -189,6 +189,14 @@ class Platform( object ) :
 		return PRODUCT_RUBY
 
 
+	def SetTunerType( self, aType ) :
+		pass
+
+
+	def GetTunerType( self ) :
+		return TUNER_TYPE_DVBS_DUAL
+
+
 	def GetMediaPath( self, aMediaFile ) :
 		# TODO: Fix when we support multiple skins
 		return os.path.join( self.GetScriptDir( ), 'resources', 'skins', 'Default', 'media', aMediaFile )
@@ -213,6 +221,7 @@ class PrismCubePlatform( Platform ) :
 	def __init__( self, *args, **kwargs ) :
 		Platform.__init__( self, *args, **kwargs )
 		self.mProduct = args[0]
+
 		self.mTunerType = TUNER_TYPE_DVBS_SINGLE
 		if self.mProduct == PRODUCT_RUBY :
 			self.mTunerType = TUNER_TYPE_DVBS_DUAL
@@ -238,8 +247,25 @@ class PrismCubePlatform( Platform ) :
 		return self.mProduct
 
 
-	def SetTunerType( self, aType ) :
-		self.mTunerType = aType
+	def SetTunerType( self ) :
+		if self.mProduct == PRODUCT_RUBY :
+			self.mTunerType = TUNER_TYPE_DVBS_DUAL
+
+		elif self.mProduct == PRODUCT_OSCAR :
+			import pvr.ElisMgr
+			from elisinterface.ElisEnum import ElisEnum
+			tunerType = pvr.ElisMgr.GetInstance( ).GetCommander( ).System_GetFrontEndType( )
+			if tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBS :
+				self.mTunerType = TUNER_TYPE_DVBS_SINGLE
+			elif tunerType == ElisEnum.E_FRONTEND_DUAL_DVBS :
+				self.mTunerType = TUNER_TYPE_DVBS_DUAL
+			elif tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBT or tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBC :
+				self.mTunerType = TUNER_TYPE_DVBT
+			else :
+				self.mTunerType = TUNER_TYPE_DVBS_SINGLE
+
+		else :
+			self.mTunerType = TUNER_TYPE_DVBS_DUAL
 
 
 	def GetTunerType( self ) :

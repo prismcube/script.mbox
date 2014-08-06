@@ -37,6 +37,7 @@ if __name__ == '__main__' :
 	import pvr.Platform 
 	platform = pvr.Platform.GetPlatform( )
 	platform.AddLibsToSysPath( )
+	platform.SetTunerType( )
 	cacheDir = platform.GetCacheDir( )
 
 	from pvr.Util import MakeDir
