@@ -43,6 +43,7 @@ class ExclusiveSettings( object ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mSelectAction = -1
+		self.mFormatToSelectHDD = False
 
 
 	def OpenBusyDialog( self ) :
@@ -94,7 +95,7 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_STORAGE :
 			mLines = MR_LANG( 'Can not appoint storage' )
 		elif aErrorNo == E_STORAGE_ERROR_FORMAT :
-			mLines = MR_LANG( 'Format drive fail to complete' )
+			mLines = MR_LANG( 'Fail to format drive' )
 		elif aErrorNo == E_STORAGE_ERROR_COPY_FAIL :
 			mLines = MR_LANG( 'Fail to copy addons' )
 		elif aErrorNo == E_STORAGE_ERROR_RESTORE_FAIL :
@@ -324,11 +325,10 @@ class ExclusiveSettings( object ) :
 
 		elif aSelect == E_SELECT_STORAGE_HDD :
 			mediaPath = E_PATH_HDD
-			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_HDD ) )
-			if mntPath == E_PATH_HDD or hddpath and len( hddpath ) > 2 :
+			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_FLASH_BASE ) )
+			if mntPath == E_PATH_FLASH_BASE and hddpath and len( hddpath ) > 2 :
 				return E_STORAGE_ERROR_USED_HDD
-			#if not CheckDirectory( mediaPath ) :
-			#	return E_STORAGE_ERROR_NOT_HDD
+
 
 		targetPath = mediaPath
 
@@ -362,7 +362,12 @@ class ExclusiveSettings( object ) :
 
 				else :
 					#vfat, ntfs, ... etc
-					doResult = self.DoFormatStorage( aSelect )
+					if aSelect == E_SELECT_STORAGE_HDD :
+						self.mFormatToSelectHDD = True
+
+					doResult = self.DoFormatStorage( mediaPath )
+					if doResult == E_STORAGE_ERROR_FORMAT_CANCEL :
+						doResult = E_STORAGE_ERROR_CANCEL
 
 				if doResult == E_STORAGE_DONE :
 					#copy to data
@@ -371,10 +376,6 @@ class ExclusiveSettings( object ) :
 			else :
 				#check except
 				doResult = E_STORAGE_ERROR_MOUNT_TYPE
-
-				#ToDO : force dedicated format reboot ?
-				pass
-
 
 		except Exception, e :
 			LOG_ERR( '[Storage]except[%s]'% e )
@@ -473,8 +474,11 @@ class ExclusiveSettings( object ) :
 		return ret
 
 
-	def AsyncProgressing( self, aWaitTime = 10 ) :
-		mTitle = MR_LANG( 'Format Micro SD' )
+	def AsyncProgressing( self, aMntPath = E_PATH_MMC, aWaitTime = 10 ) :
+		mTitle = MR_LANG( 'Format USB HDD' )
+		if aMntPath == E_SELECT_STORAGE_MMC or aMntPath == E_PATH_MMC :
+			mTitle = MR_LANG( 'Format Micro SD' )
+
 		strReady = MR_LANG( 'Ready to start' ) + '...'
 		strInit = ''
 		percent = 0
@@ -486,7 +490,7 @@ class ExclusiveSettings( object ) :
 		waitCount = 0
 		while self.mProcessing :
 			strInit = '%s.'% strInit
-			percent = waitCount / totalTime
+			percent = int( waitCount / totalTime )
 			if percent > 99 :
 				percent = 99
 			progressDialog.update( percent, mTitle, strInit, ' ' )
@@ -554,25 +558,32 @@ class ExclusiveSettings( object ) :
 
 		self.OpenBusyDialog( )
 		self.mProcessing = True
-		tShowProcess = threading.Timer( 0, self.AsyncProgressing )
+		tShowProcess = threading.Timer( 0, self.AsyncProgressing, [aMntPath] )
 		tShowProcess.start( )
 
 		ret = False
+		LOG_TRACE( '---------------------------------format aMntPath[%s]'% aMntPath )
 		if aMntPath == E_PATH_MMC :
 			ret = self.mCommander.Format_Micro_Card( mmcReboot )
 			#LOG_TRACE( '-------------active-----micro format[%s] reboot[%s]'% ( aMntPath, mmcReboot ) )
 
-		elif aMntPath == E_PATH_HDD :
-			ret = self.mCommander.Make_Exclusive_HDD( aMntPath )
-			#LOG_TRACE( '-------------active-----exclusive format[%s]'% aMntPath )
-
-		elif aMntPath == E_PATH_FLASH_BASE :
+		elif aMntPath == E_PATH_HDD or aMntPath == E_PATH_FLASH_BASE :
 			self.mDataCache.Player_AVBlank( True )
 			self.MakeBackupScript( )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 			os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
-			ret = self.mCommander.Make_Dedicated_HDD( ) # reboot and format
+
+			if self.mFormatToSelectHDD :
+				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( E_SELECT_STORAGE_HDD )
+				LOG_TRACE( '--------------------Save ElisPropertyEnum HDD[%s]'% self.mFormatToSelectHDD )
+
+			#ret = self.mCommander.Make_Dedicated_HDD( ) # reboot and format
 			#LOG_TRACE( '-------------active-----dedicate format[%s]'% aMntPath )
+
+		else :
+			#usb memory
+			ret = self.mCommander.Make_Exclusive_HDD( aMntPath )
+			#LOG_TRACE( '-------------active-----exclusive format[%s]'% aMntPath )
 
 		self.mProcessing = False
 		if tShowProcess :

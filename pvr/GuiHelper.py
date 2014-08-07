@@ -1378,15 +1378,26 @@ def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :
 					mountPos = [mountDev,mountPos]
 
 		if not mountPos: #check partitions
+			cmd = ''
 			if aDevName == '/dev/mmc' :
-				cmd = "cat /proc/partitions |awk '/%s/ {print $4}'" %'mmcblk0'
+				cmd = "cat /proc/partitions |awk '/%s/ {print $4}'"% 'mmc'
+			elif bool( re.search( '/dev/sd', aDevName, re.IGNORECASE ) ) :
+				cmd = "cat /proc/partitions |awk '/%s/ {print $4}'"% 'sd'
+
+			if cmd :
 				ret = ExecuteShell( cmd ).split( '\n' )
 				for partition in ret :
-					if partition == 'mmcblk0' :
+					if partition == 'mmc' :
 						mountDev = '/dev/mmc'
 						mountPos = '/media/mmc'
+						isFind = True
 						return mountPos
-		
+
+					elif bool( re.search( 'sd', partition, re.IGNORECASE ) ) :
+						mountDev = '/dev/%s'% partition
+						mountPos = '/media/hdd0'
+						return mountPos
+
 		#LOG_TRACE( '---------------find dev[%s] mnt[%s]'% ( aDevName, mountPos) )
 
 	if aDevice == 1 :

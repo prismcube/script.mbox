@@ -1932,7 +1932,7 @@ class Configure( SettingWindow ) :
 				self.MakeBackupScript( )
 				CreateDirectory( E_DEFAULT_BACKUP_PATH )
 				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
-			self.mCommander.Format_Micro_Card( 0 )
+			self.mCommander.Format_Micro_Card( )
 
 
 	def GetMaxMediaSize( self ) :
