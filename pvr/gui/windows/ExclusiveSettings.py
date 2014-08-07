@@ -167,6 +167,10 @@ class ExclusiveSettings( object ) :
 
 			selectAction = dialog.GetSelectedAction( )
 
+		else :
+			if aMenu == E_CONTEXT_MENU_FORMAT :
+				return E_STORAGE_ERROR_FORMAT_NOT_FOUND
+
 		self.mSelectAction = selectAction
 		if selectAction < 0 :
 			LOG_TRACE( '[Exclusive] cancel, previous back' )
@@ -290,14 +294,21 @@ class ExclusiveSettings( object ) :
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
 			LOG_TRACE( '--------------------Save ElisPropertyEnum[%s]'% aSelect )
-			msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
-			self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
-			self.mDialogShowInit.SetButtonVisible( False )
-			self.mDialogShowInit.SetDialogType( 'update' )
-			self.mDialogShowInit.SetAutoCloseTime( 5 )
-			self.mDialogShowInit.doModal( )
-			#self.mDataCache.System_Reboot( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system will reboot in %s seconds' )% 10, True )
+			dialog.SetAutoCloseProperty( True, 10, True )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				"""
+				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
+				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
+				self.mDialogShowInit.SetButtonVisible( False )
+				self.mDialogShowInit.SetDialogType( 'update' )
+				self.mDialogShowInit.SetAutoCloseTime( 5 )
+				self.mDialogShowInit.doModal( )
+				"""
+				self.mDataCache.System_Reboot( )
 
 		else :
 			self.ResultDialog( ret )
@@ -577,7 +588,7 @@ class ExclusiveSettings( object ) :
 				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( E_SELECT_STORAGE_HDD )
 				LOG_TRACE( '--------------------Save ElisPropertyEnum HDD[%s]'% self.mFormatToSelectHDD )
 
-			#ret = self.mCommander.Make_Dedicated_HDD( ) # reboot and format
+			ret = self.mCommander.Make_Dedicated_HDD( ) # reboot and format
 			#LOG_TRACE( '-------------active-----dedicate format[%s]'% aMntPath )
 
 		else :
