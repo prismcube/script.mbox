@@ -2481,7 +2481,7 @@ class DataCacheMgr( object ) :
 		mntPath = GetMountPathByDevice( curIdx )
 		#hddpath = self.mDataCache.HDD_GetMountPath( )
 		#1. mount /mnt/hdd0 ?
-		if mntPath and lenBase < len( mntPath ) and mntPath[:lenBase] == E_PATH_FLASH_BASE :
+		if mntPath and lenBase <= len( mntPath ) and mntPath[:lenBase] == E_PATH_FLASH_BASE :
 			mntPathList = GetMountPathByDevice( -1, mntPath, True )
 			#2.check matched device
 			if mntPathList :
