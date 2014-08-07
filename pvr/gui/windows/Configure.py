@@ -522,6 +522,9 @@ class Configure( SettingWindow ) :
 				if groupId == E_Input05 :
 					contextMenu = 2 #select storage
 				ExclusiveSettings( ).ShowContextMenu( contextMenu )
+				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
+				selectStorage = [MR_LANG('Internal Storage'), MR_LANG('Micro SD Card'), MR_LANG('USB Memory'), MR_LANG('USB HDD')]
+				self.SetControlLabel2String( E_Input05, selectStorage[selectidx] )
 				return
 
 			if CheckHdd( ) :

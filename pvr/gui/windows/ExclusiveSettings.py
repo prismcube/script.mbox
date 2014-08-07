@@ -35,6 +35,12 @@ E_SELECT_STORAGE_MMC = 1
 E_SELECT_STORAGE_USB = 2
 E_SELECT_STORAGE_HDD = 3
 
+E_FORMAT_MED_USB = 0
+E_FORMAT_MED_MMC = 1
+E_FORMAT_MNT_MMC = 2
+E_FORMAT_MED_HDD = 3
+E_FORMAT_MNT_HDD = 4
+
 E_FORMAT_BY_REBOOT = 0
 E_FORMAT_BY_NOT_REBOOT = 1
 
@@ -45,6 +51,7 @@ class ExclusiveSettings( object ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mSelectAction = -1
 		self.mFormatToSelectHDD = False
+		self.mSelectDeviceList = []
 
 
 	def OpenBusyDialog( self ) :
@@ -117,49 +124,80 @@ class ExclusiveSettings( object ) :
 		dialog.doModal( )
 
 
+	def InitDeviceList( self ) :
+		devinfo = GetMountExclusiveDevice( )
+		self.mDeviceList = deepcopy( devinfo )
+		#LOG_TRACE( '-------------devinfo[%s]'% devinfo )
+		devidx = 0
+		context = []
+		for ele in devinfo :
+			mLines = '%s-%s(%s)'% ( MR_LANG( 'USB' ), ele[0], ele[1] )
+			if ele[2] == '/dev/mmc' :
+				mLines = '%s(%s)'% ( ele[0], ele[1] )
+
+			mntPath = GetMountPathByDevice( -1, ele[2] )
+			cmdFormat = -1
+			if not mntPath :
+				if bool( re.search( '/dev/mmc', ele[2], re.IGNORECASE ) ) :
+					cmdFormat = E_FORMAT_MED_MMC
+				elif bool( re.search( '/dev/sd', ele[2], re.IGNORECASE ) ) :
+					cmdFormat = E_FORMAT_MED_HDD
+					hddsize = GetMountExclusiveDevice( ele[2] )
+					if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
+						cmdFormat = E_FORMAT_MED_USB
+					#LOG_TRACE( '----------------------hddsize[%s] cmdFormat[%s]'% (hddsize,cmdFormat) )
+			else :
+				if mntPath == E_PATH_MMC :
+					cmdFormat = E_FORMAT_MED_MMC
+				elif mntPath == E_PATH_HDD :
+					cmdFormat = E_FORMAT_MED_HDD
+				elif mntPath == E_PATH_FLASH_BASE :
+					if bool( re.search( '/dev/mmc', ele[2], re.IGNORECASE ) ) :
+						cmdFormat = E_FORMAT_MNT_MMC
+					elif bool( re.search( '/dev/sd', ele[2], re.IGNORECASE ) ) :
+						cmdFormat = E_FORMAT_MNT_HDD
+						hddsize = GetMountExclusiveDevice( ele[2] )
+						if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
+							cmdFormat = E_FORMAT_MED_USB
+						#LOG_TRACE( '----------------------hddsize[%s] cmdFormat[%s]'% (hddsize,cmdFormat) )
+
+				else :
+					if bool( re.search( '/dev/sd', ele[2], re.IGNORECASE ) ) :
+						cmdFormat = E_FORMAT_MED_HDD
+						hddsize = GetMountExclusiveDevice( ele[2] )
+						if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
+							cmdFormat = E_FORMAT_MED_USB
+						#LOG_TRACE( '----------------------hddsize[%s] cmdFormat[%s]'% (hddsize,cmdFormat) )
+
+			self.mDeviceList[devidx].append( mntPath )
+			self.mDeviceList[devidx].append( cmdFormat )
+			context.append( ContextItem( mLines, devidx ) )
+			devidx += 1
+
+		return context
+
+
 	def GetContextMenu( self, aMenu ) :
 		context = []
-		mntinfo = []
+		self.mDeviceList = []
+		self.mDeviceListSelect = []
 
 		if aMenu == E_CONTEXT_MENU_FORMAT :
-			mntinfo = GetMountExclusiveDevice( )
-			#SDExist = self.mCommander.MMC_MountCheck( )
-			#if SDExist :
-			#	mLines = '%s(%s)'% ( MR_LANG( 'Micro SD Card' ), mmcsize )
-			#	context.append( ContextItem( mLines, E_SELECT_STORAGE_MMC ) )
-
-			LOG_TRACE( '-------------mntinfo[%s]'% mntinfo )
-			mntidx = 0
-			for ele in mntinfo :
-				mLines = '%s-%s(%s)'% ( MR_LANG( 'USB' ), ele[0], ele[1] )
-				if ele[2] == '/dev/mmc' :
-					mLines = '%s(%s)'% ( ele[0], ele[1] )
-				context.append( ContextItem( mLines, mntidx ) )
-				mntidx += 1
+			context = self.InitDeviceList( )
 
 		else :
-			defSelect = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetProp( )
-			deviceList = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).mProperty
-			LOG_TRACE( '-------------------def ElisPropertyEnum[%s]'% deviceList[defSelect][1] )
+			defSelect = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 
 			context.append( ContextItem( MR_LANG('Internal Storage'), E_SELECT_STORAGE_NONE ) )
 			context.append( ContextItem( MR_LANG('Micro SD Card'), E_SELECT_STORAGE_MMC ) )
 			context.append( ContextItem( MR_LANG('USB Memory'), E_SELECT_STORAGE_USB ) )
 			context.append( ContextItem( MR_LANG('USB HDD'), E_SELECT_STORAGE_HDD ) )
-			"""
-			for i in range( len( deviceList ) ) :
-				deviceName = deviceList[i][1]
-				#if i == defSelect :
-				#	selectItem = i + 1
-				#	deviceName = '[COLOR ff2E2E2E]%s[/COLOR]'% deviceName
-				context.append( ContextItem( deviceName, i ) )
-			"""
 
-		return context, mntinfo
+		return context
 
 
 	def ShowContextMenu( self, aMenu = E_CONTEXT_MENU_STORAGE ) :
-		contextList, mntinfo = self.GetContextMenu( aMenu )
+		contextList = self.GetContextMenu( aMenu )
 
 		selectAction = -1
 		if contextList and len( contextList ) > 0 :
@@ -171,7 +209,8 @@ class ExclusiveSettings( object ) :
 
 		else :
 			if aMenu == E_CONTEXT_MENU_FORMAT :
-				return E_STORAGE_ERROR_FORMAT_NOT_FOUND
+				self.ResultDialog( E_STORAGE_ERROR_FORMAT_NOT_FOUND )
+				return
 
 		self.mSelectAction = selectAction
 		if selectAction < 0 :
@@ -183,50 +222,53 @@ class ExclusiveSettings( object ) :
 		#	return
 
 		#LOG_TRACE( '--------------------select[%s]'% contextList[selectAction].mDescription )
-
+		self.mSelectAction = selectAction
 		if aMenu == E_CONTEXT_MENU_FORMAT :
-			mntPath = GetMountPathByDevice( -1, mntinfo[selectAction][2] )
-			self.FormatStorage( mntPath )
+			#mntPath = GetMountPathByDevice( -1, self.mDeviceList[selectAction][2] )
+			self.mDeviceListSelect = self.mDeviceList[selectAction]
+			self.FormatStorage( )
 
 		elif aMenu == E_CONTEXT_MENU_STORAGE :
 			self.SelectStorage( selectAction )
 
 
-	def FormatStorage( self, aSelect ) :
+	def FormatStorage( self ) :
 		isFail = E_STORAGE_FORMAT_DONE
 		mTitle = MR_LANG( 'Error' )
 		mLines = MR_LANG( 'Could not find a Micro SD card' )
-		mntPath = aSelect
-		LOG_TRACE( '--------------------select mntpath[%s]'% mntPath )
+		#LOG_TRACE( '-------------devlist[%s] selectList[%s]'% ( self.mDeviceList, self.mDeviceListSelect ) )
 
-		if mntPath :
-			ret = self.DoFormatStorage( mntPath )
+		if self.mDeviceListSelect :
+			ret = self.DoFormatStorage( )
 			self.ResultDialog( ret )
 
 		#unknown or not formated ?
 		return E_STORAGE_ERROR_FORMAT_NOT_FOUND
 
 
-	def DoFormatStorage( self, aMntPath ) :
+	def DoFormatStorage( self ) :
 		isbackup = False
 		isformat = False
 		doResult = E_STORAGE_ERROR_FORMAT
+		if not self.mDeviceListSelect :
+			return doResult
 
 		usbPath  = ''
-		#mntPath  = GetMountPathByDevice( aMntPath )
-		xbmcPath = '%s/program/.xbmc'% aMntPath
+		mntCmd = self.mDeviceListSelect[4]
+		mntPath  = self.mDeviceListSelect[3]
+		xbmcPath = '%s/program/.xbmc'% mntPath
 
 		mTitle = MR_LANG( 'Format your drive?' )
 		mLine1 = MR_LANG( 'Everything on your drive will be erased' )
 		mLine2 = MR_LANG( 'This will take a while' )
 
-		if aMntPath == E_SELECT_STORAGE_MMC or aMntPath == E_PATH_MMC :
+		if mntCmd == E_FORMAT_MED_MMC or mntPath == E_FORMAT_MNT_MMC :
 			mTitle = MR_LANG( 'Format your SD memory card?' )
 			mLine1 = MR_LANG( 'Everything on your SD card will be erased' )
 			mLine2 = ''
 
 		#1. check .xbmc ?
-		#if CheckMountType( aMntPath ).lower( ) == 'ext4' :
+		#if CheckMountType( mntPath ).lower( ) == 'ext4' :
 		if CheckDirectory( xbmcPath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' ) % NEW_LINE )
@@ -273,13 +315,13 @@ class ExclusiveSettings( object ) :
 
 		#3. format
 		if isformat :
-			doResult = self.MakeDedicateForJET( aMntPath )
+			doResult = self.MakeDedicateForJET( )
 			if doResult == E_STORAGE_DONE :
 				#4. resotre backup
 				if isbackup :
 					sourceList = [ '%s/RubyBackup/userdata'% usbPath, '%s/addons'% xbmcPath ]
 					targetPath = xbmcPath
-					doResult = self.CopyXBMCData( sourceList, targetPath, '', MR_LANG( 'Now restoring up your user data' ), aMntPath )
+					doResult = self.CopyXBMCData( sourceList, targetPath, '', MR_LANG( 'Now restoring up your user data' ), mntPath )
 					if doResult == E_STORAGE_ERROR_COPY_FAIL :
 						doResult = E_STORAGE_ERROR_RESTORE_FAIL
 
@@ -287,15 +329,10 @@ class ExclusiveSettings( object ) :
 
 
 	def SelectStorage( self, aSelect ) :
-		ret = False
-		if aSelect == E_SELECT_STORAGE_NONE :
-			ret = E_STORAGE_DONE
-		else :
-			ret = self.ChangeStorage( aSelect )
-
+		ret = self.ChangeStorage( aSelect )
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
-			LOG_TRACE( '--------------------Save ElisPropertyEnum[%s]'% aSelect )
+			#LOG_TRACE( '--------------------Save ElisPropertyEnum[%s]'% aSelect )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system will reboot in %s seconds' )% 10, True )
 			dialog.SetAutoCloseProperty( True, 10, True )
@@ -317,10 +354,17 @@ class ExclusiveSettings( object ) :
 
 
 	def ChangeStorage( self, aSelect ) :
-		mediaPath = ''
 		exceptList = [ '%s/download'% E_PATH_FLASH_PROGRAM ]
 		sourceList = [ E_PATH_FLASH_PVR, E_PATH_FLASH_PROGRAM ]
-		targetPath = ''
+
+		deviceHash = {}
+		self.mDeviceList = []
+		self.mDeviceListSelect = []
+		self.InitDeviceList( )
+		#LOG_TRACE( '------------------devList[%s]'% self.mDeviceList )
+		for ele in self.mDeviceList :
+			deviceHash[ele[4]] = ele
+
 		hddpath = self.mDataCache.HDD_GetMountPath( )
 		#LOG_TRACE( '-------------------------HDD_GetMountPath len[%s]'% len( hddpath ) )
 		if aSelect == E_SELECT_STORAGE_MMC :
@@ -329,9 +373,12 @@ class ExclusiveSettings( object ) :
 			if not SDExist :
 				return E_STORAGE_ERROR_NOT_MMC
 
-			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_MMC ) )
-			if mntPath == E_PATH_FLASH_BASE or hddpath and len( hddpath ) < 2 :
+			if deviceHash.get( E_FORMAT_MED_MMC, -1 ) != -1 :
+				self.mDeviceListSelect = deviceHash.get( E_FORMAT_MED_MMC, -1 )
+			elif deviceHash.get( E_FORMAT_MNT_MMC, -1 ) != -1 :
 				return E_STORAGE_ERROR_USED_MMC
+			else :
+				return E_STORAGE_ERROR_NOT_MMC
 
 		elif aSelect == E_SELECT_STORAGE_USB :
 			return E_STORAGE_ERROR_NOT_SUPPORT_STORAGE
@@ -342,20 +389,38 @@ class ExclusiveSettings( object ) :
 			if mntPath == E_PATH_FLASH_BASE and hddpath and len( hddpath ) > 2 :
 				return E_STORAGE_ERROR_USED_HDD
 
+			if deviceHash.get( E_FORMAT_MED_HDD, -1 ) != -1 :
+				self.mDeviceListSelect = deviceHash.get( E_FORMAT_MED_HDD, -1 )
+			elif deviceHash.get( E_FORMAT_MNT_HDD, -1 ) != -1 :
+				return E_STORAGE_ERROR_USED_HDD
+
+			else :
+				return E_STORAGE_ERROR_NOT_HDD
+
 		else :
-			defSelect = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetProp( )
+			defSelect = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
+			LOG_TRACE( '-------------getProperty[%s] select[%s]'% (defSelect,aSelect ) )
 			if aSelect == defSelect :
 				return E_STORAGE_ERROR_USED_INTERNAL
 
 
-		targetPath = mediaPath
+		LOG_TRACE( '------------------devList[%s] selectList[%s]'% ( self.mDeviceList, self.mDeviceListSelect ) )
 
 		mTitle = MR_LANG( 'Error' )
 		mLines = MR_LANG( 'Changed Fail to Storage' )
 		doResult = E_STORAGE_DONE
 
+		if not self.mDeviceListSelect :
+			return E_STORAGE_ERROR_STORAGE
+
+		targetPath = ''
+		devName = self.mDeviceListSelect[2]
+		mediaPath = self.mDeviceListSelect[3]
+		targetPath = mediaPath
+
 		try :
 			mType = CheckMountType( mediaPath ).lower( )
+			#LOG_TRACE( '-------------------mountType[%s]'% mType )
 			if mType :
 				if mType == 'ext4' :
 					xbmcPath = '%s/program/.xbmc'% mediaPath
@@ -380,15 +445,13 @@ class ExclusiveSettings( object ) :
 
 				else :
 					#vfat, ntfs, ... etc
-					if aSelect == E_SELECT_STORAGE_HDD :
-						self.mFormatToSelectHDD = True
-
-					doResult = self.DoFormatStorage( mediaPath )
+					doResult = self.DoFormatStorage( )
 					if doResult == E_STORAGE_ERROR_FORMAT_CANCEL :
 						doResult = E_STORAGE_ERROR_CANCEL
 
-				if doResult == E_STORAGE_DONE :
+				if doResult == E_STORAGE_DONE or doResult == E_STORAGE_FORMAT_DONE :
 					#copy to data
+					targetPath = GetMountPathByDevice( -1, devName )
 					doResult = self.CopyXBMCData( sourceList, targetPath, exceptList )
 
 			else :
@@ -405,6 +468,7 @@ class ExclusiveSettings( object ) :
 	def CopyXBMCData( self, aSourceList, aTargetPath, aExceptList = [], aTitle = '', aTargetDevice = None ) :
 		ret = E_STORAGE_DONE
 		if not aSourceList or len( aSourceList ) < 1 :
+			LOG_TRACE( '-------------------copy None[%s]'% aSourceList )
 			return ret
 
 		sourceSize = 0
@@ -492,26 +556,38 @@ class ExclusiveSettings( object ) :
 		return ret
 
 
-	def AsyncProgressing( self, aMntPath = E_PATH_MMC, aWaitTime = 10 ) :
-		mTitle = MR_LANG( 'Format USB HDD' )
-		if aMntPath == E_SELECT_STORAGE_MMC or aMntPath == E_PATH_MMC :
+	def AsyncProgressing( self, aWaitMin = 5 ) :
+		mntCmd = self.mDeviceListSelect[4]
+		mTitle = MR_LANG( 'Format USB Memory' )
+		if mntCmd == E_FORMAT_MED_MMC or mntCmd == E_FORMAT_MNT_MMC :
 			mTitle = MR_LANG( 'Format Micro SD' )
+		elif mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
+			mTitle = MR_LANG( 'Format USB HDD' )
 
 		strReady = MR_LANG( 'Ready to start' ) + '...'
 		strInit = ''
+		strInit2= ''
 		percent = 0
 		progressDialog = xbmcgui.DialogProgress( )
 		progressDialog.create( mTitle, strInit )
 		progressDialog.update( percent, strReady )
 
-		totalTime = 60 * aWaitTime
-		waitCount = 0
+		totalTime = 60 * aWaitMin
+		waitCount = 1
 		while self.mProcessing :
-			strInit = '%s.'% strInit
-			percent = int( waitCount / totalTime )
+			percent = int( 1.0 * waitCount / totalTime * 100 )
 			if percent > 99 :
 				percent = 99
-			progressDialog.update( percent, mTitle, strInit, ' ' )
+			progressDialog.update( percent, mTitle, strInit, strInit2 )
+			#LOG_TRACE( '-----------percent[%s] len[%s]'% ( percent,len(strInit)) )
+			if len( strInit ) <= 100 :
+				strInit = '%s.'% strInit
+			elif len( strInit ) >= 100 :
+				strInit2 = '%s.'% strInit2
+			if len( strInit2 ) >= 100 :
+				strInit = ''
+				strInit2 = ''
+				progressDialog.update( percent, mTitle, ' ', ' ' )
 
 			waitCount += 1
 			time.sleep( 1 )
@@ -522,86 +598,78 @@ class ExclusiveSettings( object ) :
 		progressDialog.close( )
 
 
-	def MakeDedicateForJET( self, aMntPath ) :
+	def MakeDedicateForJET( self ) :
 		#for /mnt/hdd0 on usb
 		doResult = E_STORAGE_ERROR_FORMAT
-		mmcReboot = E_FORMAT_BY_NOT_REBOOT
-		if aMntPath == E_PATH_HDD or aMntPath == E_PATH_FLASH_BASE :
-			hddpath = self.mDataCache.HDD_GetMountPath( )
-			#hddsize = self.GetMaxMediaSize( )
-			mntinfo = GetMountExclusiveDevice( )
-			hddsize = 0
-			LOG_TRACE( '----------------------------formatMnt[%s] mminfo[%s]'% ( aMntPath, mntinfo ) )
-			for ele in mntinfo :
-				if GetMountPathByDevice( -1, ele[2] ) == aMntPath :
-					#hddsize = ele[1]
-					hddsize = GetMountExclusiveDevice( ele[2] )
+		devName = self.mDeviceListSelect[2]
+		mntCmd  = self.mDeviceListSelect[4]
+		if mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
+			hddsize = GetMountExclusiveDevice( devName )
 
-					#mmc format /mnt/hdd0: reboot, /media/hdd0: non-reboot
-					if os.path.basename( ele[2] ) == os.path.basename( E_PATH_MMC ) :
-						aMntPath = E_PATH_MMC
-						mmcReboot = E_FORMAT_BY_REBOOT
-					break
+			#LOG_TRACE( '-----------------------size[%s]'% hddsize )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( float( hddsize ) / ( 1000000 * 1000 ) ) )
+			dialog.doModal( )
 
-			if aMntPath != E_PATH_MMC :
-				#LOG_TRACE( '-----------------------size[%s]'% hddsize )
+			mediadefault = 100
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				mediadefault = dialog.GetString( )
+
+			#LOG_TRACE( '-----------------------size[%s] input[%s]'% ( hddsize, int( mediadefault ) * ( 1000000 * 1024 ) ) )
+			if int( hddsize ) < int( mediadefault ) * ( 1000000 * 1024 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( float( hddsize ) / ( 1000000 * 1000 ) ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
 				dialog.doModal( )
+				return E_STORAGE_ERROR_FORMAT_CANCEL
 
-				mediadefault = 100
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
-				dialog.doModal( )
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					mediadefault = dialog.GetString( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
+			dialog.doModal( )
+			dialog.IsOK( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
+				ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 
-				#LOG_TRACE( '-----------------------size[%s] input[%s]'% ( hddsize, int( mediadefault ) * ( 1000000 * 1024 ) ) )
-				if int( hddsize ) < int( mediadefault ) * ( 1000000 * 1024 ) :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
-					dialog.doModal( )
-					return E_STORAGE_ERROR_FORMAT_CANCEL
-
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
-				dialog.doModal( )
-				dialog.IsOK( )
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
-					ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
-
-				else :
-					return E_STORAGE_ERROR_FORMAT_CANCEL
+			else :
+				return E_STORAGE_ERROR_FORMAT_CANCEL
 
 		self.OpenBusyDialog( )
 		self.mProcessing = True
-		tShowProcess = threading.Timer( 0, self.AsyncProgressing, [aMntPath] )
+		tShowProcess = threading.Timer( 0, self.AsyncProgressing )
 		tShowProcess.start( )
 
 		ret = False
-		LOG_TRACE( '---------------------------------format aMntPath[%s]'% aMntPath )
-		if aMntPath == E_PATH_MMC :
-			ret = self.mCommander.Format_Micro_Card( mmcReboot )
-			#LOG_TRACE( '-------------active-----micro format[%s] reboot[%s]'% ( aMntPath, mmcReboot ) )
+		#LOG_TRACE( '---------------------------------devName[%s]'% devName )
+		if mntCmd == E_FORMAT_MED_MMC or mntCmd == E_FORMAT_MNT_MMC :
+			mmcReboot = E_FORMAT_BY_NOT_REBOOT
+			if mntCmd == E_FORMAT_MNT_HDD :
+				mmcReboot = E_FORMAT_BY_REBOOT
 
-		elif aMntPath == E_PATH_HDD or aMntPath == E_PATH_FLASH_BASE :
+			ret = self.mCommander.Format_Micro_Card( mmcReboot )
+			LOG_TRACE( '-------------active-----micro format devName[%s] reboot[%s]'% ( devName, mmcReboot ) )
+
+		elif mntCmd == E_FORMAT_MNT_HDD :
 			self.mDataCache.Player_AVBlank( True )
 			self.MakeBackupScript( )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 			os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
 
-			if self.mFormatToSelectHDD :
-				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( E_SELECT_STORAGE_HDD )
-				LOG_TRACE( '--------------------Save ElisPropertyEnum HDD[%s]'% self.mFormatToSelectHDD )
+			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( E_SELECT_STORAGE_HDD )
+			LOG_TRACE( '--------------------Save ElisPropertyEnum HDD[%s]'% self.mFormatToSelectHDD )
 
 			ret = self.mCommander.Make_Dedicated_HDD( ) # reboot and format
-			#LOG_TRACE( '-------------active-----dedicate format[%s]'% aMntPath )
+			LOG_TRACE( '-------------active-----dedicate hdd[%s]'% devName )
 
-		else :
-			#usb memory
-			ret = self.mCommander.Make_Exclusive_HDD( aMntPath )
-			#LOG_TRACE( '-------------active-----exclusive format[%s]'% aMntPath )
+		elif mntCmd == E_FORMAT_MED_HDD :
+			ret = self.mCommander.Make_Exclusive_HDD( devName )
+			LOG_TRACE( '-------------active-----exclusive hdd[%s] vendor[%s]'% ( devName, self.mDeviceListSelect[0] ) )
+
+		elif mntCmd == E_FORMAT_MED_USB :
+			ret = self.mCommander.Format_USB_Storage( devName )
+			LOG_TRACE( '-------------active-----exclusive hdd[%s] vendor[%s]'% ( devName, self.mDeviceListSelect[0] ) )
 
 		self.mProcessing = False
 		if tShowProcess :

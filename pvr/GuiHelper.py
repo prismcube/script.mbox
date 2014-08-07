@@ -927,6 +927,7 @@ def GetDirectoryAllFilePathList( aPathList, aExceptList = [] ) :
 		if CheckDirectory( pathlist ) :
 			for ( path, dirs, files ) in os.walk( pathlist ) :
 				if exthash.get( path, -1 ) == path :
+					ePath = path
 					LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
 					continue
 
