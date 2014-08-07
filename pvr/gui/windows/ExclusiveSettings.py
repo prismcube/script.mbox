@@ -24,6 +24,7 @@ E_STORAGE_ERROR_RESTORE_FAIL = -15
 E_STORAGE_ERROR_FORMAT = -16
 E_STORAGE_ERROR_FORMAT_CANCEL = -17
 E_STORAGE_ERROR_FORMAT_NOT_FOUND = -18
+E_STORAGE_ERROR_USED_INTERNAL = -19
 
 
 E_CONTEXT_MENU_FORMAT = 1
@@ -108,7 +109,8 @@ class ExclusiveSettings( object ) :
 			mLines = MR_LANG( 'Already using USB HDD' )
 		elif aErrorNo == E_STORAGE_ERROR_FORMAT_NOT_FOUND :
 			mLines = MR_LANG( 'Not found device, Please insert device again' )
-
+		elif aErrorNo == E_STORAGE_ERROR_USED_INTERNAL :
+			mLines = MR_LANG( 'Already using Internal Flash' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -339,6 +341,11 @@ class ExclusiveSettings( object ) :
 			mntPath = GetMountPathByDevice( -1, os.path.basename( E_PATH_FLASH_BASE ) )
 			if mntPath == E_PATH_FLASH_BASE and hddpath and len( hddpath ) > 2 :
 				return E_STORAGE_ERROR_USED_HDD
+
+		else :
+			defSelect = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetProp( )
+			if aSelect == defSelect :
+				return E_STORAGE_ERROR_USED_INTERNAL
 
 
 		targetPath = mediaPath

@@ -20,7 +20,7 @@ class DialogYesNoCancel( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mIsOk = E_DIALOG_STATE_CANCEL
+		#self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
 		self.mClosedFlag = False
