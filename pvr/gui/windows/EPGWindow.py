@@ -557,7 +557,6 @@ class EPGWindow( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 				if self.mFirstTune == True :
-					self.mFirstTune = False
 					LOG_TRACE( '--------------- First Tune -----------------' )
 					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )			
 				#self.DoCurrentEITReceived( aEvent )
@@ -660,6 +659,8 @@ class EPGWindow( BaseWindow ) :
 			self.mEPGMode = E_VIEW_GRID 		
 			self.LoadByGrid( )
 
+		if self.mFirstTune == True :
+			self.mFirstTune =  False
 		self.mLock.release( )
 		LOG_TRACE( '----------------------------------->End' )			
 		self.mDebugEnd = time.time( )
@@ -699,7 +700,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_ERR( 'GRID error offsetPosition=%d i=%d channelCount=%d' %( self.mVisibleTopIndex , i,channelCount ) )
 				break
 
-			if self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None ) :
+			if self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None ) and self.mFirstTune == False :
 				continue
 
 			channel = self.mChannelList[ self.mVisibleTopIndex + i]
@@ -2261,13 +2262,12 @@ class EPGWindow( BaseWindow ) :
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				LOG_TRACE( '' )
 				channel = self.mChannelList[ selectedPos ]
-
 				self.StopEPGUpdateTimer( )
 				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 					self.mDataCache.Player_Stop( )
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-				self.mFirstTune = True				
+				self.mFirstTune = True
 				self.StartEPGUpdateTimer( )
 
 			"""		
@@ -2377,7 +2377,6 @@ class EPGWindow( BaseWindow ) :
 					return
 
 		self.Load( )
-
 		self.UpdateListUpdateOnly( )
 		if self.mEPGMode == E_VIEW_GRID :	
 			self.GridSetFocus( )

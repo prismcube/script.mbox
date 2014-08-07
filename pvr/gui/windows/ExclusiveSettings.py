@@ -268,7 +268,8 @@ class ExclusiveSettings( object ) :
 			mLine2 = ''
 
 		#1. check .xbmc ?
-		#if CheckMountType( mntPath ).lower( ) == 'ext4' :
+		#if CheckMountType( aMntPath ).lower( ) == 'ext4' :
+		"""
 		if CheckDirectory( xbmcPath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' ) % NEW_LINE )
@@ -279,7 +280,7 @@ class ExclusiveSettings( object ) :
 
 			elif ret == E_DIALOG_STATE_CANCEL :
 				return E_STORAGE_ERROR_FORMAT_CANCEL
-
+		"""
 		#ToDO : force dedicated format reboot ? <-- factory empty ?
 
 		#2. backup xbmc data
