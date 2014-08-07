@@ -2230,11 +2230,15 @@ class EPGWindow( BaseWindow ) :
 		return False
 	
 
-	def IsRunningTimer( self, aTimer, aCheckWeekly = True ) :
+	def IsRunningTimer( self, aTimer, aCheckWeekly = True, aRunningTimers=None ) :
 		if aTimer == None :
 			return False
 
-		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+		if aRunningTimers :
+			runningTimers = aRunningTimers
+		else :
+			runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+
 		if runningTimers == None :
 			return False
 
@@ -3030,6 +3034,24 @@ class EPGWindow( BaseWindow ) :
 		timerCount = 0
 		timerCount2 = 0
 		#not runningTimer
+
+		runningTimers = self.mDataCache.Timer_GetRunningTimers( )	
+
+		if runningTimers :
+			runningCount = len( runningTimers )
+			for i  in range( runningCount ) : 
+				found = False
+				runningTimer = runningTimers[i]
+				for timer in self.mTimerList  :
+					if timer and runningTimer and timer.mTimerId == runningTimer.mTimerId :
+						found = True
+						break
+
+				if found == False :	
+					self.mTimerList.append( runningTimer )
+					LOG_TRACE( 'Add Running Timer' )
+
+		
 		if self.mTimerList and len( self.mTimerList ) > 0  :
 			try :
 				for i in range( len( self.mTimerList ) ) :
@@ -3050,7 +3072,7 @@ class EPGWindow( BaseWindow ) :
 					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
 					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						end += 60
-
+				
 					for j in range( E_GRID_MAX_ROW_COUNT ) :
 						gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + j,0 ), None )
 						if gridMeta == None :
@@ -3062,7 +3084,7 @@ class EPGWindow( BaseWindow ) :
 						channel = self.mChannelList[gridMeta.mChannelIndex]
 						if channel and channel.mSid == timer.mSid and channel.mTsid == timer.mTsid and channel.mOnid == timer.mOnid :
 							#find
-							isRunning = self.IsRunningTimer( timer )
+							isRunning = self.IsRunningTimer( timer, True, runningTimers )
 							#LOG_TRACE( '----------------running[%s]'% isRunning )
 							if isRunning :
 								if timer.mFromEPG :
