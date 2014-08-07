@@ -423,7 +423,11 @@ class ExclusiveSettings( object ) :
 			mType = CheckMountType( mediaPath ).lower( )
 			#LOG_TRACE( '-------------------mountType[%s]'% mType )
 			if mType :
+				ret = mType.split( '\n' )
+				if len( ret ) > 1 :
+					mType = ret[0].strip( )
 				if mType == 'ext4' or mType == 'vfat' :
+					doResult = E_STORAGE_FORMAT_DONE
 					xbmcPath = '%s/program/.xbmc'% mediaPath
 					if CheckDirectory( xbmcPath ) :
 						mTitle = MR_LANG( 'Attention' )
