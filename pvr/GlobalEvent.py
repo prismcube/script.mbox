@@ -65,8 +65,10 @@ class GlobalEvent( object ) :
 			return
 
 		if aEvent.getName( ) == ElisEventPIPKeyHook.getName( ) :
-			#LOG_TRACE( '[GlobalEvent] eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
+			LOG_TRACE( '[GlobalEvent] eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
 			if E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY :
+				if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+					return
 				if xbmcgui.getCurrentWindowId() == 12005 or xbmcgui.getCurrentWindowId() == 12006 :
 					pass
 				else :
