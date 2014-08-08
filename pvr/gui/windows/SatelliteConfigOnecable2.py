@@ -153,11 +153,13 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please set a different value for each tuner' ) )
 					dialog.doModal( )
+					self.CloseBusyDialog( )
 					return
 				if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx03 ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please set a different value for each tuner' ) )
 					dialog.doModal( )
+					self.CloseBusyDialog( )
 					return
 			self.SaveConfig( )
 			self.mLoadConfig = True

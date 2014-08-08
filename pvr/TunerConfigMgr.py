@@ -80,11 +80,14 @@ class TunerConfigMgr( object ) :
 
 
 	def GetCurrentTunerConnectionType( self ) :
-		return  ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
+		if pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
+			return ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
+		else :
+			return E_TUNER_SEPARATED
 
 
 	def GetCurrentTunerConfigType( self ) :
-		return  ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
+		return ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
 
 
 	def GetConfiguredSatelliteList( self ) :
