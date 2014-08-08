@@ -404,6 +404,8 @@ class ExclusiveSettings( object ) :
 			if aSelect == defSelect :
 				return E_STORAGE_ERROR_USED_INTERNAL
 
+			return E_STORAGE_DONE
+
 
 		LOG_TRACE( '------------------devList[%s] selectList[%s]'% ( self.mDeviceList, self.mDeviceListSelect ) )
 
