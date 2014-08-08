@@ -61,11 +61,14 @@ class DialogMountManager( SettingDialog ) :
 			self.mMode = E_NETWORK_VOLUME_SELECT
 			#check default
 			for netVolume in self.mNetVolumeList :
-				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
-				self.mNetVolumeListHash[hashkey] = netVolume
-
 				if netVolume.mIsDefaultSet :
 					self.mDefaultPathVolume = netVolume
+
+				if bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+					continue
+
+				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
+				self.mNetVolumeListHash[hashkey] = netVolume
 
 			#do not select usb volume
 			if self.mSelectIdx < len( self.mNetVolumeList ) :
@@ -95,10 +98,10 @@ class DialogMountManager( SettingDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.mMode != E_NETWORK_VOLUME_SELECT and self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+			if self.mMode != E_NETWORK_VOLUME_SELECT and self.mNetVolumeListHash and len( self.mNetVolumeListHash ) > 0 :
 				self.mMode = E_NETWORK_VOLUME_SELECT
 				self.DrawItem( )
-				LOG_TRACE( '[MountManager] cancel done, restore[%s]'% self.mSelectIdx )
+				LOG_TRACE( '[MountManager] cancel done, restore[%s] mode[%s]'% ( self.mSelectIdx, self.mMode ) )
 				return
 
 			self.Close( )
@@ -118,8 +121,8 @@ class DialogMountManager( SettingDialog ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
-		elif Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
-			self.SetMountByVolumeList( )
+		#elif Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+		#	self.SetMountByVolumeList( )
 
 
 	def onClick( self, aControlId ) :
@@ -553,13 +556,17 @@ class DialogMountManager( SettingDialog ) :
 		else :
 			for netVolume in self.mNetVolumeList :
 				selectIdx += 1
-				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
-				self.mNetVolumeListHash[hashkey] = netVolume
 				if netVolume.mMountPath == self.mNetVolume.mMountPath :
 					self.mSelectIdx = selectIdx
 
 				if netVolume.mIsDefaultSet :
 					self.mDefaultPathVolume = netVolume
+
+				if bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+					continue
+
+				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
+				self.mNetVolumeListHash[hashkey] = netVolume
 
 			#do not select usb volume
 			if self.mSelectIdx < len( self.mNetVolumeList ) :
@@ -626,6 +633,9 @@ class DialogMountManager( SettingDialog ) :
 		self.mNetVolume = ElisENetworkVolume( )
 		self.mNetVolume.mRemotePath = ''
 		self.mNetVolume.mMountPath = ''
+
+		if not self.mNetVolumeListHash or len( self.mNetVolumeListHash ) < 1 :
+			self.mMode = E_NETWORK_VOLUME_ADD
 
 		if self.mMode == E_NETWORK_VOLUME_ADD :
 			disableConrols = [E_DialogInput03,E_DialogInput02]
