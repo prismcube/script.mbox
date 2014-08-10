@@ -1129,7 +1129,7 @@ Search for window name
 							<posx>0</posx>
 							<posy>0</posy>
 							<control type="label">
-							<!-- Channel Number-->
+							<!-- Channel Number -->
 								<description>Channel Number</description>
 								<posx>37</posx>
 								<posy>0</posy>
