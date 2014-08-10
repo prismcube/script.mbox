@@ -3682,7 +3682,7 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Splash_StartAndStop( aStartStop )
 
 
-	def SyncLanguagePropFromXBMC( self, aLangauge ) :
+	def SyncLanguagePropFromXBMC( self, aLangauge, aSyncAudioLanguage ) :
 		currentLanguageProp = ElisPropertyEnum( 'Language', self.mCommander ).GetProp( )
 		if GetXBMCLanguageToPropLanguage( aLangauge ) != currentLanguageProp or GetXBMCLanguageToPropLanguage( aLangauge ) == ElisEnum.E_ENGLISH :
 			import pvr.gui.WindowMgr as WinMgr
@@ -3690,8 +3690,9 @@ class DataCacheMgr( object ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 			prop = GetXBMCLanguageToPropLanguage( aLangauge )
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
-			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
-			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
+			if aSyncAudioLanguage == True :
+				prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
+				ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
 			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
 
 

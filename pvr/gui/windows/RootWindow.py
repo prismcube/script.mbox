@@ -19,10 +19,10 @@ class RootWindow( xbmcgui.WindowXML ) :
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
 		self.mDataCache.SetRootWindowId( xbmcgui.getCurrentWindowId( ) )
-		self.syncXBMC( )
 
 		try :
 			if self.mInitialized == False :
+				self.syncXBMC( False )			
 				self.CheckFirstRun( )
 				self.LoadTimeShiftControl( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
@@ -36,6 +36,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 			else :
+				self.syncXBMC( True )						
 				self.LoadTimeShiftControl( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
@@ -130,13 +131,13 @@ class RootWindow( xbmcgui.WindowXML ) :
 			LOG_ERR( 'LoadNoSignalState : Unknown channel status' )
 
 
-	def syncXBMC( self ) :
+	def syncXBMC( self, aSyncAudioLanguage=False ) :
 		liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
 		if liveWindow.mHbbTVShowing != True :
 			xbmc.executebuiltin( 'PlayerControl(Stop)', True )
 		pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 		InitTranslateByEnumList( )
-		self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
+		self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ), aSyncAudioLanguage )
 		if self.mDataCache.GetAlarmByViewTimer( ) :
 			self.mDataCache.SetAlarmByViewTimer( False )
 			mHead = MR_LANG( 'Timer Notification' )
