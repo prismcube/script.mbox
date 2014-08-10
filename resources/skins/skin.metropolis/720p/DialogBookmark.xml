@@ -292,11 +292,11 @@
 				<width>25</width>
 				<height>361</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>3850</onleft>
 				<onright>3850</onright>
 				<ondown></ondown>
