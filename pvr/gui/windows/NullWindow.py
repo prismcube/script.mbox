@@ -1181,7 +1181,7 @@ class NullWindow( BaseWindow ) :
 		   ( oldChannel and self.mDataCache.Channel_GetCurr( oldChannel.mNumber ) == None ) :
 			self.mLoopCount = 0
 			self.NotAvailAction( )
-			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
+			LOG_TRACE( '----------------- Cannot setCurrent if there is no previous channel' )
 			return
 
 		iChNumber = oldChannel.mNumber
