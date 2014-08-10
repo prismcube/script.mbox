@@ -1666,11 +1666,11 @@ class ChannelListWindow( BaseWindow ) :
 			elif zInfo_mode == ElisEnum.E_MODE_CAS :
 				idx1 = E_SLIDE_MENU_FTACAS
 				zInfo_name = self.mUserMode.mCasInfo.mName
-				
-				for groupInfo in self.mListCasList :
-					if zInfo_name == groupInfo.mName :
-						break
-					idx2 += 1
+				if self.mListCasList :
+					for groupInfo in self.mListCasList :
+						if zInfo_name == groupInfo.mName :
+							break
+						idx2 += 1
 
 			elif zInfo_mode == ElisEnum.E_MODE_FAVORITE :
 				idx1 = E_SLIDE_MENU_FAVORITE
