@@ -187,7 +187,7 @@
 			
 			<!-- Radio List -->
 			<control type="list" id="402">
-				<posx>627</posx>
+				<posx>617</posx>
 				<posy>105</posy>
 				<width>470</width>
 				<height>323</height>
@@ -267,7 +267,7 @@
 
 	        <!-- Radio Scrollbar -->
 			<control type="scrollbar" id="403">
-				<posx>1082</posx>
+				<posx>1090</posx>
 				<posy>97</posy>
 				<width>25</width>
 				<height>335</height>
@@ -285,7 +285,7 @@
 			</control>
 
 			<control type="label">
-				<posx>1062</posx>
+				<posx>1090</posx>
 				<posy>425</posy>
 				<width>300</width>
 				<height>35</height>
