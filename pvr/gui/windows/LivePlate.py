@@ -82,12 +82,13 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableBlickingTimer = False		
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
 		self.mIsShowDialog = False
+		self.mInitChannel = None
+		self.mInitChannelListHash = None
 
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
 		self.setFocusId( E_CONTROL_ID_BUTTON_CHANNEL_LIST )
-		self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -160,6 +161,7 @@ class LivePlate( LivePlateWindow ) :
 
 		#get channel
 		self.ChannelTune( INIT_CHANNEL )
+		self.mDataCache.Frontdisplay_SetCurrentMessage( )		
 		self.LoadInit( )
 
 		#run thread
@@ -426,6 +428,11 @@ class LivePlate( LivePlateWindow ) :
 		pass
 
 
+	def SetInitChannels( self, aChannel, aChannelHash ):
+		self.mInitChannel = aChannel
+		self.mInitChannelListHash = aChannelHash
+
+	
 	def LoadInit( self ):
 		#1. Show epg information
 		try :
@@ -592,7 +599,7 @@ class LivePlate( LivePlateWindow ) :
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
 
-	def ChannelTune( self, aDir, aInitChannel = 0 ):
+	def ChannelTune( self, aDir, aInitChannel = None ):
 		isTune = False
 		tuneCh = self.mFakeChannel
 		if aDir == PREV_CHANNEL :
@@ -630,6 +637,13 @@ class LivePlate( LivePlateWindow ) :
 		elif aDir == INIT_CHANNEL :
 			currNumber = ''
 			currName = MR_LANG( 'No Channel' )
+
+			if self.mInitChannel :
+				self.mDataCache.Channel_SetCurrent( self.mInitChannel.mNumber, self.mInitChannel.mServiceType, self.mInitChannelListHash )
+
+			self.mInitChannel  = None
+			self.mInitChannelListHash = None
+			
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel == None or iChannel.mError != 0 :
 				SetLock2(True)

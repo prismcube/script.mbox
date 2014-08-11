@@ -1306,16 +1306,16 @@ class ChannelListWindow( BaseWindow ) :
 				if not self.mDataCache.Get_Player_AVBlank( ) :
 					self.mDataCache.Player_AVBlank( True )
 
-			ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )		
+			if self.mAutoConfirm :
+				ret = True
+			else :
+				ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )		
 
 		if ret :
 			#if ( not isSameChannel ) and ( not self.mDataCache.Get_Player_AVBlank( ) ):
 			#	self.mDataCache.Player_AVBlank( True )
 
-			if self.mAutoConfirm :
-				isSameChannel = True
-
-			if isSameChannel :
+			if isSameChannel or self.mAutoConfirm:
 				if self.mSearchList and len( self.mSearchList ) > 0 :
 					self.mSearchList = []
 					#self.mChannelList = self.mInstanceBackup
@@ -1328,6 +1328,8 @@ class ChannelListWindow( BaseWindow ) :
 					self.Close( )
 					#if TuneAndFastExit :
 					#	DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( None,True )
+					if self.mAutoConfirm and isSameChannel == False :
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetInitChannels( iChannel, self.mChannelListHash )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
