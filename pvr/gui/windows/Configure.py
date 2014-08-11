@@ -18,16 +18,16 @@ E_PROGRESS_NETVOLUME            =  E_CONFIGURE_BASE_ID + 1301
 E_LABEL_ID_USE_INFO             =  E_CONFIGURE_BASE_ID + 1302
 
 E_LANGUAGE				= 0
-E_PARENTAL				= 1
-E_RECORDING_OPTION		= 2
-E_AUDIO_SETTING			= 3
-E_HDMI_SETTING			= 4
-E_NETWORK_SETTING		= 5
-E_TIME_SETTING			= 6
-E_EPG					= 7
-E_FORMAT_HDD			= 8
-E_FACTORY_RESET			= 9
-E_ETC					= 10
+E_STORAGE				= 1
+E_NETWORK				= 2
+E_TIME					= 3
+E_VIDEO				= 4
+E_AUDIO				= 5
+E_EPG					= 6
+E_RECORDING				= 7
+E_PARENTAL_CONTROL			= 8
+E_MISCELLANEOUS			= 9
+E_FACTORY_RESET			= 10
 
 E_ETHERNET				= 100
 E_WIFI					= 101
@@ -109,24 +109,22 @@ class Configure( SettingWindow ) :
 		self.OpenBusyDialog( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		hddMenu = MR_LANG( 'HDD Format' )
 		hddDescript = MR_LANG( 'Delete everything off your hard drive' )
 		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
-			hddMenu = MR_LANG( 'Storage' )
-			hddDescript = MR_LANG( 'Delete everything off your storage drive or select storage' )
+			hddDescript = MR_LANG( 'Select storage for your PRISMCUBE' )
 
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
+		MR_LANG( 'Storage' ),
+		MR_LANG( 'Network' ),
+		MR_LANG( 'Time' ),
+		MR_LANG( 'Video' ),
+		MR_LANG( 'Audio' ),
+		MR_LANG( 'EPG' ),
+		MR_LANG( 'Recording' ),
 		MR_LANG( 'Parental Control' ),
-		MR_LANG( 'Recording Option' ),
-		MR_LANG( 'Audio Setting' ),
-		MR_LANG( 'Video Setting' ),
-		MR_LANG( 'Network Setting' ),
-		MR_LANG( 'Time Setting' ),
-		MR_LANG( 'EPG Setting' ),
-		hddMenu,
-		MR_LANG( 'Factory Reset' ),
-		MR_LANG( 'Miscellaneous' ) ]
+		MR_LANG( 'Miscellaneous' ),
+		MR_LANG( 'Factory Reset' ) ]
 
 		self.mGroupItems = []
 		for i in range( len( leftGroupItems ) ) :
@@ -134,16 +132,16 @@ class Configure( SettingWindow ) :
 		
 		self.mDescriptionList	= [
 		MR_LANG( 'Change your PRISMCUBE RUBY language preferences' ),
-		MR_LANG( 'Set limits on your kids\' digital satellite receiver use' ),
-		MR_LANG( 'Adjust general recording settings' ),
-		MR_LANG( 'Set the system\'s digital audio output settings' ),
-		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
+		hddDescript,
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
+		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
+		MR_LANG( 'Set the system\'s digital audio output settings' ),
 		MR_LANG( 'Configure EPG grabber settings' ),
-		hddDescript,
-		MR_LANG( 'Restore your system to factory settings' ),
-		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
+		MR_LANG( 'Adjust general recording settings' ),
+		MR_LANG( 'Set limits on your kids\' digital satellite receiver use' ),
+		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ),
+		MR_LANG( 'Restore your system to factory settings' ) ]
 	
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
@@ -306,7 +304,7 @@ class Configure( SettingWindow ) :
 			elif groupId == E_SpinEx01 :
 				self.ControlSelect( )
 
-		elif selectedId == E_HDMI_SETTING :
+		elif selectedId == E_VIDEO :
 			if groupId == E_SpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_SpinEx01 )
 				self.mDataCache.SetVideoOutput( self.mVideoOutput )
@@ -325,7 +323,7 @@ class Configure( SettingWindow ) :
 			else :
 				self.ControlSelect( )
 
-		elif selectedId == E_NETWORK_SETTING :
+		elif selectedId == E_NETWORK :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
@@ -343,7 +341,7 @@ class Configure( SettingWindow ) :
 			elif self.mUseNetworkType == NETWORK_WIRELESS :
 				self.WifiSetting( groupId )
 
-		elif selectedId == E_TIME_SETTING :
+		elif selectedId == E_TIME :
 			self.TimeSetting( groupId )
 
 		elif selectedId == E_EPG :
@@ -378,7 +376,7 @@ class Configure( SettingWindow ) :
 						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( self.mEpgFavGroup )
 					self.SetListControl( )
 
-		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
+		elif selectedId == E_PARENTAL_CONTROL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter PIN Code' ), '', 4, True )
 			dialog.doModal( )
@@ -391,14 +389,14 @@ class Configure( SettingWindow ) :
 		 			return
 				if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 					self.mVisibleParental = True
-					self.DisableControl( E_PARENTAL )
+					self.DisableControl( E_PARENTAL_CONTROL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an incorrect PIN code' ) )					
 		 			dialog.doModal( )
 
 
-		elif selectedId == E_PARENTAL and groupId == E_SpinEx02 :
+		elif selectedId == E_PARENTAL_CONTROL and groupId == E_SpinEx02 :
 			self.ControlSelect( )
 			propertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 			self.mDataCache.SetPropertyAge( propertyAge )
@@ -409,7 +407,7 @@ class Configure( SettingWindow ) :
 				self.mDataCache.SetSearchNewChannel( True )
 				#LOG_TRACE('-------------------re setting ageLimit check')
 
-		elif selectedId == E_PARENTAL and groupId == E_Input02 :
+		elif selectedId == E_PARENTAL_CONTROL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter New PIN Code' ), '', 4, True )
  			dialog.doModal( )
@@ -516,14 +514,14 @@ class Configure( SettingWindow ) :
 	 			os.system( 'touch /config/resetXBMC' )
 	 			self.mDataCache.System_Reboot( )
 
-		elif selectedId == E_FORMAT_HDD :
+		elif selectedId == E_STORAGE :
 			if groupId == E_Input04 or groupId == E_Input05 :
 				contextMenu = 1     #format
 				if groupId == E_Input05 :
 					contextMenu = 2 #select storage
 				ExclusiveSettings( ).ShowContextMenu( contextMenu )
 				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
-				selectStorage = [MR_LANG('Internal Storage'), MR_LANG('Micro SD Card'), MR_LANG('USB Memory'), MR_LANG('USB HDD')]
+				selectStorage = [MR_LANG('Internal Flash'), MR_LANG('Micro SD'), MR_LANG('USB Stick'), MR_LANG('USB HDD')]
 				self.SetControlLabel2String( E_Input05, selectStorage[selectidx] )
 				return
 
@@ -563,7 +561,7 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
 	 			dialog.doModal( )
 
-		elif selectedId == E_RECORDING_OPTION :
+		elif selectedId == E_RECORDING :
 			if groupId == E_Input01 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOUNT_MANAGER )
 				dialog.doModal( )
@@ -630,7 +628,7 @@ class Configure( SettingWindow ) :
 			else :
 				self.ControlSelect( )
 
-	 	elif selectedId == E_ETC :
+		elif selectedId == E_MISCELLANEOUS :
 	 		self.ETCSetting( groupId )
 
 		else :
@@ -659,7 +657,7 @@ class Configure( SettingWindow ) :
 			if aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
 			   aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 				if E_SUPPORT_EXTEND_RECORD_PATH :
-					if self.mCtrlLeftGroup.getSelectedPosition( ) == E_RECORDING_OPTION :
+					if self.mCtrlLeftGroup.getSelectedPosition( ) == E_RECORDING :
 						self.SetListControl( )
 					else :
 						self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
@@ -974,7 +972,7 @@ class Configure( SettingWindow ) :
 			self.WaitInitialize( )
 			self.DisableControl( E_LANGUAGE )
 
-		elif selectedId == E_PARENTAL :	
+		elif selectedId == E_PARENTAL_CONTROL :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddInputControl( E_Input01, MR_LANG( 'Edit Parental Settings' ), '', MR_LANG( 'Enter your PIN code to change the parental settings' ) )
 			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Main Menu' ), MR_LANG( 'Set a restriction for the main menu' ) )
@@ -990,9 +988,9 @@ class Configure( SettingWindow ) :
 			
 			self.InitControl( )
 			self.WaitInitialize( )
-			self.DisableControl( E_PARENTAL )
+			self.DisableControl( E_PARENTAL_CONTROL )
 
-		elif selectedId == E_RECORDING_OPTION :
+		elif selectedId == E_RECORDING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
 			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR or \
@@ -1043,8 +1041,8 @@ class Configure( SettingWindow ) :
 							break
 						idxCount += 1
 
-				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location for NAS' ) )
-				self.AddInputControl( E_Input02, MR_LANG( 'Current Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add a desired path to store the recording files' ) )
+				self.AddInputControl( E_Input02, MR_LANG( 'My Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Refresh Record Path' ), '', MR_LANG( 'Remount your record storage directory' ) )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 				hideControlIds.remove( E_Input01 )
@@ -1069,7 +1067,7 @@ class Configure( SettingWindow ) :
 			
 			self.InitControl( )
 
-		elif selectedId == E_AUDIO_SETTING :
+		elif selectedId == E_AUDIO :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', MR_LANG( 'Dolby Audio' ), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Set the Audio HDMI format' ) )
@@ -1084,7 +1082,7 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 
-		elif selectedId == E_HDMI_SETTING :
+		elif selectedId == E_VIDEO :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
 			
@@ -1118,7 +1116,7 @@ class Configure( SettingWindow ) :
 
 				self.InitControl( )
 
-		elif selectedId == E_NETWORK_SETTING :
+		elif selectedId == E_NETWORK :
 			if self.mPlatform.IsPrismCube( ) :
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
@@ -1176,7 +1174,7 @@ class Configure( SettingWindow ) :
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Not Supported' ) )
 				self.InitControl( )
 
-		elif selectedId == E_TIME_SETTING :
+		elif selectedId == E_TIME :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
@@ -1212,7 +1210,7 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 			self.WaitInitialize( )
-			self.DisableControl( E_TIME_SETTING )
+			self.DisableControl( E_TIME )
 
 		elif selectedId == E_EPG :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -1268,7 +1266,7 @@ class Configure( SettingWindow ) :
 			self.WaitInitialize( )
 			self.DisableControl( E_EPG )
 
-		elif selectedId == E_FORMAT_HDD :
+		elif selectedId == E_STORAGE :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
@@ -1276,9 +1274,9 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
-				selectStorage = [MR_LANG('Internal Storage'), MR_LANG('Micro SD Card'), MR_LANG('USB Memory'), MR_LANG('USB HDD')]
-				self.AddInputControl( E_Input04, MR_LANG( 'Format storage' ), '', MR_LANG( 'Press OK button to erase your Micro SD memory card or USB drive' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Current storage' ), selectStorage[selectidx], MR_LANG( 'Press OK button to use your storage drive' ) )
+				selectStorage = [MR_LANG('Internal Flash'), MR_LANG('Micro SD'), MR_LANG('USB Stick'), MR_LANG('USB HDD')]
+				self.AddInputControl( E_Input04, MR_LANG( 'Format External Storage' ), '', MR_LANG( 'Press OK button to erase your data from external device' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'My Storage Device' ), selectStorage[selectidx], MR_LANG( 'Select a device to store the recording files and XBMC addons' ) )
 				visibleControlIds = [ E_Input01, E_Input02 ]
 
 			else :
@@ -1319,7 +1317,7 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 
-		elif selectedId == E_ETC :
+		elif selectedId == E_MISCELLANEOUS :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to \'On\', the system switches to deep standby mode if you press \'Standby\' button to help reduce the amount of electricity used' ) )
 			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Set the time for switching into standby mode when not being used' ) )
@@ -1381,14 +1379,14 @@ class Configure( SettingWindow ) :
 			if not E_USE_OLD_NETWORK :
 				self.SetEnableControl( E_Input06, False )
 
-		elif aSelectedItem == E_PARENTAL :
+		elif aSelectedItem == E_PARENTAL_CONTROL :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input02 ]
 			if self.mVisibleParental == True :
 				self.SetEnableControls( visibleControlIds, True )
 			else :
 				self.SetEnableControls( visibleControlIds, False )
 
-		elif aSelectedItem == E_TIME_SETTING :
+		elif aSelectedItem == E_TIME :
 			if self.mHasChannel == False :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
@@ -1686,7 +1684,7 @@ class Configure( SettingWindow ) :
 
 	def TimeSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
-			self.DisableControl( E_TIME_SETTING )
+			self.DisableControl( E_TIME )
 
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
@@ -1826,7 +1824,7 @@ class Configure( SettingWindow ) :
 	def AsyncCheckNetworkTimer( self ) :
 		count = 0
 		while self.mEnableLocalThread :
-			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
+			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK :
 				if ( count % 50 ) == 0 :
 					self.CheckNetworkStatus( )
 			count = count + 1
@@ -1898,12 +1896,12 @@ class Configure( SettingWindow ) :
 		if aType == FORMAT_HARD_DISK :
 			maxsize = self.GetMaxMediaSize( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
+			dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
 			dialog.doModal( )
 
 			mediadefault = 100
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
+			dialog.SetDialogProperty( MR_LANG( 'Set media partition in GB' ), '%s' % mediadefault , 4 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				mediadefault = dialog.GetString( )
@@ -1983,12 +1981,12 @@ class Configure( SettingWindow ) :
 				os.chmod( scriptFile, 0755 )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 
 	def StartExclusiveFormat( self, aDriveList, aNumber ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Format your drive?' ), MR_LANG( 'Everything on your drive will be erased' ), MR_LANG( 'This will take a while' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Format Device' ), MR_LANG( 'Formatting will erase ALL data on this device' ), MR_LANG( 'This will take a while' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
