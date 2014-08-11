@@ -75,7 +75,7 @@ class DialogHelp( SettingDialog ) :
 						HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'help_strings', 'oscar', 'DVB_S2_DUAL', helpString )
 					elif pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
 						HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'help_strings', 'oscar', 'DVB_S2_SINGLE', helpString )
-					elif pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBTC :
+					elif pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBT :
 						HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'help_strings', 'oscar', 'DVB_TC', helpString )
 					else :
 						HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'help_strings', 'oscar', 'DVB_S2_SINGLE', helpString )

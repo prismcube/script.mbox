@@ -45,7 +45,11 @@ if SUPPORT_EPG_DATABASE == True :
 	from elisinterface.ElisEPGDB import ElisEPGDB
 
 if SUPPORT_CHANNEL_DATABASE == True :
-	from elisinterface.ElisChannelDB import ElisChannelDB
+	tunertype = pvr.Platform.GetPlatform( ).GetTunerType( )
+	if tunertype == TUNER_TYPE_DVBS_DUAL or tunertype == TUNER_TYPE_DVBS_SINGLE :
+		from elisinterface.ElisChannelDB_DVBS import ElisChannelDB
+	elif tunertype == TUNER_TYPE_DVBT :
+		from elisinterface.ElisChannelDB_DVBT import ElisChannelDB
 
 if SUPPORT_TIMER_DATABASE == True :
 	from elisinterface.ElisTimerDB import ElisTimerDB
