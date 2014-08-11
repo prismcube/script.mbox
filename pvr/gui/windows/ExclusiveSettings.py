@@ -643,6 +643,7 @@ class ExclusiveSettings( object ) :
 			else :
 				return E_STORAGE_ERROR_FORMAT_CANCEL
 
+		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#block power key 1:on, 0:off
 		self.OpenBusyDialog( )
 		self.mProcessing = True
 		tShowProcess = threading.Timer( 0, self.AsyncProgressing )
@@ -654,11 +655,13 @@ class ExclusiveSettings( object ) :
 			mmcReboot = E_FORMAT_BY_NOT_REBOOT
 			if mntCmd == E_FORMAT_MNT_HDD :
 				mmcReboot = E_FORMAT_BY_REBOOT
+				ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 0 )
 
 			ret = self.mCommander.Format_Micro_Card( mmcReboot )
 			LOG_TRACE( '-------------active-----micro format devName[%s] reboot[%s]'% ( devName, mmcReboot ) )
 
 		elif mntCmd == E_FORMAT_MNT_HDD :
+			ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 0 )
 			self.mDataCache.Player_AVBlank( True )
 			self.MakeBackupScript( )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
@@ -688,6 +691,7 @@ class ExclusiveSettings( object ) :
 		else :
 			doResult = E_STORAGE_ERROR_FORMAT
 
+		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 0 )
 		return doResult
 
 
