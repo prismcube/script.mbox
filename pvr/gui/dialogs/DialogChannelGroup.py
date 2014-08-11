@@ -388,7 +388,7 @@ class DialogChannelGroup( BaseDialog ) :
 				raise Exception, 'Failed Zappingmode_SetCurrent'
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			isFail = True
 
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )

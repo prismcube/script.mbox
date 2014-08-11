@@ -4037,11 +4037,11 @@ Search for window name
 						<texture border="5">MenuItemNF.png</texture>
 					</control>
 					<control type="label">
-						<posx>250</posx>
+						<posx>245</posx>
 						<posy>15</posy>
 						<width>240</width>
 						<height>25</height>
-						<font>font13_title</font>
+						<font>font24_title</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4058,11 +4058,11 @@ Search for window name
 						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1509000)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>250</posx>
+						<posx>245</posx>
 						<posy>15</posy>
 						<width>240</width>
 						<height>25</height>
-						<font>font13_title</font>
+						<font>font24_title</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>

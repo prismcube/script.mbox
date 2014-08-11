@@ -282,7 +282,7 @@ class DialogUpdateProgress( BaseDialog ) :
 				time.sleep( 1 )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			self.mFinish = E_RESULT_ERROR_FAIL
 			ret = False
 
@@ -470,7 +470,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		try :
 			fp = open( E_COMMAND_SHELL_LOG )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			fp = None
 
 		if fp == None :

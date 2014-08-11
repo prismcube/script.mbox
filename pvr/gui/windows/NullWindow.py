@@ -69,7 +69,7 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.mDataCache.Frontdisplay_SetCurrentMessage( )
 		except Exception, e :
-			LOG_TRACE('except[%s]'% e )
+			LOG_TRACE('Exception[%s]'% e )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -1312,7 +1312,7 @@ class NullWindow( BaseWindow ) :
 				isNotify = True
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			SetSetting( 'UPDATE_NOTIFY', '0' )
 			SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
 			LOG_TRACE( '-------------add cached UPDATE_NOTIFY=0 UPDATE_NOTIFY_COUNT=0' )

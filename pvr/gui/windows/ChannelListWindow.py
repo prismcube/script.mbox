@@ -1084,7 +1084,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.mDataCache.Player_AVBlank( True )
 
 				self.Close( )
-				#2626 qm issue, can not show pip on blank(main channel avblank, scramble, ...), m/w problem
+				#2626 qm issue, can't show pip on blank(main channel avblank, scramble, ...), m/w problem
 				#if TuneAndFastExit :
 				#	DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( None,True )
 
@@ -1176,7 +1176,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 				if self.mNavChannel == None:
-					#LOG_TRACE('[ChannelList] Channel is none')
+					#LOG_TRACE('[ChannelList] No Channel')
 					return -1
 
 				if self.mNavChannel.mSid != aEvent.mSid or self.mNavChannel.mTsid != aEvent.mTsid or self.mNavChannel.mOnid != aEvent.mOnid :

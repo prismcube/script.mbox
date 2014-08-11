@@ -843,7 +843,7 @@ class SystemUpdate( SettingWindow ) :
 					self.mPVSData = deepcopy( self.mCurrData )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			self.mPVSData = None
 			self.mPVSList = []
 			isDownload = False
@@ -923,7 +923,7 @@ class SystemUpdate( SettingWindow ) :
 								RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
 			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+				LOG_ERR( 'Exception[%s]'% e )
 
 			self.mIsDownload = False
 			if self.mGetDownloadThread :
@@ -1678,7 +1678,7 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			os.chmod( mShell, 0755 )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 		"""
 
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_FW, aPVS.mKey )
@@ -1758,7 +1758,7 @@ class SystemUpdate( SettingWindow ) :
 				self.mWorkingDownloader.download( self.ShowProgress )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			self.mIsCancel = False
 			self.mIsDownload = False
 			self.mWorkingDownloader.abort( True )
@@ -1791,7 +1791,7 @@ class SystemUpdate( SettingWindow ) :
 				self.mWorkingDownloader.download( self.ShowProgress2 )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			self.mIsCancel = False
 			self.mIsDownload = False
 			self.mStepPage = E_UPDATE_STEP_READY
@@ -2053,7 +2053,7 @@ class SystemUpdate( SettingWindow ) :
 				fd.close( )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 		"""
 
 
@@ -2107,7 +2107,7 @@ class SystemUpdate( SettingWindow ) :
 					fd.close( )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 
 		LOG_TRACE('3. user settings ------' )
@@ -2124,7 +2124,7 @@ class SystemUpdate( SettingWindow ) :
 				CopyToFile( backupFileList[1], '%s/%s'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[1] ) ) )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 
 		LOG_TRACE('4. preprocess.sh ------' )
@@ -2145,7 +2145,7 @@ class SystemUpdate( SettingWindow ) :
 						os.chmod( preprocessFile, 0755 )
 
 			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+				LOG_ERR( 'Exception[%s]'% e )
 
 
 		LOG_TRACE('5. make run script ------' )
@@ -2167,7 +2167,7 @@ class SystemUpdate( SettingWindow ) :
 				os.chmod( scriptFile, 0755 )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 		return
 
@@ -2193,7 +2193,7 @@ class SystemUpdate( SettingWindow ) :
 			self.mCurrData = iPVS
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			lbldesc = MR_LANG( 'Unknown' )
 
 		if self.mCurrData and not self.mCurrData.mVersion :
@@ -2235,7 +2235,7 @@ class SystemUpdate( SettingWindow ) :
 			os.chmod( mShell, 0755 )
 			os.system( 'sync' )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 		if not aPVSScript.mScriptMd5 or ( not CheckMD5Sum( mShell, aPVSScript.mScriptMd5 ) ) :
 			LOG_TRACE( '----------------verification failed, shell err' )
@@ -2286,7 +2286,7 @@ class SystemUpdate( SettingWindow ) :
 				xbmc.executebuiltin( 'Notification(%s,%s,3500,%s)'% ( iHead, iLine, iconN ) )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 
 

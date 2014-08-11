@@ -206,7 +206,7 @@ class EPGSearchWindow( BaseWindow ) :
 				self.mChannelListHash[hashkey] = self.mCurrentChannel
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
+			LOG_ERR( 'Exception[%s] Failed to update - ElisEventChannelDBUpdate'% e )
 
 
 	def UpdateViewMode( self ) :
