@@ -307,7 +307,7 @@
 
 	<include name="DefaultTime">
 		<control type="label">
-			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
+			<visible>[ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4600000) + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>

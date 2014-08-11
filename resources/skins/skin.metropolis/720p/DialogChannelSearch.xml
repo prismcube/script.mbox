@@ -2,26 +2,25 @@
 	<defaultcontrol always="true">104</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<controls>
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>black-back_noAlpha.png</texture>
+		</control>
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>backgrounds/SKINDEFAULT.png</texture>
+			<colordiffuse>BackgroundColor</colordiffuse>
+		</control>
 		<control type="group" id="8000">
 			<posx>40</posx>
 			<posy>60</posy>
 			<include>DefaultDialogCloseEffect</include>
-			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>8</posy>
-				<width>1180</width>
-				<height>625</height>
-				<texture>black-back_noAlpha.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>3</posy>
-				<width>1180</width>
-				<height>630</height>
-				<texture border="20">backgrounds/SKINDEFAULT.png</texture>
-				<colordiffuse>BackgroundColor</colordiffuse>
-			</control>
 			<control type="button" id="104">
 				<description>Close Window button</description>
 				<posx>1130</posx>
@@ -159,11 +158,11 @@
 				<posy>97</posy>
 				<width>25</width>
 				<height>335</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<ondown>104</ondown>
@@ -188,7 +187,7 @@
 			
 			<!-- Radio List -->
 			<control type="list" id="402">
-				<posx>627</posx>
+				<posx>617</posx>
 				<posy>105</posy>
 				<width>470</width>
 				<height>323</height>
@@ -268,15 +267,15 @@
 
 	        <!-- Radio Scrollbar -->
 			<control type="scrollbar" id="403">
-				<posx>1082</posx>
+				<posx>1090</posx>
 				<posy>97</posy>
 				<width>25</width>
 				<height>335</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV_Default.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar_Default.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus_Default.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib_Default.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib_Default.png</textureslidernibfocus>
 				<onleft>402</onleft>
 				<onright>400</onright>
 				<ondown>104</ondown>
@@ -286,7 +285,7 @@
 			</control>
 
 			<control type="label">
-				<posx>1062</posx>
+				<posx>1090</posx>
 				<posy>425</posy>
 				<width>300</width>
 				<height>35</height>

@@ -1,5 +1,6 @@
 import dbopen
 from webinterface import Webinterface
+from xml.sax.saxutils import escape
 
 class ElmoTimerList( Webinterface ) :
 
@@ -22,7 +23,7 @@ class ElmoTimerList( Webinterface ) :
 			xmlstr +=		'<e2servicereference>%s</e2servicereference>\n' % sRef
 			xmlstr +=		'<e2servicename>%s</e2servicename>\n' % info.mName
 			xmlstr +=		'<e2eit>%s</e2eit>\n' % str(info.mRecordKey)
-			xmlstr +=		'<e2name>%s</e2name>\n' % info.mName
+			xmlstr +=		'<e2name>%s</e2name>\n' % escape(info.mName)
 			xmlstr +=		'<e2description></e2description>\n'
 			xmlstr +=		'<e2descriptionextended></e2descriptionextended>\n'
 			xmlstr +=		'<e2disabled>0</e2disabled>\n'

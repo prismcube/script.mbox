@@ -9,7 +9,7 @@ GROUP_ID_BASE						= 300
 BUTTON_ID_PREV						= 301
 BUTTON_ID_NEXT						= 302
 
-EPGLIST_EXCEPTWINDOW = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_EPG_WINDOW ]
+EPGLIST_EXCEPTWINDOW = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_EPG_SEARCH ]
 
 class DialogExtendEPG( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :

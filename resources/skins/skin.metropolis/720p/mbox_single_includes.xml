@@ -123,7 +123,7 @@
 				<textcolor>white</textcolor>
 			</control>
 			<control type="label" id="1001003">
-				<posx>140</posx>
+				<posx>300</posx>
 				<posy>168r</posy>
 				<width>680</width>
 				<height>40</height>
@@ -139,7 +139,7 @@
 		</control>
 	</include>
 
-	<!-- TunerConfiguration -->
+	<!-- Tuner Configuration -->
 	<include name="DefaultScanHelperStatusProgress">
 		<control type="group" id="1001007">
 			<visible>substring(Window.Property(ViewProgress),True)</visible>
@@ -290,7 +290,7 @@
 	<include name="DefaultFirstTimeInstallationButton">
 		<control type="group">
 			<visible>substring(Window.Property(IsFTI),True)</visible>
-			<posx>25</posx>
+			<posx>185</posx>
 			<posy>30</posy>
 			<control type="button" id="1007001">
 				<description>Prev button</description>
@@ -370,7 +370,7 @@
 	<include name="DefaultFirstTimeInstallationStepImage">
 		<control type="group">
 			<visible>substring(Window.Property(IsFTI),True)</visible>
-			<posx>25</posx>
+			<posx>185</posx>
 			<posy>30</posy>
 			<control type="image" id="1008110">
 				<posx>260</posx>

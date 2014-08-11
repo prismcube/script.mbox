@@ -44,6 +44,7 @@ BUTTON_ID_EPG_GRID				= E_MAIN_MENU_BASE_ID + 90312
 BUTTON_ID_EPG_CHANNEL			= E_MAIN_MENU_BASE_ID + 90313
 BUTTON_ID_EPG_CURRENT			= E_MAIN_MENU_BASE_ID + 90314
 BUTTON_ID_EPG_FOLLOWING			= E_MAIN_MENU_BASE_ID + 90315
+BUTTON_ID_EPG_CROSSEPG			= E_MAIN_MENU_BASE_ID + 90316
 
 BUTTON_ID_TIMER_ADD_MANUAL		= E_MAIN_MENU_BASE_ID + 90912
 BUTTON_ID_TIMER_DELETE			= E_MAIN_MENU_BASE_ID + 90913
@@ -403,6 +404,9 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_EPG_FOLLOWING :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events next on schedule' ) )
+
+		elif aControlId == BUTTON_ID_EPG_CROSSEPG :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Download EPG data from the Internet' ) )
 
 
 	def ShowGroupByZappingMode( self ) :

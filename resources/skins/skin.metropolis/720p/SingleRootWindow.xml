@@ -1129,7 +1129,7 @@ Search for window name
 							<posx>0</posx>
 							<posy>0</posy>
 							<control type="label">
-							<!-- Channel Number-->
+							<!-- Channel Number -->
 								<description>Channel Number</description>
 								<posx>37</posx>
 								<posy>0</posy>
@@ -5002,7 +5002,7 @@ Search for window name
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<control type="wraplist" id="3509000">
-					<posx>20</posx>
+					<posx>10</posx>
 					<posy>75</posy>
 					<width>1260</width>
 					<height>450</height>
@@ -5143,7 +5143,7 @@ Search for window name
 				<control type="textbox">
 					<description>Appearance Description</description>
 					<posx>340</posx>
-					<posy>564</posy>
+					<posy>557</posy>
 					<width>600</width>
 					<align>center</align>
 					<font>METF_SettingsDetail</font>
