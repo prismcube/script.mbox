@@ -37,7 +37,7 @@ class DialogExtendEPG( BaseDialog ) :
 				isShowList = False
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 
 		button1 = E_TAG_FALSE

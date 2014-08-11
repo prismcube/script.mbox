@@ -839,7 +839,7 @@ def Make_NewCSV( ) :
 					eleStr = eleStr[0:len(eleStr) - 2]
 
 			except Exception, e :
-				print 'except[%s] str[%s][%s]'% (e, element.string, int(element['id']) )
+				print 'Exception[%s] str[%s][%s]'% (e, element.string, int(element['id']) )
 				pass
 
 			elementry = [ int(element['id']), eleStr ]
@@ -874,7 +874,7 @@ def Make_NewCSV( ) :
 
 				csvStr += lang + comma
 			except Exception, e :
-				print 'except[%s] langNo[%s] id[%s]'% (e, j, i)
+				print 'Exception[%s] langNo[%s] id[%s]'% (e, j, i)
 				comma = ';'
 				if j == ( len(langPack)-1 ) :
 					comma = ''

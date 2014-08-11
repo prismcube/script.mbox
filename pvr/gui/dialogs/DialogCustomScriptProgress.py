@@ -131,7 +131,7 @@ class DialogCustomScriptProgress( BaseDialog ) :
 		try :
 			fp = open( FILE_NAME_SCRIPT_LOG )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			fp = None
 
 		if fp == None :
