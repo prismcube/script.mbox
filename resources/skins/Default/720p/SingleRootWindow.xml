@@ -3428,7 +3428,7 @@ Search for window name
 							<description>Show Bookmarks</description>
 							<posx>105</posx>
 							<posy>0</posy>
-							<width>100</width>
+							<width>150</width>
 							<height>30</height>
 							<font>font10</font>
 							<textcolor>grey</textcolor>
