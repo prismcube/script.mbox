@@ -548,7 +548,8 @@ class LivePlate( LivePlateWindow ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBY )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				iEPG = self.mDataCache.GetEpgeventCurrent( )
@@ -958,7 +959,8 @@ class LivePlate( LivePlateWindow ) :
 		if not isSubtitle :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
 		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
+			if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBY ) :			
+				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
 
 	"""

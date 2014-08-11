@@ -250,8 +250,17 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 
 	elif aPropertyID == 'HasDolbyPlus' :
 		#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-		if pmtEvent.mAudioCount > 0 and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-			ret = True
+
+		for i in range( len(pmtEvent.mAudioStream )) :
+			if pmtEvent.mAudioStream[i] == ElisEnum.E_AUD_STREAM_DDPLUS : 
+				ret = True
+				break
+
+	elif aPropertyID == 'HasDolby' :
+		for i in range( len(pmtEvent.mAudioStream )) :
+			if pmtEvent.mAudioStream[i] == ElisEnum.E_AUD_STREAM_AC3 : 
+				ret = True
+				break
 
 	self.setProperty( aPropertyID, '%s'% ret )
 	return ret
