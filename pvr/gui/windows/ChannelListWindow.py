@@ -538,7 +538,7 @@ class ChannelListWindow( BaseWindow ) :
 	def InitCurrentPosition( self ) :
 		isFail = True
 		if not self.mInitialized :
-			LOG_TRACE( '[ChannelList] InitCurrentPosition - No selected position in first load' )
+			LOG_TRACE( '[ChannelList]No selected position in first load' )
 			return isFail
 
 		try :
@@ -611,7 +611,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	def LoadByCurrentEPG( self, aUpdateAll = False ) :
 		if not self.mShowEPGInfo or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			LOG_TRACE( '[ChannelList] LoadByCurrentEPG - It is an edit mode or not EPGInfo' )
+			LOG_TRACE( '[ChannelList] Edit mode or no EPGInfo' )
 			return
 
 		isUpdate = True
@@ -1022,7 +1022,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mLastChannel = iChannel
 
 				if self.mLastChannel :
-					LOG_TRACE( '[ChannelList] Edit - current[%s] last ch[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+					LOG_TRACE( '[ChannelList] Edit - Current[%s] last ch[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 
 				"""
 				# default mode AllChannel : enter EditMode
@@ -1826,7 +1826,7 @@ class ChannelListWindow( BaseWindow ) :
 					if self.mFlag_DeleteAll_Fav :
 						if not self.mChannelList or len( self.mChannelList ) < 1 :
 							self.mFlag_DeleteAll = True
-							LOG_TRACE( '[ChannelList] Delete Groups - Channel list is None, avblank' )
+							LOG_TRACE( '[ChannelList] Delete Groups - Empty Channellist, avblank' )
 
 						else :
 							currIdx = 0
@@ -1990,7 +1990,7 @@ class ChannelListWindow( BaseWindow ) :
 						   iChannel.mCarrier.mDVBS.mSymbolRate == lastCh.mCarrier.mDVBS.mSymbolRate and \
 						   iChannel.mCarrier.mDVBS.mSatelliteBand == lastCh.mCarrier.mDVBS.mSatelliteBand and \
 						   iChannel.mCarrier.mDVBS.mPolarization == lastCh.mCarrier.mDVBS.mPolarization :
-							LOG_TRACE( '[ChannelList] 0. Number change : old ch[%s %s] last ch[%s %s]'% ( lastCh.mNumber, lastCh.mName, iChannel.mNumber, iChannel.mName ) )
+							LOG_TRACE( '[ChannelList] 0. Number change : Old ch[%s %s] last ch[%s %s]'% ( lastCh.mNumber, lastCh.mName, iChannel.mNumber, iChannel.mName ) )
 							lastCh = None
 							isChangeNumber = True
 							self.mLastChannel = iChannel
@@ -2076,7 +2076,7 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				if not self.mDataCache.Get_Player_AVBlank( ) :
 					self.mDataCache.Player_AVBlank( True )
-					LOG_TRACE( '[ChannelList] ChannelList is None' )
+					LOG_TRACE( '[ChannelList] Empty Channellist' )
 
 
 	def InitSlideMenuHeader( self, aInitLoad = FLAG_SLIDE_INIT ) :
@@ -2784,11 +2784,11 @@ class ChannelListWindow( BaseWindow ) :
 
 	def UpdateChannelNameWithEPG( self, aUpdateAll = False, aForce = False ) :
 		if not aForce and ( self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW ) :
-			LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG - It is edit mode' )
+			LOG_TRACE( '[ChannelList] Edit mode' )
 			return
 
 		if not self.mListItems or ( not self.mChannelList ) :
-			LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG - No channelList' )
+			LOG_TRACE( '[ChannelList] No channelList' )
 			return
 
 		startTime = time.time()
@@ -3755,7 +3755,6 @@ class ChannelListWindow( BaseWindow ) :
 				if groupName :
 					favType = self.GetServiceTypeByFavoriteGroup( groupName )
 					if favType > ElisEnum.E_SERVICE_TYPE_RADIO and self.mDataCache.Favorite_GetLCN( groupName ) :
-						LOG_TRACE( 'FastScanGroup is press OK after insert LCN number' )
 						return
 
 			#All Channel - Normal Group only
@@ -4309,20 +4308,20 @@ class ChannelListWindow( BaseWindow ) :
 
 	def UpdateShortCutGroup( self, aMove = 1 ) :
 		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
-			LOG_TRACE( '[ChannelList] UpdateShortCutGroup - All Channels' )
+			LOG_TRACE( '[ChannelList] All Channels' )
 			return
 
 		if self.mMoveFlag :
-			LOG_TRACE( '[ChannelList] UpdateShortCutGroup - Edit and move mode' )
+			LOG_TRACE( '[ChannelList] Edit and move mode' )
 			return
 
 		if not self.mListShortCutGroup or len( self.mListShortCutGroup ) < 1 :
-			LOG_TRACE( '[ChannelList] UpdateShortCutGroup - No shortcut group' )
+			LOG_TRACE( '[ChannelList] No shortcut group' )
 			return
 
 		self.GetFocusId( )
 		if self.mFocusId != E_CONTROL_ID_LIST_CHANNEL_LIST :
-			LOG_TRACE( '[ChannelList] UpdateShortCutGroup - Open slide' )
+			LOG_TRACE( '[ChannelList] Open slide' )
 			return
 
 		currentGroup = ''
@@ -4330,7 +4329,7 @@ class ChannelListWindow( BaseWindow ) :
 			currentGroup = self.mListShortCutGroup[self.mUserSlidePos.mSub]
 
 		if not currentGroup :
-			LOG_TRACE( '[ChannelList] UpdateShortCutGroup - No current group' )
+			LOG_TRACE( '[ChannelList] No current group' )
 			return
 
 		countIdx = 0
@@ -4343,7 +4342,7 @@ class ChannelListWindow( BaseWindow ) :
 			countIdx += 1
 
 		if currentIdx < 0 :
-			LOG_TRACE( '[ChannelList] UpdateShortCutGroup- Could not find the current group' )
+			LOG_TRACE( '[ChannelList] Could not find the current group' )
 			return
 
 		nextGroup = currentGroup
@@ -4374,16 +4373,16 @@ class ChannelListWindow( BaseWindow ) :
 
 	def UpdateShortCutZapping( self, aReqMode = E_SLIDE_MENU_FAVORITE ) :
 		if not FLAG_USE_COLOR_KEY :
-			LOG_TRACE( '[ChannelList] UpdateShortCutZapping - No support key' )
+			LOG_TRACE( '[ChannelList] No support key' )
 			return
 
 		if self.mMoveFlag :
-			LOG_TRACE( '[ChannelList] UpdateShortCutZapping - Edit and move mode' )
+			LOG_TRACE( '[ChannelList] Edit and move mode' )
 			return
 
 		self.GetFocusId( )
 		if self.mFocusId != E_CONTROL_ID_LIST_CHANNEL_LIST :
-			LOG_TRACE( '[ChannelList] UpdateShortCutZapping - Open slide' )
+			LOG_TRACE( '[ChannelList] Open slide' )
 			return
 
 		if self.mUserSlidePos.mMain != aReqMode :
