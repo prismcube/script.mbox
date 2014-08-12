@@ -1660,10 +1660,11 @@ class ChannelListWindow( BaseWindow ) :
 				#zInfo_name = self.mUserMode.mSatelliteInfo.mName
 				zInfo_name = self.mDataCache.GetSatelliteName( self.mUserMode.mSatelliteInfo.mLongitude, self.mUserMode.mSatelliteInfo.mBand )
 
-				for groupInfo in self.mListSatellite :
-					if zInfo_name == self.mDataCache.GetSatelliteName( groupInfo.mLongitude, groupInfo.mBand ) :
-						break
-					idx2 += 1
+				if self.mListSatellite :
+					for groupInfo in self.mListSatellite :
+						if zInfo_name == self.mDataCache.GetSatelliteName( groupInfo.mLongitude, groupInfo.mBand ) :
+							break
+						idx2 += 1
 
 			elif zInfo_mode == ElisEnum.E_MODE_CAS :
 				idx1 = E_SLIDE_MENU_FTACAS
