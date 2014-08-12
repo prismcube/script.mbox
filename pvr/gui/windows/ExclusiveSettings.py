@@ -25,6 +25,7 @@ E_STORAGE_ERROR_FORMAT = -16
 E_STORAGE_ERROR_FORMAT_CANCEL = -17
 E_STORAGE_ERROR_FORMAT_NOT_FOUND = -18
 E_STORAGE_ERROR_USED_INTERNAL = -19
+E_STORAGE_ERROR_TRY_AGAIN = -20
 
 
 E_CONTEXT_MENU_FORMAT = 1
@@ -118,6 +119,8 @@ class ExclusiveSettings( object ) :
 			mLines = MR_LANG( 'No device found' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_INTERNAL :
 			mLines = MR_LANG( 'The device is already selected' )
+		elif aErrorNo == E_STORAGE_ERROR_TRY_AGAIN :
+			mLines = MR_LANG( 'Try again select a few second' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -256,6 +259,16 @@ class ExclusiveSettings( object ) :
 		mntCmd = self.mDeviceListSelect[4]
 		mntPath  = self.mDeviceListSelect[3]
 		xbmcPath = '%s/program/.xbmc'% mntPath
+
+		if mntCmd == E_FORMAT_MED_HDD :
+			hddsize = GetMountExclusiveDevice( self.mDeviceListSelect[2] )
+			if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Detected into HDD, Are you sure?' ) )
+				dialog.doModal( )
+				if dialog.IsOK( ) != E_DIALOG_STATE_YES :
+					return E_STORAGE_ERROR_TRY_AGAIN
+
 
 		mTitle = MR_LANG( 'Format Device' )
 		mLine1 = MR_LANG( 'Formatting will erase ALL data on this device' )
