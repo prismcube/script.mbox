@@ -143,19 +143,22 @@ class SettingWindow( BaseWindow ) :
 				ctrlItem.mDescription = aDescription
 
 
-	def SetDefaultControl( self ) :
+	def SetDefaultControl( self, aControlId = None ) :
 		if self.mDataCache.GetDelaySettingWindow( ) :
 			time.sleep( 1 )
 			self.mDataCache.SetDelaySettingWindow( False )
 
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
-			if self.mControlList[0].mEnable :
-				self.setFocusId( self.mControlList[0].mControlId + 1 )
+			if aControlId :
+				self.setFocusId( aControlId )
 			else :
-				for i in range( self.GetControlListSize( ) ) :
-					if self.mControlList[i].mEnable :
-						self.setFocusId( self.mControlList[i].mControlId + 1 )
-						return
+				if self.mControlList[0].mEnable :
+					self.setFocusId( self.mControlList[0].mControlId + 1 )
+				else :
+					for i in range( self.GetControlListSize( ) ) :
+						if self.mControlList[i].mEnable :
+							self.setFocusId( self.mControlList[i].mControlId + 1 )
+							return
 		else :
 			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
 
