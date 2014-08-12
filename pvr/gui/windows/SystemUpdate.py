@@ -2439,8 +2439,7 @@ class SystemUpdate( SettingWindow ) :
 			msgLine = ''
 			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
-				#self.mDataCache.LoadConfiguredSatellite( )
-				#self.mTunerMgr.SyncChannelBySatellite( )
+				SetSetting( 'NEED_SYNC_CHANNEL', 'true' )
 				msgHead = MR_LANG( 'Update Channels' )
 				msgLine = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 			else :
@@ -2607,12 +2606,7 @@ class SystemUpdate( SettingWindow ) :
 			ret1 = self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
 			if ret1 == ElisEnum.E_UPDATE_FAILED_BY_RECORD or ret1 == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
 				return False
-			#self.mDataCache.LoadAllSatellite( )
-			#self.mDataCache.LoadConfiguredSatellite( )
-			#self.mDataCache.LoadAllTransponder( )
-			#self.mTunerMgr.SyncChannelBySatellite( )
-			#self.mDataCache.Channel_ReLoad( )
-			#self.mDataCache.Player_AVBlank( False )
+			SetSetting( 'NEED_SYNC_CHANNEL', 'true' )
 			self.CloseProgress( )
 			return True
 		else :

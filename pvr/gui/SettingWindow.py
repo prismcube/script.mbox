@@ -30,7 +30,6 @@ class SettingWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mControlList	= []
-		self.mTunerMgr		= pvr.TunerConfigMgr.GetInstance( )
 		self.mResetInput	= True
 
 

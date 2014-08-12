@@ -183,6 +183,7 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
+		self.mTunerMgr = pvr.TunerConfigMgr.GetInstance( )
 		self.mParentID = -1
 		self.mPlatform = pvr.Platform.GetPlatform( )
 		self.mIsActivate = False

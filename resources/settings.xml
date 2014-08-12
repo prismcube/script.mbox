@@ -37,5 +37,6 @@
 		<setting id="CUSTOM_ICON" type="text" label="Custom Icon" default="false" />
 		<setting id="YOUTUBE_TV" type="bool" label="Youtube TV" default="false" />
 		<setting id="HBB_TV" type="bool" label="Hbb TV" default="false" />
+		<setting id="NEED_SYNC_CHANNEL" type="bool" label="Need Sync Channel" default="false" />
 	</category>
 </settings>

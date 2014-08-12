@@ -161,6 +161,15 @@ class NullWindow( BaseWindow ) :
 		"""
 
 	def MboxFirstProcess( self ) :
+		if GetSetting( 'NEED_SYNC_CHANNEL' ) == 'true' :
+			self.OpenBusyDialog( )
+			self.mTunerMgr.SyncChannelBySatellite( )
+			SetSetting( 'NEED_SYNC_CHANNEL', 'false' )
+			self.CloseBusyDialog( )
+
+		thread = threading.Timer( 6, self.XBMCFirstProcess )
+		thread.start( )
+
 		unpackPath = self.mDataCache.USB_GetMountPath( )
 		if unpackPath :
 			self.mDataCache.SetUSBAttached( True )
@@ -178,14 +187,10 @@ class NullWindow( BaseWindow ) :
 			self.mHBBTVReady = True
 			"""
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-
-		thread = threading.Timer( 6, self.XBMCFirstProcess )
-		thread.start( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
 	def XBMCFirstProcess( self ) :
-		#xbmc.executebuiltin( 'Settings.SetMboxOpen' )
 		if os.path.exists( '/mtmp/XbmcDbBroken' ) :
 			databaseName = None
 			try :
