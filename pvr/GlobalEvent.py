@@ -359,6 +359,9 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0, self.AsyncCheckByMMC, [aEvent.mStatus] )
 			thread.start( )
 
+		elif aEvent.getName( ) == ElisEventPlayerError.getName( ) :
+			LOG_TRACE( 'event ElisEventPlayerError mPlayer[%s] count[%s]'% ( aEvent.mPlayer, self.mDataCache.Get_FreeTssCount( ) ) )
+
 
 		#for HBBTV
 		elif E_SUPPROT_HBBTV == True :
