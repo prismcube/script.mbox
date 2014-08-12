@@ -2367,9 +2367,9 @@
 				<posy>500</posy>
 				<control type="label" id="1400701">
 					<description>Longitude info</description>
-					<posx>-23</posx>
+					<posx>28</posx>
 					<posy>160</posy>
-					<width>270</width>
+					<width>168</width>
 					<height>15</height>
 					<font>Font_Reg19</font>
 					<align>center</align>
