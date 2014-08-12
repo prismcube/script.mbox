@@ -97,7 +97,7 @@
 			<width>500</width>
 			<height>226</height>
 		</content>
-		<content name="Dálkové ovládání boxu PRISMCUBE RUBY má funkci plné QWERTY klávesnice na zadní straně.[CR][CR]1. Držte ovládání horizontálně jako na obrázku nahoře.[CR]2. Zapněte QWERTY klávesnici stisknutím Num Lock tlačítka.[CR]3. Pište text přes klávesnici rychleji a efektivněji.">
+		<content name="Dálkové ovládání boxu PRISMCUBE má funkci plné QWERTY klávesnice na zadní straně.[CR][CR]1. Držte ovládání horizontálně jako na obrázku nahoře.[CR]2. Zapněte QWERTY klávesnici stisknutím Num Lock tlačítka.[CR]3. Pište text přes klávesnici rychleji a efektivněji.">
 			<type>textbox_smallfont</type>
 			<posx>205</posx>
 			<posy>562</posy>
@@ -114,7 +114,7 @@
 			<width>770</width>
 			<height>160</height>
 		</content>
-		<content name="Pro co nejlepší využití všech vlastností PRISMCUBE RUBY, doporučujeme zapojit oba tunery najednou. To vám umožní prohlížet a zaznamenávat různé kanály a nahrávat dva kanály současně. Sledování druhého programu při nahrávání bude omezeno v případě zapojení pouze jednoho tuneru pomocí smyčky.">
+		<content name="Pro co nejlepší využití všech vlastností PRISMCUBE, doporučujeme zapojit oba tunery najednou. To vám umožní prohlížet a zaznamenávat různé kanály a nahrávat dva kanály současně. Sledování druhého programu při nahrávání bude omezeno v případě zapojení pouze jednoho tuneru pomocí smyčky.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>

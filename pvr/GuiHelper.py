@@ -618,7 +618,7 @@ def	HasAvailableRecordingHDD( aCheckVolume = True, aMicroSD = False ) :
 			return True
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'HDD not connected' ) )
 		dialog.doModal( )
 		return False
 

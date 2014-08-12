@@ -411,7 +411,7 @@ class GlobalEvent( object ) :
 
 		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
 			mTitle = MR_LANG( 'Micro SD' )
-			mLines = MR_LANG( 'Addon Storage in XBMC' )
+			mLines = MR_LANG( 'XBMC add-on storage' )
 			self.mDataCache.SetUsbMountStatus( aStatus )
 
 			if aStatus == ElisEnum.E_MMC_MOUNT_FAIL :

@@ -97,7 +97,7 @@
 			<width>500</width>
 			<height>226</height>
 		</content>
-		<content name="Pilot PRISMCUBE Ruby posiada na odwrocie pełną klawiaturę QWERTY do wprowadzania tekstu.[CR][CR]1. Trzymaj pilota poziomo jak na zdjęciu powyżej.[CR]2. Włącz klawiaturę QWERTY, naciskając klawisz Num Lock.[CR]3. Wpisz tekst szybko i sprawnie za pomocą rozmieszczonych znaków.">
+		<content name="Pilot PRISMCUBE posiada na odwrocie pełną klawiaturę QWERTY do wprowadzania tekstu.[CR][CR]1. Trzymaj pilota poziomo jak na zdjęciu powyżej.[CR]2. Włącz klawiaturę QWERTY, naciskając klawisz Num Lock.[CR]3. Wpisz tekst szybko i sprawnie za pomocą rozmieszczonych znaków.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>
@@ -114,7 +114,7 @@
 			<width>770</width>
 			<height>160</height>
 		</content>
-		<content name="Aby jak najlepiej korzystać z wszystkich funkcji PRISMCUBE RUBY, koniecznie zaleca się podłączenie dwóch kabli z tej samej anteny satelitarnej. Pozwoli to na oglądanie i nagrywanie dwóch różnych kanałów jednocześnie. Przy podłączeniu jednym kablem i zastosowaniu pętli, oglądanie drugiego kanału podczas nagrywania programu na żywo może być ograniczone.">
+		<content name="Aby jak najlepiej korzystać z wszystkich funkcji PRISMCUBE, koniecznie zaleca się podłączenie dwóch kabli z tej samej anteny satelitarnej. Pozwoli to na oglądanie i nagrywanie dwóch różnych kanałów jednocześnie. Przy podłączeniu jednym kablem i zastosowaniu pętli, oglądanie drugiego kanału podczas nagrywania programu na żywo może być ograniczone.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>

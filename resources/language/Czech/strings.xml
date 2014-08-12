@@ -71,7 +71,7 @@
 	<string id="1069">Zobrazení seznamu TV/rádio kanálů</string>
 	<string id="1070">Spravovat a zobrazovat multimediální obsah na jednom místě</string>
 	<string id="1071">Zobrazení informací o zařízení, včetně verzí systému, volného místa na disku, atd</string>
-	<string id="1072">Přečtěte si, jak získat co nejvíce z PRISMCUBE RUBY</string>
+	<string id="1072">Přečtěte si, jak získat co nejvíce z PRISMCUBE</string>
 	<string id="1073">Instalovat</string>
 	<string id="1074">Kanál</string>
 	<string id="1075">Oblíbené</string>
@@ -86,7 +86,7 @@
 	<string id="1084">Používejte vaše multimediální soubory jednoduše a efektivním způsobem</string>
 	<string id="1085">Zobrazit podrobné informace o stavu systému</string>
 	<string id="1086">Spravovat veškerý multimediální obsah</string>
-	<string id="1087">Kontrola informací o vašem PRISMCUBE RUBY</string>
+	<string id="1087">Kontrola informací o vašem PRISMCUBE</string>
 	<string id="1088">Nastavit rozšířené přednosti, které přizpůsobí box dle vašich potřeb</string>
 	<string id="1089">Kanály</string>
 	<string id="1090">Nastavení sítě</string>
@@ -109,14 +109,14 @@
 	<string id="1108">Přesun pozice</string>
 	<string id="1109">Přidat</string>
 	<string id="1110">Přístup k oblíbeným XBMC doplňkům jednoduchým způsobem</string>
-	<string id="1111">Proveďte následující kroky, aby byl váš PRISMCUBE RUBY připraven k použití</string>
+	<string id="1111">Proveďte následující kroky, aby byl váš PRISMCUBE připraven k použití</string>
 	<string id="1112">Vyberte typ připojení kabelů na vašem STB a konfigurujte nastavení DiSEqC</string>
 	<string id="1113">Proveďte rychlé a snadné automatické skenování kanálů, nebo vyhledávání kanálů ručně</string>
 	<string id="1114">Přidání, odstranění nebo přejmenování satelitů</string>
 	<string id="1115">Přidat nové transpondéry nebo upravit již existující transpondéry</string>
 	<string id="1116">Konfigurovat obecná nastavení vašeho digitálního satelitního přijímače</string>
 	<string id="1117">Nastavení Smart Karty nebo CI modulu pro sledování placených kanálů</string>
-	<string id="1118">Získat nejnovější aktualizaci pro váš PRISMCUBE RUBY</string>
+	<string id="1118">Získat nejnovější aktualizaci pro váš PRISMCUBE</string>
 	<string id="1119">Přehrávání</string>
 	<string id="1120">Seznam</string>
 	<string id="1121">Správce doplňků</string>
@@ -1103,7 +1103,7 @@
 	<string id="3564">HDD formát</string>
 	<string id="3565">Výrobní nastavení</string>
 	<string id="3566">Různé</string>
-	<string id="3567">Změnit nastavení jazyka PRISMCUBE RUBY</string>
+	<string id="3567">Změnit nastavení jazyka PRISMCUBE</string>
 	<string id="3568">Stanovit limit pro používáním jako dětský digitální satelitní přijímač</string>
 	<string id="3569">Obecné nastavení nahrávání</string>
 	<string id="3570">Nastavení Digitálního audio výstupu</string>
@@ -1113,7 +1113,7 @@
 	<string id="3574">Konfigurace EPG nastavení</string>
 	<string id="3575">Odstranit vše z pevného disku</string>
 	<string id="3576">Obnovit systém do továrního nastavení</string>
-	<string id="3577">Změnit další nastavení pro PRISMCUBE RUBY</string>
+	<string id="3577">Změnit další nastavení pro PRISMCUBE</string>
 	<string id="3578">Výběr jazyka</string>
 	<string id="3579">Změna jazyka Menu</string>
 	<string id="3580">Chcete pokračovat?</string>
@@ -1155,7 +1155,7 @@
 	<string id="3616">Nastavit omezení přístupu na vybrané kanály</string>
 	<string id="3617"> - Změna PIN kódu</string>
 	<string id="3618">Změna kódu PIN</string>
-	<string id="3619">Pokud zvolíte volbu 'Zap', PRISMCUBE RUBY po změně programu automaticky spustí nahrávání timeshift</string>
+	<string id="3619">Pokud zvolíte volbu 'Zap', PRISMCUBE po změně programu automaticky spustí nahrávání timeshift</string>
 	<string id="3620">Zvolte preferovanou velikost timeshiftu</string>
 	<string id="3621">Zvolte délku záznamu pro program, který nemá žádné EPG informace</string>
 	<string id="3622">Nastavení času před - nahráváním EPG kanálů</string>

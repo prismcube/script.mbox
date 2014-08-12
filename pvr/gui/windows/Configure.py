@@ -110,7 +110,7 @@ class Configure( SettingWindow ) :
 		self.OpenBusyDialog( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		hddDescript = MR_LANG( 'Delete everything off your hard drive' )
+		hddDescript = MR_LANG( 'Delete everything off your HDD' )
 		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 			hddDescript = MR_LANG( 'Select storage for your PRISMCUBE' )
 
@@ -132,7 +132,7 @@ class Configure( SettingWindow ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
 		
 		self.mDescriptionList	= [
-		MR_LANG( 'Change your PRISMCUBE RUBY language preferences' ),
+		MR_LANG( 'Change your PRISMCUBE language preferences' ),
 		hddDescript,
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
@@ -141,7 +141,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Configure EPG grabber settings' ),
 		MR_LANG( 'Adjust general recording settings' ),
 		MR_LANG( 'Set limits on your kids\' digital satellite receiver use' ),
-		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ),
+		MR_LANG( 'Change additional settings for PRISMCUBE' ),
 		MR_LANG( 'Restore your system to factory settings' ) ]
 	
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
@@ -557,14 +557,14 @@ class Configure( SettingWindow ) :
 
 				elif groupId == E_Input03 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Format your hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Format HDD' ), MR_LANG( 'Everything on your HDD will be erased' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.DedicatedFormat( FORMAT_HARD_DISK )
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'HDD not found' ) )
 	 			dialog.doModal( )
 
 		elif selectedId == E_RECORDING :
@@ -946,7 +946,7 @@ class Configure( SettingWindow ) :
 
 		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		if defPath_old != defPath_cur :
-			lblLine = MR_LANG( 'Recordings will be temporarily stored on your hard drive' )
+			lblLine = MR_LANG( 'Recordings will be temporarily stored on your HDD' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Inaccessible folder' ), lblLine )
 			dialog.doModal( )
@@ -1001,7 +1001,7 @@ class Configure( SettingWindow ) :
 
 			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR or \
 			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( ) :
-				self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected' ) )
+				self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE automatically start a timeshift recording when a different channel is selected' ) )
 				self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )				
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
@@ -1285,7 +1285,7 @@ class Configure( SettingWindow ) :
 				visibleControlIds = [ E_Input01, E_Input02 ]
 
 			else :
-				self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
+				self.AddInputControl( E_Input03, MR_LANG( 'Format HDD' ), '', MR_LANG( 'Press OK button to erase your HDD' ) )
 
 			self.SetVisibleControls( visibleControlIds, True )
 
@@ -1331,7 +1331,7 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
-				self.AddEnumControl( E_SpinEx06, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', the hard drive is turned off when the system goes into active standby mode' ) )
+				self.AddEnumControl( E_SpinEx06, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', your HDD is turned off when the system goes into active standby mode' ) )
 			if E_V1_1_UPDATE_NOTIFY :
 				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notification' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Adjust notification frequency for firmware update' ) )
 
@@ -1995,7 +1995,7 @@ class Configure( SettingWindow ) :
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC addon and userdata move this drive' ) )
+			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC add-on and userdata move this drive' ) )
 			dialog.doModal( )
 			defStorageIdx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

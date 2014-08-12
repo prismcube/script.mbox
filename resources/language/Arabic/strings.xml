@@ -71,7 +71,7 @@
 	<string id="1069">Display a list of your TV/radio channels</string>
 	<string id="1070">Manage and view your multimedia content in one place</string>
 	<string id="1071">Display device information including system versions, free disk space, etc</string>
-	<string id="1072">Learn how to get the most out of PRISMCUBE RUBY</string>
+	<string id="1072">Learn how to get the most out of PRISMCUBE</string>
 	<string id="1073">Install</string>
 	<string id="1074">Channel</string>
 	<string id="1075">Favorites</string>
@@ -86,7 +86,7 @@
 	<string id="1084">Handle your multimedia files in an easy and efficient way</string>
 	<string id="1085">Display detailed information about your system status</string>
 	<string id="1086">Manage all your multimedia content</string>
-	<string id="1087">Check your PRISMCUBE RUBY info at a glance</string>
+	<string id="1087">Check your PRISMCUBE info at a glance</string>
 	<string id="1088"></string>
 	<string id="1089">Channels</string>
 	<string id="1090">Network Settings</string>
@@ -109,14 +109,14 @@
 	<string id="1108">Move Position</string>
 	<string id="1109">Add</string>
 	<string id="1110">Access your favorite XBMC add-ons in a convenient way</string>
-	<string id="1111">Take the following steps for getting your PRISMCUBE RUBY ready for use</string>
+	<string id="1111">Take the following steps for getting your PRISMCUBE ready for use</string>
 	<string id="1112">Select the cable connection type on your STB and configure DiSEqC setup</string>
 	<string id="1113">Perform a quick and easy automatic channel scan or search channels manually</string>
 	<string id="1114">Add, delete or rename satellites</string>
 	<string id="1115">Add new transponders or edit the transponders already exist</string>
 	<string id="1116">Configure the general settings for your digital satellite receiver</string>
 	<string id="1117">Setup Smartcard or CI-Module configuration for watching pay channels</string>
-	<string id="1118">Get the latest updates on your PRISMCUBE RUBY</string>
+	<string id="1118">Get the latest updates on your PRISMCUBE</string>
 	<string id="1119">Playback</string>
 	<string id="1120">List</string>
 	<string id="1121">Add-on Manager</string>
@@ -1103,7 +1103,7 @@
 	<string id="3564">HDD Format</string>
 	<string id="3565">Factory Reset</string>
 	<string id="3566">Miscellaneous</string>
-	<string id="3567">Change your PRISMCUBE RUBY language preferences</string>
+	<string id="3567">Change your PRISMCUBE language preferences</string>
 	<string id="3568">Set limits on your kids' digital satellite receiver use</string>
 	<string id="3569">Adjust general recording settings</string>
 	<string id="3570">Set the system's digital audio output settings</string>
@@ -1113,7 +1113,7 @@
 	<string id="3574">Configure EPG grabber settings</string>
 	<string id="3575">Delete everything off your hard drive</string>
 	<string id="3576">Restore your system to factory settings</string>
-	<string id="3577">Change additional settings for PRISMCUBE RUBY</string>
+	<string id="3577">Change additional settings for PRISMCUBE</string>
 	<string id="3578">Select Menu Language</string>
 	<string id="3579">Change Menu Language</string>
 	<string id="3580">Do you want to continue?</string>

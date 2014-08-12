@@ -509,7 +509,7 @@
 			<width>832</width>
 			<height>470</height>
 		</content>
-		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
+		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your HDD. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
 			<type>textbox</type>
 			<posx>210</posx>
 			<posy>562</posy>
