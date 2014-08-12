@@ -97,7 +97,7 @@
 			<width>500</width>
 			<height>226</height>
 		</content>
-		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+		<content name="The PRISMCUBE remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
 			<type>textbox_smallfont</type>
 			<posx>205</posx>
 			<posy>562</posy>
@@ -114,7 +114,7 @@
 			<width>770</width>
 			<height>160</height>
 		</content>
-		<content name="To make best use of all features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view while recording a live programme will be limited if connecting with a single cable using loop through.">
+		<content name="To make best use of all features PRISMCUBE provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view while recording a live programme will be limited if connecting with a single cable using loop through.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>
@@ -318,7 +318,7 @@
 			<width>832</width>
 			<height>470</height>
 		</content>
-		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
+		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your HDD. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>

@@ -35,7 +35,7 @@ class Advanced( SettingWindow ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
 		
 		self.mDescriptionList	= [
-		MR_LANG( 'You can customize the appearance of PRISMCUBE RUBY' ),
+		MR_LANG( 'You can customize the appearance of PRISMCUBE' ),
 		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ),
 		MR_LANG( 'Control PRISMCUBE using your existing TV remote when connected via HDMI' ) ]
 	

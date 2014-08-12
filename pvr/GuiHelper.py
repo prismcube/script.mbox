@@ -618,7 +618,7 @@ def	HasAvailableRecordingHDD( aCheckVolume = True, aMicroSD = False ) :
 			return True
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'HDD not connected' ) )
 		dialog.doModal( )
 		return False
 
@@ -1362,6 +1362,16 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 		isNTFS = False
 
 	return isNTFS
+
+
+def GetMountByDeviceSize( aDevSize = 0 ) :
+	cmd = "fdisk -l | grep Disk | awk '/%s/ {print $2,$5}' | awk -F': ' '{print $1}'"% aDevSize
+	devName = ExecuteShell( cmd )
+	ret = []
+	if devName :
+		cmd = "mount | awk '/%s/ {print $3}'"% os.path.basename( devName )
+		ret = ExecuteShell( cmd ).split( '\n' )
+	return ret
 
 
 def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :

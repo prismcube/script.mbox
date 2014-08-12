@@ -120,7 +120,7 @@ UPDATE_NETWORK_INTERFACES_CONFIG	= '/config/interfaces'
 UPDATE_NETWORK_WPASUPPLICANT		= '/etc/wpa_supplicant/wpa_supplicant.conf'
 UPDATE_NETWORK_WPASUPPLICANT_CONFIG	= '/config/wpa_supplicant.conf'
 
-# RootFs Backup Script
+# RootFS Backup Script
 FILE_ROOTFS_BACKUP_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_rootfs_backup.sh'
 FILE_BACKUP_EXCLUDE					= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/backup_exclude'
 FILE_ROOTFS_LOCAL_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_Installation.sh'
@@ -655,7 +655,7 @@ class SystemUpdate( SettingWindow ) :
 			if iPVS.mType == E_TYPE_PRISMCUBE :
 				lblDescTitle = MR_LANG( 'Checking Last Update' )
 			elif iPVS.mType == E_TYPE_ADDONS :
-				lblDescTitle = MR_LANG( 'Addon Application Update' )
+				lblDescTitle = MR_LANG( 'Add-on Application Update' )
 
 			self.UpdateControlGUI( E_SETTING_DESCRIPTION, lblDescTitle )
 			"""
@@ -1126,7 +1126,7 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_HOME :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware via Internet' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware via Internet' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Update Firmware from zip file' ), '',  MR_LANG( 'Update firmware by browsing to the directory where the firmware zip file is located and install it' ) )
 
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
@@ -2439,8 +2439,7 @@ class SystemUpdate( SettingWindow ) :
 			msgLine = ''
 			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
-				#self.mDataCache.LoadConfiguredSatellite( )
-				#self.mTunerMgr.SyncChannelBySatellite( )
+				SetSetting( 'NEED_SYNC_CHANNEL', 'true' )
 				msgHead = MR_LANG( 'Update Channels' )
 				msgLine = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 			else :
@@ -2607,12 +2606,7 @@ class SystemUpdate( SettingWindow ) :
 			ret1 = self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
 			if ret1 == ElisEnum.E_UPDATE_FAILED_BY_RECORD or ret1 == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
 				return False
-			#self.mDataCache.LoadAllSatellite( )
-			#self.mDataCache.LoadConfiguredSatellite( )
-			#self.mDataCache.LoadAllTransponder( )
-			#self.mTunerMgr.SyncChannelBySatellite( )
-			#self.mDataCache.Channel_ReLoad( )
-			#self.mDataCache.Player_AVBlank( False )
+			SetSetting( 'NEED_SYNC_CHANNEL', 'true' )
 			self.CloseProgress( )
 			return True
 		else :

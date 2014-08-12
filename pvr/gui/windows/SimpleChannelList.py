@@ -844,9 +844,11 @@ class SimpleChannelList( BaseWindow ) :
 
 	def ShowGroupListByMode( self, aReqMode = ElisEnum.E_MODE_FAVORITE ) :
 		groupList = self.mZappingGroupList[aReqMode]
+		print 'dhkim test groupList = %s' % groupList
 		if not groupList or len( groupList ) < 1 :
+			groupList = []
 			LOG_TRACE( '[SimpleChannelList] pass, zapping group None' )
-			return
+		#	return
 
 		self.StopEPGUpdateTimer( )
 

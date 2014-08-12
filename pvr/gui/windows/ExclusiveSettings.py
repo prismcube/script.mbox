@@ -26,6 +26,7 @@ E_STORAGE_ERROR_FORMAT_CANCEL = -17
 E_STORAGE_ERROR_FORMAT_NOT_FOUND = -18
 E_STORAGE_ERROR_USED_INTERNAL = -19
 E_STORAGE_ERROR_TRY_AGAIN = -20
+E_STORAGE_ERROR_UNKNOWN_SIZE = -21
 
 
 E_CONTEXT_MENU_FORMAT = 1
@@ -88,19 +89,19 @@ class ExclusiveSettings( object ) :
 			mTitle = MR_LANG( 'Change Storage' )
 			mLines = MR_LANG( 'Cancelled' )
 		elif aErrorNo == E_STORAGE_ERROR_SPACE :
-			mLines = MR_LANG( 'Not enough space on USB stick' )
+			mLines = MR_LANG( 'Not enough space left on the device' )
 		elif aErrorNo == E_STORAGE_ERROR_USB_INSERT :
 			mLines = MR_LANG( 'Please insert an USB stick' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_USB_AVAIL :
 			mLines = MR_LANG( 'Check your USB device' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_USB :
-			mLines = MR_LANG( 'No USB stick found' )
+			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_MMC :
-			mLines = MR_LANG( 'No Micro SD found' )
+			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_HDD :
-			mLines = MR_LANG( 'No USB HDD found' )
+			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_MOUNT_TYPE :
-			mLines = MR_LANG( 'Unknown filesystem or Not formatted device' )
+			mLines = MR_LANG( 'Unknown filesystem or not formatted device' )
 		elif aErrorNo == E_STORAGE_ERROR_STORAGE :
 			mLines = MR_LANG( 'Storage device not changed' )
 		elif aErrorNo == E_STORAGE_ERROR_FORMAT :
@@ -110,7 +111,7 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_RESTORE_FAIL :
 			mLines = MR_LANG( 'Failed to restore data' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_SUPPORT_STORAGE :
-			mLines = MR_LANG( 'Not supported device' )
+			mLines = MR_LANG( 'Setting USB stick as storage device is not yet supported' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_MMC :
 			mLines = MR_LANG( 'The device is already selected' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_HDD :
@@ -120,7 +121,9 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_USED_INTERNAL :
 			mLines = MR_LANG( 'The device is already selected' )
 		elif aErrorNo == E_STORAGE_ERROR_TRY_AGAIN :
-			mLines = MR_LANG( 'Try again select a few second' )
+			mLines = MR_LANG( 'Try again after few seconds' )
+		elif aErrorNo == E_STORAGE_ERROR_UNKNOWN_SIZE :
+			mLines = MR_LANG( 'Invalid storage size' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -260,19 +263,21 @@ class ExclusiveSettings( object ) :
 		mntPath  = self.mDeviceListSelect[3]
 		xbmcPath = '%s/program/.xbmc'% mntPath
 
+		"""
 		if mntCmd == E_FORMAT_MED_HDD :
 			try :
 				hddsize = GetMountExclusiveDevice( self.mDeviceListSelect[2] )
 			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+				LOG_ERR( 'Exception[%s]'% e )
 				return E_STORAGE_ERROR_FORMAT
 
 			if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Unknown partition or not mounted, Are you sure?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Trying to mount USB stick' ), MR_LANG( 'Are you sure you want to continue?' ) )
 				dialog.doModal( )
 				if dialog.IsOK( ) != E_DIALOG_STATE_YES :
 					return E_STORAGE_ERROR_TRY_AGAIN
+		"""
 
 		mTitle = MR_LANG( 'Format Device' )
 		mLine1 = MR_LANG( 'Formatting will erase ALL data on this device' )
@@ -395,7 +400,7 @@ class ExclusiveSettings( object ) :
 				return E_STORAGE_ERROR_NOT_MMC
 
 		elif aSelect == E_SELECT_STORAGE_USB :
-			return E_STORAGE_ERROR_NOT_USB
+			return E_STORAGE_ERROR_NOT_SUPPORT_STORAGE
 
 		elif aSelect == E_SELECT_STORAGE_HDD :
 			mediaPath = E_PATH_HDD
@@ -407,7 +412,6 @@ class ExclusiveSettings( object ) :
 				self.mDeviceListSelect = deviceHash.get( E_FORMAT_MED_HDD, -1 )
 			elif deviceHash.get( E_FORMAT_MNT_HDD, -1 ) != -1 :
 				return E_STORAGE_ERROR_USED_HDD
-
 			else :
 				return E_STORAGE_ERROR_NOT_HDD
 
@@ -418,7 +422,6 @@ class ExclusiveSettings( object ) :
 				return E_STORAGE_ERROR_USED_INTERNAL
 
 			return E_STORAGE_DONE
-
 
 		LOG_TRACE( '------------------devList[%s] selectList[%s]'% ( self.mDeviceList, self.mDeviceListSelect ) )
 
@@ -502,7 +505,13 @@ class ExclusiveSettings( object ) :
 		if aTargetDevice :
 			targetSize = GetDeviceSize( aTargetDevice )
 		#LOG_TRACE( '---------------size target[%s][%s][%s] source[%s][%s] exceptList[%s:%s]'% ( targetSize, aTargetDevice, aTargetPath, sourceSize, aSourceList, exceptSize, aExceptList ) )
-		if targetSize < sourceSize :
+
+		if targetSize == 0 :
+			return E_STORAGE_ERROR_NOT_HDD
+
+		if targetSize < sourceSize and targetSize > 0 :
+			print 'daniel ------------- targetSize = %s'%targetSize
+			print 'daniel ------------- sourceSize = %s'%sourceSize
 			return E_STORAGE_ERROR_SPACE
 
 		copyList = []
@@ -615,22 +624,32 @@ class ExclusiveSettings( object ) :
 
 	def MakeDedicateForJET( self ) :
 		#USB to /mnt/hdd0
-		doResult = E_STORAGE_ERROR_FORMAT
+		doResult= E_STORAGE_ERROR_FORMAT
 		devName = self.mDeviceListSelect[2]
 		mntCmd  = self.mDeviceListSelect[4]
-		if mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
-			hddsize = GetMountExclusiveDevice( devName )
-			if mntCmd == E_FORMAT_MED_HDD and int( hddsize ) < 100 * ( 1000000 * 1000 ) :
-				mntCmd = E_FORMAT_MED_USB
+		hddsize = GetMountExclusiveDevice( devName )
+		waitMin = 5
 
+		if not hddsize.isdigit( ) :
+			LOG_TRACE( '------------------------Size error' )
+			return E_STORAGE_ERROR_UNKNOWN_SIZE
+
+		hddsize = int( hddsize )
+		waitMin += int( hddsize / ( 500 * ( 1000000 * 1000 ) ) )
+		LOG_TRACE( '-----------------Wait Minute[%s] size[%s]'% ( waitMin, hddsize ) )
+
+		if mntCmd == E_FORMAT_MED_HDD :
+			if hddsize < 100 * ( 1000000 * 1000 ) :
+				mntCmd = E_FORMAT_MED_USB
+				LOG_TRACE( '--------------------------size check and storage usb' )
+
+		if mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
 			#LOG_TRACE( '-----------------------size[%s]'% hddsize )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( float( hddsize ) / ( 1000000 * 1000 ) ) )
+			dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( 1.0 * hddsize / ( 1000000 * 1000 ) ) )
 			dialog.doModal( )
 
 			mediaDefault = 100
-			if mntCmd == E_FORMAT_MED_USB :
-				mediaDefault = int( hddsize ) / ( 1000000 * 1024 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Set media partition in GB' ), '%s' % mediaDefault , 4 )
 			dialog.doModal( )
@@ -638,7 +657,7 @@ class ExclusiveSettings( object ) :
 				mediaDefault = dialog.GetString( )
 
 			#LOG_TRACE( '-----------------------size[%s] input[%s]'% ( hddsize, int( mediaDefault ) * ( 1000000 * 1024 ) ) )
-			if int( hddsize ) < int( mediaDefault ) * ( 1000000 * 1024 ) :
+			if hddsize < int( mediaDefault ) * ( 1000000 * 1024 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Incorrect partition size' ) )
 				dialog.doModal( )
@@ -658,7 +677,7 @@ class ExclusiveSettings( object ) :
 		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#block power key 1:on, 0:off
 		self.OpenBusyDialog( )
 		self.mProcessing = True
-		tShowProcess = threading.Timer( 0, self.AsyncProgressing )
+		tShowProcess = threading.Timer( 0, self.AsyncProgressing, [waitMin] )
 		tShowProcess.start( )
 
 		ret = False
@@ -700,6 +719,17 @@ class ExclusiveSettings( object ) :
 
 		if ret :
 			doResult = E_STORAGE_FORMAT_DONE
+
+			"""
+			#verify mount result
+			mntList = GetMountByDeviceSize( hddsize )
+			if mntCmd == E_FORMAT_MED_HDD and len( mntList ) < 3 :
+				doResult = E_STORAGE_ERROR_FORMAT
+			else :
+				if len( mntList ) < 1 :
+					doResult = E_STORAGE_ERROR_FORMAT
+			"""
+				
 		else :
 			doResult = E_STORAGE_ERROR_FORMAT
 

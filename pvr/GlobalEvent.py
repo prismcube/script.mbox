@@ -271,7 +271,6 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '----------ElisEventTTXClosed' )
 
 		elif aEvent.getName( ) == ElisEventPVRManagerUpdate.getName( ) :
-			#msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
 			if aEvent.mResult == ElisEnum.E_UPDATE_START :
 				msgHead = MR_LANG( 'Update Channels' )
 				msgLine = MR_LANG( 'Loading new channels...' )
@@ -282,12 +281,9 @@ class GlobalEvent( object ) :
 				thread.start( )
 
 			elif aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
+				SetSetting( 'NEED_SYNC_CHANNEL', 'true' )
 				self.IsStartChannelLoad = False
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
-				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				#dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
-				#dialog.SetAutoCloseTime( 10 )
-				#dialog.doModal( )
 				mHead = MR_LANG( 'Please wait' )
 				mLine = MR_LANG( 'System is restarting' ) + '...'
 				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
@@ -465,7 +461,7 @@ class GlobalEvent( object ) :
 
 		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
 			mTitle = MR_LANG( 'Micro SD' )
-			mLines = MR_LANG( 'Addon Storage in XBMC' )
+			mLines = MR_LANG( 'XBMC add-on storage' )
 			self.mDataCache.SetUsbMountStatus( aStatus )
 
 			if aStatus == ElisEnum.E_MMC_MOUNT_FAIL :

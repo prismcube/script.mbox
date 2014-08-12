@@ -455,6 +455,7 @@ class TunerConfigMgr( object ) :
 
 				if channelSave :
 					self.mDataCache.Channel_Save( )
+					self.mDataCache.Channel_ReLoad( )
 
 				if self.mDataCache.Channel_GetList( ) :
 					return
