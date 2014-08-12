@@ -52,7 +52,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mIsManualSetup = 0
 		self.mDVBT_Manual = ElisIDVBTCarrier( )
 		self.mDVBT_Auto = []
-		self.mTerrestria = 'None'
+		self.mTerrestrial = 'None'
 		self.mEnable5v		= 0
 		self.mTunerType		= E_TUNER_T
 		self.SetTerrestriaInfo( 0 )
@@ -456,7 +456,7 @@ class FirstInstallation( FTIWindow ) :
 			if self.mTunerType == E_TUNER_T or self.mTunerType == E_TUNER_T2 :
 				self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mTunerType, MR_LANG( 'Select tuner type' ) )
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ) ], self.mIsManualSetup, MR_LANG( 'Select channel search mode' ) )
-				self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mTerrestria, MR_LANG( 'Select Terrerstrial' ) )
+				self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mTerrestrial, MR_LANG( 'Select Terrerstrial' ) )
 				self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT_Manual.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
 				self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )				
 				self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
@@ -1155,7 +1155,7 @@ class FirstInstallation( FTIWindow ) :
 				ret = dialog.select( MR_LANG( 'Select Terrestrial' ), terrestrialList, False, StringToListIndex( terrestrialList, self.mTerrestrial ) )
 				if ret >= 0 :
 					if self.SetTerrestriaInfo( ret ) :
-						self.SetControlLabel2String( E_Input04, self.mTerrestria )
+						self.SetControlLabel2String( E_Input04, self.mTerrestrial )
 						#self.InitConfig( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -1228,7 +1228,7 @@ class FirstInstallation( FTIWindow ) :
 				#self.setProperty( 'ViewProgress', 'True' )
 
 			elif self.mIsManualSetup == 0 :
-				if self.mTerrestria == 'None' or len( self.mDVBT_Auto ) == 0 :
+				if self.mTerrestrial == 'None' or len( self.mDVBT_Auto ) == 0 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestrial first' ) )
 					dialog.doModal( )
@@ -1300,7 +1300,7 @@ class FirstInstallation( FTIWindow ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			self.mDVBT_Auto = []
-			self.mTerrestria = 'None'
+			self.mTerrestrial = 'None'
 			return False
 
 
