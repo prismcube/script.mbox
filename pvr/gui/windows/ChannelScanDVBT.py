@@ -9,7 +9,7 @@ E_TUNER_T	= 0
 E_TUNER_T2	= 1
 E_TUNER_C	= 2
 
-FILE_TERRESTRIA = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/terrestria.xml'
+FILE_TERRESTRIAL = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/terrestrial.xml'
 
 
 class ChannelScanDVBT( SettingWindow ) :
@@ -21,7 +21,7 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.mTerrestria	= 'None'
 		self.mEnable5v		= 0
 		self.mTunerType		= E_TUNER_T
-		self.SetTerrestriaInfo( 0 )
+		self.SetTerrestrialInfo( 0 )
 
 
 	def onInit( self ) :
@@ -102,19 +102,19 @@ class ChannelScanDVBT( SettingWindow ) :
 			self.DisableControl( E_SpinEx01 )
 			return
 
-		# Terrestria list
+		# Terrestrial list
 		elif aGroupId == E_Input04 :
-			terrestriaList = self.GetTerrestriaList( )
-			if terrestriaList :
+			terrestrialList = self.GetTerrestriaList( )
+			if terrestrialList :
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Terrestria' ), terrestriaList, False, StringToListIndex( terrestriaList, self.mTerrestria ) )
+				ret = dialog.select( MR_LANG( 'Select Terrestrial' ), terrestrialList, False, StringToListIndex( terrestrialList, self.mTerrestrial ) )
 				if ret >= 0 :
-					if self.SetTerrestriaInfo( ret ) :
-						self.SetControlLabel2String( E_Input04, self.mTerrestria )
+					if self.SetTerrestrialInfo( ret ) :
+						self.SetControlLabel2String( E_Input04, self.mterrestrial )
 						#self.InitConfig( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'list not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'List not found' ) )
 				dialog.doModal( )
 			return
 
@@ -181,9 +181,9 @@ class ChannelScanDVBT( SettingWindow ) :
 				self.setProperty( 'ViewProgress', 'True' )
 
 			elif self.mIsManualSetup == 0 :
-				if self.mTerrestria == 'None' or len( self.mDVBT_Auto ) == 0 :
+				if self.mterrestrial == 'None' or len( self.mDVBT_Auto ) == 0 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestria first' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestrial first' ) )
 					dialog.doModal( )
 					self.CloseBusyDialog( )
 					return
@@ -231,7 +231,7 @@ class ChannelScanDVBT( SettingWindow ) :
 		if self.mTunerType == E_TUNER_T or self.mTunerType == E_TUNER_T2 :
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mTunerType, MR_LANG( 'Select tuner type' ) )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ) ], self.mIsManualSetup, MR_LANG( 'Select channel search mode' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mTerrestria, MR_LANG( 'Select Terrerstria' ) )		
+			self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mterrestrial, MR_LANG( 'Select Terrerstrial' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT_Manual.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
 			self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )		
 			self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
@@ -247,7 +247,7 @@ class ChannelScanDVBT( SettingWindow ) :
 
 		elif self.mTunerType == E_TUNER_C :
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mTunerType, MR_LANG( 'Select tuner type' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Not support' ), '', MR_LANG( 'Not support' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Not supported' ), '', MR_LANG( 'Not supported' ) )
 
 			visibleControlIds = [ E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -317,30 +317,30 @@ class ChannelScanDVBT( SettingWindow ) :
 		return ICarrier
 
 
-	def SetTerrestriaInfo( self, aIndex ) :
-		if not os.path.exists( FILE_TERRESTRIA ) :
+	def SetTerrestrialInfo( self, aIndex ) :
+		if not os.path.exists( FILE_TERRESTRIAL ) :
 			return False
 
 		try :
 			self.mDVBT_Auto = []
-			tree = ElementTree.parse( FILE_TERRESTRIA )
+			tree = ElementTree.parse( FILE_TERRESTRIAL )
 			root = tree.getroot( )
 
-			terrestria = root.getchildren( )[ aIndex ]
-			self.mTerrestria = terrestria.get( 'name' ).encode( 'utf-8' )
+			terrestrial = root.getchildren( )[ aIndex ]
+			self.mTerrestrial = terrestrial.get( 'name' ).encode( 'utf-8' )
 
-			for terrestria in terrestria.findall( 'transponder' ) :
+			for terrestrial in terrestrial.findall( 'transponder' ) :
 				ICarrier = ElisICarrier( )
 				ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBT
 				IDVBTCarrier = ElisIDVBTCarrier( )
-				IDVBTCarrier.mFrequency = int( float( terrestria.get( 'centre_frequency' ) ) / float( 1000 ) )
-				IDVBTCarrier.mBand = 8 - int( terrestria.get( 'bandwidth' ) )
+				IDVBTCarrier.mFrequency = int( float( terrestrial.get( 'centre_frequency' ) ) / float( 1000 ) )
+				IDVBTCarrier.mBand = 8 - int( terrestrial.get( 'bandwidth' ) )
 				try :
-					IDVBTCarrier.mIsDVBT2 = int( terrestria.get( 'type' ) )
+					IDVBTCarrier.mIsDVBT2 = int( terrestrial.get( 'type' ) )
 				except :
 					IDVBTCarrier.mIsDVBT2 = 0
 				if IDVBTCarrier.mIsDVBT2 == E_TUNER_T2 :
-					IDVBTCarrier.mPLPId = int( terrestria.get( 'plp_id' ) )
+					IDVBTCarrier.mPLPId = int( terrestrial.get( 'plp_id' ) )
 				IDVBTCarrier.printdebug()
 				ICarrier.mDVBT = IDVBTCarrier
 				self.mDVBT_Auto.append( ICarrier )
@@ -354,17 +354,17 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def GetTerrestriaList( self ) :
-		if not os.path.exists( FILE_TERRESTRIA ) :
+		if not os.path.exists( FILE_TERRESTRIAL ) :
 			return None
 
 		try :
-			tree = ElementTree.parse( FILE_TERRESTRIA )
+			tree = ElementTree.parse( FILE_TERRESTRIAL )
 			root = tree.getroot( )
 			nameList = []
 
-			for terrestria in root.findall( 'terrestrial' ) :
-				if terrestria.get( 'name' ) != None :
-					nameList.append( terrestria.get( 'name' ).encode( 'utf-8' ) )
+			for terrestrial in root.findall( 'terrestrial' ) :
+				if terrestrial.get( 'name' ) != None :
+					nameList.append( terrestrial.get( 'name' ).encode( 'utf-8' ) )
 
 			if len( nameList ) > 0 :
 				return nameList

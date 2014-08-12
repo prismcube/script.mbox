@@ -1885,12 +1885,12 @@ class DataCacheMgr( object ) :
 		#updated info by current channel
 		ret = False
 		if self.mChannelList == None or len( self.mChannelList ) < 1 :
-			LOG_TRACE( 'Can not update channel info, channellist is None' )
+			LOG_TRACE( 'Could not update channel info. Empty channellist' )
 			return ret
 
 		iChannel = self.Channel_GetByNumber( aNumber, True, E_TABLE_ALLCHANNEL, aType )
 		if not iChannel or iChannel.mError != 0 :
-			LOG_TRACE( 'can not query none, Channel_GetByNumber chNo[%s] type[%s]'% ( aNumber, aType ) )
+			LOG_TRACE( 'No query. Channel_GetByNumber chNo[%s] type[%s]'% ( aNumber, aType ) )
 			return ret
 
 
@@ -1917,7 +1917,7 @@ class DataCacheMgr( object ) :
 					break
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
+			LOG_ERR( 'Exception[%s] Update failure - ElisEventChannelDBUpdate'% e )
 
 		"""
 		#find array index
@@ -1929,7 +1929,7 @@ class DataCacheMgr( object ) :
 				if channel.mNumber == iChannel.mNumber :
 					cacheChannel = self.mChannelListHash.get( iChannel.mNumber, -1 )
 					if cacheChannel == -1 :
-						LOG_TRACE( 'can not find channelList ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+						LOG_TRACE( 'Could not find channelList ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 						return ret
 					fChannel = cacheChannel.mChannel
 					break
@@ -1951,7 +1951,7 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'success channelList update by ElisEventChannelDBUpdate ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
+			LOG_ERR( 'Exception[%s]update fail, ElisEventChannelDBUpdate'% e )
 		"""
 		return ret
 
@@ -2417,7 +2417,7 @@ class DataCacheMgr( object ) :
 				raise Exception, 'pass, volume list None'
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			isFail = True
 
 		if isFail :
@@ -3605,7 +3605,7 @@ class DataCacheMgr( object ) :
 					#LOG_TRACE( '-----------------------------setProperty blank[%s] signal[%s]'% ( pipBlank, pipSignal ) )
 
 			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+				LOG_ERR( 'Exception[%s]'% e )
 
 
 	def SavePIPStatus( self ) :
@@ -3620,7 +3620,7 @@ class DataCacheMgr( object ) :
 
 				fd.close( )
 			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+				LOG_ERR( 'Exception[%s]'% e )
 				isSave = False
 
 		return isSave
@@ -3746,7 +3746,7 @@ class DataCacheMgr( object ) :
 			if self.mChannelWindows.get( aWindowId, -1 ) >= 0 :
 				self.mChannelWindows[aWindowId] = aEnable
 			else :
-				LOG_ERR( 'Can not find WindowId=%s'  %aWindowId )
+				LOG_ERR( 'Could not find WindowId=%s'  %aWindowId )
 
 
 	def SharedChannel_GetUpdated( self, aWindowId ) :

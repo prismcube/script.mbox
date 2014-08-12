@@ -636,7 +636,7 @@ class DialogPIP( BaseDialog ) :
 
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			return
 
 		LOG_TRACE( '[PIP] PIP controls position sync' )

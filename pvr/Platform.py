@@ -24,7 +24,7 @@ try :
 		gPlatformName = gPlatformName.strip( )
 	
 except Exception, e :
-	print 'except[%s]' % e
+	print 'Exception[%s]' % e
 	gPlatformName = sys.platform
 
 print '------------------------------platform[%s]'% gPlatformName

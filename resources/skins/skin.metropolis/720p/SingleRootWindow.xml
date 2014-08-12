@@ -205,7 +205,7 @@ Search for window name
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
-			<!-- Middle Frame Image & Live Area -->
+			<!-- PIG -->
 			<control type="image">
 				<posx>240</posx>
 				<posy>50</posy>
@@ -221,7 +221,7 @@ Search for window name
 				<texture>frames/ClassicFrame_Fanart.png</texture>
 			</control>
 
-			<!-- Help Text for LEFT side of Home screen -->
+			<!-- Submenu label & Arrow -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>2</posy>
@@ -250,7 +250,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Help Text for RIGHT side of Home screen -->
+			<!-- Menu label & Arrow -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>2</posy>
@@ -309,7 +309,7 @@ Search for window name
 					<onup>1209000</onup>
 					<ondown>1200101</ondown>
 
-					<!-- Installation Submenu-->
+					<!-- Installation Submenu -->
 					<control type="grouplist" id="1209010">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -361,7 +361,7 @@ Search for window name
 						</control>
 					</control>
 
-					<!-- XBMC Submenu-->
+					<!-- XBMC Submenu -->
 					<control type="grouplist" id="1209016">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -520,7 +520,6 @@ Search for window name
 					<ondown>1200101</ondown>
 					<orientation>vertical</orientation>
 					<itemlayout width="200" height="32">
-						<!-- Main Menu List Label -->
 						<control type="label">
 							<posx>205</posx>
 							<posy>0</posy>
@@ -543,7 +542,6 @@ Search for window name
 							<aligny>center</aligny>
 							<texture flipx="true">new/FocusLine.png</texture>
 							<colordiffuse>FocusBar</colordiffuse>
-							<!--remove the FocusLine.png when it move to sub menu-->
 							<visible>Control.HasFocus(1209000)</visible>
 						</control>
 						<!-- Show the menu name when it focused -->
@@ -570,7 +568,6 @@ Search for window name
 							<font>METF_Heading</font>
 							<textcolor>HomeMenuTextFocused</textcolor>
 							<label>$INFO[ListItem.Label]</label>
-							<!-- Change the text color to white when menu is focused -->
 							<visible>ControlGroup(1209001).HasFocus()</visible>
 						</control>
 					</focusedlayout>
@@ -1102,7 +1099,7 @@ Search for window name
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
 								<texture>IconT2g.png</texture>
 							</control>
-							<!-- Tuner1 & Tuner2 Ico -->
+							<!-- Tuner1 & Tuner2 Icon -->
 							<control type="image">
 								<posx>62</posx>
 								<posy>0</posy>
@@ -1582,8 +1579,7 @@ Search for window name
 						<posy>207</posy>
 						<width>350</width>
 						<height>10</height>
-						<font>METF_WeatherDayDate24Hour</font>
-						<textcolor>white</textcolor>
+						<font>METF_PlotTextSmall</font>
 						<label>TV - zdf-neo HD$INFO[Control.GetLabel]</label>
 						<visible>substring(Window.Property(Signal),True)</visible>
 					</control>
@@ -6735,10 +6731,9 @@ Search for window name
 					<posx>850</posx>
 					<posy>289</posy>
 					<width>350</width>
-					<height>10</height>
-					<font>METF_HeadingDetails</font>
-					<textcolor>white</textcolor>
-					<label>$INFO[Control.GetLabel(1300303)]</label>
+					<height>18</height>
+					<font>METF_PlotTextSmall</font>
+					<label>[B]$INFO[Control.GetLabel(1300303)][/B]</label>
 					<visible>substring(Window.Property(Signal),True)</visible>
 				</control>
 			</control>
@@ -6747,12 +6742,12 @@ Search for window name
 				<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 				<control type="label">
 					<posx>850</posx>
-					<posy>295</posy>
-					<width>352</width>
+					<posy>294</posy>
+					<width>350</width>
 					<height>18</height>
 					<align>left</align>
-					<font>METF_HeadingDetails</font>
-					<label>$INFO[Control.GetLabel(3300401)]</label>
+					<font>METF_PlotTextSmall</font>
+					<label>[B]$INFO[Control.GetLabel(3300401)][/B]</label>
 					<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
 				</control>
 			</control>
@@ -6761,11 +6756,11 @@ Search for window name
 				<visible>substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)</visible>
 				<control type="label">
 					<posx>850</posx>
-					<posy>295</posy>
-					<width>352</width>
+					<posy>294</posy>
+					<width>350</width>
 					<height>18</height>
-					<font>METF_HeadingDetails</font>
-					<label>$INFO[Control.GetLabel(3700401)]</label>
+					<font>METF_PlotTextSmall</font>
+					<label>[B]$INFO[Control.GetLabel(3700401)][/B]</label>
 					<visible>substring(Window.Property(Signal),True) + !substring(Window.Property(EPGMode),grid)</visible>
 				</control>
 			</control>

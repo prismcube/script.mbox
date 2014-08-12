@@ -134,7 +134,7 @@ class BackupSettings( object ) :
 
 			except Exception, e :
 				iNet.mError = -1
-				LOG_TRACE( 'except[%s]'% e )
+				LOG_TRACE( 'Exception[%s]'% e )
 
 
 		if iNet.mError != 0 :

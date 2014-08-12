@@ -189,7 +189,7 @@ class DialogStopRecord( BaseDialog ) :
 				LOG_ERR( 'Could not find any control' )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			self.Close( )
 
 

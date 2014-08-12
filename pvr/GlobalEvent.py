@@ -414,17 +414,17 @@ class GlobalEvent( object ) :
 			thread.start( )
 
 		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
-			mTitle = MR_LANG( 'SD Card Mounted' )
+			mTitle = MR_LANG( 'Micro SD' )
 			mLines = MR_LANG( 'Addon Storage in XBMC' )
 			self.mDataCache.SetUsbMountStatus( aStatus )
 
 			if aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
-				mTitle = MR_LANG( 'SD Card Fail' )
-				mLines = MR_LANG( 'Try again insert card' )
+				mTitle = MR_LANG( 'Micro SD' )
+				mLines = MR_LANG( 'Remove and insert your Micro SD again' )
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mTitle, mLines ) )
 
 		if isReboot :
-			mTitle = MR_LANG( 'Storage Disconnected' )
+			mTitle = MR_LANG( 'Initializing Storage' )
 			mLines = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( mTitle, mLines )
@@ -675,10 +675,10 @@ class GlobalEvent( object ) :
 
 	def CamInsertRemove( self, aInserted ) :
 		if aInserted :
-			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) ) )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'CAM' ), MR_LANG( 'Initialized' ) ) )
 			self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
 		else :
-			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) ) )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'CAM' ), MR_LANG( 'Removed' ) ) )
 			try :
 				self.mDialogShowParental.close( )
 				self.mDialogShowEvent.close( )
@@ -699,7 +699,7 @@ class GlobalEvent( object ) :
 
 		if aMicroSD :
 			useIcon = 'MicroSD.png'
-			mTitle = MR_LANG( 'SD Card Device' )
+			mTitle = MR_LANG( 'Micro SD' )
 
 		xbmc.executebuiltin( 'Notification(%s, %s, 3000, %s)' % ( mTitle, mLine, useIcon ) )
 
