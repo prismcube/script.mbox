@@ -89,19 +89,19 @@ class ExclusiveSettings( object ) :
 			mTitle = MR_LANG( 'Change Storage' )
 			mLines = MR_LANG( 'Cancelled' )
 		elif aErrorNo == E_STORAGE_ERROR_SPACE :
-			mLines = MR_LANG( 'Not enough space on USB stick' )
+			mLines = MR_LANG( 'Not enough space left on the device' )
 		elif aErrorNo == E_STORAGE_ERROR_USB_INSERT :
 			mLines = MR_LANG( 'Please insert an USB stick' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_USB_AVAIL :
 			mLines = MR_LANG( 'Check your USB device' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_USB :
-			mLines = MR_LANG( 'No USB stick found' )
+			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_MMC :
-			mLines = MR_LANG( 'No Micro SD found' )
+			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_HDD :
-			mLines = MR_LANG( 'No USB HDD found' )
+			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_MOUNT_TYPE :
-			mLines = MR_LANG( 'Unknown filesystem or Not formatted device' )
+			mLines = MR_LANG( 'Unknown filesystem or not formatted device' )
 		elif aErrorNo == E_STORAGE_ERROR_STORAGE :
 			mLines = MR_LANG( 'Storage device not changed' )
 		elif aErrorNo == E_STORAGE_ERROR_FORMAT :
@@ -111,7 +111,7 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_RESTORE_FAIL :
 			mLines = MR_LANG( 'Failed to restore data' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_SUPPORT_STORAGE :
-			mLines = MR_LANG( 'Not supported device' )
+			mLines = MR_LANG( 'Setting USB stick as storage device is not yet supported' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_MMC :
 			mLines = MR_LANG( 'The device is already selected' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_HDD :
@@ -121,9 +121,9 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_USED_INTERNAL :
 			mLines = MR_LANG( 'The device is already selected' )
 		elif aErrorNo == E_STORAGE_ERROR_TRY_AGAIN :
-			mLines = MR_LANG( 'Try again select a few second' )
+			mLines = MR_LANG( 'Try again after few seconds' )
 		elif aErrorNo == E_STORAGE_ERROR_UNKNOWN_SIZE :
-			mLines = MR_LANG( 'Storage size Unknown' )
+			mLines = MR_LANG( 'Invalid storage size' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -268,12 +268,12 @@ class ExclusiveSettings( object ) :
 			try :
 				hddsize = GetMountExclusiveDevice( self.mDeviceListSelect[2] )
 			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+				LOG_ERR( 'Exception[%s]'% e )
 				return E_STORAGE_ERROR_FORMAT
 
 			if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Unknown partition or not mounted, Are you sure?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Trying to mount USB stick' ), MR_LANG( 'Are you sure you want to continue?' ) )
 				dialog.doModal( )
 				if dialog.IsOK( ) != E_DIALOG_STATE_YES :
 					return E_STORAGE_ERROR_TRY_AGAIN
@@ -400,7 +400,7 @@ class ExclusiveSettings( object ) :
 				return E_STORAGE_ERROR_NOT_MMC
 
 		elif aSelect == E_SELECT_STORAGE_USB :
-			return E_STORAGE_ERROR_NOT_USB
+			return E_STORAGE_ERROR_NOT_SUPPORT_STORAGE
 
 		elif aSelect == E_SELECT_STORAGE_HDD :
 			mediaPath = E_PATH_HDD
@@ -412,7 +412,6 @@ class ExclusiveSettings( object ) :
 				self.mDeviceListSelect = deviceHash.get( E_FORMAT_MED_HDD, -1 )
 			elif deviceHash.get( E_FORMAT_MNT_HDD, -1 ) != -1 :
 				return E_STORAGE_ERROR_USED_HDD
-
 			else :
 				return E_STORAGE_ERROR_NOT_HDD
 
@@ -423,7 +422,6 @@ class ExclusiveSettings( object ) :
 				return E_STORAGE_ERROR_USED_INTERNAL
 
 			return E_STORAGE_DONE
-
 
 		LOG_TRACE( '------------------devList[%s] selectList[%s]'% ( self.mDeviceList, self.mDeviceListSelect ) )
 
@@ -507,7 +505,13 @@ class ExclusiveSettings( object ) :
 		if aTargetDevice :
 			targetSize = GetDeviceSize( aTargetDevice )
 		#LOG_TRACE( '---------------size target[%s][%s][%s] source[%s][%s] exceptList[%s:%s]'% ( targetSize, aTargetDevice, aTargetPath, sourceSize, aSourceList, exceptSize, aExceptList ) )
-		if targetSize < sourceSize :
+
+		if targetSize == 0 :
+			return E_STORAGE_ERROR_NOT_HDD
+
+		if targetSize < sourceSize and targetSize > 0 :
+			print 'daniel ------------- targetSize = %s'%targetSize
+			print 'daniel ------------- sourceSize = %s'%sourceSize
 			return E_STORAGE_ERROR_SPACE
 
 		copyList = []
@@ -627,7 +631,7 @@ class ExclusiveSettings( object ) :
 		waitMin = 5
 
 		if not hddsize.isdigit( ) :
-			LOG_TRACE( '------------------------size error' )
+			LOG_TRACE( '------------------------Size error' )
 			return E_STORAGE_ERROR_UNKNOWN_SIZE
 
 		hddsize = int( hddsize )
