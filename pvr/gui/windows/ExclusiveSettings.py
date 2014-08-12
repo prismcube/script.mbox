@@ -25,6 +25,7 @@ E_STORAGE_ERROR_FORMAT = -16
 E_STORAGE_ERROR_FORMAT_CANCEL = -17
 E_STORAGE_ERROR_FORMAT_NOT_FOUND = -18
 E_STORAGE_ERROR_USED_INTERNAL = -19
+E_STORAGE_ERROR_TRY_AGAIN = -20
 
 
 E_CONTEXT_MENU_FORMAT = 1
@@ -118,6 +119,8 @@ class ExclusiveSettings( object ) :
 			mLines = MR_LANG( 'No device found' )
 		elif aErrorNo == E_STORAGE_ERROR_USED_INTERNAL :
 			mLines = MR_LANG( 'The device is already selected' )
+		elif aErrorNo == E_STORAGE_ERROR_TRY_AGAIN :
+			mLines = MR_LANG( 'Try again select a few second' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -256,6 +259,20 @@ class ExclusiveSettings( object ) :
 		mntCmd = self.mDeviceListSelect[4]
 		mntPath  = self.mDeviceListSelect[3]
 		xbmcPath = '%s/program/.xbmc'% mntPath
+
+		if mntCmd == E_FORMAT_MED_HDD :
+			try :
+				hddsize = GetMountExclusiveDevice( self.mDeviceListSelect[2] )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
+				return E_STORAGE_ERROR_FORMAT
+
+			if int( hddsize ) < 100 * ( 1000000 * 1000 ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Unknown partition or not mounted, Are you sure?' ) )
+				dialog.doModal( )
+				if dialog.IsOK( ) != E_DIALOG_STATE_YES :
+					return E_STORAGE_ERROR_TRY_AGAIN
 
 		mTitle = MR_LANG( 'Format Device' )
 		mLine1 = MR_LANG( 'Formatting will erase ALL data on this device' )
@@ -603,6 +620,8 @@ class ExclusiveSettings( object ) :
 		mntCmd  = self.mDeviceListSelect[4]
 		if mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
 			hddsize = GetMountExclusiveDevice( devName )
+			if mntCmd == E_FORMAT_MED_HDD and int( hddsize ) < 100 * ( 1000000 * 1000 ) :
+				mntCmd = E_FORMAT_MED_USB
 
 			#LOG_TRACE( '-----------------------size[%s]'% hddsize )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -610,6 +629,8 @@ class ExclusiveSettings( object ) :
 			dialog.doModal( )
 
 			mediaDefault = 100
+			if mntCmd == E_FORMAT_MED_USB :
+				mediaDefault = int( hddsize ) / ( 1000000 * 1024 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Set media partition in GB' ), '%s' % mediaDefault , 4 )
 			dialog.doModal( )
@@ -670,7 +691,7 @@ class ExclusiveSettings( object ) :
 
 		elif mntCmd == E_FORMAT_MED_USB :
 			ret = self.mCommander.Format_USB_Storage( devName )
-			LOG_TRACE( '-------------Active-----Exclusive HDD[%s] vendor[%s]'% ( devName, self.mDeviceListSelect[0] ) )
+			LOG_TRACE( '-------------Active-----Exclusive USB[%s] vendor[%s]'% ( devName, self.mDeviceListSelect[0] ) )
 
 		self.mProcessing = False
 		if tShowProcess :
