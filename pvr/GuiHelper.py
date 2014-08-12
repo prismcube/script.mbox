@@ -1364,6 +1364,16 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 	return isNTFS
 
 
+def GetMountByDeviceSize( aDevSize = 0 ) :
+	cmd = "fdisk -l | grep Disk | awk '/%s/ {print $2,$5}' | awk -F': ' '{print $1}'"% aDevSize
+	devName = ExecuteShell( cmd )
+	ret = []
+	if devName :
+		cmd = "mount | awk '/%s/ {print $3}'"% os.path.basename( devName )
+		ret = ExecuteShell( cmd ).split( '\n' )
+	return ret
+
+
 def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :
 	#aDevice 1: mmc, 2: usb memory, 3: hdd
 	mountPos = ''
