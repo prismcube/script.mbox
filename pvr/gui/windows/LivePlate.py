@@ -337,6 +337,9 @@ class LivePlate( LivePlateWindow ) :
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				return -1
 
+			if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+				return -1
+
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
@@ -388,7 +391,7 @@ class LivePlate( LivePlateWindow ) :
 				self.StopAutomaticHide()	
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowBrowser( )
-					
+
 				
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			status = self.mDataCache.Player_GetStatus( )
@@ -1236,6 +1239,9 @@ class LivePlate( LivePlateWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mDataCache.Player_Stop( )
+
+			if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+				return -1
 
 			if RECORD_WIDTHOUT_ASKING == True :
 				if self.GetBlinkingProperty( ) != 'None' :

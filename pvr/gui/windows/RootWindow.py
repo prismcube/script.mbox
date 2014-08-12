@@ -72,6 +72,10 @@ class RootWindow( xbmcgui.WindowXML ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StopYoutubeTV( )
 
 		else :
+			if aAction.getId( ) == Action.ACTION_COLOR_BLUE :
+				if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+					return -1
+
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 

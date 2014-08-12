@@ -211,7 +211,7 @@ E_EAST							= 1
 if pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 	E_MAX_RECORD_COUNT				= 2
 else :
-	E_MAX_RECORD_COUNT				= 1
+	E_MAX_RECORD_COUNT				= 2
 
 # Volume
 VOLUME_STEP						= 4
