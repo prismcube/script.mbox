@@ -57,7 +57,7 @@ class DialogRootfsBackup( BaseDialog ) :
 			self.mCheckStatusFileThread.start( )
 			self.mCheckStatusSecond.start( )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 
 
 	def SetDialogProperty( self, aLabel, aRunScript, aLogScript, aArg1=None ) :
@@ -98,7 +98,7 @@ class DialogRootfsBackup( BaseDialog ) :
 		try :
 			fp = open( self.mLogFileName )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( 'Exception[%s]'% e )
 			fp = None
 
 		if fp == None :

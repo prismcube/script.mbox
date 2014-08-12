@@ -270,6 +270,8 @@ class Advanced( SettingWindow ) :
 		else :
 			os.system( 'rm %s' % FILE_NAME_HBB_TV )
 
+		os.system( 'sync' )
+		
 
 	def WaitInitialize( self ) :
 		if self.mInitialized :

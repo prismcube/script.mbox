@@ -250,8 +250,17 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 
 	elif aPropertyID == 'HasDolbyPlus' :
 		#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-		if pmtEvent.mAudioCount > 0 and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-			ret = True
+
+		for i in range( len(pmtEvent.mAudioStream )) :
+			if pmtEvent.mAudioStream[i] == ElisEnum.E_AUD_STREAM_DDPLUS : 
+				ret = True
+				break
+
+	elif aPropertyID == 'HasDolby' :
+		for i in range( len(pmtEvent.mAudioStream )) :
+			if pmtEvent.mAudioStream[i] == ElisEnum.E_AUD_STREAM_AC3 : 
+				ret = True
+				break
 
 	self.setProperty( aPropertyID, '%s'% ret )
 	return ret
@@ -455,7 +464,7 @@ class CacheMRLanguage( object ) :
 					string = xmlString.encode( 'utf-8' )
 
 			except Exception, e :
-				print 'except[%s]'% e
+				print 'Exception[%s]'% e
 
 		#print 'strId[%s]trans[%s]'% (strId, string)
 		return string.replace( '%n', '\r\n' )
@@ -498,7 +507,7 @@ def CreateFile( aPath ) :
 
 	except Exception, e :
 		isAble = False
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 
 	return isAble
 
@@ -520,7 +529,7 @@ def RemoveDirectory( aPath ) :
 			LOG_TRACE( 'Could not remove, non type file[%s]'% aPath )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 
 	return ret
 
@@ -565,7 +574,7 @@ def RemoveUnzipFiles( aUsbPath, aZipFile = False, aReqFile = False ) :
 					#LOG_TRACE('delete file[%s]'% delFile )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 
 	return True
 
@@ -632,7 +641,7 @@ def CheckEthernet( aEthName ) :
 		LOG_TRACE('-------------linkStatus[%s]'% status )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+		LOG_ERR( 'Exception[%s] cmd[%s]'% ( e, cmd ) )
 
 	return status
 
@@ -666,7 +675,7 @@ def CheckMD5Sum( aSourceFile, aMd5 = None, aResult = False ) :
 			isVerify = ( isVerify, readMd5, aMd5 )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+		LOG_ERR( 'Exception[%s] cmd[%s]'% ( e, cmd ) )
 
 	return isVerify
 
@@ -681,7 +690,7 @@ def GetDeviceSize( path ) :
 		used = (st.f_blocks - st.f_bfree) * st.f_frsize
 
 	except Exception, e :
-		LOG_TRACE( 'except[%s]'% e )
+		LOG_TRACE( 'Exception[%s]'% e )
 		total, used, free = 0, 0, 0
 
 	#return (total, used, free)
@@ -705,7 +714,7 @@ def GetFileSize( aFile ) :
 		fsize = os.stat( aFile )[stat.ST_SIZE]
 	
 	except Exception, e :
-		LOG_TRACE( 'except[%s]'% e )
+		LOG_TRACE( 'Exception[%s]'% e )
 		fsize = -1
 
 	return fsize
@@ -741,7 +750,7 @@ def GetUnpackFiles( aZipFile ) :
 					fileList.append( pars )
 
 	except Exception, e :
-		LOG_TRACE( 'except[%s]'% e )
+		LOG_TRACE( 'Exception[%s]'% e )
 		return False
 
 	return fileList
@@ -769,7 +778,7 @@ def GetUnpackFilenames( aZipFile ) :
 					fileList.append( pars[1] )
 
 	except Exception, e :
-		LOG_TRACE( 'except[%s]'% e )
+		LOG_TRACE( 'Exception[%s]'% e )
 		return False
 
 	return fileList
@@ -791,7 +800,7 @@ def GetUnpackByMD5( aFile ) :
 			value = pars[0].strip()
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] Could not open[%s]'% ( e, openFile ) )
+		LOG_ERR( 'Exception[%s] Could not open[%s]'% ( e, openFile ) )
 
 	return value
 
@@ -815,7 +824,7 @@ def GetFileRead( aOpenFile ) :
 		fp.close( )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd[%s]'% ( e, aOpenFile ) )
+		LOG_ERR( 'Exception[%s] cmd[%s]'% ( e, aOpenFile ) )
 
 	return readLines
 
@@ -867,7 +876,7 @@ def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0, aUnzipPath = 'update_ruby'
 		time.sleep( 0.5 )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+		LOG_ERR( 'Exception[%s] cmd[%s]'% ( e, cmd ) )
 		isCopy = False
 
 	return isCopy
@@ -881,7 +890,7 @@ def CopyToFile( aSourceFile, aDestFile ) :
 		time.sleep( 0.5 )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, aSourceFile, aDestFile ) )
+		LOG_ERR( 'Exception[%s] source[%s] desc[%s]'% ( e, aSourceFile, aDestFile ) )
 		isCopy = False
 
 	return isCopy
@@ -895,7 +904,7 @@ def CopyToDirectory( aSourceDirectory, aDestPath ) :
 		time.sleep( 0.5 )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, aSourceDirectory, aDestPath ) )
+		LOG_ERR( 'Exception[%s] source[%s] desc[%s]'% ( e, aSourceDirectory, aDestPath ) )
 		isCopy = False
 
 	return isCopy
@@ -976,13 +985,13 @@ def GetURLpage( aUrl, aWriteFileName = None ) :
 					fd.write( f.read( ) )
 					fd.close( )
 				except Exception, e :
-					LOG_ERR( 'except[%s] writeError writefile[%s]'% ( e, aWriteFileName ) )
+					LOG_ERR( 'Exception[%s] writeError writefile[%s]'% ( e, aWriteFileName ) )
 					isExist = False
 
 			f.close( )
 
 	except IOError, e :
-		LOG_ERR( 'except[%s] url[%s]'% ( e, aUrl ) )
+		LOG_ERR( 'Exception[%s] url[%s]'% ( e, aUrl ) )
 
 	return isExist
 
@@ -1184,7 +1193,7 @@ def GetFileSizeFromFTP( aFilePath = '', ftpHost='', ftpPort='', ftpUser='', ftpP
 		size = ftp.size( aFilePath )
 		ftp.close()
 	except Exception, e :
-		print 'except[%s]'% e
+		print 'Exception[%s]'% e
 
 	return size
 
@@ -1196,7 +1205,7 @@ def ReadToCmdBlock( ) :
 		cmdBlock = rf.readline( ).strip( )
 		rf.close( )
 	except Exception, e :
-		LOG_ERR( 'except[%s] file not found[/proc/cmdline]'% e )
+		LOG_ERR( 'Exception[%s] file not found[/proc/cmdline]'% e )
 		cmdBlock = ''
 
 	LOG_TRACE( '/proc/cmdline[%s]'% cmdBlock )
@@ -1272,7 +1281,7 @@ def InitFlash( ) :
 		LOG_TRACE( '---------erase cmd1[%s] returnCode[%s]'% ( cmd1, returnCode ) )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
+		LOG_ERR( 'Exception[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
 
 
 def SetWriteToFlash( aFile ) :
@@ -1306,7 +1315,7 @@ def SetWriteToFlash( aFile ) :
 		isWrite = True
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
+		LOG_ERR( 'Exception[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
 		isWrite = -4
 
 	return isWrite
@@ -1443,7 +1452,7 @@ def GetMountExclusiveDevice( aElementSize = None ) :
 			mntinfo.append( [MR_LANG( 'Micro SD Card' ), mmcsize, '/dev/mmc'] )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 
 	try :
 		if hddsize_ :
@@ -1484,7 +1493,7 @@ def GetMountExclusiveDevice( aElementSize = None ) :
 				mntinfo.append( [vendor,usbsize,usbdev] )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 
 	#LOG_TRACE( '----------mntinfo[%s]'% mntinfo )
 
@@ -1508,7 +1517,7 @@ def CheckMountType( aMountPath ) :
 			mntType = ret.strip( )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 		mntType = ''
 
 	return mntType
@@ -2207,7 +2216,7 @@ def GetXBMCResolutionWeightBySkin( ) :
 
 	except Exception, e :
 		defHeight = 720
-		LOG_ERR( 'except[%s]'% e )
+		LOG_ERR( 'Exception[%s]'% e )
 
 	resWeight = int( defHeight ) / 720.0
 

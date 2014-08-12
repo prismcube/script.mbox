@@ -434,7 +434,7 @@ class DialogMountManager( SettingDialog ) :
 						LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
 					else :
-						#add new, edit
+						#Add new or edit
 						urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
 						if not IsIPv4( urlHost ) :
 							ExecuteShell( 'net cache flush' )
@@ -458,7 +458,7 @@ class DialogMountManager( SettingDialog ) :
 						self.mNetVolume.mMountCmd = mountCmd
 						mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
 
-						# writable check
+						#Writable permission check
 						mntHistory = ExecuteShell( 'mount' )
 						if mntHistory and bool( re.search( '%s'% self.mNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) :
 							checkFile = '%s/writableCheck'% self.mNetVolume.mMountPath
@@ -476,7 +476,7 @@ class DialogMountManager( SettingDialog ) :
 						lblLine = MR_LANG( 'Unable to mount location' )
 						if mountPath != '' :
 							isAdd = True
-							#is edit? delete old volume
+							#Delete the old volume
 							netVolume = self.GetVolumeIDs( self.mNetVolume )
 							LOG_TRACE( '[MountManager] find volume GetVolumeIDs[%s]'% netVolume )
 							if netVolume :
@@ -496,7 +496,7 @@ class DialogMountManager( SettingDialog ) :
 									lblLine = '\'%s\' %s'% ( os.path.basename( self.mNetVolume.mMountPath ), MR_LANG( 'is mounted' ) )
 
 								else :
-									# Add fail then restore umount
+									#Failed to add then umount
 									os.system( '/bin/umount -fl %s'% mountPath )
 									os.system( 'sync' )
 
@@ -568,7 +568,7 @@ class DialogMountManager( SettingDialog ) :
 				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
 				self.mNetVolumeListHash[hashkey] = netVolume
 
-			#do not select usb volume
+			#Do not select USB volume
 			if self.mSelectIdx < len( self.mNetVolumeList ) :
 				netVolume = self.mNetVolumeList[self.mSelectIdx]
 				if netVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
@@ -663,7 +663,7 @@ class DialogMountManager( SettingDialog ) :
 					usePercent = int( ( ( 1.0 * ( self.mNetVolume.mTotalMB - self.mNetVolume.mFreeMB ) ) / self.mNetVolume.mTotalMB ) * 100 )
 
 				if self.mNetVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, self.mNetVolume.mMountPath, re.IGNORECASE ) ) :
-					# usb? then enable false
+					#If USB, enable false
 					lblSelect = '[USB] %s'% lblMount
 					enableConrols = [E_DialogInput03]
 					disableConrols = [E_DialogInput02, E_DialogInput05, E_DialogInput06, E_DialogInput07, E_DialogSpinEx02]
@@ -685,7 +685,7 @@ class DialogMountManager( SettingDialog ) :
 			defaultFocus = aDefaultFocus
 		self.SetFocus( defaultFocus )
 
-		#hdd size
+		#HDD size
 		default_Path = MR_LANG( 'HDD' )
 		default_lblOnline = E_TAG_TRUE
 		default_usePercent = 0
@@ -693,7 +693,7 @@ class DialogMountManager( SettingDialog ) :
 			default_usePercent = int( ( ( 1.0 * ( self.mTotalHDD - self.mFreeHDD ) ) / self.mTotalHDD ) * 100 )
 			#LOG_TRACE( '--------------hdd use[%s] free[%s] total[%s]'% ( (self.mTotalHDD - self.mFreeHDD), self.mFreeHDD, self.mTotalHDD ) )
 		else :
-			#hdd is none
+			#No HDD
 			default_lblOnline = E_TAG_FALSE
 
 		default_byte = '%sMB'% self.mFreeHDD
