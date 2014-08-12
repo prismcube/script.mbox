@@ -103,6 +103,7 @@ class Configure( SettingWindow ) :
 		self.mEpgStartChannel		= 1
 		self.mEpgEndChannel			= 1
 		self.mEpgFavGroup			= 0
+		self.mAddVolumeFocus		= False
 
 
 	def onInit( self ) :
@@ -172,6 +173,11 @@ class Configure( SettingWindow ) :
 
 		self.mEventBus.Register( self )
 		self.setFocusId( E_CONFIGURE_SUBMENU_LIST_ID )
+
+		if self.mAddVolumeFocus :
+			self.SetDefaultControl( E_Input01 )
+
+		self.mAddVolumeFocus = False
 
 
 	def Close( self ) :
@@ -1064,7 +1070,6 @@ class Configure( SettingWindow ) :
 				#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 			self.SetVisibleControls( hideControlIds, False )
-			
 			self.InitControl( )
 
 		elif selectedId == E_AUDIO :
@@ -2132,4 +2137,9 @@ class Configure( SettingWindow ) :
 			time.sleep( 0.02 )
 		else :
 			time.sleep( 0.2 )
+
+
+	def SetFocusAddVolume( self, aRedirect = False ) :
+		self.mAddVolumeFocus = aRedirect
+
 

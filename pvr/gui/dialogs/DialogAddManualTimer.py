@@ -1332,7 +1332,7 @@ class DialogAddManualTimer( SettingDialog ) :
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.CloseDialog( )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetMoveConfigureToAddVolume( )
 
 		return ret
 
