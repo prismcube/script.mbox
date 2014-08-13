@@ -527,7 +527,7 @@ class NullWindow( BaseWindow ) :
 			   self.mDataCache.Get_Player_AVBlank( ) and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
 
-			if not self.CheckDMXInfo( ) :
+			if not self.CheckDMXInfo( ) and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
 
 			self.Close( )
