@@ -107,7 +107,7 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_FORMAT :
 			mLines = MR_LANG( 'Failed to format device' )
 		elif aErrorNo == E_STORAGE_ERROR_COPY_FAIL :
-			mLines = MR_LANG( 'Failed to copy XBMC addons' )
+			mLines = MR_LANG( 'Failed to copy XBMC add-ons' )
 		elif aErrorNo == E_STORAGE_ERROR_RESTORE_FAIL :
 			mLines = MR_LANG( 'Failed to restore data' )
 		elif aErrorNo == E_STORAGE_ERROR_NOT_SUPPORT_STORAGE :
@@ -440,10 +440,10 @@ class ExclusiveSettings( object ) :
 					doResult = E_STORAGE_FORMAT_DONE
 					xbmcPath = '%s/program/.xbmc'% mediaPath
 					if CheckDirectory( xbmcPath ) :
-						mTitle = MR_LANG( 'Installed XBMC addons' )
-						mLines = MR_LANG( 'Do you want to copy your addons to Micro SD?' )
+						mTitle = MR_LANG( 'Installed XBMC add-ons' )
+						mLines = MR_LANG( 'Do you want to copy your add-ons to Micro SD?' )
 						if aSelect == E_SELECT_STORAGE_HDD :
-							mLines = MR_LANG( 'Do you want to copy your addons to USB HDD?' )
+							mLines = MR_LANG( 'Do you want to copy your add-ons to USB HDD?' )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 						dialog.SetDialogProperty( mTitle, mLines )
 						dialog.doModal( )

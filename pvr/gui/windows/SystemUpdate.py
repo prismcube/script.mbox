@@ -2671,7 +2671,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB stick' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on your device' ) )
 				dialog.doModal( )
 
 
@@ -2842,7 +2842,7 @@ class SystemUpdate( SettingWindow ) :
 		usbpath = self.mDataCache.USB_GetMountPath( )
 		if GetDeviceSize( usbpath ) < GetDirectorySize( aPath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB stick' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on your device' ) )
 			dialog.doModal( )
 			self.CloseBusyDialog( )
 			return False

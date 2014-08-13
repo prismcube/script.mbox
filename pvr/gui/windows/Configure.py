@@ -498,7 +498,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Performing a XBMC reset?' ), MR_LANG( 'All your XBMC addons and userdata will be lost' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a XBMC reset?' ), MR_LANG( 'All your XBMC add-ons and userdata will be lost' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -1281,7 +1281,7 @@ class Configure( SettingWindow ) :
 				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 				selectStorage = [MR_LANG('Internal Flash'), MR_LANG('Micro SD'), MR_LANG('USB Stick'), MR_LANG('USB HDD')]
 				self.AddInputControl( E_Input04, MR_LANG( 'Format External Storage' ), '', MR_LANG( 'Press OK button to erase your data from external device' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'My Storage Device' ), selectStorage[selectidx], MR_LANG( 'Select a device to store the recording files and XBMC addons' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'My Storage Device' ), selectStorage[selectidx], MR_LANG( 'Select a device to store the recording files and XBMC add-ons' ) )
 				visibleControlIds = [ E_Input01, E_Input02 ]
 
 			else :
@@ -1311,7 +1311,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddInputControl( E_Input01, MR_LANG( 'Reset System Configuration'), '', MR_LANG( 'Restore all settings and data to factory default (excluding XBMC)' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Reset XBMC Settings'), '', MR_LANG( 'Delete all your XBMC addons and settings' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Reset XBMC Settings'), '', MR_LANG( 'Delete all your XBMC add-ons and settings' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -1864,7 +1864,7 @@ class Configure( SettingWindow ) :
 			usbfreesize = GetDeviceSize( usbpath )
 			if ( size_addons + size_udata ) > usbfreesize :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB stick' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on your device' ) )
 				dialog.doModal( )
 			else :
 				self.CopyBackupData( usbpath, aType )
