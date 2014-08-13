@@ -45,7 +45,7 @@ class Installation( BaseWindow ) :
 		self.mDescriptionList = []
 
 		self.mLeftGroupItems.append( MR_LANG( 'First Installation' ) )
-		self.mDescriptionList.append( MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ) )
+		self.mDescriptionList.append( MR_LANG( 'Take the following steps for getting your PRISMCUBE ready for use' ) )
 
 		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 			self.mLeftGroupItems.append( MR_LANG( 'Antenna Setup' ) )
@@ -68,7 +68,7 @@ class Installation( BaseWindow ) :
 		self.mDescriptionList.append( MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ) )
 
 		self.mLeftGroupItems.append( MR_LANG( 'Update' ) )
-		self.mDescriptionList.append( MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) )
+		self.mDescriptionList.append( MR_LANG( 'Get the latest updates on your PRISMCUBE' ) )
 
 		self.mLeftGroupItems.append( MR_LANG( 'Advanced' ) )
 		self.mDescriptionList.append( MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) )

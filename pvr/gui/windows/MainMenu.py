@@ -71,14 +71,14 @@ class MainMenu( BaseWindow ) :
 
 	def onInit( self ) :
 		self.mSubDescriptionInstall = [
-			MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ),
+			MR_LANG( 'Take the following steps for getting your PRISMCUBE ready for use' ),
 			MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ),
 			MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ),
 			MR_LANG( 'Add, delete or rename satellites' ),
 			MR_LANG( 'Add new transponders or edit the transponders already exist' ),
 			MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
 			MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
-			MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ),
+			MR_LANG( 'Get the latest updates on your PRISMCUBE' ),
 			MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) ]
 
 		self.mSubDescriptionMedia = [

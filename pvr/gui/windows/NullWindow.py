@@ -497,7 +497,7 @@ class NullWindow( BaseWindow ) :
 				else :
 					self.ShowRecordingStartDialog( )
 				self.CheckSubTitle( )
-		
+
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or \
 			actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
 			if actionId == Action.ACTION_MOVE_RIGHT :
@@ -525,6 +525,9 @@ class NullWindow( BaseWindow ) :
 
 			if ( actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE ) and \
 			   self.mDataCache.Get_Player_AVBlank( ) and status.mMode == ElisEnum.E_MODE_LIVE :
+				return -1
+
+			if not self.CheckDMXInfo( ) :
 				return -1
 
 			self.Close( )
@@ -748,6 +751,9 @@ class NullWindow( BaseWindow ) :
 		if not HasAvailableRecordingHDD( ) :
 			return
 
+		if not self.CheckDMXInfo( ) :
+			return -1
+
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
 		isOK = False
 
@@ -890,6 +896,9 @@ class NullWindow( BaseWindow ) :
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 		if not HasAvailableRecordingHDD( ) :
 			return
+
+		if not self.CheckDMXInfo( ) :
+			return -1
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
 
@@ -1566,10 +1575,28 @@ class NullWindow( BaseWindow ) :
 			xbmc.executebuiltin( 'Esallinterfaces(true)' )
 
 
+	def CheckDMXInfo( self ) :
+		dmxAvail = True
+
+		mTitle = MR_LANG( 'Error' )
+		mLine1 = MR_LANG( 'Not engough resource allowed' )
+		mLine2 = MR_LANG( 'Try again after turn off Recording or Timeshift or PIP' )
+		dmxCount = self.mDataCache.Get_FreeTssCount( )
+		LOG_TRACE( '----------------------------------------dmxCount[%s]'% dmxCount )
+		if dmxCount < 1 :
+			dmxAvail = False
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( mTitle, mLine1, mLine2 )
+			dialog.doModal( )
+
+		return dmxAvail
+
 	def SetMoveConfigureToAddVolume( self ) :
 		configure = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_CONFIGURE )
 		configure.mPrevListItemID = 7
 		configure.SetFocusAddVolume( True )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+
 
 

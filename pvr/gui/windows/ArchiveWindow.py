@@ -1014,7 +1014,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		if defPath_old != defPath_cur :
-			lblLine = MR_LANG( 'Recordings will be temporarily stored on your hard drive' )
+			lblLine = MR_LANG( 'Recordings will be temporarily stored on your HDD' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Inaccessible folder' ), lblLine )
 			dialog.doModal( )

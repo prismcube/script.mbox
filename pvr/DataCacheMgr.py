@@ -3775,3 +3775,8 @@ class DataCacheMgr( object ) :
 	def GetHbbtvStatus( self ) :
 		return self.mHbbtvStatus
 
+
+	def Get_FreeTssCount( self ) :
+		return self.mCommander.Get_FreeTssCount( )
+
+

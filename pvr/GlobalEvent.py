@@ -77,6 +77,9 @@ class GlobalEvent( object ) :
 					return
 
 			if aEvent.mKeyCode == 9 and ( not self.mIsShowPIPDialog ) :
+				if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+					return -1
+
 				thread = threading.Timer( 0, self.ShowPIPDialog )
 				thread.start( )
 			return
@@ -355,6 +358,11 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0, self.AsyncCheckByMMC, [aEvent.mStatus] )
 			thread.start( )
 
+		elif aEvent.getName( ) == ElisEventPlayerError.getName( ) :
+			LOG_TRACE( 'event ElisEventPlayerError mPlayer[%s] count[%s]'% ( aEvent.mPlayer, self.mDataCache.Get_FreeTssCount( ) ) )
+			thread = threading.Timer( 0, self.AsyncDMXtoFail, [aEvent.mPlayer] )
+			thread.start( )
+
 
 		#for HBBTV
 		elif E_SUPPROT_HBBTV == True :
@@ -388,6 +396,48 @@ class GlobalEvent( object ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideRedButton( )	
 
 
+	def AsyncDMXtoFail( self, aDmxNumber ) :
+		mTitle = MR_LANG( 'Stop Live' )
+		mLines = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+		if aDmxNumber == ElisEnum.E_PLAYER_MAIN :
+			#ToDO action
+			LOG_TRACE( '[DmxFail]----------------Fail: Live' )
+
+		elif aDmxNumber == ElisEnum.E_PLAYER_PIP :
+			LOG_TRACE( '[DmxFail]----------------Fail: PIP' )
+			mTitle = MR_LANG( 'Stop PIP' )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Stop( True )
+
+		elif aDmxNumber >= ElisEnum.E_PLAYER_RECORD0 and aDmxNumber <= ElisEnum.E_PLAYER_RECORD2 :
+			LOG_TRACE( '[DmxFail]----------------Fail: Recording[%s]'% aDmxNumber )
+			mTitle = MR_LANG( 'Stop Recording' )
+			runRec = []
+			runCount = self.mDataCache.Record_GetRunningRecorderCount( )
+			if runCount == 1 :
+				recordInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				runRec.append( recordInfo.mRecordKey )
+			elif runCount == 2 :
+				recordInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				runRec.append( recordInfo.mRecordKey )
+				recordInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+				runRec.append( recordInfo.mRecordKey )
+				
+			runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+			if runningTimers and len( runningTimers ) > 0 :
+				for timer in runningTimers :
+					if timer.mRecordKey not in runRec :
+						self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+						LOG_TRACE( '---------------stop fail timer: id[%s] ch[%s] name[%s]'% ( timer.mTimerId, timer.mChannelNo, timer.mName ) )
+
+		elif aDmxNumber == ElisEnum.E_PLAYER_TSRECORD :
+			self.mDataCache.Player_Stop( )
+			mTitle = MR_LANG( 'Stop Timeshift' )
+			LOG_TRACE( '[DmxFail]----------------Fail: Timeshift' )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( mTitle, mLines )
+		dialog.doModal( )
+
 
 	def AsyncCheckByMMC( self, aStatus ) :
 		isReboot = False
@@ -411,7 +461,7 @@ class GlobalEvent( object ) :
 
 		elif aStatus == ElisEnum.E_MMC_MOUNT_SUCCESS or aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
 			mTitle = MR_LANG( 'Micro SD' )
-			mLines = MR_LANG( 'Addon Storage in XBMC' )
+			mLines = MR_LANG( 'XBMC add-on storage' )
 			self.mDataCache.SetUsbMountStatus( aStatus )
 
 			if aStatus == ElisEnum.E_MMC_MOUNT_FAIL :

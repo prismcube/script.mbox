@@ -512,6 +512,9 @@ class EPGSearchWindow( BaseWindow ) :
 		if not HasAvailableRecordingHDD( ) :
 			return
 
+		if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+			return -1
+
 		selectedEPG = self.GetSelectedEPG( )
 
 		if selectedEPG == None :

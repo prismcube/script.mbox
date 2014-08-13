@@ -114,6 +114,9 @@ class DialogStartRecord( SettingDialog ) :
 				self.ShowNetworkVolume( )
 
 			elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :	
+				if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+					return -1
+
 				self.StartRecord( )
 
 			elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :

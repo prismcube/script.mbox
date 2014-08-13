@@ -82,7 +82,7 @@ class Favorites( BaseWindow ) :
 		xbmcgui.getCurrentWindowId( )		
 		if currentID == self.mWinId :
 			dialogID = xbmcgui.getCurrentWindowDialogId( )
-			#remove because of hangup when radio addon file is favorite 
+			#Removed because hangup occurs when radio addon file in favorite
 			isPlaying = xbmc.Player().isPlaying()
 			LOG_TRACE( 'LAEL98 TEST is plalying=%s' %isPlaying )
 			if dialogID == XBMC_WINDOW_DIALOG_INVALID and isPlaying == False :

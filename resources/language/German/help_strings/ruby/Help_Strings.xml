@@ -97,7 +97,7 @@
 			<width>500</width>
 			<height>226</height>
 		</content>
-		<content name="Die PRISMCUBE RUBY Fernbedienung verfügt über eine vollständige QWERTY Tastatur für die Texteingabe auf der Rückseite.[CR][CR]1. Halten Sie die Fernbedienung horizontal wie oben im Bild.[CR]2. Schalten Sie QWERTY Tastatur durch Drücken der entsperr Taste unten links ein.[CR]3. Geben Sie den Text schneller und effizienter mit der Tastatur ein.">
+		<content name="Die PRISMCUBE Fernbedienung verfügt über eine vollständige QWERTY Tastatur für die Texteingabe auf der Rückseite.[CR][CR]1. Halten Sie die Fernbedienung horizontal wie oben im Bild.[CR]2. Schalten Sie QWERTY Tastatur durch Drücken der entsperr Taste unten links ein.[CR]3. Geben Sie den Text schneller und effizienter mit der Tastatur ein.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>
@@ -114,7 +114,7 @@
 			<width>770</width>
 			<height>160</height>
 		</content>
-		<content name="Um alle Features ihrer PRISMCUBE RUBY nutzen zu können, empfehlen wir Ihnen die Verbindung mit zwei Antennenkabeln zu ihrer Satellitenanlage. Das erlaubt Ihnen das gleichzeitige Sehen und Aufnehme unterschiedlicher Sender zur gleichen Zeit. Das sehen eines zweiten Kanals während einer Aufnahme ist beschränkt, wenn nur ein Antennekabel mit loop through Option verbunden wurde.">
+		<content name="Um alle Features ihrer PRISMCUBE nutzen zu können, empfehlen wir Ihnen die Verbindung mit zwei Antennenkabeln zu ihrer Satellitenanlage. Das erlaubt Ihnen das gleichzeitige Sehen und Aufnehme unterschiedlicher Sender zur gleichen Zeit. Das sehen eines zweiten Kanals während einer Aufnahme ist beschränkt, wenn nur ein Antennekabel mit loop through Option verbunden wurde.">
 			<type>textbox_smallfont</type>
 			<posx>180</posx>
 			<posy>562</posy>
