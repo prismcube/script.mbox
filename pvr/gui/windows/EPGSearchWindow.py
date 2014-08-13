@@ -116,7 +116,7 @@ class EPGSearchWindow( BaseWindow ) :
 			if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
 				if isConfiguration :
 					self.Close( )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetMoveConfigureToAddVolume( )
 				return
 
 			selectedEPG = self.GetSelectedEPG( )

@@ -26,6 +26,7 @@ E_STORAGE_ERROR_FORMAT_CANCEL = -17
 E_STORAGE_ERROR_FORMAT_NOT_FOUND = -18
 E_STORAGE_ERROR_USED_INTERNAL = -19
 E_STORAGE_ERROR_TRY_AGAIN = -20
+E_STORAGE_ERROR_UNKNOWN_SIZE = -21
 
 
 E_CONTEXT_MENU_FORMAT = 1
@@ -121,6 +122,8 @@ class ExclusiveSettings( object ) :
 			mLines = MR_LANG( 'The device is already selected' )
 		elif aErrorNo == E_STORAGE_ERROR_TRY_AGAIN :
 			mLines = MR_LANG( 'Try again select a few second' )
+		elif aErrorNo == E_STORAGE_ERROR_UNKNOWN_SIZE :
+			mLines = MR_LANG( 'Storage size Unknown' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )
@@ -260,6 +263,7 @@ class ExclusiveSettings( object ) :
 		mntPath  = self.mDeviceListSelect[3]
 		xbmcPath = '%s/program/.xbmc'% mntPath
 
+		"""
 		if mntCmd == E_FORMAT_MED_HDD :
 			try :
 				hddsize = GetMountExclusiveDevice( self.mDeviceListSelect[2] )
@@ -273,6 +277,7 @@ class ExclusiveSettings( object ) :
 				dialog.doModal( )
 				if dialog.IsOK( ) != E_DIALOG_STATE_YES :
 					return E_STORAGE_ERROR_TRY_AGAIN
+		"""
 
 		mTitle = MR_LANG( 'Format Device' )
 		mLine1 = MR_LANG( 'Formatting will erase ALL data on this device' )
@@ -347,12 +352,13 @@ class ExclusiveSettings( object ) :
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
 			#LOG_TRACE( '--------------------Save ElisPropertyEnum[%s]'% aSelect )
+			"""
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system will reboot in %s seconds' )% 10, True )
 			dialog.SetAutoCloseProperty( True, 10, True )
 			dialog.doModal( )
+			"""
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				"""
 				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
@@ -360,7 +366,6 @@ class ExclusiveSettings( object ) :
 				self.mDialogShowInit.SetDialogType( 'update' )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
-				"""
 				self.mDataCache.System_Reboot( )
 
 		else :
@@ -615,22 +620,32 @@ class ExclusiveSettings( object ) :
 
 	def MakeDedicateForJET( self ) :
 		#USB to /mnt/hdd0
-		doResult = E_STORAGE_ERROR_FORMAT
+		doResult= E_STORAGE_ERROR_FORMAT
 		devName = self.mDeviceListSelect[2]
 		mntCmd  = self.mDeviceListSelect[4]
-		if mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
-			hddsize = GetMountExclusiveDevice( devName )
-			if mntCmd == E_FORMAT_MED_HDD and int( hddsize ) < 100 * ( 1000000 * 1000 ) :
-				mntCmd = E_FORMAT_MED_USB
+		hddsize = GetMountExclusiveDevice( devName )
+		waitMin = 5
 
+		if not hddsize.isdigit( ) :
+			LOG_TRACE( '------------------------size error' )
+			return E_STORAGE_ERROR_UNKNOWN_SIZE
+
+		hddsize = int( hddsize )
+		waitMin += int( hddsize / ( 500 * ( 1000000 * 1000 ) ) )
+		LOG_TRACE( '-----------------Wait Minute[%s] size[%s]'% ( waitMin, hddsize ) )
+
+		if mntCmd == E_FORMAT_MED_HDD :
+			if hddsize < 100 * ( 1000000 * 1000 ) :
+				mntCmd = E_FORMAT_MED_USB
+				LOG_TRACE( '--------------------------size check and storage usb' )
+
+		if mntCmd == E_FORMAT_MED_HDD or mntCmd == E_FORMAT_MNT_HDD :
 			#LOG_TRACE( '-----------------------size[%s]'% hddsize )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( float( hddsize ) / ( 1000000 * 1000 ) ) )
+			dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( 1.0 * hddsize / ( 1000000 * 1000 ) ) )
 			dialog.doModal( )
 
 			mediaDefault = 100
-			if mntCmd == E_FORMAT_MED_USB :
-				mediaDefault = int( hddsize ) / ( 1000000 * 1024 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Set media partition in GB' ), '%s' % mediaDefault , 4 )
 			dialog.doModal( )
@@ -638,7 +653,7 @@ class ExclusiveSettings( object ) :
 				mediaDefault = dialog.GetString( )
 
 			#LOG_TRACE( '-----------------------size[%s] input[%s]'% ( hddsize, int( mediaDefault ) * ( 1000000 * 1024 ) ) )
-			if int( hddsize ) < int( mediaDefault ) * ( 1000000 * 1024 ) :
+			if hddsize < int( mediaDefault ) * ( 1000000 * 1024 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Incorrect partition size' ) )
 				dialog.doModal( )
@@ -658,7 +673,7 @@ class ExclusiveSettings( object ) :
 		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#block power key 1:on, 0:off
 		self.OpenBusyDialog( )
 		self.mProcessing = True
-		tShowProcess = threading.Timer( 0, self.AsyncProgressing )
+		tShowProcess = threading.Timer( 0, self.AsyncProgressing, [waitMin] )
 		tShowProcess.start( )
 
 		ret = False
@@ -700,6 +715,17 @@ class ExclusiveSettings( object ) :
 
 		if ret :
 			doResult = E_STORAGE_FORMAT_DONE
+
+			"""
+			#verify mount result
+			mntList = GetMountByDeviceSize( hddsize )
+			if mntCmd == E_FORMAT_MED_HDD and len( mntList ) < 3 :
+				doResult = E_STORAGE_ERROR_FORMAT
+			else :
+				if len( mntList ) < 1 :
+					doResult = E_STORAGE_ERROR_FORMAT
+			"""
+				
 		else :
 			doResult = E_STORAGE_ERROR_FORMAT
 

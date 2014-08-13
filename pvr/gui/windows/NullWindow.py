@@ -486,7 +486,7 @@ class NullWindow( BaseWindow ) :
 				if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
 					if isConfiguration :
 						self.Close( )
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+						self.SetMoveConfigureToAddVolume( )
 					return
 
 				if RECORD_WIDTHOUT_ASKING == True :
@@ -1564,3 +1564,12 @@ class NullWindow( BaseWindow ) :
 		if self.mStartedEsall :
 			self.mStartedEsall = False
 			xbmc.executebuiltin( 'Esallinterfaces(true)' )
+
+
+	def SetMoveConfigureToAddVolume( self ) :
+		configure = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_CONFIGURE )
+		configure.mPrevListItemID = 7
+		configure.SetFocusAddVolume( True )
+		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+
+
