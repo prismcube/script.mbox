@@ -337,8 +337,7 @@ class LivePlate( LivePlateWindow ) :
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				return -1
 
-			if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) and \
-			   self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_LIVE :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_LIVE and not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
 				return -1
 
 			self.Close( )

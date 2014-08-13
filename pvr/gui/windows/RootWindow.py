@@ -73,7 +73,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		else :
 			if aAction.getId( ) == Action.ACTION_COLOR_BLUE :
-				if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) and ( not self.mDataCache.PIP_GetStatus( ) ):
+				if not self.mDataCache.PIP_GetStatus( ) and not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
 					return -1
 
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
