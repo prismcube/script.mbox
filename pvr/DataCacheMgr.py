@@ -2102,8 +2102,8 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Audiotrack_GetForRecord( aKey, aIndex )
 
 
-	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
-		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
+	def Player_SetVIdeoSize( self, aX, aY, aW, aH, aSync ) :
+		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH, aSync ) 
 
 
 	def Player_VideoBlank( self, aBlank, aForce = False ) :
@@ -3778,5 +3778,9 @@ class DataCacheMgr( object ) :
 
 	def Get_FreeTssCount( self ) :
 		return self.mCommander.Get_FreeTssCount( )
+
+
+	def Is_TimeshiftRecording( self ) :
+		return self.mCommander.Is_TimeshiftRecording( )
 
 

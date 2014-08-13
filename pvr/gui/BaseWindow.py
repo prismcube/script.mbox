@@ -273,7 +273,7 @@ class BaseWindow( BaseObjectWindow ) :
 		
 		x, y, w, h = pvr.GuiHelper.GetInstanceSkinPosition( ).GetPipPosition( x, y, w, h )
 
-		self.mDataCache.Player_SetVIdeoSize( x, y + 1, w, h - 2 )
+		self.mDataCache.Player_SetVIdeoSize( x, y + 1, w, h - 2, False )
 
 		self.SetRadioScreen( )
 
@@ -290,8 +290,8 @@ class BaseWindow( BaseObjectWindow ) :
 		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
 
 
-	def SetVideoRestore( self ) :
-		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
+	def SetVideoRestore( self, aSync=False ) :
+		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720, aSync )
 
 	"""
 	def LoadNoSignalState( self ) :

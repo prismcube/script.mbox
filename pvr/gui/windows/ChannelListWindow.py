@@ -4073,8 +4073,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		threading.Timer( 0, self.StopAsyncEPG ).start( )
 		threading.Timer( 0, self.StopAsyncSort ).start( )
-		self.SetVideoRestore( )
 		#WinMgr.GetInstance( ).CloseWindow( )
+		if self.mAutoConfirm :
+			self.SetVideoRestore( True  )			
 
 
 	def ShowHotkeys( self ) :
