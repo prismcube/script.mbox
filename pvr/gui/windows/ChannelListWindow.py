@@ -2664,7 +2664,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CAREER_INFO, careerLabel )
 
 			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
-				value2 = self.mNavChannel.mCarrier.mDVBS.mFrequency
+				value2 = self.mNavChannel.mCarrier.mDVBT.mFrequency
 				#value3 = self.mNavChannel.mCarrier.mDVBS.mBand
 				careerLabel = '%s KHz' % value2
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CAREER_INFO, careerLabel )
