@@ -1095,7 +1095,7 @@ class NullWindow( BaseWindow ) :
 				bookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
 				if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
 					head = MR_LANG( 'Error' )
-					msg = MR_LANG( 'Maximum number of bookmarks allowed' )
+					msg = MR_LANG( 'Maximum number of bookmarks reached' )
 				else :
 
 					status = self.mDataCache.Player_GetStatus( )

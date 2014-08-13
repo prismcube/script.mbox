@@ -397,20 +397,20 @@ class GlobalEvent( object ) :
 
 
 	def AsyncDMXtoFail( self, aDmxNumber ) :
-		mTitle = MR_LANG( 'Stop Live' )
+		mTitle = MR_LANG( 'Stopping Live' )
 		mLines = MR_LANG( 'Maximum number of recordings reached' )
 		if aDmxNumber == ElisEnum.E_PLAYER_MAIN :
 			#ToDO action
-			LOG_TRACE( '[DmxFail]----------------Fail: Live' )
+			LOG_TRACE( '[DMX Failure] ---------------- Live' )
 
 		elif aDmxNumber == ElisEnum.E_PLAYER_PIP :
-			LOG_TRACE( '[DmxFail]----------------Fail: PIP' )
-			mTitle = MR_LANG( 'Stop PIP' )
+			LOG_TRACE( '[DMX Failure] ---------------- PIP' )
+			mTitle = MR_LANG( 'Stopping PIP' )
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Stop( True )
 
 		elif aDmxNumber >= ElisEnum.E_PLAYER_RECORD0 and aDmxNumber <= ElisEnum.E_PLAYER_RECORD2 :
-			LOG_TRACE( '[DmxFail]----------------Fail: Recording[%s]'% aDmxNumber )
-			mTitle = MR_LANG( 'Stop Recording' )
+			LOG_TRACE( '[DMX Failure]---------------- Recording[%s]'% aDmxNumber )
+			mTitle = MR_LANG( 'Stopping Recording' )
 			runRec = []
 			runCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			if runCount == 1 :
@@ -427,12 +427,12 @@ class GlobalEvent( object ) :
 				for timer in runningTimers :
 					if timer.mRecordKey not in runRec :
 						self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
-						LOG_TRACE( '---------------stop fail timer: id[%s] ch[%s] name[%s]'% ( timer.mTimerId, timer.mChannelNo, timer.mName ) )
+						LOG_TRACE( '--------------- Stop failed - timer: id[%s] ch[%s] name[%s]'% ( timer.mTimerId, timer.mChannelNo, timer.mName ) )
 
 		elif aDmxNumber == ElisEnum.E_PLAYER_TSRECORD :
 			self.mDataCache.Player_Stop( )
-			mTitle = MR_LANG( 'Stop Timeshift' )
-			LOG_TRACE( '[DmxFail]----------------Fail: Timeshift' )
+			mTitle = MR_LANG( 'Stopping Timeshift' )
+			LOG_TRACE( '[DMX Failure]---------------- Timeshift' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( mTitle, mLines )

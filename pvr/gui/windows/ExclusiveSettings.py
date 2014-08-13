@@ -137,7 +137,7 @@ class ExclusiveSettings( object ) :
 		devidx = 0
 		context = []
 		for ele in devinfo :
-			mLines = '%s-%s(%s)'% ( MR_LANG( 'USB' ), ele[0], ele[1] )
+			mLines = '%s-%s(%s)'% ( 'USB', ele[0], ele[1] )
 			if ele[2] == '/dev/mmc' :
 				mLines = '%s(%s)'% ( ele[0], ele[1] )
 
