@@ -4075,8 +4075,9 @@ class ChannelListWindow( BaseWindow ) :
 		threading.Timer( 0, self.StopAsyncSort ).start( )
 		#WinMgr.GetInstance( ).CloseWindow( )
 		if self.mAutoConfirm :
-			self.SetVideoRestore( True  )			
-
+			self.SetVideoRestore( True  )	
+		else :
+			self.SetVideoRestore( False  )	
 
 	def ShowHotkeys( self ) :
 		context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'Previous Group' ) ), ( 'OSDForwardNF.png', '', MR_LANG( 'Next Group' ) ), ( 'OSDRecordNF.png', '', MR_LANG ( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
