@@ -352,12 +352,13 @@ class ExclusiveSettings( object ) :
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
 			#LOG_TRACE( '--------------------Save ElisPropertyEnum[%s]'% aSelect )
+			"""
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system will reboot in %s seconds' )% 10, True )
 			dialog.SetAutoCloseProperty( True, 10, True )
 			dialog.doModal( )
+			"""
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				"""
 				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
@@ -365,7 +366,6 @@ class ExclusiveSettings( object ) :
 				self.mDialogShowInit.SetDialogType( 'update' )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
-				"""
 				self.mDataCache.System_Reboot( )
 
 		else :
