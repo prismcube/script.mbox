@@ -2,7 +2,7 @@ from pvr.gui.WindowImport import *
 
 E_CHANNEL_LIST_BASE_ID					=  WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
-#xml control id
+#XML control IDs
 E_CONTROL_ID_LABEL_CHANNEL_PATH			= E_CHANNEL_LIST_BASE_ID + 21
 E_CONTROL_ID_LABEL_CHANNEL_SORT			= E_CHANNEL_LIST_BASE_ID + 22
 E_CONTROL_ID_SCROLLBAR_CHANNEL			= E_CHANNEL_LIST_BASE_ID + 61
@@ -27,7 +27,7 @@ E_CONTROL_ID_GROUP_LOCKED_INFO			= E_CHANNEL_LIST_BASE_ID + 309
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= E_CHANNEL_LIST_BASE_ID + 401
 E_CONTROL_ID_GROUP_HELPBOX				= E_CHANNEL_LIST_BASE_ID + 600
 
-#misc option
+#MISC options
 E_CONTROL_ID_BUTTON_SEARCH				= E_CHANNEL_LIST_BASE_ID + 201
 E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM	= E_CHANNEL_LIST_BASE_ID + 121
 E_CONTROL_ID_RADIOBUTTON_SHOW_EPGINFO	= E_CHANNEL_LIST_BASE_ID + 122
@@ -55,7 +55,7 @@ FLAG_CLOCKMODE_HHMM   = 4
 FLAG_MODE_JUMP     = True
 FLAG_USE_COLOR_KEY = True
 
-#slide index
+#Slide menu index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
 E_SLIDE_ACTION_SORT     = 99
@@ -89,7 +89,7 @@ class ChannelListWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 
-		#submenu list
+		#Submenu list
 		self.mListAllChannel= []
 		self.mListSatellite = []
 		self.mListCasList   = []
@@ -134,22 +134,22 @@ class ChannelListWindow( BaseWindow ) :
 		#starttime = time.time( )
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
-		#path
+		#Path
 		self.mCtrlLabelChannelPath       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_PATH )
 		self.mCtrlLabelChannelSort       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_SORT )
 
-		#main menu
+		#Main menu
 		self.mCtrlListMainmenu           = self.getControl( E_CONTROL_ID_LIST_MAINMENU )
 		self.mCtrlButtonSorting          = self.getControl( E_CONTROL_ID_BUTTON_SORTING )
 
-		#sub menu list
+		#Submenu list
 		self.mCtrlListSubmenu            = self.getControl( E_CONTROL_ID_LIST_SUBMENU )
 
-		#sub menu btn
+		#Submenu button
 		self.mCtrlRadioButtonTV          = self.getControl( E_CONTROL_ID_RADIOBUTTON_TV )
 		self.mCtrlRadioButtonRadio       = self.getControl( E_CONTROL_ID_RADIOBUTTON_RADIO )
 
-		#info
+		#Info
 		self.mCtrlLabelChannelName       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NAME )
 		self.mCtrlLabelEPGName           = self.getControl( E_CONTROL_ID_LABEL_EPG_NAME )
 		self.mCtrlLabelEPGTime           = self.getControl( E_CONTROL_ID_LABEL_EPG_TIME )
@@ -160,13 +160,13 @@ class ChannelListWindow( BaseWindow ) :
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
 		#self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
 
-		#misc option
+		#MISC options
 		self.mCtrlButtonSearch           = self.getControl( E_CONTROL_ID_BUTTON_SEARCH )
 		self.mCtrlRadioButtonAutoConfirm = self.getControl( E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM )
 		self.mCtrlRadioButtonShowEPGInfo = self.getControl( E_CONTROL_ID_RADIOBUTTON_SHOW_EPGINFO )
 		#self.mCtrlRadioButtonSearchAll   = self.getControl( E_CONTROL_ID_RADIOBUTTON_SEARCH_ALL )
 
-		#ch list
+		#Channel list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
 
@@ -208,7 +208,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mShowEPGInfo = False
 		self.mEPGHashTable = {}
 
-		#edit mode
+		#Edit mode
 		self.mIsSave = FLAG_MASK_NONE
 		self.mMarkList = []
 		self.mFavoriteGroupList = []
@@ -231,7 +231,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#self.mDataCache.SetChannelReloadStatus( False )
 
-		#initialize get cache
+		#Initialize get cache
 		zappingmode = None
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 		if zappingmode :
@@ -245,11 +245,11 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastMode  = deepcopy( self.mLoadMode )
 		self.mPrevMode  = deepcopy( self.mLoadMode )
 
-		#initialize get channel list
+		#Initialize get channel list
 		self.InitSlideMenuHeader( )
 		self.Initialize( isUpdatePosition )
 
-		#run thread
+		#Run thread
 		self.mEnableProgressThread = True
 		self.mPlayProgressThread = self.EPGProgressThread( )
 
@@ -483,7 +483,7 @@ class ChannelListWindow( BaseWindow ) :
 			position = self.mCtrlListMainmenu.getSelectedPosition( )
 			#LOG_TRACE('[ChannelList] main idx[%s]'% position )
 			if position == E_SLIDE_MENU_ALLCHANNEL :
-				LOG_TRACE('[ChannelList] Click AllChannel' )
+				LOG_TRACE('[ChannelList] Click all channel' )
 				#list action
 				self.SubMenuAction( E_SLIDE_ACTION_SUB )
 				self.UpdateControlGUI( E_SLIDE_CLOSE )
@@ -538,7 +538,7 @@ class ChannelListWindow( BaseWindow ) :
 	def InitCurrentPosition( self ) :
 		isFail = True
 		if not self.mInitialized :
-			LOG_TRACE( '[ChannelList]No selected position in first load' )
+			LOG_TRACE( '[ChannelList] No selected position in first load' )
 			return isFail
 
 		try :
@@ -657,14 +657,14 @@ class ChannelListWindow( BaseWindow ) :
 
 		if not epgList or len( epgList ) < 1 :
 			isUpdate = False
-			LOG_TRACE( '[ChannelList] Empty epglist' )
+			LOG_TRACE( '[ChannelList] Empty EPG list' )
 
 		if isUpdate :
 			for iEPG in epgList :
 				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
 				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
 
-			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
+			LOG_TRACE( '[ChannelList] EPG list conut[%s]'% len( epgList ) )
 
 		#self.mLock.release( )
 		if aUpdateAll :
@@ -1412,7 +1412,7 @@ class ChannelListWindow( BaseWindow ) :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
 				mSort = ElisEnum.E_SORT_BY_NUMBER
-				LOG_TRACE( '[ChannelList] fixed sort by number in Favorite Group' )
+				LOG_TRACE( '[ChannelList] Sorted the favorite group in number' )
 
 			lblSort = EnumToString( 'sort', mSort )
 			lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
@@ -1444,7 +1444,7 @@ class ChannelListWindow( BaseWindow ) :
 				#if self.mUserMode.mMode == idxMain :
 				if self.mUserSlidePos.mMain == idxMain and \
 				   self.mUserSlidePos.mSub == idxSub :
-					LOG_TRACE( '[ChannelList] already selected!!!' )
+					LOG_TRACE( '[ChannelList] Already selected!' )
 					return
 
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
@@ -1829,7 +1829,7 @@ class ChannelListWindow( BaseWindow ) :
 					if self.mFlag_DeleteAll_Fav :
 						if not self.mChannelList or len( self.mChannelList ) < 1 :
 							self.mFlag_DeleteAll = True
-							LOG_TRACE( '[ChannelList] Delete Groups - Empty Channellist, avblank' )
+							LOG_TRACE( '[ChannelList] Delete Groups - Empty Channellist. avblank' )
 
 						else :
 							currIdx = 0
@@ -4184,7 +4184,7 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+			msg = MR_LANG( 'Maximum number of recordings reached' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )	

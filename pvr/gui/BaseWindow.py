@@ -316,7 +316,7 @@ class BaseWindow( BaseObjectWindow ) :
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		#blocking by avBlank
 		if self.mDataCache.Get_Player_AVBlank( ) :
-			LOG_TRACE( '----------blocking avblank' )
+			LOG_TRACE( '---------- Block avblank' )
 			return
 
 		volume = 0
@@ -444,7 +444,7 @@ class BaseWindow( BaseObjectWindow ) :
 					self.mDataCache.Channel_InvalidateCurrent( )
 					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 					self.mDataCache.Player_AVBlank( True )
-					LOG_TRACE( '----------------------------------------------ch lock' )
+					LOG_TRACE( '---------------------------------------------- Channel locked' )
 
 				else :
 					self.mDataCache.Channel_InvalidateCurrent( )
@@ -460,7 +460,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def UpdateMediaCenterVolume( self ) :
 		if self.mDataCache.Get_Player_AVBlank( ) :
-			LOG_TRACE( '----------blocking avblank' )
+			LOG_TRACE( '----------Block avblank' )
 			return
 
 		volume = 0
@@ -513,7 +513,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 		if self.getProperty( 'NotAvail' ) != 'False' :
 			self.setProperty( 'NotAvail', 'False' )
-			LOG_TRACE( '-------confirm again : setProperty False' )
+			LOG_TRACE( '-------Confirm again : setProperty False' )
 
 
 	def ShowPIP( self ) :

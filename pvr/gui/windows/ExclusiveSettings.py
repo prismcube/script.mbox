@@ -351,7 +351,7 @@ class ExclusiveSettings( object ) :
 		ret = self.ChangeStorage( aSelect )
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
-			msg1 = '%s%s' % ( MR_LANG( 'Your system will reboot in %s seconds' ) % 5, ING )
+			msg1 = '%s%s' % ( MR_LANG( 'Rebooting in %s second(s)' ) % 5, ING )
 			self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
 			self.mDialogShowInit.SetButtonVisible( False )

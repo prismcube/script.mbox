@@ -18,7 +18,7 @@ class NetworkInfo( object ) :
 		self.mWinfo_meapol_version	= 1
 		self.mWinfo_fast_reauth		= 1
 		self.mWinfo_ap_scan			= 1
-		#network
+		#Network
 		self.mWinfo_ssid			= '\"PrismCubeAP\"'
 		self.mWinfo_scan_ssid		= 0
 		self.mWinfo_key_mgmt		= 'WPA-PSK'
@@ -34,7 +34,7 @@ class BackupSettings( object ) :
 	def __init__( self ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
-		LOG_TRACE( '------------------------------Check Backup' )
+		LOG_TRACE( '------------------------------Check backup' )
 		if CheckDirectory( E_DEFAULT_BACKUP_PATH ) :
 			#self.CheckBackup( )
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
@@ -44,22 +44,22 @@ class BackupSettings( object ) :
 
 
 	def CheckBackup( self ) :
-		LOG_TRACE( 'Backup Checked' )
+		LOG_TRACE( 'Backup checked' )
 		return
 
 		if CheckDirectory( '%s/%s'% ( E_DEFAULT_BACKUP_PATH, 'network.conf' ) ) :
 			self.SetNetwork( )
 
-		LOG_TRACE( 'Backup Done' )
+		LOG_TRACE( 'Backup done' )
 
 
 	def SetNetwork( self ) :
 		if not self.mPlatform.IsPrismCube( ) :
-			LOG_TRACE( 'No platform support' )
+			LOG_TRACE( 'Not supported platform' )
 			return
 
 		if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) >= pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
-			LOG_TRACE( 'passed network setting by Frodo version' )
+			LOG_TRACE( 'Network setting in Frodo' )
 			return
 	
 		fd = open( '%s/network.conf'% E_DEFAULT_BACKUP_PATH, 'r' )

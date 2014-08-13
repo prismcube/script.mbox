@@ -918,7 +918,7 @@ def GetDirectorySize( aPath ) :
 				filename = os.path.join( path, file )
 				dir_size += os.path.getsize( filename )
 			except Exception, e :
-				LOG_ERR( 'except file get size error filename = %s' % filename )
+				LOG_ERR( 'Exception. File size error - filename = %s' % filename )
 
 	return dir_size
 

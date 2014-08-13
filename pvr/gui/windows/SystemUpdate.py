@@ -595,7 +595,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_HDD_SPACE :
 			line = MR_LANG( 'Not enough space on your HDD' )
 		elif aMsg == E_STRING_CHECK_USB_SPACE :
-			line = MR_LANG( 'Not enough space on your USB flash memory' )
+			line = MR_LANG( 'Not enough space on your USB stick' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
 			line = MR_LANG( 'Could not connect to server' )
 		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
@@ -1384,7 +1384,7 @@ class SystemUpdate( SettingWindow ) :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
-				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
+				msg1 = '%s%s'% ( MR_LANG( 'Rebooting in %s second(s)' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )
@@ -2671,7 +2671,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB stick' ) )
 				dialog.doModal( )
 
 
@@ -2739,7 +2739,7 @@ class SystemUpdate( SettingWindow ) :
 				count = 1
 				while pipe.poll( ) == None :
 					if progressDialog.iscanceled( ) :
-						strCancel = MR_LANG( 'Canceling' ) + '...'
+						strCancel = MR_LANG( 'Cancelling' ) + '...'
 						progressDialog.update( percent, strCancel )
 						self.OpenBusyDialog( )
 						pipe.kill( )
@@ -2783,7 +2783,7 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 		except Exception, e :
-			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			LOG_ERR( 'Exception - BackupXBMC [%s]' % e )
 			RemoveDirectory( destPath )
 			os.system( 'sync' )
 			if progressDialog :
@@ -2842,7 +2842,7 @@ class SystemUpdate( SettingWindow ) :
 		usbpath = self.mDataCache.USB_GetMountPath( )
 		if GetDeviceSize( usbpath ) < GetDirectorySize( aPath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB stick' ) )
 			dialog.doModal( )
 			self.CloseBusyDialog( )
 			return False
@@ -2854,8 +2854,8 @@ class SystemUpdate( SettingWindow ) :
 		self.CloseBusyDialog( )
 		progressDialog = None
 		try :
-			strInit = MR_LANG( 'Initializing process' ) + '...'
-			strReady = MR_LANG( 'Ready to start' ) + '...'
+			strInit = MR_LANG( 'Initializing' ) + '...'
+			strReady = MR_LANG( 'Ready' )
 			percent = 0
 			progressDialog = xbmcgui.DialogProgress( )
 			progressDialog.create( MR_LANG( 'Backup Data Copy' ), strInit )
@@ -2866,7 +2866,7 @@ class SystemUpdate( SettingWindow ) :
 				percent = int( 1.0 * count / len( pathlist ) * 100 )
 
 				if progressDialog.iscanceled( ) :
-					strCancel = MR_LANG( 'Canceling' ) + '...'
+					strCancel = MR_LANG( 'Cancelling' ) + '...'
 					progressDialog.update( percent, strCancel )
 					self.OpenBusyDialog( )
 					RemoveDirectory( destPath )
@@ -2902,7 +2902,7 @@ class SystemUpdate( SettingWindow ) :
 			return True
 
 		except Exception, e :
-			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			LOG_ERR( 'Exception - BackupXBMC [%s]' % e )
 			RemoveDirectory( destPath )
 			if progressDialog :
 				progressDialog.close( )

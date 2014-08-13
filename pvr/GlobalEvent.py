@@ -398,7 +398,7 @@ class GlobalEvent( object ) :
 
 	def AsyncDMXtoFail( self, aDmxNumber ) :
 		mTitle = MR_LANG( 'Stop Live' )
-		mLines = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+		mLines = MR_LANG( 'Maximum number of recordings reached' )
 		if aDmxNumber == ElisEnum.E_PLAYER_MAIN :
 			#ToDO action
 			LOG_TRACE( '[DmxFail]----------------Fail: Live' )
@@ -471,7 +471,7 @@ class GlobalEvent( object ) :
 
 		if isReboot :
 			mTitle = MR_LANG( 'Initializing Storage' )
-			mLines = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
+			mLines = '%s%s'% ( MR_LANG( 'Rebooting in %s second(s)' )% 5, ING )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( mTitle, mLines )
 			dialog.SetButtonVisible( False )

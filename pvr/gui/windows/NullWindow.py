@@ -282,7 +282,7 @@ class NullWindow( BaseWindow ) :
 					#return
 
 				if ( time.time( ) - self.mOnTimeDelay ) < 1.5 :
-					LOG_TRACE( '------blocking Time back key' )
+					LOG_TRACE( '------Block back key time' )
 					return
 
 				self.RestartAsyncTimerByBackKey( )
@@ -397,7 +397,7 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.mDataCache.Player_Stop( )
 				if self.mDataCache.Teletext_IsShowing( ) :
-					LOG_TRACE( '----------Teletext_IsShowing...No Changed window' )
+					LOG_TRACE( '----------Teletext_IsShowing - No window change' )
 					return
 
 				if status.mMode == ElisEnum.E_MODE_PVR :
@@ -417,7 +417,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_XBMC or actionId == Action.ACTION_MBOX_RESERVED22 :
 			if actionId == Action.ACTION_MBOX_XBMC :
 				if self.GetBlinkingProperty( ) != 'None' :
-					LOG_TRACE( '----------------try recording' )
+					LOG_TRACE( '---------------- Try recording' )
 					return
 
 				isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
@@ -578,12 +578,12 @@ class NullWindow( BaseWindow ) :
 				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
-			LOG_TRACE( 'Numlock is not support until now' )
+			LOG_TRACE( 'Numlock is not supported' )
 			pass
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if abs( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
-				LOG_TRACE( 'blocking time Green key diff=%s' %(time.time( ) - self.mOnBlockTimer_GreenKey) )
+				LOG_TRACE( 'Green key block time diff=%s' %(time.time( ) - self.mOnBlockTimer_GreenKey) )
 				return
 
 			self.mOnBlockTimer_GreenKey = time.time( )
@@ -609,7 +609,7 @@ class NullWindow( BaseWindow ) :
 				pass
 			else :
 				self.NotAvailAction( )
-				LOG_TRACE( 'unknown key[%s]'% actionId )
+				LOG_TRACE( 'Unknown key[%s]'% actionId )
 
 
 	def onClick( self, aControlId ) :
@@ -655,7 +655,7 @@ class NullWindow( BaseWindow ) :
 							if iChannel.mSid == iEPG.mSid and iChannel.mTsid == iEPG.mTsid  and iChannel.mOnid == iEPG.mOnid  :
 								self.mEventId = iEPG.mEventId 
 								if time.time() - self.mNewEPGAlarm  < 5:#5sec
-									LOG_ERR('Ignore event change')
+									LOG_ERR( 'Ignore event change' )
 								else :
 									xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 								self.mNewEPGAlarm  = time.time()
@@ -834,7 +834,7 @@ class NullWindow( BaseWindow ) :
 
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+			msg = MR_LANG( 'Maximum number of recordings reached' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )
@@ -877,7 +877,7 @@ class NullWindow( BaseWindow ) :
 			return
 
 		if self.mRecordBlinkingCount  <=  0 :
-			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ blinking count  is zero' )
+			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Blinking count is zero' )
 			self.SetBlinkingProperty( 'None' )			
 			return
 
@@ -915,7 +915,7 @@ class NullWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+			msg = MR_LANG( 'Maximum number of recordings reached' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )
@@ -1007,7 +1007,7 @@ class NullWindow( BaseWindow ) :
 			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
 			thread.start( )
 		else :
-			LOG_TRACE( 'Already opened, Dialog' )
+			LOG_TRACE( 'Already a dialog opened' )
 
 
 	def ShowDialog( self, aAction ) :
@@ -1035,7 +1035,7 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				head = MR_LANG( 'Error' )
-				msg = MR_LANG( 'EPG None' )
+				msg = MR_LANG( 'No EPG' )
 
 		elif aAction == Action.ACTION_MBOX_TEXT :
 			head = MR_LANG( 'No teletext' )
@@ -1095,7 +1095,7 @@ class NullWindow( BaseWindow ) :
 				bookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
 				if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
 					head = MR_LANG( 'Error' )
-					msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
+					msg = MR_LANG( 'Maximum number of bookmarks allowed' )
 				else :
 
 					status = self.mDataCache.Player_GetStatus( )
@@ -1329,7 +1329,7 @@ class NullWindow( BaseWindow ) :
 			LOG_ERR( 'Exception[%s]'% e )
 			SetSetting( 'UPDATE_NOTIFY', '0' )
 			SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
-			LOG_TRACE( '-------------add cached UPDATE_NOTIFY=0 UPDATE_NOTIFY_COUNT=0' )
+			LOG_TRACE( '------------- Add cached UPDATE_NOTIFY=0 UPDATE_NOTIFY_COUNT=0' )
 
 		if isNotify :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).CheckBootOnVersion( )
@@ -1447,7 +1447,7 @@ class NullWindow( BaseWindow ) :
 			self.mHbbTVShowing = True
 			self.mCommander.AppHBBTV_Ready( 1 )
 		else :
-			LOG_TRACE("HbbTV not Ready ... Do nothing")
+			LOG_TRACE("HbbTV not ready - Do nothing")
 
 
 	def HbbTV_HideBrowser( self ) :
@@ -1459,7 +1459,7 @@ class NullWindow( BaseWindow ) :
 			self.mHbbTVShowing = False		
 			self.mCommander.AppHBBTV_Ready( 0 )
 		else :
-			LOG_TRACE("HbbTV Not ready, Do nothing.")
+			LOG_TRACE("HbbTV not ready - Do nothing")
 
 
 	def HbbTV_MediaPlayerStart( self, aURL) :
@@ -1578,16 +1578,15 @@ class NullWindow( BaseWindow ) :
 	def CheckDMXInfo( self ) :
 		dmxAvail = True
 
-		mTitle = MR_LANG( 'Error' )
-		mLine1 = MR_LANG( 'Not engough resource allowed' )
-		mLine2 = MR_LANG( 'Try again after turn off Recording or Timeshift or PIP' )
+		mTitle = MR_LANG( 'Maximum number of demux reached' )
+		mLine1 = MR_LANG( 'Try again after stopping%s any one of recording, timeshift or PIP' )% NEW_LINE
 		dmxCount = self.mDataCache.Get_FreeTssCount( )
-		LOG_TRACE( '----------------------------------------dmxCount[%s]'% dmxCount )
+		LOG_TRACE( '----------------------------------------DMX count[%s]'% dmxCount )
 		if dmxCount < 1 :
 			dmxAvail = False
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( mTitle, mLine1, mLine2 )
+			dialog.SetDialogProperty( mTitle, mLine1 )
 			dialog.doModal( )
 
 		return dmxAvail
@@ -1597,6 +1596,4 @@ class NullWindow( BaseWindow ) :
 		configure.mPrevListItemID = 7
 		configure.SetFocusAddVolume( True )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
-
-
 

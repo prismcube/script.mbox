@@ -583,7 +583,7 @@ class InfoPlate( LivePlateWindow ) :
 		bookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecord.mRecordKey )
 		if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
 			head = MR_LANG( 'Error' )
-			msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
+			msg = MR_LANG( 'Maximum number of bookmarks reached' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( head, msg )
 			dialog.doModal( )

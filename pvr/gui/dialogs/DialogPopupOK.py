@@ -139,7 +139,7 @@ class DialogPopupOK( BaseDialog ) :
 
 			if self.mDialogType == 'update' :
 				countdown = int( self.mAutoCloseTime - int( i / 5 ) )
-				label = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' ) % countdown, ING )
+				label = '%s%s'% ( MR_LANG( 'Rebooting in %s second(s)' ) % countdown, ING )
 				self.mCtrlLabel2.setLabel( label )
 
 			time.sleep( 0.2 )

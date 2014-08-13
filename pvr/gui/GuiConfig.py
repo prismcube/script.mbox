@@ -77,7 +77,7 @@ E_SETTING_CONTROL_GROUPID	= 11000001
 
 
 ############################ Windows ############################
-# Setting Window Control Ids
+# Setting Window Control IDs
 E_SpinEx01			= E_BASE_WINDOW_ID + 1100
 E_SpinEx02			= E_BASE_WINDOW_ID + 1200
 E_SpinEx03			= E_BASE_WINDOW_ID + 1300
@@ -347,7 +347,7 @@ def InitializedByVariableList( aList, *Value ) :
 
 G_DIALOG_HEADER_LABEL_ID			= E_BASE_WINDOW_ID + 3005
 
-# Setting Dialog Control Ids
+# Setting Dialog Control IDs
 E_DialogSpinEx01	= E_BASE_WINDOW_ID + 6110
 E_DialogSpinEx02	= E_BASE_WINDOW_ID + 6120
 E_DialogSpinEx03	= E_BASE_WINDOW_ID + 6130

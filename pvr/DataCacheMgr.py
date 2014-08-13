@@ -78,7 +78,7 @@ def GetInstance( ) :
 		gDataCacheMgr = DataCacheMgr( )
 	else :
 		pass
-		#print 'lael98 check already windowmgr is created'
+		#print 'lael98 check - WindowMgr is already created'
 
 	return gDataCacheMgr
 
@@ -271,12 +271,12 @@ class DataCacheMgr( object ) :
 		#self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
 		#self.Frontdisplay_ResolutionByIdentified( )
 
-		#Zapping Mode
+		# Zapping Mode
 		self.LoadZappingmode( )
 		self.LoadZappingList( )
 		#self.mLastZappingMode = copy.deepcopy( self.mZappingMode )
 
-		#SatelliteList
+		# SatelliteList
 		self.LoadAllSatellite( )
 		self.LoadConfiguredSatellite( )
 		self.LoadAllTransponder( )
@@ -298,7 +298,7 @@ class DataCacheMgr( object ) :
 		self.InitNetwork( )
 		self.SetHbbtvStatus( )
 
-		#init record path
+		# Init. record path
 		if E_SUPPORT_EXTEND_RECORD_PATH :
 			self.InitNetworkVolume( )
 
@@ -345,23 +345,23 @@ class DataCacheMgr( object ) :
 		lastVolume = self.mCommander.Player_GetVolume( )
 		lastMute = self.mCommander.Player_GetMute( )
 		lastXBMCMute = XBMC_GetMute( )
-		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
-		LOG_TRACE( 'xbmc mute[%s]'% ( lastXBMCMute ) )
+		LOG_TRACE( 'Last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
+		LOG_TRACE( 'XBMC mute[%s]'% ( lastXBMCMute ) )
 		if lastMute :
 			if isSyncMuteOn :
 				if lastXBMCMute :
-					LOG_TRACE( 'mute on' )
+					LOG_TRACE( 'Mute on' )
 				else :
 					xbmc.executebuiltin( 'Mute( )' )
-					LOG_TRACE( 'mute on' )
+					LOG_TRACE( 'Mute on' )
 			else :
 				self.mCommander.Player_SetMute( False )
 				lastMute = False
-				LOG_TRACE( 'mute off' )
+				LOG_TRACE( 'Mute off' )
 
 		if lastXBMCMute and lastMute == False :
 			xbmc.executebuiltin( 'Mute( )' )
-			LOG_TRACE( 'mute icon removed' )
+			LOG_TRACE( 'Mute icon removed' )
 
 		revisionVolume = abs( lastVolume - XBMC_GetVolume( ) )
 		if revisionVolume >= VOLUME_STEP :
@@ -371,12 +371,12 @@ class DataCacheMgr( object ) :
 
 	def LoadVolumeBySetGUI( self ) :
 		if self.Get_Player_AVBlank( ) :
-			LOG_TRACE( '-------------pass by volumeSync, status [avBlank]' )
+			LOG_TRACE( '-------------VolumeSync, status [avBlank]' )
 			return
 
 		mute = XBMC_GetMute( )
 		volume = XBMC_GetVolume( )
-		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
+		LOG_TRACE( 'Mute[%s] volume[%s]'% ( mute, volume ) )
 		self.mCommander.Player_SetMute( mute )
 		self.mCommander.Player_SetVolume( volume )
 
@@ -404,7 +404,7 @@ class DataCacheMgr( object ) :
 
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
 			count =  len( self.mAllSatelliteList )
-			LOG_TRACE( 'satellite count = %d' % count )
+			LOG_TRACE( 'Satellite count = %d' % count )
 			if count == 0 :
 				self.SetEmptySatelliteInfo( True )
 			else :
@@ -416,7 +416,7 @@ class DataCacheMgr( object ) :
 				self.mAllSatelliteListHash[hashKey] = satellite
 		else :
 			self.SetEmptySatelliteInfo( True )
-			LOG_ERR('Has no Satellite')
+			LOG_ERR('No satellite')
 
 
 	def SetEmptySatelliteInfo( self, aFlag ) :
@@ -439,7 +439,7 @@ class DataCacheMgr( object ) :
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			pass
 		else :
-			LOG_WARN('Has no Configured Satellite')
+			LOG_WARN('No configured satellite')
 
 
 		self.mConfiguredTuner1Hash = {}
@@ -456,7 +456,7 @@ class DataCacheMgr( object ) :
 				satelliteKey = '%d:%d'% ( satellite.mSatelliteLongitude, satellite.mBandType )
 				self.mConfiguredTuner1Hash[satelliteKey] = E_CONFIGURED_TUNER_1
 		else :
-			LOG_WARN('Has no Configured Satellite Tuner 1')
+			LOG_WARN('No configured satellite for tuner 1')
 
 
 		self.mConfiguredTuner2Hash = {}
@@ -473,7 +473,7 @@ class DataCacheMgr( object ) :
 				satelliteKey = '%d:%d'% ( satellite.mSatelliteLongitude, satellite.mBandType )
 				self.mConfiguredTuner2Hash[satelliteKey] = E_CONFIGURED_TUNER_2
 		else :
-			LOG_WARN('Has no Configured Satellite Tuner 2')
+			LOG_WARN('No configured satellite for tuner 2')
 
 
 	def LoadAllTransponder( self ) :
@@ -492,7 +492,7 @@ class DataCacheMgr( object ) :
 				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
 				self.mTransponderListHash[hashKey] = transponderList
 		else :
-			LOG_WARN('Has no All Satellite')
+			LOG_WARN('Not all satellite')
 
 
 	def LoadGetListEpgByChannel( self ) :
@@ -502,7 +502,7 @@ class DataCacheMgr( object ) :
 			#gmtFrom  = self.mTimeshift_curTime
 			gmtUntil = gmtFrom + E_MAX_EPG_DAYS
 			maxCount = 1000
-			#LOG_TRACE('ch.mNumber[%s] sid[%s] tsid[%s] onid[%s]'% ( self.mCurrentChannel.mNumber, self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid ) )
+			#LOG_TRACE( 'ch.mNumber[%s] sid[%s] tsid[%s] onid[%s]'% ( self.mCurrentChannel.mNumber, self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid ) )
 			if self.mCurrentChannel == None or self.mCurrentChannel.mError != 0 :
 				return None
 
@@ -511,9 +511,9 @@ class DataCacheMgr( object ) :
 			"""
 			from pvr.GuiHelper import ClassToList 
 			if self.mEPGList != None and len(self.mEPGList) > 0 :
-				LOG_TRACE('epgList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList) ) )
+				LOG_TRACE( 'EPG list len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList) ) )
 			else :
-				LOG_TRACE('epgList None')
+				LOG_TRACE( 'No EPG list' )
 			"""
 
 
@@ -543,7 +543,7 @@ class DataCacheMgr( object ) :
 					return self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
 		else :
-			LOG_ERR( 'Unknown Tuner Number %s' % aTunerNumber )
+			LOG_ERR( 'Unknown tuner number %s' % aTunerNumber )
 
 
 	def Satellite_GetConfiguredList( self ) :
@@ -737,7 +737,7 @@ class DataCacheMgr( object ) :
 		self.mMaxChannelNum = E_INPUT_MAX
 
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
-			LOG_TRACE( 'ChannelList None' )
+			LOG_TRACE( 'No Channel list' )
 			return
 
 		count = len( self.mChannelList )
@@ -855,7 +855,7 @@ class DataCacheMgr( object ) :
 		if oldCount != newCount :
 			self.SetChannelReloadStatus( True )
 
-		LOG_TRACE( '-------------------count old[%s] new[%s]'% ( oldCount, newCount ) )
+		LOG_TRACE( '-------------------Count old[%s] new[%s]'% ( oldCount, newCount ) )
 
 
 		prevChannel = None
@@ -865,7 +865,7 @@ class DataCacheMgr( object ) :
 		self.mMaxChannelNum = E_INPUT_MAX
 
 		if newCount < 1 :
-			LOG_TRACE('---------newCount-------------count[%d]'% newCount)
+			LOG_TRACE('---------newCount-------------Count[%d]'% newCount)
 			self.SetChannelReloadStatus( True )
 			#if not self.Get_Player_AVBlank( ) :
 			#	self.Player_AVBlank( True )
@@ -880,7 +880,7 @@ class DataCacheMgr( object ) :
 		start = time.time()
 		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
-			LOG_TRACE( '-------1---------------count[%d]'% count )
+			LOG_TRACE( '-------1---------------Count[%d]'% count )
 
 			prevChannel = self.mChannelList[count-1]
 
@@ -1110,7 +1110,7 @@ class DataCacheMgr( object ) :
 				chCount = len( self.mChannelList )
 
 			except Exception, e:
-				LOG_TRACE( 'Error except[%s]'% e )
+				LOG_TRACE( 'Exception[%s]'% e )
 				chCount = 0
 
 			return chCount
@@ -1118,19 +1118,19 @@ class DataCacheMgr( object ) :
 
 	#ToDO : Call this function when channels are added or deleted. ( aServiceType = CurrentServieType, aUseCache=False )
 	def Channel_GetAllChannels( self, aServiceType, aUseCache = True ) :
-		LOG_TRACE( 'Reload AllChannels')
+		LOG_TRACE( 'Reload all channels')
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			LOG_TRACE( 'Reload AllChannels')		
+			LOG_TRACE( 'Reload all channels')
 			if aUseCache :
-				LOG_TRACE( 'Reload AllChannels')			
+				LOG_TRACE( 'Reload all channels')
 				if self.mAllChannelList and len( self.mAllChannelList ) > 0 :
-					LOG_TRACE( 'Reload AllChannels')				
+					LOG_TRACE( 'Reload all channels')
 					channel =  self.mAllChannelList[0]
 					if channel.mServiceType == aServiceType :
-						LOG_TRACE( 'Reload AllChannels')					
+						LOG_TRACE( 'Reload all channels')
 						return self.mAllChannelList
 
-			LOG_TRACE( 'Reload AllChannels' )
+			LOG_TRACE( 'Reload all channels' )
 
 			channelDB = ElisChannelDB( )
 			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ALLCHANNEL )
@@ -1172,23 +1172,23 @@ class DataCacheMgr( object ) :
 			newChannel = cacheChannel.mChannel
 
 		if not newChannel or newChannel.mError != 0 :
-			#LOG_TRACE('newChannel None[%s]'% newChannel )
+			#LOG_TRACE( 'No new channel[%s]'% newChannel )
 			return
 
 		currentChannel = self.Channel_GetCurrent( )
 		if currentChannel and currentChannel.mError == 0 :
-			#LOG_TRACE('newChannel[%s %s]'% ( newChannel.mNumber, newChannel.mName ) )
+			#LOG_TRACE( 'New channel[%s %s]'% ( newChannel.mNumber, newChannel.mName ) )
 			if currentChannel.mServiceType != aServiceType or \
 			   currentChannel.mSid != newChannel.mSid or \
 			   currentChannel.mTsid != newChannel.mTsid or \
 			   currentChannel.mOnid != newChannel.mOnid or \
 			   currentChannel.mNumber != newChannel.mNumber :
 				self.mOldChannel = currentChannel
-				#LOG_TRACE('init oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
+				#LOG_TRACE( 'Init. oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
 
 		else :
 			self.mOldChannel = newChannel
-			#LOG_TRACE('init oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
+			#LOG_TRACE( 'Init. oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
 
 
 	def Channel_SetOldChannelList( self, aServiceType ) :
@@ -1206,7 +1206,7 @@ class DataCacheMgr( object ) :
 				self.mOldChannelList.remove( ch )
 				break
 
-		#LOG_TRACE('add oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
+		#LOG_TRACE( 'Add oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
 		if aServiceType != self.mOldChannel.mServiceType :
 			return
 
@@ -1214,7 +1214,7 @@ class DataCacheMgr( object ) :
 		if len( self.mOldChannelList ) > 10 :
 			self.mOldChannelList = self.mOldChannelList[:9]
 			#from pvr.GuiHelper import ClassToList
-			#LOG_TRACE('-------delete 10 over oldList[%s][%s]'% ( len(self.mOldChannelList), ClassToList('convert', self.mOldChannelList ) ) )
+			#LOG_TRACE( '-------More than 10 old channels deleted[%s][%s]'% ( len(self.mOldChannelList), ClassToList('convert', self.mOldChannelList ) ) )
 
 
 	def Channel_GetOldChannel( self ) :
@@ -1270,16 +1270,16 @@ class DataCacheMgr( object ) :
 					self.mCurrentChannel = cacheChannel.mChannel
 					ret = True
 
-		if ret == True : #Reset LinkageService
+		if ret == True : #Reset linkage service
 			self.SetLinkageService( False )
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
 		self.mPlayingChannel = None
 
-		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 		if aFrontMessage == True :
-			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
@@ -1301,14 +1301,14 @@ class DataCacheMgr( object ) :
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
 
-		if ret == True : #Reset LinkageService
+		if ret == True : #Reset linkage service
 			self.SetLinkageService( False )
 
 		channel = self.Channel_GetCurrent( )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
-		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 		if aFrontMessage == True :
-			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
@@ -1343,16 +1343,16 @@ class DataCacheMgr( object ) :
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
 
-		if ret == True : #Reset LinkageService
+		if ret == True : #Reset linkage service
 			self.SetLinkageService( False )
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
 		self.mPlayingChannel = None
 
-		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 		if aFrontMessage == True :
-			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
@@ -1363,7 +1363,7 @@ class DataCacheMgr( object ) :
 
 		cacheChannel = self.mChannelListHash.get( aChannel.mNumber, None )
 		if cacheChannel == None :
-			# retry find first channel
+			# Retry finding first channel
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				last = len( self.mChannelList ) - 1
 				return self.Channel_GetNext( self.mChannelList[last], True )
@@ -1374,7 +1374,7 @@ class DataCacheMgr( object ) :
 		channel = self.mChannelListHash.get( prevKey, None )
 		if channel == None :
 			return None
-		#LOG_TRACE('------------ Prev Channel-------------------')
+		#LOG_TRACE( '------------ Prev channel -------------------' )
 		#channel.printdebug( )
 		return channel.mChannel
 
@@ -1385,7 +1385,7 @@ class DataCacheMgr( object ) :
 
 		cacheChannel = self.mChannelListHash.get(aChannel.mNumber, None)
 		if cacheChannel == None :
-			# retry find end channel
+			# Retry finding the end channel
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				cacheChannel = self.mChannelListHash.get( self.mChannelList[0].mNumber, None )
 				if cacheChannel == None :
@@ -1406,7 +1406,7 @@ class DataCacheMgr( object ) :
 		channel = self.mChannelListHash.get( nextKey, None )
 		if channel == None :
 			return None
-		#LOG_TRACE('------------ Next Channel-------------------')
+		#LOG_TRACE( '------------ Next channel -------------------' )
 		#channel.printdebug( )
 		return channel.mChannel
 
@@ -1421,7 +1421,7 @@ class DataCacheMgr( object ) :
 			return None
 
 		channel =  cacheChannel.mChannel
-		#LOG_TRACE('------------ get Channel-------------------[%s %s]'% ( channel.mNumber, channel.mName ) )
+		#LOG_TRACE( '------------ Get current channel -------------------[%s %s]'% ( channel.mNumber, channel.mName ) )
 		#channel.printdebug( )
 		return channel
 
@@ -1840,7 +1840,7 @@ class DataCacheMgr( object ) :
 				self.SetChannelReloadStatus( True )
 
 		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
+			LOG_TRACE( 'Exception[%s]'% e )
 			self.SetSkipChannelView( False )
 
 		return ret
@@ -1951,7 +1951,7 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'success channelList update by ElisEventChannelDBUpdate ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 		except Exception, e :
-			LOG_ERR( 'Exception[%s]update fail, ElisEventChannelDBUpdate'% e )
+			LOG_ERR( 'Exception[%s] Update failed - ElisEventChannelDBUpdate'% e )
 		"""
 		return ret
 
@@ -1979,7 +1979,7 @@ class DataCacheMgr( object ) :
 			if self.mRecordingCount != recCount :
 				self.mRecordingCount = recCount
 			else :
-				LOG_TRACE( 'skip getzapping list' )
+				LOG_TRACE( 'Skip getzapping list' )
 				return
 
 			self.Channel_SetZappingListStatus( True )
@@ -2073,7 +2073,7 @@ class DataCacheMgr( object ) :
 			self.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
 		else :
-			LOG_ERR( 'Load Channel_GetCurrent None' )
+			LOG_ERR( 'No Channel_GetCurrent' )
 
 			if E_V1_2_APPLY_PIP :
 				self.PIP_SetTunableList( )
@@ -2134,7 +2134,7 @@ class DataCacheMgr( object ) :
 				self.mRecoverBlank = False
 				if not self.Get_Player_AVBlank( ) :
 					self.Player_AVBlank( True )
-					LOG_TRACE('---------------------last blank')
+					LOG_TRACE('---------------------Last blank')
 
 
 	def SetAVBlankByChannel( self, aChannel = None ) :
@@ -2382,12 +2382,12 @@ class DataCacheMgr( object ) :
 
 	def InitNetworkVolume( self ) :
 		from pvr.GuiHelper import CheckNetworkStatus, RefreshMountToSMB
-		#return value, 1'st value :
+		#return value. 1st value :
 		#  inteager < 0 : error No.
-		#  inteager > 0 : fail count
+		#  inteager > 0 : failure count
 		#  inteager = 0 : success
 
-		#return value, 2'nd value :
+		#return value. 2nd value :
 		#  lblText : status label
 
 		retVal = 0
@@ -2397,24 +2397,24 @@ class DataCacheMgr( object ) :
 			if not CheckNetworkStatus( ) :
 				retVal = -1
 				lblLine = MR_LANG( 'Try again after connecting network' )
-				raise Exception, 'pass, network fail'
+				raise Exception, 'Pass, network failure'
 
 			status = self.Player_GetStatus( )
 			if status == ElisEnum.E_MODE_PVR :
 				retVal = -2
 				lblLine = MR_LANG( 'Try again after stopping playback' )
-				raise Exception, 'pass, pvr playing'
+				raise Exception, 'Pass, PVR playback'
 
 			if self.Record_GetRunningRecorderCount( ) :
 				retVal = -3
 				lblLine = MR_LANG( 'Try again after stopping record' )
-				raise Exception, 'pass, run recording'
+				raise Exception, 'Pass, recording start'
 
 			volumeList = self.Record_GetNetworkVolume( )
 			if not volumeList or len( volumeList ) < 1 :
 				retVal = -4
-				lblLine = MR_LANG( 'Record path is empty' )
-				raise Exception, 'pass, volume list None'
+				lblLine = MR_LANG( 'Empty record path' )
+				raise Exception, 'Pass, no volume list'
 
 		except Exception, e :
 			LOG_ERR( 'Exception[%s]'% e )
@@ -2433,7 +2433,7 @@ class DataCacheMgr( object ) :
 			count += 1
 			cmd = netVolume.mMountCmd
 			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
-			LOG_TRACE( '[DataCache]checkVolume %s'% lblLabel )
+			LOG_TRACE( ' [DataCache]checkVolume %s'% lblLabel )
 
 			failCount_, failItem_ = RefreshMountToSMB( netVolume )
 			failCount += failCount_
@@ -2746,7 +2746,7 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetCurrentMessage( self ) :
-		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY' )
 		if self.mChannelList and len( self.mChannelList ) > 0 :
 			if self.mCurrentChannel :
 				self.Frontdisplay_SetMessage( self.mCurrentChannel.mName )
@@ -2876,14 +2876,14 @@ class DataCacheMgr( object ) :
 		xbmc.executebuiltin( 'Settings.Save' )
 		time.sleep( 1 )
 		if not self.mCommander.System_Reboot( ) :
-			LOG_ERR( 'System_Reboot Fail' )
+			LOG_ERR( 'System_Reboot failed' )
 
 
 	def System_Shutdown( self ) :
 		xbmc.executebuiltin( 'Settings.Save' )
 		time.sleep( 1 )
 		if not self.mCommander.System_Shutdown( ) :
-			LOG_ERR( 'System_Shutdown Fail' )
+			LOG_ERR( 'System_Shutdown failed' )
 
 
 	def ToggleTVRadio( self ) :
@@ -2936,7 +2936,7 @@ class DataCacheMgr( object ) :
 			cacheChannel = self.mChannelListHash.get( lastChannelNumber, None )
 			if cacheChannel :
 				iChannel = cacheChannel.mChannel
-				LOG_TRACE( 'find last Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+				LOG_TRACE( 'find the last channel - ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
 
 			if iChannel :
 				self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
@@ -2951,7 +2951,7 @@ class DataCacheMgr( object ) :
 
 			#restore
 			if restoreZappingMode and restoreZappingMode.mError == 0 :
-				LOG_ERR( 'Restore previos zapping mode back' )
+				LOG_ERR( 'Back to the previous zapping mode' )
 				restoreZappingMode.printdebug( )
 				self.Zappingmode_SetCurrent( restoreZappingMode )
 				self.LoadZappingmode( )
@@ -3006,7 +3006,7 @@ class DataCacheMgr( object ) :
 	
 	def SetMediaCenter( self, aValue = False ) :
 		if aValue == True :
-			self.Frontdisplay_SetMessage( MR_LANG( 'Media Center' ) )
+			self.Frontdisplay_SetMessage( MR_LANG( 'XBMC' ) )
 		self.mStartMediaCenter = aValue
 
 
@@ -3075,7 +3075,7 @@ class DataCacheMgr( object ) :
 			iMode = ElisEnum.E_MODE_LIVE
 			iLock = True
 
-		LOG_TRACE( 'parentlock checking[%s]'% self.mParentLock )
+		LOG_TRACE( 'Parent lock check[%s]'% self.mParentLock )
 		if iMode == ElisEnum.E_MODE_LIVE and \
 		   iLock and ( iEPG and iEPG.mError == 0 ) :
 			isLimit = AgeLimit( self.mPropertyAge, iEPG.mAgeRating, self.mAgeGurantee )
@@ -3096,7 +3096,7 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'localTime[%s] duration[%s] startTime[%s] endTime[%s]'% ( TimeToString( self.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM ), TimeToString( self.mParentLockEPG.mDuration, TimeFormatEnum.E_HH_MM ), TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ) ) )
 			if ( not self.GetParentLock( ) ) and self.Datetime_GetLocalTime( ) > endTime :
 				self.SetParentLock( True )
-				LOG_TRACE( '--------parentLock expired, check again by new epg age rating' )
+				LOG_TRACE( '--------Parent lock expired. Check new EPG age rating' )
 
 		else :
 			self.mParentLockEPG = self.GetEpgeventCurrent( )
@@ -3135,7 +3135,7 @@ class DataCacheMgr( object ) :
 
 
 	def SetDefaultByFactoryReset( self ) :
-		LOG_TRACE('-------factory reset')
+		LOG_TRACE( '-------Factory reset' )
 		self.mPMTListHash = {}
 		self.Channel_ResetOldChannelList( )
 		self.InitBookmarkButton( )
@@ -3358,11 +3358,11 @@ class DataCacheMgr( object ) :
 	def PIP_InitChannel( self ) :
 		channelListPIP = []
 
-		#2.find pip channel in 1
+		#2.Find PIP channel in 1
 		aTunableList = self.mCommander.PIP_GetTunableList( )
 
 		if aTunableList and len( aTunableList ) > 0 :
-			#1.current channel in TV
+			#1.Current channel in TV
 			currentMode = self.Zappingmode_GetCurrent( )
 			channelList = self.Channel_GetList( )
 			if currentMode and currentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
@@ -3391,7 +3391,7 @@ class DataCacheMgr( object ) :
 		if count < 1 :
 			return False
 
-		#3.init prev,next
+		#3.Init prev & next
 		prevChannel = self.mChannelListPIP[count-1]
 		for i in range( count ) :
 			channel = self.mChannelListPIP[i]
@@ -3406,7 +3406,7 @@ class DataCacheMgr( object ) :
 				self.mPresentNumberHashPIP[channel.mPresentationNumber] = cacheChannel
 
 				#cacheChannel.mChannel.printdebug( )
-				#LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
+				#LOG_TRACE( 'prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
 
 			except Exception, ex:
 				LOG_ERR( "Exception %s" %ex)
@@ -3476,7 +3476,7 @@ class DataCacheMgr( object ) :
 
 		cacheChannel = self.mChannelListHashPIP.get( aChannel.mNumber, None )
 		if cacheChannel == None :
-			# retry find first channel
+			# Retry finding first channel
 			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
 				last = len( self.mChannelListPIP ) - 1
 				return self.PIP_GetNext( self.mChannelListPIP[last], True )
@@ -3487,7 +3487,7 @@ class DataCacheMgr( object ) :
 		channel = self.mChannelListHashPIP.get( prevKey, None )
 		if channel == None :
 			return None
-		#LOG_TRACE('------------ Prev Channel-------------------')
+		#LOG_TRACE( '------------ Prev channel-------------------' )
 		#channel.printdebug( )
 		return channel.mChannel
 
@@ -3498,7 +3498,7 @@ class DataCacheMgr( object ) :
 
 		cacheChannel = self.mChannelListHashPIP.get( aChannel.mNumber, None )
 		if cacheChannel == None :
-			# retry find end channel
+			# Retry finding the end channel
 			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
 				cacheChannel = self.mChannelListHashPIP.get( self.mChannelListPIP[0].mNumber, None )
 				if cacheChannel == None :
@@ -3518,7 +3518,7 @@ class DataCacheMgr( object ) :
 		channel = self.mChannelListHashPIP.get( nextKey, None )
 		if channel == None :
 			return None
-		#LOG_TRACE('------------ Next Channel-------------------')
+		#LOG_TRACE( '------------ Next channel-------------------' )
 		#channel.printdebug( )
 		return channel.mChannel
 
@@ -3532,7 +3532,7 @@ class DataCacheMgr( object ) :
 				favGroup = currentMode.mFavoriteGroup.mGroupName
 			#elif currentMode.mMode == ElisEnum.E_MODE_PROVIDER :
 			#	provider = currentMode.mProviderInfo.mProviderName
-			#	LOG_TRACE( '------------------------------provider pip[%s %s]'% ( provider, aNumber ) )
+			#	LOG_TRACE( '------------------------------Provider PIP[%s %s]'% ( provider, aNumber ) )
 
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
@@ -3638,18 +3638,17 @@ class DataCacheMgr( object ) :
 	def PIP_StopByDeleteChannel( self ) :
 		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s]'% self.PIP_GetStatus( ) )
 
-		#1. check pip start?
+		#1. Check PIP start
 		if not self.PIP_GetStatus( ) :
 			return
 
-		#2. exist current pip?
+		#2. Current channel
 		pChannel = self.PIP_GetCurrentChannel( )
 		if not pChannel :
 			return
 		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s] pChannel[%s %s] lock[%s]'% ( self.PIP_GetStatus( ),pChannel.mNumber,pChannel.mName,pChannel.mLocked ) )
 
-		#3. edited pipCurrent?(move,skipped,delete), find change channel
-		#   buyer issue 62 : show stay last channel on pip if tunable check, when changed mode
+		#3. Find channel changes
 		fChannel = None
 		reTunePIP = False
 		channelList = self.Channel_GetListByIDs( ElisEnum.E_SERVICE_TYPE_TV, pChannel.mTsid, pChannel.mOnid, pChannel.mSid )
@@ -3670,12 +3669,12 @@ class DataCacheMgr( object ) :
 			reTunePIP = True
 			fChannel = self.Channel_GetCurrent( )
 			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
-			LOG_TRACE( 'deleted channel, reTune current pip' )
+			LOG_TRACE( 'Deleted channel - Tune current PIP again' )
 
 		else :
 			if not fChannel.mLocked :
 				reTunePIP = True
-				LOG_TRACE( 'edit channel, reTune pip' )
+				LOG_TRACE( 'Edit channel - Tune PIP again' )
 
 		if reTunePIP :
 			import pvr.gui.DialogMgr as DiaMgr
@@ -3778,5 +3777,4 @@ class DataCacheMgr( object ) :
 
 	def Get_FreeTssCount( self ) :
 		return self.mCommander.Get_FreeTssCount( )
-
 
