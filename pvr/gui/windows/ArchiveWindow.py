@@ -489,7 +489,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetPipScreen( )
 			#self.LoadNoSignalState( )
 		else :
-			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720 )
+			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720, False )
 		#self.OpenBusyDialog( )
 
 		try :

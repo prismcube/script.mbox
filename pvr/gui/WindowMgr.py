@@ -104,7 +104,7 @@ class WindowMgr( object ) :
 		self.LoadSkinPosition( )
 
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
+		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720, False )
 
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )

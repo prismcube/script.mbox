@@ -1575,16 +1575,30 @@ class NullWindow( BaseWindow ) :
 			xbmc.executebuiltin( 'Esallinterfaces(true)' )
 
 
-	def CheckDMXInfo( self ) :
+	def CheckDMXInfo( self, aTimeshiftStop=True ) :
 		dmxAvail = True
 
 		mTitle = MR_LANG( 'Maximum number of demux reached' )
 		mLine1 = MR_LANG( 'Try again after stopping%s any one of recording, timeshift or PIP' )% NEW_LINE
 		dmxCount = self.mDataCache.Get_FreeTssCount( )
 		LOG_TRACE( '----------------------------------------DMX count[%s]'% dmxCount )
+		
+		isrecording = self.mDataCache.Is_TimeshiftRecording()
+		dmxCount = self.mDataCache.Get_FreeTssCount( )
+
+		LOG_TRACE( '----------------------------------------dmxCount[%s] timeshift=%d' %( dmxCount, isrecording ) )
+
+		if dmxCount <= 0 :
+			dmxCount = 0
+			if isrecording==True and aTimeshiftStop==True :
+				status = self.mDataCache.Player_GetStatus( )
+				LOG_TRACE( 'play status=%s' %status.mMode )
+				if status.mMode != ElisEnum.E_MODE_TIMESHIFT :
+					self.mCommander.Stop_TimeshiftRecord( )
+					dmxCount += 1
+
 		if dmxCount < 1 :
 			dmxAvail = False
-
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( mTitle, mLine1 )
 			dialog.doModal( )
