@@ -904,7 +904,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			if not self.CheckRecordPath( ) :
 				return None
 
-			if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+			if not self.mIsRunningTimer and not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
 				return None
 
 			if self.mTimer :
