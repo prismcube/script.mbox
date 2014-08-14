@@ -36,7 +36,7 @@ class SimpleChannelList( BaseWindow ) :
 		self.mOffsetTopIndex = 0
 	
 	def onInit( self ) :
-		self.SetFrontdisplayMessage( MR_LANG('Channel List') )
+		self.SetFrontdisplayMessage( MR_LANG( 'Channel List' ) )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.CheckMediaCenter( )
 
@@ -47,7 +47,7 @@ class SimpleChannelList( BaseWindow ) :
 			self.mAutoConfirm = int( GetSetting( 'AUTO_CONFIRM_CHANNEL' ) )
 
 		except Exception, e :
-			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+			LOG_ERR( '[SimpleChannelList] Exception[%s]'% e )
 			self.mAutoConfirm = False
 
 		self.mCtrlBigList   = self.getControl( LIST_ID_BIG_CHANNEL )
@@ -348,7 +348,7 @@ class SimpleChannelList( BaseWindow ) :
 
 	def LoadByCurrentEPG( self, aUpdateAll = False ) :
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
-			LOG_TRACE( '[SimpleChannelList] pass, channelList None' )
+			LOG_TRACE( '[SimpleChannelList] No channel list' )
 			return
 
 		isUpdate = True
@@ -389,18 +389,18 @@ class SimpleChannelList( BaseWindow ) :
 
 		except Exception, e :
 			isUpdate = False
-			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+			LOG_ERR( '[SimpleChannelList] Exception[%s]'% e )
 
 		if not epgList or len( epgList ) < 1 :
 			isUpdate = False
-			LOG_TRACE( '[SimpleChannelList] get epglist None' )
+			LOG_TRACE( '[SimpleChannelList] No EPG list' )
 
 		if isUpdate :
 			for iEPG in epgList :
 				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
 				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
 
-			LOG_TRACE( '[SimpleChannelList] epgList COUNT[%s]'% len( epgList ) )
+			LOG_TRACE( '[SimpleChannelList] EPG list COUNT[%s]'% len( epgList ) )
 
 		#self.mLock.release( )
 		if aUpdateAll :
@@ -413,7 +413,7 @@ class SimpleChannelList( BaseWindow ) :
 
 	def UpdateListToEPG( self, aUpdateAll = False, aForce = False ) :
 		if not self.mListItems or ( not self.mChannelList ) :
-			LOG_TRACE( '[SimpleChannelList] pass, channelList None' )
+			LOG_TRACE( '[SimpleChannelList] No channel list' )
 			return
 
 		startTime = time.time()
@@ -460,7 +460,7 @@ class SimpleChannelList( BaseWindow ) :
 			LOG_TRACE( '[SimpleChannelList] UpdateItemsEPG [%s]counts'% updateCount )
 
 		except Exception, e :
-			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+			LOG_ERR( '[SimpleChannelList] Exception[%s]'% e )
 
 		if aUpdateAll :
 			self.CloseBusyDialog( )
@@ -472,7 +472,7 @@ class SimpleChannelList( BaseWindow ) :
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
 			self.mCtrlBigList.reset( )
 			self.mListItems = []
-			LOG_TRACE( '[SimpleChannelList] pass, Channel list None' )
+			LOG_TRACE( '[SimpleChannelList] No channel list' )
 			return
 
 		loopCount = 0
@@ -518,7 +518,7 @@ class SimpleChannelList( BaseWindow ) :
 				self.mListItems.append( listItem )
 
 			self.mCtrlBigList.addItems( self.mListItems )
-			LOG_TRACE( '[SimpleChannelList] done, update list item' )
+			LOG_TRACE( '[SimpleChannelList] Update list item done' )
 
 		self.FocusCurrentChannel( )
 
@@ -672,7 +672,7 @@ class SimpleChannelList( BaseWindow ) :
 			self.mGroupIndex = self.mBackupMode.mGroupIndexTV
 
 		if self.mDataCache.Channel_GetCount( serviceType ) < 1 :
-			LOG_TRACE( '[SimpleChannelList] pass, channel is None' )
+			LOG_TRACE( '[SimpleChannelList] No channel' )
 			return False
 
 		self.mEventBus.Deregister( self )
@@ -729,7 +729,7 @@ class SimpleChannelList( BaseWindow ) :
 		selectPos = self.mCtrlGroupList.getSelectedPosition( )
 		totCount = self.mCtrlGroupSlide.size( )
 		if selectPos < 0 :
-			LOG_TRACE( 'pass, select none' )
+			LOG_TRACE( 'No item selected' )
 			return
 
 		nextIdx = selectPos - 1
@@ -757,7 +757,7 @@ class SimpleChannelList( BaseWindow ) :
 		if self.mChangeMode : #show group list
 			selectPos = self.mCtrlGroupList.getSelectedPosition( )
 			if selectPos < 0 :
-				LOG_TRACE( 'pass, select none' )
+				LOG_TRACE( 'No item selected' )
 				return
 			nextIdx = selectPos + aMove
 			totCount = self.mCtrlGroupList.size( )
@@ -777,16 +777,16 @@ class SimpleChannelList( BaseWindow ) :
 			return
 
 		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
-			LOG_TRACE( '[SimpleChannelList] pass, currrent mode All Channels' )
+			LOG_TRACE( '[SimpleChannelList] All Channels mode' )
 			return
 
 		groupList = self.mZappingGroupList[self.mUserMode.mMode]
 		if not groupList or len( groupList ) < 1 :
-			LOG_TRACE( '[SimpleChannelList] pass, short cut group None' )
+			LOG_TRACE( '[SimpleChannelList] shortcut - No group' )
 			return
 
 		if not self.mUserGroup :
-			LOG_TRACE( '[SimpleChannelList] pass, current group None' )
+			LOG_TRACE( '[SimpleChannelList] No current group' )
 			return
 
 		nextIdx = self.mGroupIndex + aMove
@@ -797,7 +797,7 @@ class SimpleChannelList( BaseWindow ) :
 			nextIdx = 0
 
 		if not ( nextIdx < len( self.mListGroupName ) ) :
-			LOG_TRACE( '[SimpleChannelList] error, incorrect index' )
+			LOG_TRACE( '[SimpleChannelList] Error - incorrect index' )
 			return
 
 		self.mGroupIndex = nextIdx
@@ -834,7 +834,7 @@ class SimpleChannelList( BaseWindow ) :
 			self.UpdateShortCutGroup( )
 
 		if not isAvail :
-			LOG_TRACE( '[SimpleChannelList] pass, zapping group None' )
+			LOG_TRACE( '[SimpleChannelList] No zapping group' )
 			return
 
 		self.mGroupIndex = 0
@@ -847,7 +847,7 @@ class SimpleChannelList( BaseWindow ) :
 		print 'dhkim test groupList = %s' % groupList
 		if not groupList or len( groupList ) < 1 :
 			groupList = []
-			LOG_TRACE( '[SimpleChannelList] pass, zapping group None' )
+			LOG_TRACE( '[SimpleChannelList] No zapping group' )
 		#	return
 
 		self.StopEPGUpdateTimer( )
@@ -883,7 +883,7 @@ class SimpleChannelList( BaseWindow ) :
 				groupName = iGroupInfo.mProviderName
 
 			if not groupName :
-				LOG_TRACE( '[SimpleChannelList] pass, empty group name' )
+				LOG_TRACE( '[SimpleChannelList] No group name' )
 				continue
 
 			if self.mUserMode.mMode != ElisEnum.E_MODE_ALL and groupName == currGroupName :
@@ -922,30 +922,30 @@ class SimpleChannelList( BaseWindow ) :
 		isSelect = -1
 		try :
 			if not self.mChangeMode :
-				raise Exception, '[SimpleChannelList] pass, group mode None'
+				raise Exception, '[SimpleChannelList] No group mode'
 
 			groupList = self.mZappingGroupList[self.mChangeMode.mMode]
 			if not groupList or len( groupList ) < 1 :
-				raise Exception, '[SimpleChannelList] pass, group list None'
+				raise Exception, '[SimpleChannelList] No group list'
 
 			isSelect = self.mCtrlGroupList.getSelectedPosition( )
 			LOG_TRACE( '[SimpleChannelList] select group[%s] currIdx[%s]'% ( isSelect, self.mGroupIndex ) )
 			if isSelect < 0 :
-				raise Exception, '[SimpleChannelList] pass, select None'
+				raise Exception, '[SimpleChannelList] No item selected'
 
 			if isSelect == 0 and self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
 				lblPath = EnumToString( 'mode', self.mUserMode.mMode )
 				self.setProperty( 'SimpleChannelPath', lblPath )
 				self.setProperty( 'ShowGroupSlide', E_TAG_FALSE )
-				raise Exception, 'pass, select same(all)'
+				raise Exception, 'Same item selected(all)'
 
 			if self.mChangeMode.mMode == self.mUserMode.mMode :
 				if isSelect > 0 and ( isSelect - 1 ) == self.mGroupIndex :
-					raise Exception, 'pass, selected same'
+					raise Exception, 'Same item selected'
 
 		except Exception, e :
 			isAvail = False
-			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+			LOG_ERR( '[SimpleChannelList] Exception[%s]'% e )
 
 		if isAvail :
 			self.mGroupIndex = 0
@@ -1004,7 +1004,7 @@ class SimpleChannelList( BaseWindow ) :
 			self.mChannelList = channelList
 
 		except Exception, e :
-			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+			LOG_ERR( '[SimpleChannelList] Exception[%s]'% e )
 			ret = False
 
 		self.CloseBusyDialog( )
@@ -1039,6 +1039,4 @@ class SimpleChannelList( BaseWindow ) :
 				self.mDataCache.SetChannelReloadStatus( True )
 				self.mDataCache.Channel_ResetOldChannelList( )
 			self.CloseBusyDialog( )
-
-
 

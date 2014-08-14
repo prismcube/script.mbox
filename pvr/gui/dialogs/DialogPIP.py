@@ -141,12 +141,12 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlGroupList2ndPIP  = self.getControl( CTRL_ID_GROUP_LIST_2ND_PIP )
 		self.mCtrlListChannelPIP   = self.getControl( CTRL_ID_LIST_CHANNEL_PIP )
 
-		#init tunable list : loop though or record full
+		#Initialize the tunable list : loop though or record full
 		if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or \
 		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH or \
 		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 			self.mDataCache.PIP_SetTunableList( )
-			LOG_TRACE( '[PIP] init tunable list. loopthough or rec full' )
+			LOG_TRACE( '[PIP] Initialize the tunable list. Loopthough or record full' )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.Channel_GetCurrentByStartOnFirst( )
@@ -400,7 +400,7 @@ class DialogPIP( BaseDialog ) :
 					self.mIsOk = Action.ACTION_STOP
 					self.Close( )
 
-				LOG_TRACE( '[PIP] record start/stop event' )
+				LOG_TRACE( '[PIP] Record start/stop event' )
 				#ToDO
 
 			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
@@ -594,7 +594,7 @@ class DialogPIP( BaseDialog ) :
 			df.writelines( posStr )
 
 		except Exception, e :
-			LOG_ERR( '[PIP] except[%s]'% e )
+			LOG_ERR( '[PIP] Exception[%s]'% e )
 
 
 	def PIP_SetPositionSync( self, aSetPosition = False ) :
@@ -670,7 +670,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlBasePIPLabelNoSignal  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSIGNAL )
 			self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
 		except Exception, e :
-			LOG_ERR( '[PIP] except[%s]'% e )
+			LOG_ERR( '[PIP] Exception[%s]'% e )
 			xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)'% ( MR_LANG( 'Watching PIP' ), MR_LANG( 'only available when Video plays in fullscreen' ) ) )
 			ret = False
 
@@ -771,7 +771,7 @@ class DialogPIP( BaseDialog ) :
 				posNotify[i] = int( posNotify[i] )
 
 		except Exception, e :
-			LOG_ERR( '[PIP] except[%s]'% e )
+			LOG_ERR( '[PIP] Exception[%s]'% e )
 			posNotify = E_DEFAULT_POSITION_PIP
 
 		return posNotify
@@ -811,7 +811,7 @@ class DialogPIP( BaseDialog ) :
 			iChannel = self.mDataCache.Channel_GetByNumber( pChNumber, True )
 
 			if iChannel and ( not self.mDataCache.PIP_IsPIPAvailable( iChannel.mNumber ) ) :
-				LOG_TRACE( '[PIP] failed : could not tune current channel, [%s] not available'% pChNumber )
+				LOG_TRACE( '[PIP] Failed : could not tune the current channel - [%s] not available'% pChNumber )
 				iChannel = None
 
 		if not iChannel :
@@ -820,7 +820,7 @@ class DialogPIP( BaseDialog ) :
 			if channelList and len( channelList ) > 0 :
 				for chNumber in channelList :
 					if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
-						LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of PIP, [%s %s]'% ( chNumber.mNumber, chNumber.mName ) )
+						LOG_TRACE( '[PIP] 3. tunable : find channel with the tunable list of PIP, [%s %s]'% ( chNumber.mNumber, chNumber.mName ) )
 						break
 
 		if iChannel :
@@ -836,7 +836,7 @@ class DialogPIP( BaseDialog ) :
 
 		#1. tunable : last channel by pip
 		pChNumber = self.mDataCache.PIP_GetCurrent( )
-		LOG_TRACE( '[PIP] 1. tunable : last PIP channel. [%s]'% pChNumber )
+		LOG_TRACE( '[PIP] 1. tunable : Last PIP channel - [%s]'% pChNumber )
 		if not pChNumber or ( not self.mDataCache.PIP_IsPIPAvailable( pChNumber ) ) :
 			pChNumber = None
 
@@ -849,15 +849,15 @@ class DialogPIP( BaseDialog ) :
 						pChNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
 
 					if not self.mDataCache.PIP_IsPIPAvailable( pChNumber ) :
-						LOG_TRACE( '[PIP] failed : could not tune current channel. [%s] not available'% pChNumber )
+						LOG_TRACE( '[PIP] Failed : could not tune the current channel - [%s] not available'% pChNumber )
 						pChNumber = None
 
 					else :
 						#exist check
 						if self.mDataCache.PIP_GetByNumber( pChNumber ) :
-							LOG_TRACE( '[PIP] 2. tunable : current main sceen channel(tv only). [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 2. Tunable : current main sceen channel(tv only). [%s]'% pChNumber )
 						else :
-							LOG_TRACE( '[PIP] failed : current channel is not tunable list. [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] Failed : current channel is not tunable list. [%s]'% pChNumber )
 							pChNumber = None
 
 			#3. tunable : find channel by tunableList of pip
