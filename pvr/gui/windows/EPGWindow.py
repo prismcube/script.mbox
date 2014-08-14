@@ -2257,7 +2257,7 @@ class EPGWindow( BaseWindow ) :
 						weekStart = weekTimer.mStartTime + currentWeekStart
 						if weekStart > self.mDataCache.Datetime_GetLocalTime( ) :
 							isRunning = False
-			break
+				break
 
 		return isRunning
 			
