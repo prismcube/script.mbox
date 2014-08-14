@@ -1081,7 +1081,16 @@ class LivePlateWindow( BaseWindow ) :
 		for i in range( 1, E_CTRL_BTN_INFO_MAX+1 ) :
 			controlId = E_CTRL_GROUP_INFO + i
 			ctrl = self.getControl( controlId )
+			ctrl.setVisible( True )
+			ctrl.setEnabled( True )
 			self.mControls[controlId] = ctrl
+
+		self.mControls[E_CTRL_GROUP_INFO+10] = self.getControl( E_CTRL_GROUP_INFO+10 )
+		self.mControls[E_CTRL_GROUP_INFO+10].setVisible( True )
+		self.mControls[E_CTRL_GROUP_INFO+10].setEnabled( True )
+		self.mControls[E_CTRL_GROUP_INFO+11] = self.getControl( E_CTRL_GROUP_INFO+11 )
+		self.mControls[E_CTRL_GROUP_INFO+11].setVisible( True )
+		self.mControls[E_CTRL_GROUP_INFO+11].setEnabled( True )
 
 
 	def SetVisibleControls( self, aControls, aVisible ) :

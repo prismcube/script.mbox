@@ -33,8 +33,10 @@ E_CONTROL_ID_HOTKEY_BLUE_IMAGE 			= E_INFO_PLATE_BASE_ID + 541
 E_CONTROL_ID_HOTKEY_BLUE_LABEL 			= E_INFO_PLATE_BASE_ID + 542
 
 E_CONTROL_DEFAULT_HIDE = [ 
+	E_CONTROL_ID_BUTTON_CHANNEL_LIST,
 	E_CONTROL_ID_BUTTON_START_RECORDING,
-	E_CONTROL_ID_BUTTON_STOP_RECORDING
+	E_CONTROL_ID_BUTTON_STOP_RECORDING,
+	E_CONTROL_ID_BUTTON_SERVICE_INFO
 ]
 
 E_INFO_PLATE_DEFAULT_FOCUS_ID			=  E_BASE_WINDOW_ID + 3621
@@ -68,8 +70,6 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onInit( self ) :
-		self.setFocusId( E_INFO_PLATE_DEFAULT_FOCUS_ID )
-		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_TRUE )
@@ -96,6 +96,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.SetRadioScreen( )
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
+		self.setFocusId( E_INFO_PLATE_DEFAULT_FOCUS_ID )
 
 		self.mPlayingRecord = None
 		self.mCurrentEPG = None

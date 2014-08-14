@@ -88,8 +88,6 @@ class LivePlate( LivePlateWindow ) :
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
-		self.setFocusId( E_CONTROL_ID_BUTTON_CHANNEL_LIST )
-
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetBlinkingProperty( 'None' )
@@ -119,6 +117,7 @@ class LivePlate( LivePlateWindow ) :
 
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
+		self.setFocusId( E_CONTROL_ID_BUTTON_CHANNEL_LIST )
 
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = False
@@ -388,10 +387,9 @@ class LivePlate( LivePlateWindow ) :
 					xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
 					return
 				self.Close( )
-				self.StopAutomaticHide()	
+				self.StopAutomaticHide( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowBrowser( )
-
 				
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			status = self.mDataCache.Player_GetStatus( )
@@ -1241,6 +1239,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mDataCache.Player_Stop( )
 
 			if not WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( ) :
+				self.mIsShowDialog = False
 				return -1
 
 			if RECORD_WIDTHOUT_ASKING == True :
