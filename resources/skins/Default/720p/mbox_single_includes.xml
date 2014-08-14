@@ -6987,6 +6987,12 @@
 				<texturefocus>OSDRecord2.png</texturefocus>
 				<texturenofocus>OSDRecordNF.png</texturenofocus>
 			</control>
+			<control type="button" id="1003709">
+				<width>50</width>
+				<height>50</height>
+				<texturefocus>OSDPrevTrackFO.png</texturefocus>
+				<texturenofocus>OSDPrevTrackNF.png</texturenofocus>
+			</control>
 			<control type="button" id="1003704">
 				<width>50</width>
 				<height>50</height>
@@ -7017,12 +7023,6 @@
 				<height>50</height>
 				<texturefocus>OSDForwardFO.png</texturefocus>
 				<texturenofocus>OSDForwardNF.png</texturenofocus>
-			</control>
-			<control type="button" id="1003709">
-				<width>50</width>
-				<height>50</height>
-				<texturefocus>OSDPrevTrackFO.png</texturefocus>
-				<texturenofocus>OSDPrevTrackNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003710">
 				<width>50</width>
