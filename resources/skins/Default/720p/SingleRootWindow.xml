@@ -2688,7 +2688,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>$ADDON[script.mbox 1032]</label>
+							<label>$ADDON[script.mbox 1175]</label>
 							<visible>Control.HasFocus(1003621)</visible>
 						</control>
 						<control type="label">

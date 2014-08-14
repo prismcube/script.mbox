@@ -2397,24 +2397,24 @@ class DataCacheMgr( object ) :
 			if not CheckNetworkStatus( ) :
 				retVal = -1
 				lblLine = MR_LANG( 'Try again after connecting network' )
-				raise Exception, 'Pass, network failure'
+				raise Exception, 'Network failure'
 
 			status = self.Player_GetStatus( )
 			if status == ElisEnum.E_MODE_PVR :
 				retVal = -2
 				lblLine = MR_LANG( 'Try again after stopping playback' )
-				raise Exception, 'Pass, PVR playback'
+				raise Exception, 'PVR playback'
 
 			if self.Record_GetRunningRecorderCount( ) :
 				retVal = -3
 				lblLine = MR_LANG( 'Try again after stopping record' )
-				raise Exception, 'Pass, recording start'
+				raise Exception, 'Starting recording'
 
 			volumeList = self.Record_GetNetworkVolume( )
 			if not volumeList or len( volumeList ) < 1 :
 				retVal = -4
-				lblLine = MR_LANG( 'Empty record path' )
-				raise Exception, 'Pass, no volume list'
+				lblLine = MR_LANG( 'No recording path' )
+				raise Exception, 'No volume list'
 
 		except Exception, e :
 			LOG_ERR( 'Exception[%s]'% e )

@@ -184,7 +184,7 @@
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>$ADDON[script.mbox 1091]</label>
+					<label>$ADDON[script.mbox 1173]</label>
 					<visible>Control.IsVisible(301)</visible>
 				</control>
 
