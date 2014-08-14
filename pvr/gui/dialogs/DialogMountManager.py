@@ -345,7 +345,7 @@ class DialogMountManager( SettingDialog ) :
 
 		elif aInput == E_DialogInput06 :
 			if not self.mNetVolume.mRemotePath :
-				lblLine = MR_LANG( 'Enter record path first' )
+				lblLine = MR_LANG( 'Select record path first' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
 				dialog.doModal( )

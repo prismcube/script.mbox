@@ -23,7 +23,7 @@ def GetInstance( ) :
 	if not gChannelLogoMgr :
 		gChannelLogoMgr = ChannelLogoMgr( )
 	else:
-		print 'Already ChannelLogMgr is created'
+		print 'ChannelLogoMgr is already created'
 
 	return gChannelLogoMgr
 
@@ -57,7 +57,7 @@ class ChannelLogoMgr( object ) :
 			for node in treeRoot.findall( 'logo' ) :
 				self.mMboxLogoHash[ node.get( 'id' ) ] =  os.path.join( mbox_logo_path, node.text )
 		except :
-			LOG_ERR( 'defult logo path load failed' )
+			LOG_ERR( 'Loading defult logo path failed' )
 
 
 	def LoadCustomLogo( self ) :
@@ -68,7 +68,7 @@ class ChannelLogoMgr( object ) :
 			for node in treeRoot.findall( 'logo' ) :
 				self.mCustomLogoHash[ node.get( 'id' ) ] = os.path.join( CUSTOM_LOGO_PATH, node.text)
 		except :
-			LOG_ERR( 'custom logo path load failed' )
+			LOG_ERR( 'Loading custom logo path failed' )
 
 
 	def GetLogo( self, aId, aServiceType=ElisEnum.E_SERVICE_TYPE_TV  ) :

@@ -498,7 +498,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Performing a XBMC reset?' ), MR_LANG( 'All your XBMC addons and userdata will be lost' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a XBMC reset?' ), MR_LANG( 'All your XBMC add-ons and userdata will be lost' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -629,7 +629,7 @@ class Configure( SettingWindow ) :
 				self.ShowNetworkVolume( )
 
 			elif groupId == E_Input03 :
-				self.RefreshByVolumeList( )
+				self.RefreshVolumeList( )
 
 			else :
 				self.ControlSelect( )
@@ -863,10 +863,10 @@ class Configure( SettingWindow ) :
 		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 
-	def RefreshByVolumeList( self ) :
+	def RefreshVolumeList( self ) :
 		volumeList = self.mDataCache.Record_GetNetworkVolume( )
 		if not volumeList or len( volumeList ) < 1 :
-			LOG_TRACE( '[MountManager] passed, volume list None' )
+			LOG_TRACE( '[MountManager] No volume list' )
 			return
 
 		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
@@ -909,14 +909,14 @@ class Configure( SettingWindow ) :
 		self.mDataCache.Record_RefreshNetworkVolume( )
 		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 
-		#1. reload defVolume
+		#1. Reload default volume list
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
 				if netVolume.mIsDefaultSet :
 					defVolume = netVolume
 					break
 
-		#use not able? change default hdd
+		# Change default to HDD
 		if defVolume and defVolume.mIsDefaultSet :
 			if not defVolume.mOnline or defVolume.mReadOnly :
 				defVolume.mIsDefaultSet = 0
@@ -1281,7 +1281,7 @@ class Configure( SettingWindow ) :
 				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 				selectStorage = [MR_LANG('Internal Flash'), MR_LANG('Micro SD'), MR_LANG('USB Stick'), MR_LANG('USB HDD')]
 				self.AddInputControl( E_Input04, MR_LANG( 'Format External Storage' ), '', MR_LANG( 'Press OK button to erase your data from external device' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'My Storage Device' ), selectStorage[selectidx], MR_LANG( 'Select a device to store the recording files and XBMC addons' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'My Storage Device' ), selectStorage[selectidx], MR_LANG( 'Select a device to store the recording files and XBMC add-ons' ) )
 				visibleControlIds = [ E_Input01, E_Input02 ]
 
 			else :
@@ -1311,7 +1311,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddInputControl( E_Input01, MR_LANG( 'Reset System Configuration'), '', MR_LANG( 'Restore all settings and data to factory default (excluding XBMC)' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Reset XBMC Settings'), '', MR_LANG( 'Delete all your XBMC addons and settings' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Reset XBMC Settings'), '', MR_LANG( 'Delete all your XBMC add-ons and settings' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -1590,7 +1590,7 @@ class Configure( SettingWindow ) :
 					return
 				if self.mEncryptType == ENCRYPT_TYPE_WEP and  len( self.mPassWord ) < 5 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password length is invalid' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid password length' ) )
 					dialog.doModal( )
 					return
 			else :
@@ -1769,7 +1769,7 @@ class Configure( SettingWindow ) :
 
 
 	def SetDefaultVolume( self ) :
-		#volume : 75db
+		#Volume : 75db
 		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
 		self.mCommander.Player_SetMute( False )
 		if XBMC_GetMute( ) :
@@ -1864,13 +1864,13 @@ class Configure( SettingWindow ) :
 			usbfreesize = GetDeviceSize( usbpath )
 			if ( size_addons + size_udata ) > usbfreesize :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on your device' ) )
 				dialog.doModal( )
 			else :
 				self.CopyBackupData( usbpath, aType )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert a USB flash memory' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert an USB stick' ) )
 			dialog.doModal( )
 
 
@@ -1913,7 +1913,7 @@ class Configure( SettingWindow ) :
 
 			if maxsize < int( mediadefault ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid partition size' ) )
 				dialog.doModal( )
 				return
 
@@ -1964,7 +1964,7 @@ class Configure( SettingWindow ) :
 				return 0
 
 		except Exception, e :
-			LOG_ERR( 'Error exception[%s]' % e )
+			LOG_ERR( 'Exception[%s]' % e )
 			return 0
 
 
@@ -1995,7 +1995,7 @@ class Configure( SettingWindow ) :
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'XBMC storage' ), MR_LANG( 'Using XBMC storage this drive?' ), MR_LANG( 'XBMC add-on and userdata move this drive' ) )
+			dialog.SetDialogProperty( MR_LANG( 'XBMC Storage' ), MR_LANG( 'Do you want to copy your XBMC data to the device?' ) )
 			dialog.doModal( )
 			defStorageIdx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -2008,7 +2008,7 @@ class Configure( SettingWindow ) :
 				self.CloseBusyDialog( )
 				ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetProp( defStorageIdx )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Format drive fail to complete' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Formatting device failed to complete' ) )
 				dialog.doModal( )
 
 
@@ -2040,7 +2040,7 @@ class Configure( SettingWindow ) :
 	def ShowFavoriteGroup( self ) :
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 
-		#check AllChannels
+		# Check AllChannels
 		chCount = self.mDataCache.Channel_GetCount( zappingmode.mServiceType )
 		if not chCount or chCount < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2048,7 +2048,7 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 			return -1
 
-		#check fav groups
+		# Check fav groups
 		favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
 		if not favoriteGroup or len( favoriteGroup ) < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2076,7 +2076,7 @@ class Configure( SettingWindow ) :
 	def SetStartEndChannel( self ) :
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 
-		#check AllChannels
+		# Check AllChannels
 		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
 		if not allChannels or len( allChannels ) < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2141,5 +2141,4 @@ class Configure( SettingWindow ) :
 
 	def SetFocusAddVolume( self, aRedirect = False ) :
 		self.mAddVolumeFocus = aRedirect
-
 

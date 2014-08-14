@@ -175,7 +175,7 @@ class DialogRootfsBackup( BaseDialog ) :
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		if self.mReturnShell == False :
 			strProcess = MR_LANG( 'Processing' )
-			strCancel = MR_LANG( 'Canceling' )
+			strCancel = MR_LANG( 'Cancelling' )
 			strClose = strProcess + ' - ' + strCancel + '...'
 			self.mCtrlLabelString.setLabel( strClose )
 			try :

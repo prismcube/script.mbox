@@ -95,7 +95,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		#blocking by avBlank
 		if self.mDataCache.Get_Player_AVBlank( ) :
-			LOG_TRACE( '----------blocking avblank' )
+			LOG_TRACE( '----------Block avblank' )
 			return
 
 		volume = 0
@@ -281,7 +281,7 @@ class SettingDialog( BaseDialog ) :
 			if aControlId == self.mControlList[i].mControlId :
 				return i
 
-		print 'Unkown ControlId'
+		print 'Unknown ControlId'
 
 		
 	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ) :

@@ -71,5 +71,3 @@ class PrismCubeDeviceInfo( Webinterface ) :
 
 		return str( json ).replace("'", '"').replace('True', 'true')
 
-	
-		

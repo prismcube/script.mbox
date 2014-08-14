@@ -253,7 +253,7 @@ class HiddenTest( BaseWindow ) :
 		#os.remove( '/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt' )
 		fp = open( '/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt', 'w' )
 		xbmc.executebuiltin( 'ActivateWindow(10006,addons://sources/video/)' )
-		print 'Addons play test Start'
+		print 'Add-ons play test start'
 		time.sleep( 8 )
 		self.CheckViewMode( )
 		totalItemNum = xbmc.getInfoLabel('Container( ).NumItems')
@@ -327,7 +327,7 @@ class HiddenTest( BaseWindow ) :
 
 			xbmc.executebuiltin( 'ActivateWindow(10006,addons://sources/video/)' )
 			time.sleep( 8 )
-		print 'Addons play test End'
+		print 'Add-ons play test end'
 
 
 	def CheckProperty( self ) :

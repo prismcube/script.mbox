@@ -25,7 +25,7 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetFrontdisplayMessage( MR_LANG('Channel Search') )		
+		self.SetFrontdisplayMessage( MR_LANG( 'Channel Search' ) )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
@@ -136,7 +136,7 @@ class ChannelScanDVBT( SettingWindow ) :
 			else :
 				return
 
-		# plp id		
+		# PLP ID
 		elif aGroupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter PLP ID' ), '%d' % self.mDVBT_Manual.mPLPId, 3 )

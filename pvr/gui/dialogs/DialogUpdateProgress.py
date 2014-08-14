@@ -72,7 +72,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			return
 
 		if self.mStatusCancel :
-			LOG_TRACE( '------------blocking key : canceling' )
+			LOG_TRACE( '------------blocking key : cancel' )
 			if not self.mShowBlink :
 				label = '%s%s'% ( MR_LANG( 'Please wait' ), ING )
 				self.AsyncShowAlarm( label )
@@ -84,7 +84,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		if self.mStatusCancel :
-			LOG_TRACE( '------------blocking key : canceling' )
+			LOG_TRACE( '------------blocking key : cancel' )
 			if not self.mShowBlink :
 				label = '%s%s'% ( MR_LANG( 'Please wait' ), ING )
 				self.AsyncShowAlarm( label )
@@ -291,13 +291,13 @@ class DialogUpdateProgress( BaseDialog ) :
 		if self.mFinish < E_RESULT_UPDATE_DONE :
 			percent = 0
 			if self.mFinish == E_RESULT_ERROR_FAIL :
-				LOG_TRACE( '--------previous action fail' )
+				LOG_TRACE( '--------Previous action failed' )
 				statusLabel = MR_LANG( 'Failed' )
 			elif self.mFinish == E_RESULT_ERROR_CANCEL :
-				LOG_TRACE( '--------previous action cancel' )
+				LOG_TRACE( '--------Previous action cancelled' )
 				statusLabel = MR_LANG( 'Aborted' )
 			else :
-				LOG_TRACE( '--------previous action unknown fail' )
+				LOG_TRACE( '--------Previous action stopped' )
 				statusLabel = MR_LANG( 'Failed' )
 
 		self.DrawProgress( percent, statusLabel )

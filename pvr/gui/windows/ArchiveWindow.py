@@ -308,7 +308,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aControlId == LIST_ID_NETVOLUME :
 			selectPos = self.mCtrlNetVolumeList.getSelectedPosition( )
 			if selectPos == self.mNetVolumeSelectIndex :
-				LOG_TRACE( '[Archive] pass, select same' )
+				LOG_TRACE( '[Archive] Previously selected item selected' )
 				return
 			self.mNetVolumeSelectIndex = selectPos
 			if self.mMarkMode :
@@ -321,7 +321,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_ALL_ARCHIVE :
 			if self.mNetVolumeSelectIndex == -1 :
-				LOG_TRACE( '[Archive] pass, select same' )
+				LOG_TRACE( '[Archive] Previously selected item selected' )
 				return
 			self.mNetVolumeSelectIndex = -1
 			if self.mMarkMode :
@@ -489,7 +489,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetPipScreen( )
 			#self.LoadNoSignalState( )
 		else :
-			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720 )
+			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720, False )
 		#self.OpenBusyDialog( )
 
 		try :
@@ -666,10 +666,10 @@ class ArchiveWindow( BaseWindow ) :
 				break
 			listindex = listindex + 1
 
-		#isNoMatch
+		#No matched result
 		if listindex >= len( self.mRecordList ) :
 			xbmc.executebuiltin( 'container.refresh' )
-			LOG_TRACE( 'except refresh thumbnail, Not matched recordkey[%s]'% aRecordkey )
+			LOG_TRACE( 'Exception - Not matched recordkey[%s]'% aRecordkey )
 			return
 
 		recItem = self.mRecordListItems[ listindex ]
@@ -727,7 +727,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" % ex )
 			self.UpdateList( )
 			self.mCtrlPosterwrapList.selectItem( lastFocus )
-			LOG_TRACE( '-------Retry update list' )
+			LOG_TRACE( '-------Retry to update list' )
 			return
 
 		self.AddListItems( )
@@ -794,7 +794,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mCtrlProgress.setPercent( percent )
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
+			print '[%s:%s] Exception[%s]'% (		\
 				self.__file__,						\
 				currentframe().f_lineno,			\
 				e )
@@ -862,7 +862,7 @@ class ArchiveWindow( BaseWindow ) :
 				SetLock2( True )
 				self.mPlayingRecord = recInfo
 				SetLock2( False )
-				LOG_TRACE( '-----------start recKey[%s]'% recInfo.mRecordKey )
+				LOG_TRACE( '-----------Start recKey[%s]'% recInfo.mRecordKey )
 
 				self.setProperty( 'PvrPlay', 'True' )
 				self.UpdatePlayStatus( )
@@ -1003,7 +1003,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
 			self.ShowHotkeys( )
 		else :
-			LOG_ERR( 'Unknown Context Action' )
+			LOG_ERR( 'Unknown context action' )
 
 
 	def DoRefreshNetVolume( self, aExtenal = False ) :
@@ -1022,7 +1022,7 @@ class ArchiveWindow( BaseWindow ) :
 		lblTitle = MR_LANG( 'Fail' )
 		if retVal == 0 :
 			if aExtenal :
-				LOG_TRACE( 'refresh volume Done' )
+				LOG_TRACE( 'Refreshing volume complete' )
 				return
 
 			self.Flush( )
@@ -1084,7 +1084,7 @@ class ArchiveWindow( BaseWindow ) :
 				elif self.mViewMode == E_VIEW_FANART :
 					self.mCtrlFanartList.selectItem( afterPos )
 				else :
-					LOG_WARN( 'Unknown View Mode' )
+					LOG_WARN( 'Unknown view mode' )
 
 				self.UpdateSelectedPosition( )
 				self.UpdateArchiveInfomation( )
@@ -1451,7 +1451,7 @@ class ArchiveWindow( BaseWindow ) :
 			#self.UpdateControlListSelectItem( self.mCtrlFanartList, selectedPos )
 			self.mCtrlFanartList.selectItem( selectedPos )
 		else :
-			LOG_WARN( 'Unknown View Mode' )
+			LOG_WARN( 'Unknown view mode' )
 
 		if self.mUpdateInfomationTimer and self.mUpdateInfomationTimer.isAlive() :
 			self.mUpdateInfomationTimer.cancel( )		
@@ -1524,7 +1524,7 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdatePlayProgress( self ) :
 		status = self.mDataCache.Player_GetStatus( )
 		if status == None or status.mError != 0 :
-			LOG_ERR( 'Player_GetStatus fail' )
+			LOG_ERR( 'Player_GetStatus failed' )
 			return
 
 		self.mPlayPerent = 0
@@ -1560,7 +1560,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aMode == E_VIEW_FANART :
 			self.setFocusId( LIST_ID_FANART_RECORD )
 		else :
-			LOG_ERR( 'SetFocusList fail' )
+			LOG_ERR( 'SetFocusList failed' )
 
 
 	def UpdateFootor( self ) :

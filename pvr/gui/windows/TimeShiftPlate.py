@@ -4,7 +4,7 @@ import time, math
 E_TIMESHIFT_PLATE_BASE_ID = WinMgr.WIN_ID_TIMESHIFT_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 
-#control ids
+# Control IDs
 E_CONTROL_ID_IMAGE_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 10
 E_CONTROL_ID_LABEL_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 11
 E_CONTROL_ID_IMAGE_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 15
@@ -46,7 +46,7 @@ E_CONTROL_ID_HOTKEY_BLUE_LABEL 		= E_TIMESHIFT_PLATE_BASE_ID + 542
 E_EXTENDED_TINY_REWIND  = E_CONTROL_ID_BUTTON_REWIND  + 1000
 E_EXTENDED_TINY_FORWARD = E_CONTROL_ID_BUTTON_FORWARD + 1000
 
-#value enum
+# Value enum
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2
 FLAG_CLOCKMODE_HMS     = 3
@@ -60,7 +60,7 @@ FLAG_PAUSE = 2
 
 E_ONINIT = None
 
-#control position
+# Position control
 E_CURRENT_POSX  = 0
 E_CURRENT_POSY  = 0
 E_PROGRESS_WIDTH_MAX = 0
@@ -68,7 +68,7 @@ E_PROGRESS_WIDTH_MAX = 0
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 
-E_DEFAULT_TRACK_MOVE = 10	#mili sec
+E_DEFAULT_TRACK_MOVE = 10	#milisecond
 E_DEFAULT_COUNT_AUTO_CHAPTER = 10
 E_DEFAULT_LIMIT_SECOND = 10
 E_MOVE_BY_TIME = 0
@@ -112,7 +112,7 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
-		#is avail timeshift
+		# Timeshift availability
 		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and ( not playingRecord ) and ( not HasAvailableRecordingHDD( False ) ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 			return
@@ -157,7 +157,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mFlag_OnEvent = True
 		self.mIsTimeshiftPending = False
-		self.mSpeed = 100	#normal
+		self.mSpeed = 100	#Normal
 		self.mLocalTime = 0
 		self.mUserMoveTime = 0
 		self.mTotalUserMoveTime = 0
@@ -187,7 +187,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
-		#isSwap? show media surface
+		# PIP Swap
 		if self.mDataCache.PIP_GetSwapStatus( ) :
 			self.mDataCache.PIP_SwapWindow( False, False )
 
@@ -197,7 +197,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.InitLabelInfo( )
 		self.InitTimeShift( )
 
-		#run thread
+		# Run thread
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
 		self.mThreadProgress = self.PlayProgressThread( )
@@ -1620,7 +1620,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
 			if self.mBookmarkList and len( self.mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Maximum number of bookmarks reached' ) )
 				dialog.doModal( )
 				return
 
@@ -1796,7 +1796,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if isFull :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Maximum number of bookmarks reached' ) )
 			dialog.doModal( )
 
 		self.RestartAutomaticHide( )
@@ -2289,5 +2289,4 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def GetStatusMode( self ) :
 		return self.mMode
-
 

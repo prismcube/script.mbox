@@ -1375,7 +1375,7 @@ class Record( WebPage ) :
 				"""
 
 		else:
-			#msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+			#msg = MR_LANG( 'Maximum number of recordings reached' )
 			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			#dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			#dialog.doModal( )
