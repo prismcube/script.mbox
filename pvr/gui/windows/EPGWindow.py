@@ -121,7 +121,7 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlBigList = None
 		
 
-		#GRID MODE
+		#Grid mode
 		self.mCtrlTimelineButtons = []
 		self.mCtrlChannelButtons = []
 		self.mCtrlChannelLogos = []		
@@ -135,7 +135,7 @@ class EPGWindow( BaseWindow ) :
 		
 		self.mShowingGMTTime = 0
 		self.mShowingOffset = 0		
-		self.mDeltaTime = E_GRID_HALF_HOUR
+		self.mDeltaTime = E_GRID_HALF_HOUR/2
 		self.mGridEPGList = None
 		self.mVisibleFocusRow = 0
 		self.mVisibleFocusCol = 0		
@@ -161,7 +161,7 @@ class EPGWindow( BaseWindow ) :
 		#self.mListItems = []
 		self.Flush( )
 
-		#GRID MODE
+		#Grid Mode
 		self.mCtrlPrevFocusId = 0		
 		self.mGridFocusTime = 0
 		self.mGridKeepFocus = False		
@@ -417,7 +417,7 @@ class EPGWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if self.mEPGMode == E_VIEW_GRID :
-				if self.mDeltaTime	== E_GRID_HALF_HOUR :
+				if self.mDeltaTime == E_GRID_HALF_HOUR :
 					self.mDeltaTime	= E_GRID_HALF_HOUR/2
 				else :
 					self.mDeltaTime	= E_GRID_HALF_HOUR

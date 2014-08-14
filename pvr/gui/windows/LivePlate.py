@@ -94,7 +94,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mRecordBlinkingCount = 0
 		
 		self.SetSingleWindowPosition( E_LIVE_PLATE_BASE_ID )
-		LOG_TRACE( 'winID[%d]'% self.mWinId)
+		LOG_TRACE( 'WinID[%d]'% self.mWinId)
 
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
 		self.mCtrlLblRec2              = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
@@ -508,7 +508,7 @@ class LivePlate( LivePlateWindow ) :
 			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if E_SUPPROT_HBBTV :
 				if aEvent.getName() == ElisEventHBBTVReady.getName() :
-					LOG_TRACE( 'HBBTEST event[%s]' % aEvent.getName( ) )
+					LOG_TRACE( 'HbbTV - event[%s]' % aEvent.getName( ) )
 					if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 						return
 					isEnable = E_TAG_FALSE
@@ -558,7 +558,7 @@ class LivePlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
-					LOG_TRACE( '---------CHECK onEVENT[%s] stop'% aEvent.getName( ) )
+					LOG_TRACE( '---------Check onEVENT[%s] stop'% aEvent.getName( ) )
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
@@ -598,7 +598,7 @@ class LivePlate( LivePlateWindow ) :
 				#xbmcgui.Dialog( ).ok( MR_LANG('Information'), MR_LANG('No Signal') )
 
 		else:
-			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
+			LOG_TRACE( 'LivePlate - WinID[%d] this WinID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
 
 	def ChannelTune( self, aDir, aInitChannel = None ):
@@ -818,7 +818,7 @@ class LivePlate( LivePlateWindow ) :
 				#LOG_TRACE('mSid[%s] mTsid[%s] mOnid[%s] gmtFrom[%s] gmtUntil[%s]'% ( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil ) )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
-					LOG_TRACE( 'EPGList is None\nLeave [%s]'% self.mEPGList )
+					LOG_TRACE( 'No EPG list\nLeave [%s]'% self.mEPGList )
 					return -1
 
 				#LOG_TRACE('-------------------------------------epgList len[%s]'% len( self.mEPGList ) )
@@ -865,7 +865,7 @@ class LivePlate( LivePlateWindow ) :
 
 		if not aChannel or aChannel.mError != 0 :
 			self.UpdatePropertyGUI( 'iChannelLogo', '' )
-			LOG_TRACE( 'Channel None, Logo None' )
+			LOG_TRACE( 'No Channel. No Logo' )
 			return
 
 		logo = '%s_%s' %( aChannel.mCarrier.mDVBS.mSatelliteLongitude, aChannel.mSid )
@@ -951,7 +951,7 @@ class LivePlate( LivePlateWindow ) :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
 		else :
-			LOG_TRACE( 'event null' )
+			LOG_TRACE( 'Event null' )
 
 
 	def UpdateComponentGUI( self, aEpg ) :
@@ -1125,7 +1125,7 @@ class LivePlate( LivePlateWindow ) :
 			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
 			thread.start( )
 		else :
-			LOG_TRACE( 'Already opened, Dialog' )
+			LOG_TRACE( 'Dialog already opened' )
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ) :
@@ -1348,7 +1348,7 @@ class LivePlate( LivePlateWindow ) :
 			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
 			if expectedDuration < 0:
-				LOG_ERR( 'Error : Already Passed' )
+				LOG_ERR( 'Error : Already passed' )
 				expectedDuration = 0
 
 			ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, 0,  0, 0 )
