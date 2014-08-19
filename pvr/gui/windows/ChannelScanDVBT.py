@@ -312,6 +312,10 @@ class ChannelScanDVBT( SettingWindow ) :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBC
 		temp = deepcopy( self.mDVBT_Manual )
 		temp.mBand = temp.mBand + 6
+		if self.mTunerType == E_TUNER_T2 :
+			temp.mIsDVBT2 = 1
+		else :
+			temp.mIsDVBT2 = 0
 		ICarrier.mDVBT = temp
 		temp.printdebug( )
 		return ICarrier
