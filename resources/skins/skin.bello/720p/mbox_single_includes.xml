@@ -6,7 +6,6 @@
 			<width>1306</width>
 			<height>734</height>
 			<texture>bg/SKINDEFAULT.jpg</texture>
-<!--			<texture background="true">windows/bg/bg_vignette.png</texture>-->
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
 		</control>
 	</include>
@@ -20,11 +19,11 @@
 			<texture>windows/bg/bg_vignette.png</texture>
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
 		</control>
-		<control type="image">
+<!--		<control type="image">
 			<include>FullscreenDimensions</include>
 			<texture>windows/bg/bg_diffuse.png</texture>
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
-		</control>
+		</control>-->
 	</include>
 
 	<include name="DefaultRadioBackground">
@@ -47,7 +46,7 @@
 			<height>30</height>
 			<align>left</align>
 			<aligny>center</aligny>
-			<font>font28_title</font>
+			<font>FontSize_40</font>
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
 			<label>$INFO[Window(10000).Property(PlayStatusLabel)]</label>
@@ -143,13 +142,13 @@
 			<posx>-40</posx>
 			<posy>-50</posy>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1200</width>
-				<height>640</height>
-				<texture border="20">DialogBack.png</texture>
+				<posx>-179</posx>
+				<posy>-115</posy>
+				<width>1558</width>
+				<height>880</height>
+				<texture>bg_settings_FTI_Default.png</texture>
 			</control>
-			<control type="image">
+<!--			<control type="image">
 				<posx>29</posx>
 				<posy>16</posy>
 				<width>770</width>
@@ -172,26 +171,27 @@
 				<height>80</height>
 				<aspectratio>keep</aspectratio>
 				<texture>Confluence_Logo.png</texture>
-			</control>
+			</control>-->
 			<control type="label" id="1001002">
 				<description>Title</description>
-				<posx>50</posx>
+				<posx>73</posx>
 				<posy>20</posy>
-				<width>740</width>
-				<height>30</height>
-				<font>font14</font>
-				<align>left</align>
+				<width>1065</width>
+				<height>50</height>
+				<font>FontSize_36</font>
+				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<shadowcolor>99000000</shadowcolor>
 			</control>
+			<!-- Setting Description -->
 			<control type="label" id="1001003">
-				<posx>60</posx>
-				<posy>62</posy>
-				<width>700</width>
-				<height>40</height>
-				<font>font13_title</font>
-				<textcolor>blue</textcolor>
+				<posx>66</posx>
+				<posy>595</posy>
+				<width>1077</width>
+				<height>30</height>
+				<font>FontSize_20</font>
+				<textcolor>33white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
@@ -392,7 +392,7 @@
 			<visible>substring(Window.Property(IsFTI),True)</visible>
 			<control type="button" id="1007001">
 				<description>Prev button</description>
-				<posx>6</posx>
+				<posx>20</posx>
 				<posy>470</posy>
 				<width>60</width>
 				<height>50</height>
@@ -404,22 +404,22 @@
 				<ondown condition="substring(Window.Property(CurrentWindow),1700000)">1709000</ondown>
 			</control>
 			<control type="label" id="1007005">
-				<posx>60</posx>
+				<posx>74</posx>
 				<posy>478</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>grey2</textcolor>
+				<font>FontSize_20B</font>
+				<textcolor>77white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
 				<visible>Control.IsVisible(1007001) + !Control.HasFocus(1007001)</visible>
 			</control>
 			<control type="label">
-				<posx>60</posx>
+				<posx>74</posx>
 				<posy>478</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_20B</font>
 				<textcolor>white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -428,7 +428,7 @@
 			</control>
 			<control type="button" id="1007003">
 				<description>Next button</description>
-				<posx>690</posx>
+				<posx>687</posx>
 				<posy>470</posy>
 				<width>60</width>
 				<height>50</height>
@@ -440,22 +440,22 @@
 				<ondown condition="substring(Window.Property(CurrentWindow),1700000)">1709000</ondown>
 			</control>
 			<control type="label" id="1007008">
-				<posx>690</posx>
+				<posx>687</posx>
 				<posy>478</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>grey2</textcolor>
+				<font>FontSize_20B</font>
+				<textcolor>77white</textcolor>
 				<align>right</align>
 				<aligny>center</aligny>
 				<visible>Control.IsVisible(1007003) + !Control.HasFocus(1007003)</visible>
 			</control>
 			<control type="label">
-				<posx>690</posx>
+				<posx>687</posx>
 				<posy>478</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_20B</font>
 				<textcolor>white</textcolor>
 				<align>right</align>
 				<aligny>center</aligny>
@@ -469,84 +469,84 @@
 		<control type="group">
 			<visible>substring(Window.Property(IsFTI),True)</visible>
 			<control type="image" id="1008110">
-				<posx>260</posx>
+				<posx>270</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepNF.png</texture>
 			</control>
 			<control type="image" id="1008111">
-				<posx>300</posx>
+				<posx>310</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepNF.png</texture>
 			</control>
 			<control type="image" id="1008112">
-				<posx>340</posx>
+				<posx>350</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepNF.png</texture>
 			</control>
 			<control type="image" id="1008113">
-				<posx>380</posx>
+				<posx>390</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepNF.png</texture>
 			</control>
 			<control type="image" id="1008114">
-				<posx>420</posx>
+				<posx>430</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepNF.png</texture>
 			</control>
 			<control type="image" id="1008115">
-				<posx>460</posx>
+				<posx>470</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepNF.png</texture>
 			</control>
 			<control type="image" id="1008100">
-				<posx>260</posx>
+				<posx>270</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepFO.png</texture>
 			</control>
 			<control type="image" id="1008101">
-				<posx>300</posx>
+				<posx>310</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepFO.png</texture>
 			</control>
 			<control type="image" id="1008102">
-				<posx>340</posx>
+				<posx>350</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepFO.png</texture>
 			</control>
 			<control type="image" id="1008103">
-				<posx>380</posx>
+				<posx>390</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepFO.png</texture>
 			</control>
 			<control type="image" id="1008104">
-				<posx>420</posx>
+				<posx>430</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture border="0,1,0,1">StepFO.png</texture>
 			</control>
 			<control type="image" id="1008105">
-				<posx>460</posx>
+				<posx>470</posx>
 				<posy>485</posy>
 				<width>30</width>
 				<height>30</height>
@@ -720,18 +720,18 @@
 	<include name="SpinEx01">
 		<control type="group" id="1001100">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001101</defaultcontrol>
 			<control type="button" id="1001101">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001100)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001103,1)</onclick>
 				<onup>1001101</onup>
 				<ondown>1001101</ondown>
@@ -739,71 +739,73 @@
 			<control type="button" id="1001102">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001100)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001103,-1)</onclick>
 				<onup>1001102</onup>
 				<ondown>1001102</ondown>
 			</control>
 			<control type="list" id="1001103">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>750</width>
-						<height>40</height>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001100)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001100) + ![Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -811,35 +813,35 @@
 						<visible>Control.IsEnabled(1001100) + [Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001100)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001100) + ![Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -854,18 +856,18 @@
 	<include name="SpinEx02">
 		<control type="group" id="1001200">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001201</defaultcontrol>
 			<control type="button" id="1001201">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001200)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001203,1)</onclick>
 				<onup>1001201</onup>
 				<ondown>1001201</ondown>
@@ -874,71 +876,73 @@
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001200)</visible>
 				<description>Menu Item Prev Button</description>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001203,-1)</onclick>
 				<onup>1001202</onup>
 				<ondown>1001202</ondown>
 			</control>
 			<control type="list" id="1001203">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>750</width>
-						<height>40</height>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001200)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001200) + ![Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -946,35 +950,35 @@
 						<visible>Control.IsEnabled(1001200) + [Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001200)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001200) + ![Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -989,18 +993,18 @@
 	<include name="SpinEx03">
 		<control type="group" id="1001300">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001301</defaultcontrol>
 			<control type="button" id="1001301">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001300)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001303,1)</onclick>
 				<onup>1001301</onup>
 				<ondown>1001301</ondown>
@@ -1008,71 +1012,73 @@
 			<control type="button" id="1001302">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001300)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001303,-1)</onclick>
 				<onup>1001302</onup>
 				<ondown>1001302</ondown>
 			</control>
 			<control type="list" id="1001303">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
+						<width>772</width>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001300)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001300) + ![Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1080,35 +1086,35 @@
 						<visible>Control.IsEnabled(1001300) + [Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001300)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001300) + ![Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1123,18 +1129,18 @@
 	<include name="SpinEx04">
 		<control type="group" id="1001400">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001401</defaultcontrol>
 			<control type="button" id="1001401">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001400)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001403,1)</onclick>
 				<onup>1001401</onup>
 				<ondown>1001401</ondown>
@@ -1142,71 +1148,73 @@
 			<control type="button" id="1001402">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001400)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001403,-1)</onclick>
 				<onup>1001402</onup>
 				<ondown>1001402</ondown>
 			</control>
 			<control type="list" id="1001403">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>750</width>
-						<height>40</height>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001400)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001400) + ![Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1214,35 +1222,35 @@
 						<visible>Control.IsEnabled(1001400) + [Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001400)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001400) + ![Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1257,18 +1265,18 @@
 	<include name="SpinEx05">
 		<control type="group" id="1001500">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001501</defaultcontrol>
 			<control type="button" id="1001501">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001500)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001503,1)</onclick>
 				<onup>1001501</onup>
 				<ondown>1001501</ondown>
@@ -1276,71 +1284,73 @@
 			<control type="button" id="1001502">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001500)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001503,-1)</onclick>
 				<onup>1001502</onup>
 				<ondown>1001502</ondown>
 			</control>
 			<control type="list" id="1001503">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
+						<width>772</width>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001500)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001500) + ![Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1348,35 +1358,35 @@
 						<visible>Control.IsEnabled(1001500) + [Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001500)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001500) + ![Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1391,18 +1401,18 @@
 	<include name="SpinEx06">
 		<control type="group" id="1001600">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001601</defaultcontrol>
 			<control type="button" id="1001601">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001600)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001603,1)</onclick>
 				<onup>1001601</onup>
 				<ondown>1001601</ondown>
@@ -1410,71 +1420,73 @@
 			<control type="button" id="1001602">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001600)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001603,-1)</onclick>
 				<onup>1001602</onup>
 				<ondown>1001602</ondown>
 			</control>
 			<control type="list" id="1001603">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>750</width>
-						<height>40</height>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001600)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001600) + ![Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1482,35 +1494,35 @@
 						<visible>Control.IsEnabled(1001600) + [Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001600)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001600) + ![Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1525,18 +1537,18 @@
 	<include name="SpinEx07">
 		<control type="group" id="1001700">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001701</defaultcontrol>
 			<control type="button" id="1001701">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001700)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001703,1)</onclick>
 				<onup>1001701</onup>
 				<ondown>1001701</ondown>
@@ -1544,71 +1556,73 @@
 			<control type="button" id="1001702">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001700)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001703,-1)</onclick>
 				<onup>1001702</onup>
 				<ondown>1001702</ondown>
 			</control>
 			<control type="list" id="1001703">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
+						<width>772</width>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001700)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001700) + ![Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1616,35 +1630,35 @@
 						<visible>Control.IsEnabled(1001700) + [Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001700)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001700) + ![Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1659,18 +1673,18 @@
 	<include name="SpinEx08">
 		<control type="group" id="1001800">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001801</defaultcontrol>
 			<control type="button" id="1001801">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001800)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001803,1)</onclick>
 				<onup>1001801</onup>
 				<ondown>1001801</ondown>
@@ -1678,71 +1692,73 @@
 			<control type="button" id="1001802">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001800)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001803,-1)</onclick>
 				<onup>1001802</onup>
 				<ondown>1001802</ondown>
 			</control>
 			<control type="list" id="1001803">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
+						<width>772</width>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001800)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001800) + ![Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1750,35 +1766,35 @@
 						<visible>Control.IsEnabled(1001800) + [Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001800)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001800) + ![Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1793,18 +1809,18 @@
 	<include name="SpinEx09">
 		<control type="group" id="1001900">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1001901</defaultcontrol>
 			<control type="button" id="1001901">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001900)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>685</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1001903,1)</onclick>
 				<onup>1001901</onup>
 				<ondown>1001901</ondown>
@@ -1812,71 +1828,73 @@
 			<control type="button" id="1001902">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001900)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>715</posx>
+				<posy>13</posy>
+				<width>30</width>
+				<height>44</height>
+				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
+				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1001903,-1)</onclick>
 				<onup>1001902</onup>
 				<ondown>1001902</ondown>
 			</control>
 			<control type="list" id="1001903">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
-				<width>750</width>
-				<height>40</height>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
-					<control type="image">
+				<focusedlayout height="39" width="772">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>750</width>
-						<height>40</height>
+						<height>39</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
-					</control>
+					</control>-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
-						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>772</width>
+						<height>39</height>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1001900)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1001900) + ![Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1884,35 +1902,35 @@
 						<visible>Control.IsEnabled(1001900) + [Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1001900)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1001900) + ![Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1927,56 +1945,59 @@
 	<include name="Input01">
 		<control type="group" id="1002100">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002101</defaultcontrol>
 			<control type="button" id="1002101">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002100)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002103">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002100)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002100) + ![Control.HasFocus(1002101)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1984,35 +2005,35 @@
 						<visible>Control.IsEnabled(1002100) + Control.HasFocus(1002101)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002100)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002100) + ![Control.HasFocus(1002101)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2027,56 +2048,59 @@
 	<include name="Input02">
 		<control type="group" id="1002200">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002201</defaultcontrol>
 			<control type="button" id="1002201">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002200)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002203">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002200)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002200) + ![Control.HasFocus(1002201)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2084,35 +2108,35 @@
 						<visible>Control.IsEnabled(1002200) + Control.HasFocus(1002201)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002200)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002200) + ![Control.HasFocus(1002201)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2127,56 +2151,59 @@
 	<include name="Input03">
 		<control type="group" id="1002300">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002301</defaultcontrol>
 			<control type="button" id="1002301">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002300)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002303">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002300)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002300) + ![Control.HasFocus(1002301)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2184,35 +2211,35 @@
 						<visible>Control.IsEnabled(1002300) + Control.HasFocus(1002301)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002300)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002300) + ![Control.HasFocus(1002301)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2227,56 +2254,59 @@
 	<include name="Input04">
 		<control type="group" id="1002400">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002401</defaultcontrol>
 			<control type="button" id="1002401">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002400)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002403">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002400)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002400) + ![Control.HasFocus(1002401)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2284,35 +2314,35 @@
 						<visible>Control.IsEnabled(1002400) + Control.HasFocus(1002401)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002400)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002400) + ![Control.HasFocus(1002401)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2327,56 +2357,59 @@
 	<include name="Input05">
 		<control type="group" id="1002500">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002501</defaultcontrol>
 			<control type="button" id="1002501">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002500)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002503">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002500)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002500) + ![Control.HasFocus(1002501)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2384,35 +2417,35 @@
 						<visible>Control.IsEnabled(1002500) + Control.HasFocus(1002501)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002500)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002500) + ![Control.HasFocus(1002501)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2427,56 +2460,59 @@
 	<include name="Input06">
 		<control type="group" id="1002600">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002601</defaultcontrol>
 			<control type="button" id="1002601">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002600)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002603">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002600)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002600) + ![Control.HasFocus(1002601)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2484,35 +2520,35 @@
 						<visible>Control.IsEnabled(1002600) + Control.HasFocus(1002601)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002600)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002600) + ![Control.HasFocus(1002601)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2527,56 +2563,59 @@
 	<include name="Input07">
 		<control type="group" id="1002700">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002701</defaultcontrol>
 			<control type="button" id="1002701">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002700)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002703">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002700)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002700) + ![Control.HasFocus(1002701)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2584,35 +2623,35 @@
 						<visible>Control.IsEnabled(1002700) + Control.HasFocus(1002701)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002700)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002700) + ![Control.HasFocus(1002701)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2627,56 +2666,59 @@
 	<include name="Input08">
 		<control type="group" id="1002800">
 			<width>750</width>
-			<height>40</height>
+			<height>39</height>
 			<defaultcontrol always="true">1002801</defaultcontrol>
 			<control type="button" id="1002801">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control.IsVisible(1002800)</visible>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<posx>-4</posx>
+				<posy>15</posy>
+				<width>772</width>
+				<height>39</height>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
+				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002803">
 				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>-4</posx>
+				<posy>15</posy>
 				<width>750</width>
-				<height>40</height>
+				<height>39</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
-				<focusedlayout height="40" width="720">
+				<focusedlayout height="39" width="720">
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>!Control.IsEnabled(1002800)</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>Control.IsEnabled(1002800) + ![Control.HasFocus(1002801)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>680</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2684,35 +2726,35 @@
 						<visible>Control.IsEnabled(1002800) + Control.HasFocus(1002801)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>33white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1002800)</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<height>39</height>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1002800) + ![Control.HasFocus(1002801)]</visible>
 					</control>
 					<control type="label">
-						<posx>736</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>640</width>
-						<height>40</height>
-						<font>font13</font>
+						<height>39</height>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4288,10 +4330,10 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),common)</visible>
 			<control type="list" id="1003400">
-				<posx>75</posx>
-				<posy>70</posy>
+				<posx>60</posx>
+				<posy>131</posy>
 				<width>1200</width>
-				<height>560</height>
+				<height>480</height>
 				<onleft>3300100</onleft>
 				<onright>1003401</onright>
 				<onup>1003400</onup>
@@ -4299,14 +4341,14 @@
 				<pagecontrol>1003401</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<preloaditems>2</preloaditems>
-				<itemlayout height="70" width="610">
-					<control type="image">
+				<itemlayout height="80" width="610">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>730</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
+					</control>-->
 					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
@@ -4336,7 +4378,7 @@
 					<!-- Playback -->
 					<control type="image">
 						<posx>30</posx>
-						<posy>5</posy>
+						<posy>4</posy>
 						<width>64</width>
 						<height>64</height>
 						<texture>OSDPlayNF.png</texture>
@@ -4348,8 +4390,8 @@
 						<posy>0</posy>
 						<width>460</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4361,8 +4403,8 @@
 						<posy>0</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4374,8 +4416,8 @@
 						<posy>30</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20B</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4387,8 +4429,8 @@
 						<posy>30</posy>
 						<width>100</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4424,15 +4466,15 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>grey3</textcolor>
+							<font>FontSize_16</font>
+							<textcolor>77white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="610">
-					<control type="image">
+				<focusedlayout height="80" width="610">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>720</width>
@@ -4455,7 +4497,7 @@
 						<width>200</width>
 						<height>61</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control>
+					</control>-->
 					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
@@ -4476,7 +4518,7 @@
 					<!-- Playback -->
 					<control type="image">
 						<posx>30</posx>
-						<posy>5</posy>
+						<posy>4</posy>
 						<width>64</width>
 						<height>64</height>
 						<texture>OSDPlayFO.png</texture>
@@ -4488,7 +4530,7 @@
 						<posy>0</posy>
 						<width>460</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -4501,7 +4543,7 @@
 						<posy>0</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -4514,7 +4556,7 @@
 						<posy>30</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>FontSize_20B</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -4528,7 +4570,7 @@
 						<posy>30</posy>
 						<width>100</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -4564,7 +4606,7 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
+							<font>FontSize_16</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
@@ -4574,14 +4616,19 @@
 			</control>
 			<control type="scrollbar" id="1003401">
 				<posx>800</posx>
-				<posy>70</posy>
-				<width>25</width>
-				<height>565</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<posy>131</posy>
+				<width>10</width>
+				<height>475</height>
+<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>1003400</onleft>
 				<onright>3300100</onright>
 				<showonepage>false</showonepage>
@@ -4617,7 +4664,7 @@
 	<include name="DefaultThumbnailArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
-			<control type="image">
+<!--			<control type="image">
 				<posx>75</posx>
 				<posy>60</posy>
 				<width>1130</width>
@@ -4630,77 +4677,85 @@
 				<width>1130</width>
 				<height>64</height>
 				<texture border="15">ContentPanelMirror.png</texture>
-			</control>
+			</control>-->
 			<control type="panel" id="1003410">
-				<posx>90</posx>
+				<posx>33</posx>
 				<posy>90</posy>
-				<width>1080</width>
-				<height>555</height>
+				<width>1227</width>
+				<height>520</height>
 				<onleft>3300100</onleft>
 				<onright>1003411</onright>
 				<onup>1003410</onup>
 				<ondown>1003410</ondown>
 				<pagecontrol>1003411</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime tween="Quadratic" easing="out">300</scrolltime>
 				<preloaditems>2</preloaditems>
-				<itemlayout height="186" width="216">
+				<itemlayout height="258" width="243">
 					<control type="image">
-						<posx>1</posx>
+						<posx>-10</posx>
 						<posy>0</posy>
+						<width>256</width>
+						<height>270</height>
+						<aspectratio align="center" aligny="center">stretch</aspectratio>
+						<texture border="30">views/thumbnails/thumb_panel.png</texture>
+					</control>
+					<control type="image">
+						<posx>14</posx>
+						<posy>23</posy>
 						<width>208</width>
-						<height>117</height>
-						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>5</bordersize>
+						<height>157</height>
+						<aspectratio align="center" aligny="center">stretch</aspectratio>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+						<bordertexture border="15">dialogs/other/iconborder_black.png</bordertexture>
+						<bordersize>6</bordersize>
 					</control>
 					<control type="label">
-						<posx>108</posx>
-						<posy>120</posy>
+						<posx>117</posx>
+						<posy>179</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label2</info>
 					</control>
 					<control type="label">
-						<posx>108</posx>
-						<posy>140</posy>
+						<posx>117</posx>
+						<posy>201</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
 					<control type="label">
-						<posx>108</posx>
-						<posy>160</posy>
+						<posx>117</posx>
+						<posy>223</posy>
 						<width>200</width>
 						<height>25</height>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
-						<textcolor>grey2</textcolor>
-						<font>font12</font>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 					</control>
 					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
+						<posx>17</posx>
+						<posy>20</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
-						<posx>63</posx>
-						<posy>16</posy>
+						<posx>77</posx>
+						<posy>55</posy>
 						<width>84</width>
 						<height>84</height>
 						<texture>OSDPlayNF.png</texture>
@@ -4708,8 +4763,8 @@
 					</control>
 					<!-- NAS -->
 					<control type="group">
-						<posx>160</posx>
-						<posy>5</posy>
+						<posx>167</posx>
+						<posy>34</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -4736,71 +4791,90 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>grey3</textcolor>
+							<font>FontSize_18</font>
+							<textcolor>77white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="186" width="216">
-					<control type="image">
-						<posx>1</posx>
+				<focusedlayout height="258" width="243">
+				<control type="image">
+						<posx>-10</posx>
 						<posy>0</posy>
+						<width>256</width>
+						<height>270</height>
+						<aspectratio align="center" aligny="center">stretch</aspectratio>
+						<texture border="30">views/thumbnails/thumb_panel.png</texture>
+					</control>
+					<control type="image">
+						<posx>14</posx>
+						<posy>23</posy>
 						<width>208</width>
-						<height>117</height>
+						<height>157</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>5</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+						<bordertexture border="15">dialogs/other/iconborder_black.png</bordertexture>
+						<bordersize>6</bordersize>
+					</control>
+					<control type="image">
+						<posx>-10</posx>
+						<posy>0</posy>
+						<width>256</width>
+						<height>270</height>
+						<aspectratio align="center" aligny="center">stretch</aspectratio>
+						<texture border="30">views/thumbnails/focus.png</texture>
+						<animation type="Focus">
+							<effect type="zoom" start="95" end="100" time="150" tween="sine" easing="inout" center="auto" />
+						</animation>
 					</control>
 					<control type="label">
-						<posx>108</posx>
-						<posy>120</posy>
+						<posx>117</posx>
+						<posy>179</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>blue</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label2</info>
 					</control>
 					<control type="label">
-						<posx>108</posx>
-						<posy>140</posy>
+						<posx>117</posx>
+						<posy>201</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>blue</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
 					<control type="label">
-						<posx>108</posx>
-						<posy>160</posy>
+						<posx>117</posx>
+						<posy>223</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>blue</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 					</control>
 					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
+						<posx>17</posx>
+						<posy>20</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
-						<posx>63</posx>
-						<posy>16</posy>
+						<posx>77</posx>
+						<posy>55</posy>
 						<width>84</width>
 						<height>84</height>
 						<texture>OSDPlayFO.png</texture>
@@ -4808,8 +4882,8 @@
 					</control>
 					<!-- NAS -->
 					<control type="group">
-						<posx>160</posx>
-						<posy>5</posy>
+						<posx>167</posx>
+						<posy>34</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -4817,6 +4891,7 @@
 							<width>42</width>
 							<height>25</height>
 							<texture>IconEmpty.png</texture>
+							<textcolor>blue</textcolor>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
@@ -4825,6 +4900,7 @@
 							<width>42</width>
 							<height>25</height>
 							<texture>IconUSB.png</texture>
+							<textcolor>blue</textcolor>
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
@@ -4834,8 +4910,8 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>white</textcolor>
+							<font>FontSize_18</font>
+							<textcolor>blue</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -4843,15 +4919,20 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003411">
-				<posx>1170</posx>
-				<posy>80</posy>
-				<width>25</width>
-				<height>550</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<posx>30r</posx>
+				<posy>100</posy>
+				<width>10</width>
+				<height>510</height>
+<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="2,16,2,16">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="2,16,2,16">ScrollBarV_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>1003410</onleft>
 				<onright>3300100</onright>
 				<showonepage>false</showonepage>
@@ -5328,10 +5409,10 @@
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),channel)</visible>
 			<control type="list" id="1003500">
-				<posx>75</posx>
-				<posy>110</posy>
+				<posx>70</posx>
+				<posy>131</posy>
 				<width>1200</width>
-				<height>520</height>
+				<height>480</height>
 				<onleft>3709000</onleft>
 				<onright>1003501</onright>
 				<onup>1003500</onup>
@@ -5340,13 +5421,13 @@
 				<pagecontrol>1003501</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="40" width="610">
-					<control type="image">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>730</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
+					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>20</posx>
@@ -5380,9 +5461,11 @@
 						<posy>0</posy>
 						<width>65</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>FontSize_22</font>
+						<textcolor>77white</textcolor>
+						<shadowcolor>77000000</shadowcolor>
+<!--						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -5391,11 +5474,13 @@
 					<control type="label">
 						<posx>120</posx>
 						<posy>0</posy>
-						<width>460</width>
+						<width>455</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>FontSize_22</font>
+						<textcolor>77white</textcolor>
+						<shadowcolor>77000000</shadowcolor>
+<!--						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -5403,13 +5488,15 @@
 					</control>
 					<!-- EPG Date -->
 					<control type="label">
-						<posx>700</posx>
+						<posx>705</posx>
 						<posy>0</posy>
 						<width>180</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>FontSize_22</font>
+						<textcolor>77white</textcolor>
+						<shadowcolor>77000000</shadowcolor>
+<!--						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>-->
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(EPGDate)]</label>
@@ -5417,7 +5504,7 @@
 					</control>
 				</itemlayout>
 				<focusedlayout height="40" width="610">
-					<control type="image">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>720</width>
@@ -5433,7 +5520,7 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
-					</control>
+					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>20</posx>
@@ -5467,9 +5554,11 @@
 						<posy>0</posy>
 						<width>65</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>FontSize_22</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>77000000</shadowcolor>
+<!--						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -5478,11 +5567,12 @@
 					<control type="label">
 						<posx>120</posx>
 						<posy>0</posy>
-						<width>460</width>
+						<width>455</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>FontSize_22</font>
 						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<shadowcolor>77000000</shadowcolor>
+<!--						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -5490,13 +5580,14 @@
 					</control>
 					<!-- EPG Date -->
 					<control type="label">
-						<posx>700</posx>
+						<posx>705</posx>
 						<posy>0</posy>
 						<width>180</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>FontSize_22</font>
 						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<shadowcolor>77000000</shadowcolor>
+<!--						<selectedcolor>selected</selectedcolor>-->
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(EPGDate)]</label>
@@ -5506,14 +5597,19 @@
 			</control>
 			<control type="scrollbar" id="1003501">
 				<posx>800</posx>
-				<posy>110</posy>
-				<width>25</width>
-				<height>525</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<posy>137</posy>
+				<width>10</width>
+				<height>478</height>
+<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>1003500</onleft>
 				<onright>3700100</onright>
 				<showonepage>false</showonepage>
@@ -5553,9 +5649,9 @@
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			<control type="list" id="1003510">
 				<posx>50</posx>
-				<posy>70</posy>
+				<posy>128</posy>
 				<width>1225</width>
-				<height>560</height>
+				<height>480</height>
 				<onleft>3709000</onleft>
 				<onright>1003511</onright>
 				<onup>1003510</onup>
@@ -5563,14 +5659,14 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003511</pagecontrol>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="70" width="635">
-					<control type="image">
+				<itemlayout height="80" width="635">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>755</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
+					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
@@ -5616,10 +5712,10 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>5</posy>
-						<width>475</width>
+						<width>465</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -5627,12 +5723,12 @@
 					</control>
 					<!-- Start Time-->
 					<control type="label">
-						<posx>745</posx>
+						<posx>735</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -5642,10 +5738,10 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>30</posy>
-						<width>475</width>
+						<width>465</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20B</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -5655,15 +5751,19 @@
 					<control type="progress" >
 						<posx>612</posx>
 						<posy>45</posy>
-						<width>130</width>
-						<height>14</height>
+						<width>125</width>
+						<height>16</height>
 						<progress>percent</progress>
-						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>
+						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+						<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						<righttexture border="1">osd/osd_right_progress.png</righttexture>
+<!--						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>-->
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="635">
-					<control type="image">
+				<focusedlayout height="80" width="635">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>745</width>
@@ -5686,7 +5786,7 @@
 						<width>225</width>
 						<height>61</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control>
+					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
@@ -5732,10 +5832,10 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>5</posy>
-						<width>475</width>
+						<width>465</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -5743,12 +5843,12 @@
 					</control>
 					<!-- Start Time  -->
 					<control type="label">
-						<posx>745</posx>
+						<posx>735</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -5758,9 +5858,9 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>30</posy>
-						<width>475</width>
+						<width>465</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>FontSize_20B</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -5771,24 +5871,33 @@
 					<control type="progress" >
 						<posx>612</posx>
 						<posy>45</posy>
-						<width>130</width>
-						<height>14</height>
+						<width>125</width>
+						<height>16</height>
 						<progress>percent</progress>
-						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>
+						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+						<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						<righttexture border="1">osd/osd_right_progress.png</righttexture>
+<!--						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>-->
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003511">
 				<posx>800</posx>
-				<posy>70</posy>
-				<width>25</width>
-				<height>565</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<posy>131</posy>
+				<width>10</width>
+				<height>484</height>
+<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>1003510</onleft>
 				<onright>3700100</onright>
 				<showonepage>false</showonepage>
@@ -7460,14 +7569,15 @@
 			<aspectratio>keep</aspectratio>
 			<texture>icon_radio3.png</texture>
 		</control>
+		<!-- Installation Window Title -->
 		<control type="label" id="1009550">
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000)| substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),1300000) | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000) | substring(Window.Property(CurrentWindow),4700000) | substring(Window.Property(CurrentWindow),4900000) | substring(Window.Property(CurrentWindow),5000000)</visible>
 			<posx>65</posx>
 			<posy>5</posy>
 			<width min="0" max="800">auto</width>
-			<height>30</height>
-			<font>font14</font>
+			<height>50</height>
+			<font>FontSize_40</font>
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
 			<scroll>false</scroll>
