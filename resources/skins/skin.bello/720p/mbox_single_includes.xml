@@ -265,10 +265,10 @@
 				<posy>320</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_18</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>77white</textcolor>
 			</control>
 			<control type="label" id="1001005">
 				<description>Strength Percent</description>
@@ -276,19 +276,21 @@
 				<posy>320</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_18</font>
 				<align>right</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>77white</textcolor>
 			</control>
 			<control type="progress" id="1001010">
 				<description>Scan Helper Progress</description>
 				<posx>820</posx>
 				<posy>350</posy>
-				<width>350</width>
-				<height>18</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				<width>347</width>
+				<height>25</height>
+<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>-->
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
 			</control>
 			<control type="label" id="1001009">
 				<description>Quality</description>
@@ -296,10 +298,10 @@
 				<posy>380</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_18</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>77white</textcolor>
 			</control>
 			<control type="label" id="1001006">
 				<description>Quality Percent</description>
@@ -307,19 +309,21 @@
 				<posy>380</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_18</font>
 				<align>right</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>77white</textcolor>
 			</control>
 			<control type="progress" id="1001011">
 				<description>Scan Helper Progress</description>
 				<posx>820</posx>
 				<posy>410</posy>
-				<width>350</width>
-				<height>18</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				<width>347</width>
+				<height>25</height>
+<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>-->
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
 			</control>
 		</control>
 	</include>
