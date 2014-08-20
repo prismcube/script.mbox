@@ -6629,10 +6629,10 @@
 		<control type="group">
 			<visible>substring(Window.Property(TimerMode),true)</visible>
 			<control type="list" id="1003610">
-				<posx>75</posx>
-				<posy>70</posy>
+				<posx>60</posx>
+				<posy>128</posy>
 				<width>1200</width>
-				<height>560</height>
+				<height>480</height>
 				<onleft>4009000</onleft>
 				<onright>1003611</onright>
 				<onup>1003610</onup>
@@ -6640,14 +6640,14 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003611</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<itemlayout height="70" width="610">
-					<control type="image">
+				<itemlayout height="80" width="610">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>730</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
+					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
@@ -6681,8 +6681,8 @@
 						<posy>5</posy>
 						<width>540</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -6694,8 +6694,8 @@
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -6707,8 +6707,8 @@
 						<posy>30</posy>
 						<width>540</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20B</font>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -6721,8 +6721,8 @@
 						<posy>40</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -6730,8 +6730,8 @@
 						<visible>substring(Window.Property(TimerMode),true)</visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="610">
-					<control type="image">
+				<focusedlayout height="80" width="610">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>720</width>
@@ -6754,7 +6754,7 @@
 						<width>200</width>
 						<height>61</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control>
+					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
@@ -6788,8 +6788,8 @@
 						<posy>5</posy>
 						<width>540</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -6801,8 +6801,8 @@
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -6814,7 +6814,7 @@
 						<posy>30</posy>
 						<width>540</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>FontSize_20B</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -6828,8 +6828,8 @@
 						<posy>40</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -6840,14 +6840,19 @@
 			</control>
 			<control type="scrollbar" id="1003611">
 				<posx>800</posx>
-				<posy>70</posy>
-				<width>25</width>
-				<height>565</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<posy>128</posy>
+				<width>10</width>
+				<height>484</height>
+<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>1003610</onleft>
 				<onright>4000100</onright>
 				<showonepage>false</showonepage>

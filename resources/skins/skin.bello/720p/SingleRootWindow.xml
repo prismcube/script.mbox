@@ -2552,54 +2552,54 @@ Search for window name
 				<texture>views/list/shine.png</texture>
 				<!-- <colordiffuse>ccffffff</colordiffuse> -->
 <!--			</control>-->
-			<control type="image">
-				<posx>20</posx>
-				<posy>460</posy>
-				<width>1250</width>
-				<height>317</height>
-				<aspectratio align="center" aligny="center">stretch</aspectratio>
-<!--				<fadetime>100</fadetime>-->
-				<texture border="70">views/list/panel.png</texture>
-				<bordersize>20</bordersize>
-			</control>
-			<control type="image">
-				<posx>100</posx>
-				<posy>540</posy>
-				<width>1090</width>
-				<height>156</height>
-				<texture border="70">bg/LIVE_colors_pulse.png</texture>
-			</control>
-			<!-- Left side of panel -->
-			<control type="image">
-				<posx>100</posx>
-				<posy>540</posy>
-				<width>200</width>
-				<height>158</height>
-				<aspectratio>stretch</aspectratio>
-				<texture border="25">dialogs/other/iconborder_black.png</texture>
-			</control>
-			<control type="image">
-				<posx>101</posx>
-				<posy>541</posy>
-				<width>198</width>
-				<height>156</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>views/wall/square_overlay.png</texture>
-			</control>
-			<!-- Right side of panel -->
-			<control type="image">
-				<posx>300</posx>
-				<posy>540</posy>
-				<width>890</width>
-				<height>158</height>
-				<aspectratio>stretch</aspectratio>
-				<texture border="25">dialogs/other/iconborder_black.png</texture>
-			</control>
+				<control type="image">
+					<posx>-50</posx>
+					<posy>460</posy>
+					<width>1385</width>
+					<height>317</height>
+					<aspectratio align="center" aligny="center">stretch</aspectratio>
+	<!--				<fadetime>100</fadetime>-->
+					<texture border="70">views/list/panel.png</texture>
+					<bordersize>20</bordersize>
+				</control>
+				<control type="image">
+					<posx>30</posx>
+					<posy>540</posy>
+					<width>1225</width>
+					<height>156</height>
+					<texture border="70">bg/LIVE_colors_pulse.png</texture>
+				</control>
+				<!-- Left side of panel -->
+				<control type="image">
+					<posx>30</posx>
+					<posy>540</posy>
+					<width>200</width>
+					<height>158</height>
+					<aspectratio>stretch</aspectratio>
+					<texture border="25">dialogs/other/iconborder_black.png</texture>
+				</control>
+				<control type="image">
+					<posx>31</posx>
+					<posy>541</posy>
+					<width>198</width>
+					<height>156</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>views/wall/square_overlay.png</texture>
+				</control>
+				<!-- Right side of panel -->
+				<control type="image">
+					<posx>230</posx>
+					<posy>540</posy>
+					<width>1025</width>
+					<height>158</height>
+					<aspectratio>stretch</aspectratio>
+					<texture border="25">dialogs/other/iconborder_black.png</texture>
+				</control>
 
 
 				<!-- Recording Info -->
 				<control type="group">
-					<posx>562r</posx>
+					<posx>582r</posx>
 					<posy>592</posy>
 					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
 					<control type="group">	<!-- Recording #1 -->
@@ -2664,16 +2664,16 @@ Search for window name
 
 				<!-- Channel Info -->
 				<control type="group" id="1400600">
-					<posx>160</posx>
+					<posx>90</posx>
 					<posy>580</posy>
 					<!-- PVR Playback -->
 					<control type="label">
-						<posx>-40</posx>
-						<posy>5</posy>
-						<width>300</width>
+						<posx>-57</posx>
+						<posy>15</posy>
+						<width>200</width>
 						<height>50</height>
 						<align>center</align>
-						<font>FontSize_32B</font>
+						<font>FontSize_30B</font>
 						<textcolor>red</textcolor>
 						<label>$ADDON[script.mbox 1123]</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
@@ -2721,9 +2721,9 @@ Search for window name
 					</control>
 					<!-- Channel Name -->
 					<control type="label" id="1400602">
-						<posx>155</posx>
+						<posx>165</posx>
 						<posy>28</posy>
-						<width>430</width>
+						<width>450</width>
 						<height>50</height>
 						<scroll>true</scroll>
 						<align>left</align>
@@ -2759,12 +2759,12 @@ Search for window name
 
 					<!-- Button Icons -->
 					<control type="group">
-						<posx>-185</posx>
+						<posx>-175</posx>
 						<posy>4</posy>
 						<include>DefaultInfoPlateGroup</include>
 					</control>
 					<control type="group">
-						<posx>610</posx>
+						<posx>660</posx>
 						<posy>14</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2786,7 +2786,7 @@ Search for window name
 					<!-- Color Keys -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
-							<posx>215r</posx>
+							<posx>195r</posx>
 							<posy>16</posy>
 							<width>300</width>
 							<height>40</height>
@@ -2807,7 +2807,7 @@ Search for window name
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>font10</font>
+									<font>FontSize_14</font>
 									<align>center</align>
 									<label>HbbTV</label>
 								</control>
@@ -2826,7 +2826,7 @@ Search for window name
 									<posy>0</posy>
 									<width>80</width>
 									<height>30</height>
-									<font>font10</font>
+									<font>FontSize_14</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1039]</label>
 								</control>
@@ -2845,7 +2845,7 @@ Search for window name
 									<posy>0</posy>
 									<width>50</width>
 									<height>30</height>
-									<font>font10</font>
+									<font>FontSize_14</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1039]</label>
 								</control>
@@ -2864,7 +2864,7 @@ Search for window name
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>font10</font>
+									<font>FontSize_14</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1124]</label>
 								</control>
@@ -2883,7 +2883,7 @@ Search for window name
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>font10</font>
+									<font>FontSize_14</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1060]</label>
 								</control>
@@ -2893,7 +2893,7 @@ Search for window name
 
 					<!-- AV Info -->
 					<control type="group">
-						<posx>605</posx>
+						<posx>655</posx>
 						<posy>46</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -3032,13 +3032,13 @@ Search for window name
 
 				<!-- EPG Info -->
 				<control type="group" id="1400700">
-					<posx>60</posx>
+					<posx>0</posx>
 					<posy>654</posy>
 					<control type="label" id="1400701">
 						<description>Longitude Info</description>
 						<posx>253</posx>
 						<posy>-66</posy>
-						<width>270</width>
+						<width>290</width>
 						<height>15</height>
 						<font>FontSize_20B</font>
 						<align>left</align>
@@ -3064,14 +3064,14 @@ Search for window name
 						<description>EPG Name</description>
 						<posx>283</posx>
 						<posy>7</posy>
-						<width>400</width>
+						<width>420</width>
 						<font>FontSize_22B</font>
 						<textcolor>99white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="label" id="1400704">
 						<description>Start EPG Time</description>
-						<posx>709</posx>
+						<posx>749</posx>
 						<posy>7</posy>
 						<align>left</align>
 						<font>FontSize_20B</font>
@@ -3079,9 +3079,9 @@ Search for window name
 					</control>
 					<control type="progress" id="1400707">
 						<description>EPG Progress</description>
-						<posx>776</posx>
+						<posx>816</posx>
 						<posy>5</posy>
-						<width>245</width>
+						<width>315</width>
 						<height>33</height>
 <!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<lefttexture></lefttexture>
@@ -3095,13 +3095,13 @@ Search for window name
 					</control>
 					<control type="label" id="1400705">
 						<description>End EPG Time</description>
-						<posx>1032</posx>
+						<posx>1142</posx>
 						<posy>7</posy>
 						<font>FontSize_20B</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="button" id="1400706">
-						<posx>1095</posx>
+						<posx>1205</posx>
 						<posy>15</posy>
 						<align>right</align>
 						<width>25</width>
@@ -3177,12 +3177,37 @@ Search for window name
 				<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1003750).HasFocus">Conditional</animation>
 				<control type="group">
 					<!-- Panel -->
-					<control type="image">
+<!--					<control type="image">
 						<posx>-13</posx>
 						<posy>547</posy>
 						<width>1306</width>
 						<height>187</height>
 						<texture>MediaInfoBackLower.png</texture>
+					</control>-->
+					<control type="image">
+						<posx>-50</posx>
+						<posy>460</posy>
+						<width>1385</width>
+						<height>329</height>
+						<aspectratio align="center" aligny="center">stretch</aspectratio>
+		<!--				<fadetime>100</fadetime>-->
+						<texture border="70">views/list/panel.png</texture>
+						<bordersize>20</bordersize>
+					</control>
+					<control type="image">
+						<posx>30</posx>
+						<posy>540</posy>
+						<width>1225</width>
+						<height>168</height>
+						<texture border="70">bg/LIVE_colors_pulse.png</texture>
+					</control>
+					<control type="image">
+						<posx>30</posx>
+						<posy>540</posy>
+						<width>1225</width>
+						<height>170</height>
+						<aspectratio>stretch</aspectratio>
+						<texture border="25">dialogs/other/iconborder_black.png</texture>
 					</control>
 				</control>
 
@@ -3224,7 +3249,7 @@ Search for window name
 									<height>22</height>
 									<align>center</align>
 									<aligny>center</aligny>
-									<font>font12</font>
+									<font>FontSize_16B</font>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 								<control type="label">
@@ -3235,7 +3260,7 @@ Search for window name
 									<height>10</height>
 									<align>left</align>
 									<aligny>center</aligny>
-									<font>font10</font>
+									<font>FontSize_16B</font>
 									<label>$INFO[ListItem.Label2]</label>
 								</control>
 							</itemlayout>
@@ -3258,7 +3283,7 @@ Search for window name
 									<height>22</height>
 									<align>center</align>
 									<aligny>center</aligny>
-									<font>font13</font>
+									<font>FontSize_18B</font>
 									<textcolor>white</textcolor>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
@@ -3269,7 +3294,7 @@ Search for window name
 									<height>10</height>
 									<align>left</align>
 									<aligny>center</aligny>
-									<font>font13</font>
+									<font>FontSize_16B</font>
 									<label>$INFO[ListItem.Label2]</label>
 								</control>
 							</focusedlayout>
@@ -3279,63 +3304,63 @@ Search for window name
 
 				<!-- Recording Info -->
 				<control type="group">
-					<posx>450r</posx>
-					<posy>540</posy>
+					<posx>425r</posx>
+					<posy>665</posy>
 					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(2900010) | Control.IsVisible(2900015)">conditional</animation>
 					<control type="group">	<!-- Recording #1 -->
 						<posx>0</posx>
 						<posy>-20</posy>
-						<control type="image">
+<!--						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
 							<width>450</width>
 							<height>35</height>
 							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 							<visible>Control.IsVisible(2900010)</visible>
-						</control>
+						</control>-->
 						<control type="image" id="2900010">
 							<posx>45</posx>
-							<posy>7</posy>
-							<width>60</width>
-							<height>25</height>
-							<texture>i_record.png</texture>
+							<posy>5</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>windows/pvr/rec.png</texture>
 							<visible>substring(Window.Property(ViewRecord1),true)</visible>
 						</control>
 						<control type="label" id="2900011">
-							<posx>116</posx>
+							<posx>75</posx>
 							<posy>7</posy>
-							<font>font12caps</font>
 							<width>300</width>
-							<height>30</height>
+							<height>24</height>
+							<font>FontSize_18</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
 					</control>
 					<control type="group">	<!-- Recording #2 -->
-						<posx>21</posx>
-						<posy>-51</posy>
-						<control type="image">
+						<posx>0</posx>
+						<posy>-50</posy>
+<!--						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
 							<width>450</width>
 							<height>35</height>
 							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 							<visible>Control.IsVisible(2900015)</visible>
-						</control>
+						</control>-->
 						<control type="image" id="2900015">
-							<posx>25</posx>
-							<posy>7</posy>
-							<width>60</width>
-							<height>25</height>
-							<texture>i_record.png</texture>
+							<posx>45</posx>
+							<posy>5</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>windows/pvr/rec.png</texture>
 							<visible>substring(Window.Property(ViewRecord2),true)</visible>
 						</control>
 						<control type="label" id="2900016">
-							<posx>95</posx>
+							<posx>75</posx>
 							<posy>7</posy>
 							<width>300</width>
-							<height>30</height>
-							<font>font12caps</font>
+							<height>24</height>
+							<font>FontSize_18</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -3352,7 +3377,7 @@ Search for window name
 						<visible>!ControlGroup(1003750).HasFocus</visible>
 						<control type="image">
 							<posx>0</posx>
-							<posy>0</posy>
+							<posy>6</posy>
 							<width>20</width>
 							<height>20</height>
 							<animation effect="rotate" center="auto" start="0" end="90" time="100" condition="true">Conditional</animation>
@@ -3363,14 +3388,14 @@ Search for window name
 							<posx>25</posx>
 							<posy>0</posy>
 							<width>50</width>
-							<height>10</height>
-							<font>font10</font>
-							<textcolor>grey</textcolor>
+							<height>30</height>
+							<font>FontSize_14</font>
+							<textcolor>99white</textcolor>
 							<label>$ADDON[script.mbox 1122]</label>
 						</control>
 						<control type="image">
 							<posx>80</posx>
-							<posy>0</posy>
+							<posy>6</posy>
 							<width>20</width>
 							<height>20</height>
 							<animation effect="rotate" center="auto" start="0" end="90" time="100" condition="true">Conditional</animation>
@@ -3381,10 +3406,10 @@ Search for window name
 							<description>Show Bookmarks</description>
 							<posx>105</posx>
 							<posy>0</posy>
-							<width>100</width>
+							<width>130</width>
 							<height>30</height>
-							<font>font10</font>
-							<textcolor>grey</textcolor>
+							<font>FontSize_14</font>
+							<textcolor>99white</textcolor>
 							<label>$ADDON[script.mbox 1129]</label>
 							<visible>substring(Window.Property(BookMarkShow),true)</visible>
 						</control>
@@ -3394,8 +3419,8 @@ Search for window name
 				<!-- Color Keys -->
 				<control type="group" id="2900509">
 					<control type="grouplist">
-						<posx>210r</posx>
-						<posy>565</posy>
+						<posx>200r</posx>
+						<posy>560</posy>
 						<width>300</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
@@ -3415,7 +3440,7 @@ Search for window name
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font10</font>
+								<font>FontSize_14</font>
 								<align>center</align>
 								<label></label>
 							</control>
@@ -3435,7 +3460,7 @@ Search for window name
 								<posy>0</posy>
 								<width>80</width>
 								<height>30</height>
-								<font>font10</font>
+								<font>FontSize_14</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3455,7 +3480,7 @@ Search for window name
 								<posy>0</posy>
 								<width>50</width>
 								<height>30</height>
-								<font>font10</font>
+								<font>FontSize_14</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3475,7 +3500,7 @@ Search for window name
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font10</font>
+								<font>FontSize_14</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1124]</label>
 							</control>
@@ -3495,7 +3520,7 @@ Search for window name
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>font10</font>
+								<font>FontSize_14</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1060]</label>
 							</control>
@@ -3519,13 +3544,17 @@ Search for window name
 				<control type="group">
 					<control type="progress" id="2900201">
 						<posx>400</posx>
-						<posy>595</posy>
-						<width>780</width>
-						<height>16</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<posy>590</posy>
+						<width>770</width>
+						<height>25</height>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<lefttexture>-</lefttexture>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
-						<righttexture>-</righttexture>
+						<righttexture>-</righttexture>-->
+						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+						<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						<righttexture border="1">osd/osd_right_progress.png</righttexture>
 						<overlaytexture>-</overlaytexture>
 					</control>
 					<control type="grouplist" id="1003620">
@@ -3568,14 +3597,14 @@ Search for window name
 						<width>100</width>
 						<height>15</height>
 						<textcolor>white</textcolor>
-						<font>font12</font>
+						<font>FontSize_18</font>
 					</control>
 					<control type="label" id="2900203">
-						<posx>5</posx>
+						<posx>45</posx>
 						<posy>580</posy>
-						<width>210</width>
+						<width>200</width>
 						<height>20</height>
-						<font>font24_title</font>
+						<font>FontSize_30B</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<align>center</align>
@@ -3593,17 +3622,17 @@ Search for window name
 						<width>100</width>
 						<height>15</height>
 						<textcolor>grey</textcolor>
-						<font>font12</font>
+						<font>FontSize_18</font>
 						<label>00:00:00</label>
 					</control>
 					<control type="label" id="2900222">
 						<description>End</description>
-						<posx>890</posx>
+						<posx>877</posx>
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
 						<textcolor>grey</textcolor>
-						<font>font12</font>
+						<font>FontSize_18</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
@@ -6111,10 +6140,14 @@ Search for window name
 			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
 			<defaultcontrol always="true">4009003</defaultcontrol>
+			<control type="image">
+				<include>FullscreenDimensions</include>
+				<texture>windows/bg/bg_diffuse.png</texture>
+			</control>
 			<!-- Content Panel & Floor Image -->
 			<control type="group">
 				<include>DefaultWindowFade</include>
-				<control type="image">
+<!--				<control type="image">
 					<posx>0</posx>
 					<posy>100r</posy>
 					<width>1306</width>
@@ -6138,6 +6171,46 @@ Search for window name
 						<width>1200</width>
 						<height>64</height>
 						<texture border="15">ContentPanelMirror.png</texture>
+					</control>
+				</control>-->
+				<control type="group">
+					<posx>850</posx>
+					<posy>122</posy>
+					<width>430</width>
+					<height>600</height>
+					<control type="image">
+						<posx>-120</posx>
+						<posy>-190</posy>
+						<width>610</width>
+						<height>900</height>
+						<aspectratio align="center" aligny="center">stretch</aspectratio>
+						<texture>views/list/shine.png</texture>
+					</control>
+					<control type="image">
+						<posx>-85</posx>
+						<posy>-95</posy>
+						<width>524</width>
+						<height>718</height>
+						<aspectratio align="right" aligny="center">stretch</aspectratio>
+						<texture border="70">views/list/panel.png</texture>
+						<bordersize>20</bordersize>
+					</control>
+					<control type="image">
+						<posx>-9</posx>
+						<posy>-17</posy>
+						<width>369</width>
+						<height>215</height>
+						<aspectratio>stretch</aspectratio>
+						<texture border="25">dialogs/other/iconborder_black.png</texture>
+					</control>
+					<control type="image">
+						<posx>-9</posx>
+						<posy>198</posy>
+						<width>369</width>
+						<height>347</height>
+						<align>left</align>
+						<aspectratio>stretch</aspectratio>
+						<texture border="25">dialogs/other/iconborder_black.png</texture>
 					</control>
 				</control>
 			</control>
@@ -6170,7 +6243,7 @@ Search for window name
 						<posy>5</posy>
 						<width>160</width>
 						<height>20</height>
-						<font>font10</font>
+						<font>FontSize_16</font>
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
@@ -6193,7 +6266,7 @@ Search for window name
 						<posy>5</posy>
 						<width>160</width>
 						<height>20</height>
-						<font>font10</font>
+						<font>FontSize_16</font>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
 				</control>
@@ -6265,22 +6338,22 @@ Search for window name
 				<control type="label" id="4000300">
 					<posx>0</posx>
 					<posy>0</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>77white</textcolor>
 					<label>00:00-00:00</label>
 				</control>
 				<control type="label" id="4000301">
 					<posx>150</posx>
 					<posy>0</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>77white</textcolor>
 					<label></label>
 				</control>
 				<control type="label" id="4000302">
 					<posx>0</posx>
 					<posy>30</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>77white</textcolor>
 					<label></label>
 				</control>
 				<control type="image" id="4000310">
