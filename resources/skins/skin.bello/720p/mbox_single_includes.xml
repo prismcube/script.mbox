@@ -4395,7 +4395,7 @@
 						<width>460</width>
 						<height>30</height>
 						<font>FontSize_20</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4408,7 +4408,7 @@
 						<width>210</width>
 						<height>30</height>
 						<font>FontSize_20</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4421,7 +4421,7 @@
 						<width>440</width>
 						<height>40</height>
 						<font>FontSize_20B</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4434,7 +4434,7 @@
 						<width>100</width>
 						<height>40</height>
 						<font>FontSize_20</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4471,7 +4471,7 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>FontSize_16</font>
-							<textcolor>77white</textcolor>
+							<textcolor>55white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -5466,7 +5466,7 @@
 						<width>65</width>
 						<height>40</height>
 						<font>FontSize_22</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
 <!--						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>-->
@@ -5481,7 +5481,7 @@
 						<width>455</width>
 						<height>40</height>
 						<font>FontSize_22</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
 <!--						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>-->
@@ -5497,7 +5497,7 @@
 						<width>180</width>
 						<height>40</height>
 						<font>FontSize_22</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
 <!--						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>-->
@@ -5719,7 +5719,7 @@
 						<width>465</width>
 						<height>30</height>
 						<font>FontSize_20</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -5732,7 +5732,7 @@
 						<width>210</width>
 						<height>30</height>
 						<font>FontSize_20</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -5745,7 +5745,7 @@
 						<width>465</width>
 						<height>40</height>
 						<font>FontSize_20B</font>
-						<textcolor>77white</textcolor>
+						<textcolor>55white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
