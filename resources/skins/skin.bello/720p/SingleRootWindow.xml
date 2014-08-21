@@ -5581,38 +5581,13 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<!-- Content Panel & Floor Image -->
-<!--				<control type="image">
-					<posx>-13</posx>
-					<posy>100r</posy>
-					<width>1306</width>
-					<height>115</height>
-					<visible>!substring(Window.Property(EPGMode),grid)</visible>
-					<texture>floor.png</texture>		
-				</control>
-				<control type="image">
-					<posx>37</posx>
-					<posy>40</posy>
-					<width>1206</width>
-					<height>623</height>
-					<texture border="15">ContentPanel.png</texture>
-					<visible>!substring(Window.Property(EPGMode),grid)</visible>
-				</control>
-				<control type="image">
-					<posx>37</posx>
-					<posy>40</posy>
-					<width>1206</width>
-					<height>623</height>
-					<aspectratio align="center" aligny="center">stretch</aspectratio>
-					<texture border="25">windows/weather/day_panel_small.png</texture>
-				</control>-->
 				<control type="image">
 					<include>FullscreenDimensions</include>
 					<texture>windows/bg/bg_diffuse.png</texture>
-<!--					<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>-->
 				</control>
 				<control type="image">
 					<posx>730</posx>
-					<posy>68</posy>
+					<posy>-68</posy>
 					<width>610</width>
 					<height>900</height>
 					<aspectratio align="center" aligny="center">stretch</aspectratio>
@@ -5639,14 +5614,33 @@ Search for window name
 					<posx>841</posx>
 					<posy>320</posy>
 					<width>369</width>
-					<height>347</height>
+					<height>350</height>
 					<align>left</align>
 					<aspectratio>stretch</aspectratio>
 					<texture border="25">dialogs/other/iconborder_black.png</texture>
 				</control>
-
+			</control>
+			<control type="group">
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
 				<!-- Grid Mode Panel & Floor Image -->
 				<control type="image">
+					<posx>37</posx>
+					<posy>57</posy>
+					<width>1206</width>
+					<height>650</height>
+<!--					<aspectratio align="center" aligny="center">stretch</aspectratio>
+					<texture border="25">windows/weather/day_panel.png</texture>
+					<colordiffuse>FFcc00cc</colordiffuse>-->
+					<texture border="30">bg/SKINDEFAULT.jpg</texture>
+				</control>
+				<control type="image">
+					<posx>37</posx>
+					<posy>57</posy>
+					<width>1206</width>
+					<height>650</height>
+					<texture border="30">windows/bg/bg_vignette.png</texture>
+				</control>
+<!--				<control type="image">
 					<posx>-1</posx>
 					<posy>99r</posy>
 					<width>42</width>
@@ -5685,13 +5679,13 @@ Search for window name
 					<width>1209</width>
 					<height>58</height>
 					<texture border="15">ContentPanelMirror.png</texture>
-				</control>
+				</control>-->
 			</control>
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
-				<posy>669</posy>
+				<posx>42</posx>
+				<posy>665</posy>
 				<width>440</width>
 				<height>32</height>
 				<align>left</align>
@@ -6094,8 +6088,8 @@ Search for window name
 				<posy>47r</posy>
 				<width>340</width>
 				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
+				<font>FontSize_18</font>
+				<textcolor>99white</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
@@ -6109,8 +6103,8 @@ Search for window name
 				<posy>47r</posy>
 				<width>340</width>
 				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
+				<font>FontSize_18</font>
+				<textcolor>99white</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
@@ -6120,12 +6114,12 @@ Search for window name
 			<!-- Item & Page Number for Grid -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>60r</posx>
+				<posx>63r</posx>
 				<posy>50r</posy>
 				<width>340</width>
 				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
+				<font>FontSize_18</font>
+				<textcolor>99white</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
