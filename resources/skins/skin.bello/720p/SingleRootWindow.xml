@@ -1986,8 +1986,8 @@ Search for window name
 					<posy>30r</posy>
 					<width>100</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -1999,8 +1999,8 @@ Search for window name
 					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -2012,8 +2012,8 @@ Search for window name
 					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -5091,8 +5091,8 @@ Search for window name
 					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -5105,8 +5105,8 @@ Search for window name
 					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -5119,8 +5119,8 @@ Search for window name
 					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -5133,8 +5133,8 @@ Search for window name
 					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -6380,8 +6380,8 @@ Search for window name
 				<posy>47r</posy>
 				<width>300</width>
 				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
+				<font>FontSize_18</font>
+				<textcolor>99white</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>

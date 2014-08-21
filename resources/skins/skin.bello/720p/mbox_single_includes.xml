@@ -4955,10 +4955,10 @@
 			<posy>130</posy>
 			<control type="wraplist" id="1003420">
 				<visible>true</visible>
-				<posx>-100</posx>
+				<posx>-120</posx>
 				<posy>0</posy>
 				<width>1526</width>
-				<height>460</height>
+				<height>520</height>
 				<onleft>1003420</onleft>
 				<onright>1003420</onright>
 				<onup>3300100</onup>
@@ -4968,15 +4968,17 @@
 				<focusposition>3</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
-				<itemlayout height="117" width="208">
+				<itemlayout height="137" width="220">
 					<control type="image">
 						<posx>0</posx>
 						<posy>250</posy>
 						<width>208</width>
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>3</bordersize>
+<!--						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>3</bordersize>-->
+						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
+						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!-- Selection Icon -->
@@ -5007,8 +5009,8 @@
 					</control>
 					<!-- NAS -->
 					<control type="group">
-						<posx>160</posx>
-						<posy>256</posy>
+						<posx>154</posx>
+						<posy>260</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -5035,25 +5037,39 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>grey3</textcolor>
+							<font>FontSize_18</font>
+							<textcolor>77white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="117" width="208">
+				<focusedlayout height="137" width="220">
 					<control type="image">
 						<posx>0</posx>
 						<posy>250</posy>
 						<width>208</width>
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>3</bordersize>
+<!--						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordersize>3</bordersize>-->
+						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
+						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 						<animation reversible="false" effect="zoom" start="0,250,208,117" end="-72,120,352,198" time="300">focus</animation>
 						<animation reversible="false" effect="zoom" end="0,250,208,117" start="-72,120,352,198" time="300">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>230</posy>
+						<width>248</width>
+						<height>157</height>
+						<aspectratio>stretch</aspectratio>
+<!--						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordersize>3</bordersize>-->
+						<texture border="30">views/thumbnails/focus.png</texture>
+						<animation reversible="false" effect="zoom" start="-20,230,248,157" end="-97,95,402,248" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="-20,230,248,157" start="-97,95,402,248" time="300">unfocus</animation>
 					</control>
 					<!-- Selection Icon -->
 					<control type="image">
@@ -5078,11 +5094,11 @@
 					</control>
 					<!-- NAS -->
 					<control type="group">
-						<posx>160</posx>
-						<posy>256</posy>
+						<posx>154</posx>
+						<posy>260</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
-						<animation reversible="true" effect="slide" start="0,0" end="70,-130" time="300">focus</animation>
-						<animation reversible="true" effect="slide" end="0,0" start="70,-130" time="300">unfocus</animation>
+						<animation reversible="true" effect="slide" start="0,0" end="67,-128" time="300">focus</animation>
+						<animation reversible="true" effect="slide" end="0,0" start="67,-128" time="300">unfocus</animation>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -5106,7 +5122,7 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
+							<font>FontSize_18</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
@@ -5115,15 +5131,20 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003421">
-				<posx>180</posx>
-				<posy>485</posy>
+				<posx>200</posx>
+				<posy>505</posy>
 				<width>880</width>
-				<height>25</height>
-				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
+				<height>10</height>
+<!--				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
 				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbar>
+				<texturesliderbarfocus border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onup>1003420</onup>
 				<ondown>3309000</ondown>
 				<showonepage>false</showonepage>
@@ -5134,11 +5155,11 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<control type="label">
-				<posx>110</posx>
+				<posx>130</posx>
 				<posy>510</posy>
 				<width>1035</width>
 				<height>35</height>
-				<font>font30_title</font>
+				<font>FontSize_40</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
@@ -5147,11 +5168,11 @@
 				<info>Container(1003420).ListItem(0).Label2</info>
 			</control>
 			<control type="label">
-				<posx>110</posx>
-				<posy>550</posy>
+				<posx>130</posx>
+				<posy>555</posy>
 				<width>1035</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>FontSize_20</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<align>center</align>
@@ -5159,11 +5180,11 @@
 				<info>Container(1003420).ListItem(0).Label</info>
 			</control>
 			<control type="label">
-				<posx>110</posx>
-				<posy>572</posy>
+				<posx>130</posx>
+				<posy>581</posy>
 				<width>1035</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>FontSize_20</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<align>center</align>
@@ -5173,11 +5194,11 @@
 			</control>
 			<!-- NAS -->
 			<control type="label">
-				<posx>110</posx>
-				<posy>594</posy>
+				<posx>130</posx>
+				<posy>606</posy>
 				<width>1035</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>FontSize_20</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<align>center</align>
@@ -5192,10 +5213,10 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),fanart)</visible>
 			<posx>0</posx>
-			<posy>430</posy>
+			<posy>380</posy>
 			<control type="fixedlist" id="1003430">
 				<posx>-20</posx>
-				<posy>0</posy>
+				<posy>-20</posy>
 				<width>1320</width>
 				<height>250</height>
 				<onleft>1003430</onleft>
@@ -5214,8 +5235,10 @@
 						<width>144</width>
 						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>4</bordersize>
+<!--						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>4</bordersize>-->
+						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
+						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!-- Selection Icon -->
@@ -5274,8 +5297,8 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>grey3</textcolor>
+							<font>FontSize_18</font>
+							<textcolor>77white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -5288,11 +5311,23 @@
 						<width>144</width>
 						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>4</bordersize>
+<!--						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordersize>4</bordersize>-->
+						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
+						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 						<animation reversible="false" effect="zoom" start="0,100,144,81" end="-32,40,208,117" time="300">focus</animation>
 						<animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,117" time="300">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>80</posy>
+						<width>184</width>
+						<height>121</height>
+						<aspectratio>stretch</aspectratio>
+						<texture border="30">views/thumbnails/focus.png</texture>
+						<animation reversible="false" effect="zoom" start="-20,80,184,121" end="-52,20,248,157" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="-20,80,184,121" start="-52,20,248,157" time="300">unfocus</animation>
 					</control>
 					<!-- Selection Icon -->
 					<control type="image">
@@ -5317,11 +5352,11 @@
 					</control>
 					<!-- NAS -->
 					<control type="group">
-						<posx>90</posx>
-						<posy>105</posy>
+						<posx>91</posx>
+						<posy>109</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
-						<animation reversible="true" effect="slide" start="0,0" end="35,-60" time="300">focus</animation>
-						<animation reversible="true" effect="slide" end="0,0" start="35,-60" time="300">unfocus</animation>
+						<animation reversible="true" effect="slide" start="0,0" end="31,-56" time="300">focus</animation>
+						<animation reversible="true" effect="slide" end="0,0" start="31,-56" time="300">unfocus</animation>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -5345,7 +5380,7 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
+							<font>FontSize_18</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
@@ -5355,10 +5390,10 @@
 			</control>
 			<control type="label">
 				<posx>100</posx>
-				<posy>193</posy>
+				<posy>173</posy>
 				<width>770</width>
-				<height>25</height>
-				<font>font30</font>
+				<height>35</height>
+				<font>FontSize_40</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
@@ -5368,10 +5403,10 @@
 			</control>
 			<control type="label">
 				<posx>100</posx>
-				<posy>223</posy>
+				<posy>217</posy>
 				<width>770</width>
 				<height>25</height>
-				<font>font12</font>
+				<font>FontSize_20</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
@@ -5380,14 +5415,15 @@
 				<label>$INFO[Container(1003430).ListItem(0).Label] ($INFO[Container(1003430).ListItem(0).Property(RecDate)]  $INFO[Container(1003430).ListItem(0).Property(RecDuration)])</label>
 				<visible>!substring(Container(1003430).CurrentPage,0)</visible>
 			</control>
+			<!-- NAS -->
 			<control type="label">
 				<posx>100</posx>
-				<posy>250</posy>
+				<posy>244</posy>
 				<width>770</width>
 				<height>25</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12</font>
+				<font>FontSize_20</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>($INFO[Container(1003430).ListItem(0).Property(iNetVolumeType)]) $INFO[Container(1003430).ListItem(0).Property(iNetVolumeName)]</label>
@@ -5395,14 +5431,19 @@
 			</control>
 			<control type="scrollbar" id="1003431">
 				<posx>150</posx>
-				<posy>250</posy>
+				<posy>277</posy>
 				<width>660</width>
-				<height>25</height>
-				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
+				<height>10</height>
+<!--				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
 				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbar>
+				<texturesliderbarfocus border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onup>1003430</onup>
 				<ondown>3300100</ondown>
 				<showonepage>false</showonepage>
