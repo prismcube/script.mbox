@@ -2281,7 +2281,7 @@ class ChannelListWindow( BaseWindow ) :
 				listItem = self.mCtrlListCHList.getListItem( i )
 				listItem.setProperty( E_XML_PROPERTY_CAS, isCas )
 				if i == selected :
-					UpdateCasInfo( self, channel )
+					UpdateCASInfo( self, channel )
 				break
 
 
@@ -2296,6 +2296,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mChannelList == None :
 			self.mCtrlListCHList.reset( )
+			self.setProperty( E_XML_PROPERTY_CAS, 'False' )
 			if self.mFlag_DeleteAll :
 				self.mListItems = None
 				label = MR_LANG( 'No Channel' )			
@@ -2676,7 +2677,7 @@ class ChannelListWindow( BaseWindow ) :
 				pass
 
 			#Update CAS info
-			UpdateCasInfo( self, self.mNavChannel )
+			UpdateCASInfo( self, self.mNavChannel )
 				
 			"""
 			#CAS

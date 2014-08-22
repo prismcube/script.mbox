@@ -220,8 +220,8 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ) )
 
 		self.mLastCAS = self.mCurrentChannel.mIsCA
-		self.setProperty( E_XML_PROPERTY_CAS, 'True' )		
-		UpdateCasInfo( self, self.mCurrentChannel )		
+		#self.setProperty( E_XML_PROPERTY_CAS, 'True' )
+		UpdateCASInfo( self, self.mCurrentChannel )
 
 		if self.mEPGMode == E_VIEW_GRID :
 			self.SetVideoRestore( )
@@ -558,7 +558,7 @@ class EPGWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 				if self.mFirstTune == True :
 					LOG_TRACE( '--------------- First Tune -----------------' )
-					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )			
+					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 				#self.DoCurrentEITReceived( aEvent )
 
 			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
@@ -571,7 +571,7 @@ class EPGWindow( BaseWindow ) :
 					"""
 					if self.mEPGMode == E_VIEW_GRID :	
 						if self.mCurrentChannel and self.mCurrentChannel.mNumber == aEvent.mChannelNo:
-							UpdateCasInfo( self, self.mCurrentChannel )		
+							UpdateCASInfo( self, self.mCurrentChannel )
 					else :
 						self.UpdateList( True )
 					"""
@@ -584,7 +584,7 @@ class EPGWindow( BaseWindow ) :
 							self.mSelectChannel = iChannel
 						if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
 							self.mCurrentChannel = iChannel
-						UpdateCasInfo( self, iChannel )
+						UpdateCASInfo( self, iChannel )
 					"""
 
 
@@ -848,7 +848,7 @@ class EPGWindow( BaseWindow ) :
 		if channel :
 			LOG_TRACE( 'LAEL98 TEST mIsCAS=%s:%s' %(self.mLastCAS, channel.mIsCA) )
 			if self.mLastCAS != channel.mIsCA :
-				UpdateCasInfo( self, channel )
+				UpdateCASInfo( self, channel )
 				self.mLastCAS = channel.mIsCA
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )

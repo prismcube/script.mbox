@@ -578,7 +578,7 @@ class LivePlate( LivePlateWindow ) :
 				LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
 			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
-				UpdateCasInfo( self, self.mCurrentChannel )
+				UpdateCASInfo( self, self.mCurrentChannel )
 				"""
 				if aEvent.mUpdateType == 0 :
 					#ToDO : All updated db, reload channelList
@@ -588,7 +588,7 @@ class LivePlate( LivePlateWindow ) :
 					iChannel = self.mDataCache.Channel_GetByNumber( aEvent.mChannelNo )
 					if iChannel :
 						self.mCurrentChannel = iChannel
-						UpdateCasInfo( self, iChannel )
+						UpdateCASInfo( self, iChannel )
 				"""
 
 			#elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
@@ -890,32 +890,9 @@ class LivePlate( LivePlateWindow ) :
 				#lock,cas
 				if ch.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
-				"""
-				if ch.mIsCA :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
-					casInfo = HasCasInfoByChannel( ch )
-					if casInfo and len( casInfo ) > 1 :
-						if not self.mEnableCasInfo :
-							if self.mCasInfoThread :
-								self.mCasInfoThread.join( )
 
-							self.mEnableCasInfo = True
-							self.mCasInfoThread = self.ShowCasInfoThread( casInfo )
-
-					else :
-						if self.mCasInfoThread :
-							self.mEnableCasInfo = False
-							self.mCasInfoThread.join( )
-						self.mEnableCasInfo = False
-
-						if casInfo and len( casInfo ) == 1 :
-							self.UpdatePropertyGUI( 'iCasInfo', casInfo[0] )
-
-						else :
-							self.UpdatePropertyGUI( 'iCasInfo', '' )
-				"""
 				#if ch.mIsCA :
-				UpdateCasInfo( self, ch )
+				UpdateCASInfo( self, ch )
 
 				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 					mTPnum = self.mDataCache.Channel_GetViewingTuner( )

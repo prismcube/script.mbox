@@ -200,7 +200,7 @@ class EPGSearchWindow( BaseWindow ) :
 
 			self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 			if channel and self.mCurrentChannel and channel.mNumber == self.mCurrentChannel.mNumber :
-				UpdateCasInfo( self, self.mCurrentChannel )
+				UpdateCASInfo( self, self.mCurrentChannel )
 				hashkey = '%s:%s:%s'% ( self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid )
 				self.mChannelList[selectedPos] = self.mCurrentChannel
 				self.mChannelListHash[hashkey] = self.mCurrentChannel
@@ -380,7 +380,7 @@ class EPGSearchWindow( BaseWindow ) :
 			channel = self.mChannelList[selectedPos]
 
 		if channel :
-			UpdateCasInfo( self, channel )
+			UpdateCASInfo( self, channel )
 
 
 	def UpdateEPGInfomation( self ) :

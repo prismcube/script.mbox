@@ -319,23 +319,9 @@ class InfoPlate( LivePlateWindow ) :
 				#lock,cas
 				if rec.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
-				"""
-				self.mEnableCasInfo = False
-				if rec.mIsCA :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
-					casInfo = HasCasInfoByChannel( rec )
-					if casInfo and len( casInfo ) > 1 :
-						self.mEnableCasInfo = True
-						self.ShowCasInfoThread( casInfo )
 
-					elif casInfo and len( casInfo ) == 1 :
-						self.UpdatePropertyGUI( 'iCasInfo', casInfo[0] )
-
-					else :
-						self.UpdatePropertyGUI( 'iCasInfo', '' )
-				"""
 				#if rec.mIsCA :
-				UpdateCasInfo( self, rec )
+				UpdateCASInfo( self, rec )
 
 				#record name
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy( rec.mRecordName ) )
