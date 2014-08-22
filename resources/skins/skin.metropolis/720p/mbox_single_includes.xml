@@ -124,16 +124,13 @@
 			</control>
 			<control type="label" id="1001003">
 				<posx>300</posx>
-				<posy>168r</posy>
-				<width>680</width>
-				<height>40</height>
-				<font>METF_SettingsDetail</font>
+				<posy>565</posy>
+				<width>750</width>
+				<height>66</height>
+				<font>METF_PlotTextSmall</font>
 				<textcolor>white</textcolor>
-				<align>center</align>
-				<aligny>center</aligny>
-				<scroll>true</scroll>
-				<scrollspeed>70</scrollspeed>
-				<scrollsuffix>  |  </scrollsuffix>
+				<align>justify</align>
+				<wrapmultiline>true</wrapmultiline>
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>
@@ -290,8 +287,8 @@
 	<include name="DefaultFirstTimeInstallationButton">
 		<control type="group">
 			<visible>substring(Window.Property(IsFTI),True)</visible>
-			<posx>185</posx>
-			<posy>30</posy>
+			<posx>20</posx>
+			<posy>60</posy>
 			<control type="button" id="1007001">
 				<description>Prev button</description>
 				<posx>26</posx>
@@ -370,8 +367,8 @@
 	<include name="DefaultFirstTimeInstallationStepImage">
 		<control type="group">
 			<visible>substring(Window.Property(IsFTI),True)</visible>
-			<posx>185</posx>
-			<posy>30</posy>
+			<posx>20</posx>
+			<posy>60</posy>
 			<control type="image" id="1008110">
 				<posx>260</posx>
 				<posy>485</posy>
@@ -6643,8 +6640,8 @@
 
 	<include name="DefaultInfoPlateGroup">
 		<control type="grouplist" id="1003620">
-			<posx>439</posx>
-			<posy>-40</posy>
+			<posx>429</posx>
+			<posy>-47</posy>
 			<width>380</width>
 			<height>40</height>
 			<itemgap>0</itemgap>
@@ -6652,7 +6649,6 @@
 			<scrolltime tween="sine" easing="out">200</scrolltime>
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>false</usecontrolcoords>
-			<visible>true</visible>
 			<onup></onup>
 			<ondown>1400702</ondown>
 			<onleft></onleft>
@@ -6660,64 +6656,63 @@
 			<defaultcontrol always="true">1003630</defaultcontrol>
 			<control type="button" id="1003630">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDChannelFO.png</texturefocus>
 				<texturenofocus>OSDChannelNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003621">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDIconWarning.png</texturefocus>
 				<texturenofocus>OSDIconInfo.png</texturenofocus>
 			</control>
 			<control type="button" id="1003622">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDTeletextFO.png</texturefocus>
 				<texturenofocus>OSDTeletextNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003623">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDSubtitlesFO.png</texturefocus>
 				<texturenofocus>OSDSubtitlesNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003628">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDBookmarksFO.png</texturefocus>
 				<texturenofocus>OSDBookmarksNF.png</texturenofocus>
 			</control>
-
 			<control type="button" id="1003624">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDRecord2.png</texturefocus>
 				<texturenofocus>OSDRecordNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003625">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDStopFO.png</texturefocus>
 				<texturenofocus>OSDStopNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003626">
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDVolumeMuteFO.png</texturefocus>
 				<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
@@ -6725,16 +6720,16 @@
 			</control>
 			<control type="button" id="1003627">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDPresetSettingsFO.png</texturefocus>
 				<texturenofocus>OSDPresetSettingsNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003631">
 				<align>left</align>
-				<width>42</width>
-				<height>35</height>
+				<width>37</width>
+				<height>32</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDserviceFO.png</texturefocus>
 				<texturenofocus>OSDserviceNF.png</texturenofocus>

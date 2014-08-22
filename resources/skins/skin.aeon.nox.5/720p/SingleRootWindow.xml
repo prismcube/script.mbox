@@ -2343,10 +2343,10 @@
 					<posx>245</posx>
 					<posy>136</posy>
 					<width>430</width>
-					<height>50</height>
+					<height>60</height>
 					<scroll>true</scroll>
 					<align>left</align>
-					<font>font48</font>
+					<font>font54</font>
 					<textcolor>FFA4F4F9</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
@@ -2381,11 +2381,11 @@
 			<!-- EPG Info -->
 			<control type="group" id="1400700">
 				<posx>70</posx>
-				<posy>500</posy>
+				<posy>513</posy>
 				<control type="label" id="1400701">
 					<description>Longitude info</description>
 					<posx>37</posx>
-					<posy>145</posy>
+					<posy>132</posy>
 					<width>162</width>
 					<height>15</height>
 					<font>font13</font>
@@ -2398,14 +2398,14 @@
 					<posx>225</posx>
 					<posy>75</posy>
 					<height>50</height>
-					<width>420</width>
+					<width>430</width>
 					<textcolor>white</textcolor>
-					<font>font16</font>
+					<font>font30</font>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="button" id="1400702">
-					<posx>223</posx>
-					<posy>125</posy>
+					<posx>224</posx>
+					<posy>133</posy>
 					<width>25</width>
 					<height>15</height>
 					<texturefocus>scroll-left-focus.png</texturefocus>
@@ -2419,7 +2419,7 @@
 				<control type="label" id="1400704">
 					<description>Start EPG Time</description>
 					<posx>257</posx>
-					<posy>117</posy>
+					<posy>125</posy>
 					<width>70</width>
 					<height>30</height>
 					<align>left</align>
@@ -2429,17 +2429,17 @@
 				</control>
 				<control type="progress" id="1400707">
 					<description>EPG progress</description>
-					<posx>313</posx>
-					<posy>126</posy>
-					<width>700</width>
-					<height>14</height>
+					<posx>311</posx>
+					<posy>133</posy>
+					<width>680</width>
+					<height>16</height>
 					<border>0</border>
 					<texturebg border="2">osd/texturebg2.png</texturebg>
 				</control>
 				<control type="label" id="1400705">
 					<description>End EPG Time</description>
-					<posx>1028</posx>
-					<posy>117</posy>
+					<posx>1008</posx>
+					<posy>125</posy>
 					<width>70</width>
 					<height>30</height>
 					<align>left</align>
@@ -2448,8 +2448,8 @@
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="button" id="1400706">
-					<posx>1075</posx>
-					<posy>125</posy>
+					<posx>1054</posx>
+					<posy>133</posy>
 					<align>right</align>
 					<width>25</width>
 					<height>15</height>
@@ -2540,118 +2540,114 @@
 
 			<control type="group">
 				<posx>750</posx>
-				<posy>167r</posy>
+				<posy>104r</posy>
 				<!-- CAS Icons -->
 				<include>CASInfo</include>
 			</control>
 
-			<control type="group">
-				<posx>0</posx>
-				<posy>84r</posy>
-				<!-- Color Keys -->
-				<control type="group" id="1400509">
-					<control type="grouplist">
-						<posx>310</posx>
-						<posy>0</posy>
-						<width>300</width>
-						<height>40</height>
-						<itemgap>2</itemgap>
-						<visible>true</visible>
-						<orientation>horizontal</orientation>
-						<control type="group" id="1400510">
+			<!-- Color Keys -->
+			<control type="group" id="1400509">
+				<control type="grouplist">
+					<posx>985</posx>
+					<posy>499</posy>
+					<width>300</width>
+					<height>40</height>
+					<itemgap>2</itemgap>
+					<align>center</align>
+					<orientation>horizontal</orientation>
+					<control type="group" id="1400510">
+						<width>48</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+						<control type="image" id="1400511">
 							<width>48</width>
 							<height>30</height>
-							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
-							<control type="image" id="1400511">
-								<width>48</width>
-								<height>30</height>
-								<texture>settings-button-nofocus-red.png</texture>
-							</control>
-							<control type="label" id="1400512">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>48</width>
-								<height>30</height>
-								<font>font12</font>
-								<align>center</align>
-								<label>HbbTV</label>
-							</control>
+							<texture>settings-button-nofocus-red.png</texture>
 						</control>
-						<control type="group" id="1400520">
+						<control type="label" id="1400512">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>48</width>
+							<height>30</height>
+							<font>font12</font>
+							<align>center</align>
+							<label>HbbTV</label>
+						</control>
+					</control>
+					<control type="group" id="1400520">
+						<width>80</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+						<control type="image" id="1400521">
 							<width>80</width>
 							<height>30</height>
-							<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-							<control type="image" id="1400521">
-								<width>80</width>
-								<height>30</height>
-								<texture>settings-button-nofocus-green.png</texture>
-							</control>
-							<control type="label" id="1400522">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>80</width>
-								<height>30</height>
-								<font>font12</font>
-								<align>center</align>
-								<label>$ADDON[script.mbox 1039]</label>
-							</control>
+							<texture>settings-button-nofocus-green.png</texture>
 						</control>
-						<control type="group">
+						<control type="label" id="1400522">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>80</width>
+							<height>30</height>
+							<font>font12</font>
+							<align>center</align>
+							<label>$ADDON[script.mbox 1039]</label>
+						</control>
+					</control>
+					<control type="group">
+						<width>50</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+						<control type="image">
 							<width>50</width>
 							<height>30</height>
-							<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-							<control type="image">
-								<width>50</width>
-								<height>30</height>
-								<texture>settings-button-nofocus-green.png</texture>
-							</control>
-							<control type="label">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>50</width>
-								<height>30</height>
-								<font>font12</font>
-								<align>center</align>
-								<label>$ADDON[script.mbox 1039]</label>
-							</control>
+							<texture>settings-button-nofocus-green.png</texture>
 						</control>
-						<control type="group" id="1400530">
+						<control type="label">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>30</height>
+							<font>font12</font>
+							<align>center</align>
+							<label>$ADDON[script.mbox 1039]</label>
+						</control>
+					</control>
+					<control type="group" id="1400530">
+						<width>48</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+						<control type="image" id="1400531">
 							<width>48</width>
 							<height>30</height>
-							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
-							<control type="image" id="1400531">
-								<width>48</width>
-								<height>30</height>
-								<texture>settings-button-nofocus-yellow.png</texture>
-							</control>
-							<control type="label" id="1400532">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>48</width>
-								<height>30</height>
-								<font>font12</font>
-								<align>center</align>
-								<label>$ADDON[script.mbox 1124]</label>
-							</control>
+							<texture>settings-button-nofocus-yellow.png</texture>
 						</control>
-						<control type="group" id="1400540">
+						<control type="label" id="1400532">
+							<posx>0</posx>
+							<posy>0</posy>
 							<width>48</width>
 							<height>30</height>
-							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-							<control type="image" id="1400541">
-								<width>48</width>
-								<height>30</height>
-								<texture>settings-button-nofocus.png</texture>
-							</control>
-							<control type="label" id="1400542">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>48</width>
-								<height>30</height>
-								<font>font12</font>
-								<align>center</align>
-								<label>$ADDON[script.mbox 1060]</label>
-							</control>
+							<font>font12</font>
+							<align>center</align>
+							<label>$ADDON[script.mbox 1124]</label>
+						</control>
+					</control>
+					<control type="group" id="1400540">
+						<width>48</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+						<control type="image" id="1400541">
+							<width>48</width>
+							<height>30</height>
+							<texture>settings-button-nofocus.png</texture>
+						</control>
+						<control type="label" id="1400542">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>48</width>
+							<height>30</height>
+							<font>font12</font>
+							<align>center</align>
+							<label>$ADDON[script.mbox 1060]</label>
 						</control>
 					</control>
 				</control>
@@ -2660,7 +2656,7 @@
 			<!-- AV Info -->
 			<control type="group">
 				<posx>535r</posx>
-				<posy>138r</posy>
+				<posy>137r</posy>
 				<control type="grouplist">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -2806,14 +2802,14 @@
 
 			<!-- Recording Info -->
 			<control type="group">
-				<posx>480r</posx>
-				<posy>410</posy>
+				<posx>515r</posx>
+				<posy>440</posy>
 				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
 				<control type="group">	<!-- Recording #1 -->
 					<posx>0</posx>
 					<posy>85</posy>
 					<control type="image" id="1400010">
-						<posx>45</posx>
+						<posx>47</posx>
 						<posy>8</posy>
 						<width>24</width>
 						<height>24</height>
@@ -2834,7 +2830,7 @@
 					<posx>0</posx>
 					<posy>110</posy>
 					<control type="image" id="1400015">
-						<posx>45</posx>
+						<posx>47</posx>
 						<posy>8</posy>
 						<width>24</width>
 						<height>24</height>

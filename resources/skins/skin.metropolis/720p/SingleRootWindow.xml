@@ -221,7 +221,7 @@ Search for window name
 				<texture>frames/ClassicFrame_Fanart.png</texture>
 			</control>
 
-			<!-- Submenu label & Arrow -->
+			<!-- Help Text for LEFT side of Home screen -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>2</posy>
@@ -250,7 +250,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Menu label & Arrow -->
+			<!-- Help Text for RIGHT side of Home screen -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>2</posy>
@@ -516,8 +516,7 @@ Search for window name
 					<width>215</width>
 					<height>500</height>
 					<onright>1209001</onright>
-					<onup>-</onup>
-					<ondown>1200101</ondown>
+					<onleft>1200101</onleft>
 					<orientation>vertical</orientation>
 					<itemlayout width="200" height="32">
 						<control type="label">
@@ -630,13 +629,12 @@ Search for window name
 				</control>
 			</control>
 
-			<control type="group">
+			<!-- Main Menu & Submenu Descriptions -->
+			<!--control type="group">
 				<posx>0</posx>
 				<posy>33r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
-				<!-- Main Menu Descriptions -->
 				<control type="textbox">
-					<description>MainMenuDescription</description>
 					<visible>Control.HasFocus(1209000)</visible>
 					<posx>340</posx>
 					<posy>-130</posy>
@@ -646,19 +644,17 @@ Search for window name
 					<align>center</align>
 					<textcolor>white</textcolor>
 				</control>
-				<!-- Submenu Description -->
 				<control type="label" id="1200100">
-					<description>MainMenuDescription</description>
 					<visible>!Control.HasFocus(1209000)</visible>
-					<posx>60</posx>
-					<posy>-128</posy>
-					<width>1145</width>
-					<height>30</height>
+					<posx>340</posx>
+					<posy>-130</posy>
+					<width>600</width>
 					<font>METF_SettingsDetail</font>
 					<align>center</align>
 					<textcolor>white</textcolor>
+					<wrapmultiline>true</wrapmultiline>
 				</control>
-			</control>
+			</control-->
 
 			<!-- RSS Feed -->
 			<control type="rss">
@@ -1722,7 +1718,6 @@ Search for window name
 						</control>
 						<!-- EPG Duration -->
 						<control type="label">
-							<description>EPG duration</description>
 							<posx>0</posx>
 							<posy>33</posy>
 							<font>METF_PlotTextMedium</font>
@@ -1731,7 +1726,6 @@ Search for window name
 						</control>
 						<!-- EPG Summary -->
 						<control type="textbox">
-							<description>EPG information</description>
 							<posx>322</posx>
 							<posy>13</posy>
 							<width>663</width>
@@ -2459,23 +2453,23 @@ Search for window name
 
 				<!-- Recording Info -->
 				<control type="group">
-					<posx>775</posx>
-					<posy>623</posy>
+					<posx>700</posx>
+					<posy>552</posy>
 					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
 					<control type="group">
 						<control type="image" id="1400010">
 							<posx>2</posx>
-							<posy>-14</posy>
-							<width>20</width>
-							<height>20</height>
+							<posy>7</posy>
+							<width>18</width>
+							<height>18</height>
 							<texture>new/PVR-IsRecording.png</texture>
 							<visible>substring(Window.Property(ViewRecord1),true)</visible>
 						</control>
 						<control type="label" id="1400011">
-							<posx>25</posx>
-							<posy>-16</posy>
-							<width>280</width>
-							<font>METF_DialogSmall</font>
+							<posx>21</posx>
+							<posy>6</posy>
+							<width>260</width>
+							<font>METF_WeatherDetails7Day</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -2483,17 +2477,17 @@ Search for window name
 					<control type="group">
 						<control type="image" id="1400015">
 							<posx>2</posx>
-							<posy>14</posy>
-							<width>20</width>
-							<height>20</height>
+							<posy>23</posy>
+							<width>18</width>
+							<height>18</height>
 							<texture>new/PVR-IsRecording.png</texture>
 							<visible>substring(Window.Property(ViewRecord2),true)</visible>
 						</control>
 						<control type="label" id="1400016">
-							<posx>25</posx>
-							<posy>13</posy>
-							<width>280</width>
-							<font>METF_DialogSmall</font>
+							<posx>21</posx>
+							<posy>22</posy>
+							<width>260</width>
+							<font>METF_WeatherDetails7Day</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -2538,13 +2532,13 @@ Search for window name
 					</control>
 					<control type="label" id="1400601">
 						<description>Channel Number</description>
-						<posx>85</posx>
+						<posx>88</posx>
 						<posy>-53</posy>
 						<width>200</width>
 						<height>50</height>
 						<align>left</align>
 						<font>METF_WeatherHigh</font>
-						<textcolor>Temp</textcolor>
+						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
@@ -2552,12 +2546,11 @@ Search for window name
 						<description>Channel Name</description>
 						<posx>-19</posx>
 						<posy>16</posy>
-						<width>343</width>
+						<width>331</width>
 						<height>50</height>
-						<scroll>true</scroll>
 						<align>left</align>
 						<font>METF_MusicVizTitle</font>
-						<textcolor>Date</textcolor>
+						<textcolor>Temp</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 
@@ -2589,7 +2582,7 @@ Search for window name
 
 					<!-- Button Icons -->
 					<control type="group">
-						<posx>-95</posx>
+						<posx>-115</posx>
 						<include>DefaultInfoPlateGroup</include>
 					</control>
 
@@ -2603,12 +2596,12 @@ Search for window name
 					<!-- Color Keys -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
-							<posx>747</posx>
-							<posy>-37</posy>
+							<posx>925</posx>
+							<posy>-47</posy>
 							<width>300</width>
 							<height>40</height>
+							<align>right</align>
 							<itemgap>2</itemgap>
-							<visible>true</visible>
 							<orientation>horizontal</orientation>
 							<control type="group" id="1400510">
 								<width>48</width>
@@ -2624,7 +2617,7 @@ Search for window name
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>METF_DialogSmall</font>
+									<font>METF_WeatherDetails7Day</font>
 									<align>center</align>
 									<label>HbbTV</label>
 								</control>
@@ -2643,26 +2636,26 @@ Search for window name
 									<posy>0</posy>
 									<width>80</width>
 									<height>30</height>
-									<font>METF_DialogSmall</font>
+									<font>METF_WeatherDetails7Day</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1039]</label>
 								</control>
 							</control>
 							<control type="group">
-								<width>50</width>
+								<width>80</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
 								<control type="image">
-									<width>50</width>
+									<width>80</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-green.png</texture>
 								</control>
 								<control type="label">
 									<posx>0</posx>
 									<posy>0</posy>
-									<width>50</width>
+									<width>80</width>
 									<height>30</height>
-									<font>METF_DialogSmall</font>
+									<font>METF_WeatherDetails7Day</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1039]</label>
 								</control>
@@ -2681,7 +2674,7 @@ Search for window name
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>METF_DialogSmall</font>
+									<font>METF_WeatherDetails7Day</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1124]</label>
 								</control>
@@ -2700,7 +2693,7 @@ Search for window name
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>METF_DialogSmall</font>
+									<font>METF_WeatherDetails7Day</font>
 									<align>center</align>
 									<label>$ADDON[script.mbox 1060]</label>
 								</control>
@@ -2710,7 +2703,7 @@ Search for window name
 
 					<!-- AV Info -->
 					<control type="group">
-						<posx>342</posx>
+						<posx>312</posx>
 						<posy>62</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2901,19 +2894,19 @@ Search for window name
 					<posx>440</posx>
 					<posy>595</posy>
 					<control type="label" id="1400701">
-						<description>Longitude info</description>
+						<description>Longitude Info</description>
 						<posx>-410</posx>
-						<posy>79</posy>
+						<posy>77</posy>
 						<width>270</width>
 						<height>15</height>
 						<font>METF_PlotTextMedium</font>
 						<align>left</align>
-						<textcolor>white</textcolor>
+						<textcolor>Date</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="button" id="1400702">
-						<posx>-40</posx>
-						<posy>45</posy>
+						<posx>-70</posx>
+						<posy>44</posy>
 						<width>25</width>
 						<height>15</height>
 						<label></label>
@@ -2928,47 +2921,52 @@ Search for window name
 					</control>
 					<control type="label" id="1400703">
 						<description>EPG Name</description>
-						<posx>-40</posx>
-						<posy>10</posy>
-						<width>360</width>
-						<font>METF_SettingsDetail</font>
-						<textcolor>white</textcolor>
+						<posx>-70</posx>
+						<posy>2</posy>
+						<width>680</width>
+						<height>30</height>
+						<font>METF_SettingsHeading</font>
+						<textcolor>Date</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="label" id="1400704">
 						<description>EPG Start Time</description>
-						<posx>-17</posx>
-						<posy>41</posy>
+						<posx>-40</posx>
+						<posy>39</posy>
+						<width>60</width>
+						<height>15</height>
 						<align>left</align>
 						<font>METF_PlotTextSmall</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="progress" id="1400707">
-						<description>progress control</description>
-						<posx>36</posx>
-						<posy>48</posy>
-						<width>210</width>
-						<height>12</height>
+						<posx>25</posx>
+						<posy>45</posy>
+						<width>500</width>
+						<height>15</height>
 						<overlaytexture></overlaytexture>
-						<texturebg>osd/osd_progress_back2.png</texturebg>
-						<lefttexture>osd/osd_progress_left2.png</lefttexture>
-						<midtexture>osd/osd_progress_mid2.png</midtexture>
-						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<texturebg>osd/osd_progress_back.png</texturebg>
+						<lefttexture>osd/osd_progress_left.png</lefttexture>
+						<midtexture>osd/osd_progress_mid.png</midtexture>
+						<righttexture>osd/osd_progress_right.png</righttexture>
 						<colordiffuse>DialogProgressBar</colordiffuse>
+						<overlaytexture>-</overlaytexture>
 					</control>
 					<control type="label" id="1400705">
 						<description>EPG End Time</description>
-						<posx>253</posx>
-						<posy>41</posy>
+						<posx>540</posx>
+						<posy>39</posy>
+						<width>60</width>
+						<height>15</height>
 						<font>METF_PlotTextSmall</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="button" id="1400706">
-						<posx>298</posx>
-						<posy>45</posy>
-						<align>right</align>
+						<posx>593</posx>
+						<posy>44</posy>
 						<width>25</width>
 						<height>15</height>
+						<align>right</align>
 						<label></label>
 						<font></font>
 						<texturefocus>new/scroll-right-focus.png</texturefocus>
@@ -3850,19 +3848,16 @@ Search for window name
 				<control type="group" id="1509010">
 					<posx>400</posx>
 					<posy>160r</posy>
-					<!-- Config Menu Description-->
+					<!-- Menu Description-->
 					<control type="label" id="1501003">
-						<posx>40</posx>
-						<posy>-3</posy>
-						<width>675</width>
-						<height>30</height>
-						<font>METF_SettingsDetail</font>
+						<posx>-100</posx>
+						<posy>3</posy>
+						<width>750</width>
+						<height>66</height>
+						<font>METF_PlotTextSmall</font>
 						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<scroll>true</scroll>
-						<scrollspeed>70</scrollspeed>
-						<scrollsuffix>  |  </scrollsuffix>
+						<align>justify</align>
+						<wrapmultiline>true</wrapmultiline>
 					</control>
 					<control type="group">
 						<posx>-20</posx>
@@ -3991,20 +3986,17 @@ Search for window name
 
 				<!-- Menu Description -->
 				<control type="group" id="4909010">
-					<posx>400</posx>
-					<posy>160r</posy>
+					<posx>0</posx>
+					<posy>0</posy>
 					<control type="label" id="4901003">
-						<posx>40</posx>
-						<posy>-3</posy>
-						<width>655</width>
-						<height>30</height>
-						<font>METF_SettingsDetail</font>
+						<posx>300</posx>
+						<posy>565</posy>
+						<width>750</width>
+						<height>66</height>
+						<font>METF_PlotTextSmall</font>
 						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<scroll>true</scroll>
-						<scrollspeed>70</scrollspeed>
-						<scrollsuffix>  |  </scrollsuffix>
+						<align>justify</align>
+						<wrapmultiline>true</wrapmultiline>
 					</control>
 				</control>
 			</control>
@@ -4834,18 +4826,17 @@ Search for window name
 						</control>
 					</focusedlayout>
 				</control>
-				<!-- Menu Title  -->
+				<!-- Menu Description  -->
 				<control type="label">
-					<description>Title</description>
-					<posx>465</posx>
-					<posy>162r</posy>
-					<width>655</width>
-					<height>30</height>
-					<font>METF_SettingsDetail</font>
+					<posx>300</posx>
+					<posy>565</posy>
+					<width>750</width>
+					<height>66</height>
+					<font>METF_PlotTextSmall</font>
 					<label>$ADDON[script.mbox 1087]</label>
-					<align>left</align>
-					<aligny>center</aligny>
+					<align>justify</align>
 					<textcolor>white</textcolor>
+					<wrapmultiline>true</wrapmultiline>
 				</control>
 				<control type="group" id="3403000">
 					<!-- SYSTEM -->

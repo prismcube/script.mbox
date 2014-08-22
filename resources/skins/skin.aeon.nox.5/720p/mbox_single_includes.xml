@@ -5801,7 +5801,7 @@
 					<!-- Progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>650</posx>
+						<posx>645</posx>
 						<posy>45</posy>
 						<width>100</width>
 						<height>14</height>
