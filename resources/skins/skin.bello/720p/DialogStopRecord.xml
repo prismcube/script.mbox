@@ -8,12 +8,16 @@
 			<posx>335</posx>
 			<posy>90</posy>
 			<!-- Panel -->
-			<control type="image" id="100">
-				<posx>0</posx>
-				<posy>100</posy>
-				<width>610</width>
-				<height>310</height>
-				<texture border="40">DialogBack.png</texture>
+			<control type="group">
+				<control type="image" id="100">
+					<posx>-40</posx>
+					<posy>87</posy>
+					<width>690</width>
+					<height>340</height>
+	<!--				<texture border="40">DialogBack.png</texture>-->
+					<aspectratio>stretch</aspectratio>
+					<texture>dialogs/other/default_bg.png</texture>
+				</control>
 			</control>
 			<control type="group">
 				<posy>100</posy>
@@ -43,37 +47,29 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+<!--					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>-->
+					<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 					<onleft></onleft>
 					<onright></onright>
 				</control>
-				<control type="image">
-					<posx>350</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>71</height>
-					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					<visible>Control.HasFocus(501)</visible>
-				</control>
 				<control type="label" id="502">
-					<posx>10</posx>
+					<posx>13</posx>
 					<posy>5</posy>
 					<width>400</width>
 					<height>30</height>
-					<font>font13</font>
-					<textcolor>grey2</textcolor>
+					<font>FontSize_20</font>
+					<textcolor>77white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
 				</control>
 				<control type="label" id="503">
-					<posx>10</posx>
+					<posx>13</posx>
 					<posy>30</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
+					<font>FontSize_20B</font>
+					<textcolor>77white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
@@ -83,8 +79,8 @@
 					<posy>30</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
+					<font>FontSize_20B</font>
+					<textcolor>77white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1024]</label>
@@ -109,37 +105,29 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+<!--					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>-->
+					<texture>buttons/settings_fo.png</texture>
 					<onleft></onleft>
 					<onright></onright>
 				</control>
-				<control type="image">
-					<posx>350</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>71</height>
-					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					<visible>Control.HasFocus(511)</visible>
-				</control>
 				<control type="label" id="512">
-					<posx>10</posx>
+					<posx>13</posx>
 					<posy>5</posy>
 					<width>400</width>
 					<height>30</height>
-					<font>font13</font>
-					<textcolor>grey2</textcolor>
+					<font>FontSize_20</font>
+					<textcolor>99white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
 				</control>
 				<control type="label" id="513">
-					<posx>10</posx>
+					<posx>13</posx>
 					<posy>30</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
+					<font>FontSize_20B</font>
+					<textcolor>99white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
@@ -149,8 +137,8 @@
 					<posy>30</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
+					<font>FontSize_20B</font>
+					<textcolor>99white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1024]</label>
@@ -170,16 +158,20 @@
 				<height>70</height>
 				<control type="button" id="521">
 					<description>Cancel</description>
-					<posx>160</posx>
-					<posy>17</posy>				
-					<width>250</width>
+					<posx>195</posx>
+					<posy>27</posy>
+					<width>160</width>
 					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>white</textcolor>
+					<font>FontSize_22</font>
+					<textcolor>99grey</textcolor>
 					<focusedcolor>white</focusedcolor>
+					<disabledcolor>44white</disabledcolor>
+					<shadowcolor>55000000</shadowcolor>
 					<align>center</align>
-					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>-->
+					<texturenofocus border="5">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="5">dialogs/keyboard/button_fo.png</texturefocus>
 					<label>[B]$ADDON[script.mbox 1026][/B]</label>
 				</control>
 			</control>

@@ -329,36 +329,26 @@
 	</include>
 
 	<include name="DefaultDialogCommonSetting">
-		<control type="image">
-			<posx>20</posx>
-			<posy>11</posy>
-			<width>580</width>
-			<height>110</height>
-			<aspectratio>stretch</aspectratio>
-			<texture>GlassTitleBar.png</texture>
-		</control>
 		<control type="button" id="1006995">
 			<description>Close Window</description>
 			<posx>520</posx>
 			<posy>13</posy>
-			<width>64</width>
-			<height>32</height>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<width>60</width>
+			<height>28</height>
+			<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+			<texturefocus>DialogCloseButton_fo.png</texturefocus>
 			<onleft>1006997</onleft>
 			<onright>1006999</onright>
 		</control>
 		<control type="label" id="1003005">
 			<description>Title</description>
 			<posx>20</posx>
-			<posy>22</posy>
+			<posy>39</posy>
 			<width>570</width>
-			<height>30</height>
-			<font>font13_title</font>
+			<font>FontSize_36</font>
 			<align>center</align>
 			<aligny>center</aligny>
 			<textcolor>white</textcolor>
-			<shadowcolor>black</shadowcolor>
 		</control>
 	</include>
 

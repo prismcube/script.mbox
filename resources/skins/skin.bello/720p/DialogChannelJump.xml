@@ -10,50 +10,54 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>480</width>
-				<height>230</height>
-				<texture border="40">DialogBack.png</texture>
+				<posx>-20</posx>
+				<posy>-10</posy>
+				<width>520</width>
+				<height>250</height>
+				<texture>dialogs/other/default_bg.png</texture>
+				<colordiffuse>FFFF00FF</colordiffuse>
 			</control>
 			<control type="label" id="210">
 				<description>Channel Number</description>
-				<posx>0</posx>
+				<posx>35</posx>
 				<posy>35</posy>
-				<width>480</width>
+				<width>410</width>
 				<height>30</height>
-				<font>font35_title</font>
+				<font>FontSize_38B</font>
+				<textcolor>white</textcolor>
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
 			<control type="label" id="211">
 				<description>Channel Name</description>
-				<posx>0</posx>
-				<posy>75</posy>
-				<width>480</width>
+				<posx>35</posx>
+				<posy>85</posy>
+				<width>410</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font13</font>
+				<font>FontSize_24</font>
+				<textcolor>white</textcolor>
 			</control>		
 			<control type="label" id="212">
 				<description>EPG Name</description>
 				<posx>35</posx>
 				<posy>125</posy>
-				<width>400</width>
+				<width>410</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font13</font>
+				<font>FontSize_24</font>
+				<textcolor>white</textcolor>
 				<label>$ADDON[script.mbox 1016]</label>
 			</control>
 			<control type="progress" id="213">
 				<posx>40</posx>
 				<posy>170</posy>
 				<width>400</width>
-				<height>15</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				<height>30</height>
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
 			</control>
 		</control>
 	</controls>

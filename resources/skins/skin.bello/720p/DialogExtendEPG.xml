@@ -9,11 +9,11 @@
 			<posy>30</posy>
 			<!-- Panel -->
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1100</width>
-				<height>520</height>
-				<texture border="20">DialogBack.png</texture>
+				<posx>-195</posx>
+				<posy>-120</posy>
+				<width>1500</width>
+				<height>770</height>
+				<texture>dialogs/other/bg_textviewer.png</texture>
 			</control>
 			<control type="group">
 				<control type="button" id="301">
@@ -49,8 +49,8 @@
 					<posy>458</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
+					<font>FontSize_18B</font>
+					<textcolor>purple</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1091]</label>
@@ -61,8 +61,8 @@
 					<posy>458</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
+					<font>FontSize_18B</font>
+					<textcolor>purple</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1092]</label>
@@ -73,8 +73,8 @@
 					<posy>458</posy>
 					<width>200</width>
 					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
+					<font>FontSize_18B</font>
+					<textcolor>purple1</textcolor>
 					<aligny>center</aligny>
 					<label>$INFO[Window.Property(EPGIndex)]</label>
 					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>
@@ -84,26 +84,26 @@
 			<control type="label" id="100">
 				  <description>EPG Title</description>
 				  <posx>80</posx>
-				  <posy>30</posy>
+				  <posy>10</posy>
 				  <width>950</width>
 				  <height>100</height>
 				  <visible>true</visible>
-				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font35_title</font>
-				  <textcolor>FFFFFFFF</textcolor>
+<!--				  <colordiffuse>FFFFFFFF</colordiffuse>-->
+				  <font>FontSize_36</font>
+				  <textcolor>white</textcolor>
+				  <shadowcolor>99000000</shadowcolor>
 				  <label>$INFO[Window.Property(EPGTitle)]</label>
 			</control>
-
 			<control type="textbox" id="101">
 				  <description>EPG Description</description>
 				  <posx>80</posx>
-				  <posy>135</posy>
+				  <posy>145</posy>
 				  <width>950</width>
-				  <height>320</height>
+				  <height>310</height>
 				  <visible>true</visible>
-				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font13</font>
-				  <textcolor>FFFFFFFF</textcolor>
+				  <font>FontSize_20</font>
+				  <textcolor>white</textcolor>
+				  <shadowcolor>99000000</shadowcolor>
 				  <wrapmultiline>true</wrapmultiline>
 				  <pagecontrol>110</pagecontrol>
 				  <autoscroll delay="3000" time="1000" repeat="10000">!Control.HasFocus(110)</autoscroll>
@@ -111,16 +111,16 @@
 			</control>
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="110">
-				<posx>1050</posx>
-				<posy>135</posy>
-				<width>25</width>
-				<height>321</height>
+				<posx>1034</posx>
+				<posy>147</posy>
+				<width>10</width>
+				<height>300</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft></onleft>
 				<onright></onright>
 				<ondown></ondown>
@@ -131,27 +131,28 @@
 			<control type="label" id="102">
 				<description>Start Time</description>
 				<posx>830</posx>
-				<posy>102</posy>
-				<font>font13</font>
+				<posy>112</posy>
+				<font>FontSize_20</font>
 				<label>$INFO[Window.Property(EPGTime)]</label>
 			</control>
 			<control type="label">
 				<description>EPG Date</description>
 				<posx>830</posx>
-				<posy>82</posy>
-				<font>font13</font>
+				<posy>92</posy>
+				<font>FontSize_20</font>
 				<label>$INFO[Window.Property(EPGDate)]</label>
 			</control>
 			<control type="label">
 				<description>EPG Duration</description>
 				<posx>970</posx>
-				<posy>102</posy>
-				<font>font13</font>
+				<posy>112</posy>
+				<font>FontSize_20</font>
 				<label>$INFO[Window.Property(EPGDuration)]</label>
 			</control>
 
 			<!-- AV Info -->
 			<control type="group">
+				<posy>10</posy>
 				<control type="grouplist">
 					<posx>300</posx>
 					<posy>90</posy>
@@ -176,7 +177,7 @@
 							<posy>6</posy>
 							<width>50</width>
 							<height>10</height>
-							<font>font15</font>
+							<font>FontSize_20</font>
 							<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 						</control>
 					</control>

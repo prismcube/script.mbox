@@ -10,29 +10,21 @@
 			<posy>50</posy>
 			<!-- Panel -->
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>600</width>
-				<height>565</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
-			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>600</width>
-				<height>120</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<posx>-140</posx>
+				<posy>-190</posy>
+				<width>850</width>
+				<height>903</height>
+				<texture>dialogs/other/bg_textviewer.png</texture>
 			</control>
 			<control type="button" id="109">
 				<description>Close Window</description>
-				<posx>520</posx>
-				<posy>9</posy>
-				<width>64</width>
-				<height>32</height>
+				<posx>505</posx>
+				<posy>-22</posy>
+				<width>60</width>
+				<height>28</height>
 				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
 				<onleft>9001</onleft>
 				<onright>8001</onright>
 				<onup>100</onup>
@@ -41,41 +33,40 @@
 			<control type="label" id="101">
 				<description>Title</description>
 				<posx>20</posx>
-				<posy>20</posy>
+				<posy>10</posy>
 				<width>570</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>FontSize_36</font>
 				<label>$INFO[Control.GetLabel]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="label">
-				<posx>570</posx>
+				<posx>545</posx>
 				<posy>480</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>FontSize_18</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
+				<textcolor>99white</textcolor>
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(9001).CurrentPage]/$INFO[Container(9001).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(9001)</visible>
 			</control>
 			<control type="button" id="100">
 				<posx>20</posx>
 				<posy>490</posy>
-				<width>200</width>
+				<width>160</width>
 				<height>40</height>
 				<label>$ADDON[script.mbox 1022]</label>
 				<font>font12_title</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
-				<texturenofocus>MenuItemNF.png</texturenofocus>
-				<texturefocus>button-focus.png</texturefocus>
+				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
 				<onleft>9001</onleft>
 				<onright>8001</onright>
 				<onup>9001</onup>
@@ -84,7 +75,7 @@
 			<!-- Hotkey -->
 			<control type="group">
 				<posx>20</posx>
-				<posy>530</posy>
+				<posy>544</posy>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -94,20 +85,20 @@
 				</control>
 				<control type="label">
 					<posx>20</posx>
-					<posy>0</posy>
+					<posy>-6</posy>
 					<width>570</width>
 					<height>30</height>
-					<font>font10</font>
+					<font>FontSize_14</font>
 					<align>left</align>
 					<scroll>true</scroll>
-					<textcolor>grey3</textcolor>
+					<textcolor>77white</textcolor>
 					<shadowcolor>black</shadowcolor>
 					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
 			<control type="list" id="9001">
-				<posx>30</posx>
-				<posy>60</posy>
+				<posx>10</posx>
+				<posy>65</posy>
 				<width>600</width>
 				<height>420</height>
 				<onleft>100</onleft>
@@ -120,16 +111,9 @@
 				<movement>2</movement>
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(8001)">Conditional</animation>
 				<itemlayout height="70" width="590">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>530</width>
-						<height>68</height>
-						<texture border="5">button-nofocus.png</texture>
-					</control>
 					<!-- Selection Icon -->
 					<control type="image">
-						<posx>0</posx>
+						<posx>5</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
@@ -142,8 +126,8 @@
 						<posy>0</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -155,8 +139,8 @@
 						<posy>30</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20B</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -168,8 +152,8 @@
 						<posy>0</posy>
 						<width>250</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20B</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>						
@@ -181,8 +165,8 @@
 						<posy>30</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_20B</font>
+						<textcolor>77white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -191,16 +175,16 @@
 				</itemlayout>
 				<focusedlayout height="70" width="590">
 					<control type="image">
-						<posx>0</posx>
+						<posx>3</posx>
 						<posy>0</posy>
-						<width>530</width>
+						<width>525</width>
 						<height>68</height>
-						<texture border="5">StackFO_white2.png</texture>
+						<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<!-- Selection Icon -->
 					<control type="image">
-						<posx>0</posx>
+						<posx>5</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
@@ -213,7 +197,7 @@
 						<posy>0</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>left</align>
@@ -226,7 +210,7 @@
 						<posy>30</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>FontSize_20B</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>left</align>
@@ -239,7 +223,7 @@
 						<posy>0</posy>
 						<width>250</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>FontSize_20B</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>
@@ -252,7 +236,7 @@
 						<posy>30</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>FontSize_20B</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>
@@ -262,16 +246,16 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="8001">
-				<posx>560</posx>
-				<posy>60</posy>
-				<width>25</width>
-				<height>420</height>
+				<posx>547</posx>
+				<posy>75</posy>
+				<width>10</width>
+				<height>400</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>9001</onleft>
 				<onright>9001</onright>
 				<ondown></ondown>

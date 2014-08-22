@@ -6,63 +6,54 @@
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
-			<posx>335</posx>
-			<posy>100</posy>
+			<posx>340</posx>
+			<posy>235</posy>
             <include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
-			<control type="image">
-				<posx>0</posx>
-				<posy>100</posy>
-				<width>610</width>
-				<height>230</height>
-				<texture border="40">DialogBack.png</texture>
+			<control type="group">
+				<posx>-340</posx>
+				<posy>-235</posy>
+				<control type="image">
+					<include>FullscreenDimensions</include>
+					<texture background="true">dialogs/other/bg_ok.png</texture>
+				</control>
 			</control>
 			<control type="group">
-				<posy>100</posy>
-				<control type="image">
-					<posx>40</posx>
-					<posy>11</posy>
-					<width>530</width>
-					<height>110</height>
-					<aspectratio>stretch</aspectratio>
-					<texture>GlassTitleBar.png</texture>
-				</control>
 				<control type="button" id="6995">
 					<description>Close Window</description>
-					<posx>520</posx>
-					<posy>13</posy>
-					<width>64</width>
-					<height>32</height>
-					<texturefocus>DialogCloseButton-focus.png</texturefocus>
-					<texturenofocus>DialogCloseButton.png</texturenofocus>
+					<posx>530</posx>
+					<posy>7</posy>
+					<width>60</width>
+					<height>28</height>
+					<texturefocus>DialogCloseButton_fo.png</texturefocus>
+					<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
 					<onleft>200</onleft>
 					<onright>202</onright>
 				</control>
 				<control type="label" id="3005">
 					<description>Title</description>
-					<posx>20</posx>
-					<posy>22</posy>
-					<width>570</width>
-					<height>30</height>
-					<font>font13_title</font>
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>600</width>
+					<font>FontSize_36</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
 				</control>
 			</control>
 
 			<!-- Channel Name -->
 			<control type="label" id="101">
 				<description>Record Name</description>
-				<posx>20</posx>
-				<posy>180</posy>
-				<width>570</width>
-				<height>20</height>
-				<font>font13</font>
+				<posx>25</posx>
+				<posy>60</posy>
+				<width>550</width>
+				<height>90</height>
+				<font>FontSize_20</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>99white</textcolor>
+				<shadowcolor>99000000</shadowcolor>
 				<shadowcolor>black</shadowcolor>
 				<label></label>
 			</control>
@@ -70,30 +61,33 @@
 			<!-- Record Name -->
 			<control type="label" id="102">
 				<description>EPG Start Time</description>
-				<posx>40</posx>
-				<posy>220</posy>
-				<width>530</width>
-				<height>20</height>
-				<font>font13</font>
+				<posx>25</posx>
+				<posy>90</posy>
+				<width>550</width>
+				<height>90</height>
+				<font>FontSize_20</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>99white</textcolor>
+				<shadowcolor>99000000</shadowcolor>
 				<shadowcolor>black</shadowcolor>
 				<label></label>
 			</control>
 
 			<control type="button" id="200">
 				<description>Yes</description>
-				<posx>70</posx>
-				<posy>270</posy>				
-				<width>200</width>
+				<posx>130</posx>
+				<posy>188</posy>
+				<width>160</width>
 				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
+				<font>FontSize_22</font>
+				<textcolor>99grey</textcolor>
 				<focusedcolor>white</focusedcolor>
+				<disabledcolor>44white</disabledcolor>
+				<shadowcolor>55000000</shadowcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<texturenofocus border="5">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="5">dialogs/keyboard/button_fo.png</texturefocus>
 				<onleft>202</onleft>
 				<onright>202</onright>
 				<label>[B]$ADDON[script.mbox 1109][/B]</label>
@@ -101,16 +95,18 @@
 
 			<control type="button" id="202">
 				<description>Cancel</description>
-				<posx>340</posx>
-				<posy>270</posy>				
-				<width>200</width>
+				<posx>310</posx>
+				<posy>188</posy>
+				<width>160</width>
 				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
+				<font>FontSize_22</font>
+				<textcolor>99grey</textcolor>
 				<focusedcolor>white</focusedcolor>
+				<disabledcolor>44white</disabledcolor>
+				<shadowcolor>55000000</shadowcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<texturenofocus border="5">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="5">dialogs/keyboard/button_fo.png</texturefocus>
 				<onleft>200</onleft>
 				<onright>200</onright>
 				<label>[B]$ADDON[script.mbox 1026][/B]</label>
