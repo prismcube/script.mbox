@@ -63,51 +63,7 @@ def RecordConflict( aInfo ) :
 	dialog.doModal( )
 
 
-def HasCasInfoByChannel( aChannel ) :
-	if not aChannel or aChannel.mError != 0 :
-		#LOG_TRACE('----casCheck--------ch None')
-		return
-
-	casInfo = []
-
-	if aChannel.mIsCA & ElisEnum.E_MEDIAGUARD :
-		casInfo.append( 'S' ) #SECA MediaGuard
-
-	if aChannel.mIsCA & ElisEnum.E_VIACCESS :
-		casInfo.append( 'V' ) #Viaccess
-
-	if aChannel.mIsCA & ElisEnum.E_NAGRA :
-		casInfo.append( 'N' ) #Nagra
-
-	if aChannel.mIsCA & ElisEnum.E_IRDETO :
-		casInfo.append( 'I' ) #Irdeto
-
-	if aChannel.mIsCA & ElisEnum.E_CONAX :
-		casInfo.append( 'CO' ) #Conax
-
-	if aChannel.mIsCA & ElisEnum.E_CRYPTOWORKS :
-		casInfo.append( 'CW' ) #Cryptoworks
-
-	if aChannel.mIsCA & ElisEnum.E_NDS :
-		casInfo.append( 'ND' ) #NDS
-
-	if aChannel.mIsCA & ElisEnum.E_BETADIGITAL :
-		casInfo.append( 'B' ) #Betadigital
-
-	if aChannel.mIsCA & ElisEnum.E_DRECRYPT :
-		casInfo.append( 'DC' ) #DRECript
-
-	if aChannel.mIsCA & ElisEnum.E_VERIMATRIX :
-		casInfo.append( 'VM' ) #Verimatrix
-
-	if aChannel.mIsCA & ElisEnum.E_OTHERS :
-		casInfo.append( 'O' ) #Others
-
-	LOG_TRACE('----------mask[%s] CasInfo[%s]'% ( aChannel.mIsCA, casInfo ) )
-	return casInfo
-
-
-def UpdateCasInfo( self, aChannel ) :
+def UpdateCASInfo( self, aChannel ) :
 	from pvr.gui.GuiConfig import E_XML_PROPERTY_CAS
 
 	if not aChannel or aChannel.mError != 0 :
@@ -182,18 +138,6 @@ def UpdateCasInfo( self, aChannel ) :
 	else :
 		self.setProperty( 'iCasO', '' )	
 	
-	"""
-	casInfo = []	
-	casInfo = HasCasInfoByChannel( aChannel )
-	self.setProperty( E_XML_PROPERTY_CAS, 'True' )
-	if casInfo :
-		for casName in casInfo :
-			aPropertyID = 'iCas' + casName
-			self.setProperty( aPropertyID, casName )
-	else :
-		return
-	"""
-
 
 def HasEPGComponent( aEPG, aFlag ) :
 	if not aEPG or aEPG.mError != 0 :
