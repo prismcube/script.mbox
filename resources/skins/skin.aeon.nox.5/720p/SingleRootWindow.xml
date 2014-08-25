@@ -443,12 +443,14 @@
 						<width>1186</width>
 						<height>58</height>
 						<texture flipy="true">submenu_bar.png</texture>
+						<colordiffuse>DDFFFFFF</colordiffuse>
 					</control>
 					<control type="image">
 						<posx>1186</posx>
 						<width>60</width>
 						<height>58</height>
 						<texture flipx="true" flipy="true">submenu_end.png</texture>
+						<colordiffuse>DDFFFFFF</colordiffuse>
 					</control>
 					<control type="button" id="1200102">
 						<posx>898</posx>
@@ -637,12 +639,14 @@
 					<width>1186</width>
 					<height>61</height>
 					<texture flipy="true">submenu_bar.png</texture>
+					<colordiffuse>DDFFFFFF</colordiffuse>
 				</control>
 				<control type="image">
 					<posx>33</posx>
 					<width>60</width>
 					<height>61</height>
 					<texture flipy="true">submenu_end.png</texture>
+					<colordiffuse>DDFFFFFF</colordiffuse>
 				</control>
 				<control type="label">
 					<posx>1253</posx>

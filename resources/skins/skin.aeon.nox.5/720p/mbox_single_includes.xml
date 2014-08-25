@@ -680,6 +680,7 @@
 		<width>60</width>
 		<height>58</height>
 		<texture>submenu_end.png</texture>
+		<colordiffuse>DDFFFFFF</colordiffuse>
 	</include>
 
 	<include name="SubMainMenuEndValues">
@@ -688,6 +689,7 @@
 		<width>60</width>
 		<height>58</height>
 		<texture flipx="true">submenu_end.png</texture>
+		<colordiffuse>DDFFFFFF</colordiffuse>
 	</include>
 
 	<include name="SubMainMenuMiddleValues">
@@ -700,9 +702,10 @@
 		<aligny>top</aligny>
 		<font>font13_title</font>
 		<textcolor>white</textcolor>
-		<focusedcolor>FF6db9e5</focusedcolor>
-		<texturefocus>submenu_bar_fo.png</texturefocus>
+		<focusedcolor>white</focusedcolor>
+		<texturefocus>submenu_bar_fo2.png</texturefocus>
 		<texturenofocus>submenu_bar.png</texturenofocus>
+		<colordiffuse>FFFFFFFF</colordiffuse>
 		<pulseonselect>false</pulseonselect>
 	</include>
 
