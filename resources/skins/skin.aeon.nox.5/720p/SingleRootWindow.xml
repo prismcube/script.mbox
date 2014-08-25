@@ -828,6 +828,7 @@
 								<width>39</width>
 								<height>27</height>
 								<texture>OverlayLocked.png</texture>
+								<colordiffuse>75FFFFFF</colordiffuse>
 								<visible>substring(ListItem.Property(iLock),true)</visible>
 							</control>
 							<!-- Skip Icon -->
@@ -1382,6 +1383,7 @@
 							<width>35</width>
 							<height>25</height>
 							<texture>OverlayLocked.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
 						</control>
 						<control type="label">
 							<posx>30</posx>
