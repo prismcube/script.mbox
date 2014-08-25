@@ -8,22 +8,22 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image" id="9001">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>600</width>
-				<height>160</height>
-				<texture border="20">OverlayDialogBackground.png</texture>
+				<posx>-45</posx>
+				<posy>-20</posy>
+				<width>690</width>
+				<height>200</height>
+				<texture>dialogs/other/default_bg.png</texture>
 			</control>
 			<control type="label" id="100">
 				<description>Dialog Message 1</description>
 				<posx>20</posx>
-				<posy>60</posy>
+				<posy>58</posy>
 				<width>560</width>
 				<height>30</height>
 				<align>left</align>
 				<aligny>center</aligny>
 				<haspath>true</haspath>
-				<font>font13</font>
+				<font>FontSize_20</font>
 			</control>
 			<control type="label" id="200">
 				<description>Title</description>
@@ -31,7 +31,7 @@
 				<posy>18</posy>
 				<width>560</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>FontSize_28B</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>blue</textcolor>
@@ -43,7 +43,7 @@
 				<posy>18</posy>
 				<width>100</width>
 				<height>30</height>
-				<font>font13</font>
+				<font>FontSize_18</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -52,21 +52,23 @@
 			<control type="label" id="300">
 				<description>Dialog Message 2</description>
 				<posx>20</posx>
-				<posy>85</posy>
+				<posy>83</posy>
 				<width>560</width>
 				<height>30</height>
 				<align>left</align>
 				<aligny>center</aligny>
 				<haspath>true</haspath>
-				<font>font13</font>
+				<font>FontSize_20</font>
 			</control>
 			<control type="progress" id="400">
 				<posx>20</posx>
-				<posy>120</posy>
+				<posy>110</posy>
 				<width>560</width>
-				<height>12</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				<height>30</height>
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
+				<righttexture border="1">osd/osd_right_progress.png</righttexture>
 			</control>
 		</control>
 	</controls>

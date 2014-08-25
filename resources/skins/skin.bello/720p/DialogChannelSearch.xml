@@ -9,28 +9,28 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image">
-				<posx>0</posx>
+				<posx>20</posx>
 				<posy>0</posy>
-				<width>1200</width>
-				<height>640</height>
-				<texture border="40">DialogBack.png</texture>
+				<width>1160</width>
+				<height>635</height>
+				<texture>bg/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image">
-				<posx>10</posx>
-				<posy>12</posy>
-				<width>1180</width>
-				<height>93</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<posx>-250</posx>
+				<posy>-185</posy>
+				<width>1700</width>
+				<height>980</height>
+<!--				<texture border="40">DialogBack.png</texture>-->
+				<texture>dialogs/other/bg_textviewer.png</texture>
 			</control>
 			<control type="button" id="104">
 				<description>Close Window</description>
 				<posx>1100</posx>
-				<posy>14</posy>
-				<width>64</width>
-				<height>32</height>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<posy>0</posy>
+				<width>60</width>
+				<height>28</height>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<onup>400</onup>
@@ -40,23 +40,22 @@
 			<control type="label" id="100">
 				<description>Title</description>
 				<posx>0</posx>
-				<posy>10</posy>
+				<posy>35</posy>
 				<width>1200</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_40</font>
 				<label>$ADDON[script.mbox 1017]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="label" id="101">
 				<description>TV List</description>
 				<posx>85</posx>
-				<posy>60</posy>
+				<posy>90</posy>
 				<width>500</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_20B</font>
 				<label>$ADDON[script.mbox 1018]</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -66,10 +65,10 @@
 			<control type="label" id="103">
 				<description>Radio List</description>
 				<posx>620</posx>
-				<posy>60</posy>
+				<posy>90</posy>
 				<width>500</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_20B</font>
 				<label>$ADDON[script.mbox 1019]</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -79,7 +78,7 @@
 			<!-- TV List -->
 			<control type="list" id="400">
 				<posx>85</posx>
-				<posy>100</posy>
+				<posy>130</posy>
 				<width>470</width>
 				<height>360</height>
 				<onleft>403</onleft>
@@ -89,20 +88,14 @@
 				<scrolltime>200</scrolltime>
 				<pagecontrol>401</pagecontrol>
 				<itemlayout height="40" width="470">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>470</width>
-						<height>41</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
 					<control type="label">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>400</width>
+						<width>390</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<textoffsetx>10</textoffsetx>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -123,14 +116,15 @@
 						<posy>0</posy>
 						<width>470</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 					</control>
 					<control type="label">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>400</width>
+						<width>390</width>
 						<height>40</height>
-						<font>font13</font>
+						<textoffsetx>10</textoffsetx>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -149,15 +143,15 @@
 
             <!-- TV Scrollbar -->
 			<control type="scrollbar" id="401">
-				<posx>550</posx>
-				<posy>95</posy>
-				<width>25</width>
+				<posx>560</posx>
+				<posy>125</posy>
+				<width>10</width>
 				<height>375</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<ondown>104</ondown>
@@ -168,14 +162,14 @@
 
 			<control type="label">
 				<posx>550</posx>
-				<posy>467</posy>
+				<posy>497</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>FontSize_18</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
+				<textcolor>99white</textcolor>
 				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(400)</visible>
 			</control>
@@ -183,7 +177,7 @@
 			<!-- Radio List -->
 			<control type="list" id="402">
 				<posx>620</posx>
-				<posy>100</posy>
+				<posy>130</posy>
 				<width>470</width>
 				<height>360</height>
 				<onleft>401</onleft>
@@ -192,20 +186,14 @@
 				<ondown>104</ondown>
 				<pagecontrol>403</pagecontrol>
 				<itemlayout height="40" width="470">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>470</width>
-						<height>41</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
 					<control type="label">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>400</width>
+						<width>390</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<textoffsetx>10</textoffsetx>
+						<font>FontSize_20</font>
+						<textcolor>77white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -226,14 +214,15 @@
 						<posy>0</posy>
 						<width>470</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 					</control>
 					<control type="label">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>400</width>
+						<width>390</width>
 						<height>40</height>
-						<font>font13</font>
+						<textoffsetx>10</textoffsetx>
+						<font>FontSize_20</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -252,15 +241,15 @@
 
 	        <!-- Radio Scrollbar -->
 			<control type="scrollbar" id="403">
-				<posx>1082</posx>
-				<posy>95</posy>
-				<width>25</width>
+				<posx>1095</posx>
+				<posy>125</posy>
+				<width>10</width>
 				<height>375</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>402</onleft>
 				<onright>400</onright>
 				<ondown>104</ondown>
@@ -270,15 +259,15 @@
 			</control>
 
 			<control type="label">
-				<posx>1062</posx>
-				<posy>467</posy>
+				<posx>1085</posx>
+				<posy>497</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>FontSize_18</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
+				<textcolor>99white</textcolor>
 				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(402)</visible>
 			</control>
@@ -287,10 +276,10 @@
 			<control type="label" id="404">
 				<description>Transponder Info</description>
 				<posx>55</posx>
-				<posy>510</posy>
+				<posy>540</posy>
 				<width>1000</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_20B</font>
 				<label>$ADDON[script.mbox 1020]</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -300,17 +289,21 @@
 			<!-- Progress Bar -->
 			<control type="progress" id="200">
 				<posx>55</posx>
-				<posy>550</posy>
+				<posy>570</posy>
 				<width>1090</width>
 				<height>30</height>
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
+				<righttexture border="1">osd/osd_right_progress.png</righttexture>
 			</control>
+			<!-- Hotkeys -->
 			<control type="label" id="405">
-				<description>Transponder Info</description>
 				<posx>90</posx>
-				<posy>583</posy>
+				<posy>603</posy>
 				<width>1000</width>
 				<height>40</height>
-				<font>font10</font>
+				<font>FontSize_14</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -318,7 +311,7 @@
 			</control>
 			<control type="image">
 				<posx>55</posx>
-				<posy>588</posy>
+				<posy>608</posy>
 				<width>30</width>
 				<height>30</height>
 				<texture>OSDBackNF.png</texture>

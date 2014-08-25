@@ -8,34 +8,35 @@
             <include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image" id="9001">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>400</height>
-				<texture border="40">DialogBack.png</texture>
+				<posx>-31</posx>
+				<posy>-18</posy>
+				<width>678</width>
+				<height>425</height>
+				<texture>dialogs/other/default_bg.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>40</posx>
-				<posy>0</posy>
+				<posx>38</posx>
+				<posy>10</posy>
 				<include>DialogInput03</include>
 				<include>DialogInput02</include>
 				<control type="image">
 					<posx>0</posx>
 					<posy>152</posy>
-					<width>510</width>
+					<width>520</width>
 					<height>3</height>
 					<texture>separator2.png</texture>
+					<colordiffuse>FFb300b3</colordiffuse>
 				</control>
 				<control type="group">
 					<posx>0</posx>
-					<posy>2</posy>
+					<posy>6</posy>
 					<include>DialogInput05</include>
 					<include>DialogInput06</include>
 					<include>DialogSpinEx02</include>
 					<control type="group">
-						<posx>0</posx>
-						<posy>272</posy>
+						<posx>-67</posx>
+						<posy>266</posy>
 						<control type="group" id="300">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -45,8 +46,8 @@
 								<posy>15</posy>
 								<width>100</width>
 								<height>16</height>
-								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-								<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+								<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+							<midtexture border="1">osd/osd_center_progress.png</midtexture>
 							</control>
 							<control type="label" id="302">
 								<posx>105</posx>
@@ -79,7 +80,7 @@
 					</control>
 					<control type="group">
 						<posx>0</posx>
-						<posy>40</posy>
+						<posy>41</posy>
 						<include>DialogInput07</include>
 					</control>
 				</control>

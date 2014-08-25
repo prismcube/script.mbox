@@ -7,15 +7,36 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image" id="9001">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>380</height>
-				<texture border="40">DialogBack.png</texture>
+				<posx>-30</posx>
+				<posy>-19</posy>
+				<width>675</width>
+				<height>460</height>
+				<texture>dialogs/other/default_bg.png</texture>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="button" id="1006995">
+				<description>Close Window</description>
+				<posx>520</posx>
+				<posy>16</posy>
+				<width>45</width>
+				<height>17</height>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
+				<onleft>1006997</onleft>
+				<onright>1006999</onright>
+			</control>
+			<control type="label" id="1003005">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>31</posy>
+				<width>570</width>
+				<font>FontSize_34</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
 			<control type="group" id="9000">
-				<posx>40</posx>
+				<posx>38</posx>
+				<posy>-3</posy>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
 				<include>DialogSpinEx03</include>
@@ -24,7 +45,11 @@
 				<include>DialogInput03</include>
 				<include>DialogInput04</include>
 				<include>DialogInput05</include>
-				<include>DefaultSettingDialogButtonOKCancel</include>
+				<control type="group">
+					<posx>22</posx>
+					<posy>-20</posy>
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
 			</control>
 		</control>
 	</controls>

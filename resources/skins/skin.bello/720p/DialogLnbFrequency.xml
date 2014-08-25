@@ -8,19 +8,24 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image" id="9001">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>300</height>
-				<texture border="40">DialogBack.png</texture>
+				<posx>-30</posx>
+				<posy>-8</posy>
+				<width>675</width>
+				<height>440</height>
+				<texture>dialogs/other/default_bg.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>40</posx>
+				<posx>38</posx>
+				<posy>9</posy>
 				<include>DialogInput01</include>
 				<include>DialogInput02</include>
 				<include>DialogInput03</include>
-				<include>DefaultSettingDialogButtonOKCancel</include>
+				<control type="group">
+					<posx>22</posx>
+					<posy>-12</posy>
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
 			</control>
 		</control>
 	</controls>

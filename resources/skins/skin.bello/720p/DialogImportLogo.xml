@@ -9,43 +9,34 @@
 	<controls>
 		<!-- Panel -->
 		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>800</width>
-			<height>500</height>
-			<texture border="40">DialogBack.png</texture>
-		</control>
-		<control type="image">
-			<description>Dialog Header Image</description>
-			<posx>40</posx>
-			<posy>16</posy>
-			<width>720</width>
-			<height>40</height>
-			<texture>dialogheader.png</texture>
+			<posx>-45</posx>
+			<posy>-40</posy>
+			<width>890</width>
+			<height>530</height>
+			<texture>dialogs/other/default_bg.png</texture>
 		</control>
 		<control type="label" id="102">
 			<description>Title</description>
 			<posx>40</posx>
-			<posy>20</posy>
+			<posy>30</posy>
 			<width>720</width>
 			<height>30</height>
-			<font>font13_title</font>
+			<font>FontSize_36</font>
 			<align>center</align>
 			<aligny>center</aligny>
-			<textcolor>selected</textcolor>
-			<shadowcolor>black</shadowcolor>
+			<textcolor>white</textcolor>
 		</control>
 		<control type="button">
 			<description>Close Window</description>
-			<posx>710</posx>
-			<posy>15</posy>
-			<width>64</width>
-			<height>32</height>
+			<posx>705</posx>
+			<posy>-1</posy>
+			<width>60</width>
+			<height>28</height>
 			<label>-</label>
 			<font>-</font>
 			<onclick>PreviousMenu</onclick>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+			<texturefocus>DialogCloseButton_fo.png</texturefocus>
 			<onleft>10</onleft>
 			<onright>10</onright>
 			<onup>10</onup>
@@ -55,56 +46,55 @@
 		<control type="label" id="103">
 			<description>Enable</description>
 			<posx>20</posx>
-			<posy>65</posy>
+			<posy>75</posy>
 			<width>760</width>
 			<height>30</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font12</font>
+			<font>FontSize_20</font>
 			<textcolor>blue</textcolor>
-			<shadowcolor>black</shadowcolor>
 		</control>
 		<control type="radiobutton" id ="110">
 			<description>Channel Activated</description>
 			<posx>40</posx>
-			<posy>110</posy>
+			<posy>115</posy>
 			<width>720</width>
 			<height>40</height>
-			<font>font12_title</font>
-			<textcolor>grey2</textcolor>
+			<textoffsetx>15</textoffsetx>
+			<font>FontSize_22</font>
+			<textcolor>77white</textcolor>
 			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+			<texture>buttons/settings_fo.png</texture>
+<!--			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>-->
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
 			<ondown>111</ondown>
-			<disabledcolor>grey3</disabledcolor>
+			<disabledcolor>33white</disabledcolor>
 		</control>
 		<control type="group">
 			<posy>100</posy>
 			<control type="label" id="104">
 				<description>Select</description>
 				<posx>20</posx>
-				<posy>65</posy>
+				<posy>70</posy>
 				<width>760</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12</font>
+				<font>FontSize_20</font>
 				<textcolor>blue</textcolor>
-				<shadowcolor>black</shadowcolor>
 			</control>
-			<control type="image">
+<!--			<control type="image">
 				<description>Load</description>
 				<posx>40</posx>
 				<posy>245</posy>
 				<width>720</width>
 				<height>40</height>
 				<texture border="5">button-nofocus.png</texture>
-			</control>
+			</control>-->
 			<control type="label" id="117">
 				<description>Load</description>
 				<posx>40</posx>
@@ -113,8 +103,8 @@
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12_title</font>
-				<textcolor>grey3</textcolor>
+				<font>FontSize_22</font>
+				<textcolor>77white</textcolor>
 			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
@@ -125,16 +115,17 @@
 					<posy>0</posy>
 					<width>720</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>FontSize_22</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
+<!--					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>-->
+					<texture>buttons/settings_fo.png</texture>
 					<onup>110</onup>
 					<ondown>114</ondown>
-					<textcolor>grey2</textcolor>
+					<textcolor>77white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>33white</disabledcolor>
 				</control>
 				<control type="button" id="114">
 					<description>Internet</description>
@@ -142,16 +133,17 @@
 					<posy>45</posy>
 					<width>720</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>FontSize_22</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
+<!--					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>-->
+					<texture>buttons/settings_fo.png</texture>
 					<onup>111</onup>
 					<ondown>115</ondown>
-					<textcolor>grey2</textcolor>
+					<textcolor>77white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>33white</disabledcolor>
 				</control>
 				<control type="button" id="115">
 					<description>Clear</description>
@@ -159,61 +151,61 @@
 					<posy>90</posy>
 					<width>720</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>FontSize_22</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
+<!--					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>-->
 					<onup>114</onup>
 					<ondown>119</ondown>
-					<textcolor>grey2</textcolor>
+					<textcolor>77white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>33white</disabledcolor>
 				</control>
 			</control>
 		</control>
 		<control type="group" id="9001">
-			<posx>190</posx>
-			<posy>435</posy>
+			<posx>230</posx>
+			<posy>395</posy>
 			<control type="button" id="118">
 				<description>Ok</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>200</width>
+				<width>160</width>
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturenofocus border="5">button-nofocus.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
 				<label>$ADDON[script.mbox 1022]</label>
 				<font>font12_title</font>
 				<onup>115</onup>
 				<onleft>119</onleft>
 				<onright>119</onright>
 				<ondown>110</ondown>
-				<textcolor>grey2</textcolor>
+				<textcolor>99grey</textcolor>
 				<focusedcolor>white</focusedcolor>
-				<disabledcolor>grey3</disabledcolor>
+				<disabledcolor>44white</disabledcolor>
 			</control>
 			<control type="button" id="119">
 				<description>Cancel</description>
 				<posx>210</posx>
 				<posy>0</posy>
-				<width>200</width>
+				<width>160</width>
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturenofocus border="5">button-nofocus.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
 				<label>$ADDON[script.mbox 1026]</label>
 				<font>font12_title</font>
 				<onup>115</onup>
 				<onleft>118</onleft>
 				<onright>118</onright>
 				<ondown>110</ondown>
-				<textcolor>grey2</textcolor>
+				<textcolor>99grey</textcolor>
 				<focusedcolor>white</focusedcolor>
-				<disabledcolor>grey3</disabledcolor>
+				<disabledcolor>44white</disabledcolor>
 			</control>
 		</control>
 	</controls>

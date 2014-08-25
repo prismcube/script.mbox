@@ -8,15 +8,16 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image" id="9001">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>520</height>
-				<texture border="40">DialogBack.png</texture>
+				<posx>-30</posx>
+				<posy>-29</posy>
+				<width>680</width>
+				<height>570</height>
+				<texture>dialogs/other/default_bg.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>
+				<posy>10</posy>
 				<!-- Timer Mode -->
 				<include>DialogSpinEx03</include>
 				<!-- Recording Type -->
@@ -34,8 +35,8 @@
 				<!-- Recording Path -->
 				<include>DialogInput04</include>
 				<control type="group">
-					<posx>0</posx>
-					<posy>390</posy>
+					<posx>-67</posx>
+					<posy>385</posy>
 					<control type="group" id="300">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -46,8 +47,8 @@
 							<posy>15</posy>
 							<width>100</width>
 							<height>16</height>
-							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+							<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+							<midtexture border="1">osd/osd_center_progress.png</midtexture>
 						</control>
 						<control type="label" id="302">
 							<posx>105</posx>
@@ -57,8 +58,8 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[Window.Property(NetVolumeUse)]</label>
-							<textcolor>grey3</textcolor>
-							<font>font12</font>
+							<textcolor>77white</textcolor>
+							<font>FontSize_16</font>
 						</control>
 						<control type="image">
 							<posx>-30</posx>
@@ -79,8 +80,8 @@
 					</control>
 				</control>
 				<control type="group">
-					<posx>0</posx>
-					<posy>30</posy>
+					<posx>22</posx>
+					<posy>28</posy>
 					<!-- OK & Cancel Buttons -->
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>

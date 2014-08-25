@@ -19,7 +19,7 @@
 			<control type="label" id="100">
 				<description>Title</description>
 				<posx>0</posx>
-				<posy>30</posy>
+				<posy>31</posy>
 				<width>600</width>
 				<font>FontSize_36</font>
 				<align>center</align>
@@ -81,9 +81,9 @@
 			<control type="button" id="303">
 				<description>Close Window</description>
 				<posx>530</posx>
-				<posy>7</posy>
-				<width>60</width>
-				<height>28</height>
+				<posy>6</posy>
+				<width>58</width>
+				<height>25</height>
 				<label>-</label>
 				<font>-</font>
 				<texturefocus>DialogCloseButton_fo.png</texturefocus>
