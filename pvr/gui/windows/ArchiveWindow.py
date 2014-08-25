@@ -1229,6 +1229,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.DoClearMark( )
 			xbmc.executebuiltin( 'container.refresh' )
+			self.UpdateArchiveInfomation( )
 			#self.SetFocusList( self.mViewMode )
 
 
