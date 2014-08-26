@@ -54,14 +54,6 @@
 				<onleft>103</onleft>
 				<onright>103</onright>
 				<itemlayout width="310" height="36" >		<!--Change Property ItemHeight-->
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>330</width>
-						<height>35</height>					<!--Change Property ItemHeight-->
-<!--						<texture border="5">button-nofocus.png</texture>
-						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
-					</control>-->
 					<!-- Selection Icon -->
 					<control type="image">
 						<posx>5</posx>
@@ -89,7 +81,6 @@
 						<posy>0</posy>
 						<width>330</width>
 						<height>35</height>					<!--Change Property ItemHeight-->
-<!--						<texture border="5">button-focus.png</texture>-->
 						<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>

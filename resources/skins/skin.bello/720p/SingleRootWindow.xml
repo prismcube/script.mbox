@@ -105,9 +105,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1119] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>99white</textcolor>
 				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
 			</control>
 			<control type="label">
@@ -116,9 +116,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>99white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
@@ -127,9 +127,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>99white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
@@ -138,9 +138,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>99white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 
@@ -779,34 +779,34 @@ Search for window name
 			<control type="label">
 				<description>No Signal</description>
 				<posx>550</posx>
-				<posy>330</posy>
+				<posy>180</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>blue</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
 				<description>Scrambled</description>
 				<posx>550</posx>
-				<posy>330</posy>
+				<posy>180</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>blue</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
 				<description>No Service</description>
 				<posx>550</posx>
-				<posy>330</posy>
+				<posy>180</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>blue</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 
@@ -1218,12 +1218,14 @@ Search for window name
 						</control>-->
 						<!-- Edit Mode Focus Bar -->
 						<control type="image">
-							<posx>10</posx>
-							<posy>0</posy>
-							<width>720</width>
+							<posx>12</posx>
+							<posy>2</posy>
+							<width>750</width>
 							<height>42</height>
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
-							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
+<!--							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>-->
+							<texture border="0,2,0,2">buttons/settings_fo.png</texture>
+							<colordiffuse>FFFF00FF</colordiffuse>
 						</control>
 						<!-- Lock Icon -->
 						<control type="image">
@@ -3126,9 +3128,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
@@ -3137,9 +3139,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
@@ -3148,9 +3150,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 		</control>
@@ -6577,9 +6579,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
@@ -6588,9 +6590,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
@@ -6599,9 +6601,9 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="image">
@@ -6891,8 +6893,8 @@ Search for window name
 								<width>195</width>
 								<height>30</height>
 								<font>FontSize_20B</font>
-								<textcolor>77white</textcolor>
-								<selectedcolor>77white</selectedcolor>
+								<textcolor>55white</textcolor>
+								<selectedcolor>55white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -6920,8 +6922,8 @@ Search for window name
 								<width>280</width>
 								<height>20</height>
 								<font>FontSize_20</font>
-								<textcolor>77white</textcolor>
-								<selectedcolor>77white</selectedcolor>
+								<textcolor>55white</textcolor>
+								<selectedcolor>55white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -7076,8 +7078,8 @@ Search for window name
 								<width>250</width>
 								<height>30</height>
 								<font>FontSize_20B</font>
-								<textcolor>77white</textcolor>
-								<selectedcolor>77white</selectedcolor>
+								<textcolor>55white</textcolor>
+								<selectedcolor>55white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -7296,11 +7298,11 @@ Search for window name
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font14</font>
+				<font>FontSize_24</font>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
 			</control>
 			<control type="label" id="1001021">
@@ -7309,11 +7311,11 @@ Search for window name
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font14</font>
+				<font>FontSize_24</font>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble)</visible>
 			</control>
 			<control type="label" id="1001022">
@@ -7322,11 +7324,11 @@ Search for window name
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font14</font>
+				<font>FontSize_24</font>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService)</visible>
 			</control>
 		</control>
@@ -7388,8 +7390,8 @@ Search for window name
 					<posy>289</posy>
 					<width>350</width>
 					<height>10</height>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<label>$INFO[Control.GetLabel(1300303)]</label>
 					<visible>substring(Window.Property(Signal),True)</visible>
 				</control>
@@ -7403,7 +7405,8 @@ Search for window name
 					<width>352</width>
 					<height>18</height>
 					<align>left</align>
-					<font>font12_title</font>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<label>$INFO[Control.GetLabel(3300401)]</label>
 					<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
 				</control>
@@ -7416,7 +7419,8 @@ Search for window name
 					<posy>295</posy>
 					<width>352</width>
 					<height>18</height>
-					<font>font12_title</font>
+					<font>FontSize_18</font>
+					<textcolor>99white</textcolor>
 					<label>$INFO[Control.GetLabel(3700401)]</label>
 					<visible>substring(Window.Property(Signal),True) + !substring(Window.Property(EPGMode),grid)</visible>
 				</control>
