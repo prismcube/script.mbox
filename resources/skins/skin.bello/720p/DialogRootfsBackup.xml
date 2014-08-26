@@ -9,43 +9,34 @@
 			<include>DefaultDialogCloseEffect</include>
 			<!-- Panel -->
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>320</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
-			<control type="image">
-				<description>Dialog Header Image</description>
-				<posx>40</posx>
-				<posy>16</posy>
-				<width>530</width>
-				<height>40</height>
-				<texture>dialogheader.png</texture>
+				<posx>-330</posx>
+				<posy>-310</posy>
+				<width>1270</width>
+				<height>927</height>
+				<texture>dialogs/other/bg_ok.png</texture>
 			</control>
 			<control type="label" id="200">
 				<description>Title</description>
 				<posx>40</posx>
-				<posy>20</posy>
+				<posy>38</posy>
 				<width>530</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>FontSize_36</font>
 				<label></label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>selected</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>white</textcolor>
 			</control>
 			<control type="button" id="301">
 				<description>Close Window</description>
 				<posx>520</posx>
-				<posy>15</posy>
-				<width>64</width>
-				<height>32</height>
+				<posy>2</posy>
+				<width>60</width>
+				<height>28</height>
 				<label>-</label>
 				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
 				<onleft>300</onleft>
 				<onright>300</onright>
 				<onup>300</onup>
@@ -54,43 +45,47 @@
 			<control type="label" id="201">
 				<description>Dialog Message 1</description>
 				<posx>30</posx>
-				<posy>200</posy>
+				<posy>210</posy>
 				<width>550</width>
 				<height>30</height>
 				<align>left</align>
 				<aligny>center</aligny>
 				<haspath>true</haspath>
-				<font>font13</font>
+				<font>FontSize_20</font>
+				<textcolor>77white</textcolor>
+				<shadowcolor>99000000</shadowcolor>
 			</control>
 			<control type="textbox" id="202">
-				<posx>30</posx>
-				<posy>62</posy>
+				<posx>35</posx>
+				<posy>85</posy>
 				<width>535</width>
-				<height>128</height>
+				<height>90</height>
 				<visible>true</visible>
 				<colordiffuse>FFFFFFFF</colordiffuse>
-				<font>font12</font>
-				<textcolor>grey3</textcolor>
+				<font>FontSize_20</font>
+				<textcolor>77white</textcolor>
 				<wrapmultiline>true</wrapmultiline>
 				<label>$INFO[Window.Property(ShellDescription)]</label>
 			</control>
 			<control type="progress" id="400">
 				<posx>30</posx>
-				<posy>228</posy>
+				<posy>235</posy>
 				<width>550</width>
-				<height>16</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				<height>25</height>
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
 			</control>
 			<control type="button" id="300">
 				<description>Cancel</description>
-				<posx>205</posx>
-				<posy>255</posy>
-				<width>200</width>
+				<posx>225</posx>
+				<posy>262</posy>
+				<width>160</width>
 				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
+				<font>FontSize_22</font>
+				<textcolor>99white</textcolor>
 				<focusedcolor>white</focusedcolor>
+				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
 				<align>center</align>
 				<onleft>301</onleft>
 				<onright>301</onright>

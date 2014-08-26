@@ -10,21 +10,14 @@
 			<posy>-7</posy>
 			<width>1306</width>
 			<height>734</height>
-			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+			<texture>bg/SKINDEFAULT.jpg</texture>
 		</control>
 		<control type="image">
 			<posx>-13</posx>
-			<posy>-150</posy>
-			<width>1386</width>
-			<height>256</height>
-			<texture flipy="true">HomeNowPlayingBack.png</texture>
-		</control>
-		<control type="image">
-			<posx>-13</posx>
-			<posy>230r</posy>
-			<width>1386</width>
-			<height>238</height>
-			<texture>HomeNowPlayingBack.png</texture>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>windows/bg/bg_vignette.png</texture>
 		</control>
 
 		<control type="group">
@@ -101,7 +94,7 @@
 						<posy>5</posy>
 						<width>820</width>
 						<height>30</height>
-						<font>font14</font>
+						<font>FontSize_20B</font>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
@@ -111,7 +104,7 @@
 						<posy>30</posy>
 						<width>500</width>
 						<height>30</height>
-						<font>font10</font>
+						<font>FontSize_14</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -122,8 +115,8 @@
 						<posy>5</posy>
 						<width>100</width>
 						<height>30</height>
-						<font>font12_title</font>
-						<textcolor>white</textcolor>
+						<font>FontSize_18</font>
+						<textcolor>blue</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 					</control>
@@ -137,84 +130,84 @@
 					</control>
 					<!-- Label -->
 					<control type="label" id="1210">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_0)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1211">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_1)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1212">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_2)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1213">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_3)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1214">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_4)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1215">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_5)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1216">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_6)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1217">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_7)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1218">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_8)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1219">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_9)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1220">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_10)]</label>
 						<align>left</align>
 						<aligny>center</aligny>
 					</control>
 					<control type="label" id="1221">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label_11)]</label>
 						<align>left</align>
@@ -222,33 +215,33 @@
 					</control>
 					<!-- Textbox Big Font Size -->
 					<control type="textbox" id="1230">
-						<font>font30</font>
+						<font>FontSize_40B</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(textbox_bigfont_0)]</label>
 						<align>center</align>
 					</control>
 					<!-- Textbox Small Font Size -->
 					<control type="textbox" id="1240">
-						<font>font12</font>
+						<font>FontSize_14</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(textbox_smallfont_0)]</label>
 						<align>left</align>
 					</control>
 					<control type="textbox" id="1241">
-						<font>font12</font>
+						<font>FontSize_14</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(textbox_smallfont_1)]</label>
 						<align>left</align>
 					</control>
 					<!-- Textbox Common Font Size -->
 					<control type="textbox" id="1250">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(textbox_0)]</label>
 						<align>left</align>
 					</control>
 					<control type="textbox" id="1251">
-						<font>font13</font>
+						<font>FontSize_18</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(textbox_1)]</label>
 						<align>left</align>

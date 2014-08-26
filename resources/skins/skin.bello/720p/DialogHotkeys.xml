@@ -13,21 +13,21 @@
 			<control type="image">
 				<posx>0</posx>
 				<posy>-30</posy>
-				<width>370</width>
+				<width>350</width>
 				<height>30</height>
-				<texture border="20,19,20,0">DialogContextTop.png</texture>
+				<texture border="20,19,20,0">DialogContext_Top.png</texture>
 			</control>
 			<control type="image" id="100">
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>370</width>
-				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
+				<width>350</width>
+				<texture border="25,5,25,5">DialogContext_Middle.png</texture>
 			</control>
 			<control type="image" id="101">
 				<posx>0</posx>
-				<width>370</width>
+				<width>350</width>
 				<height>25</height>
-				<texture border="20,0,19,20">DialogContextBottom.png</texture>
+				<texture border="20,0,19,20">DialogContext_Bottom.png</texture>
 			</control>
 
 			<control type="list" id="102">
@@ -38,13 +38,6 @@
 				<itemlayout width="310" height="40" >
 					<control type="image">
 						<posx>0</posx>
-						<posy>1</posy>
-						<width>330</width>
-						<height>38</height>
-						<texture border="5">button-nofocus.png</texture>
-					</control>
-					<control type="image">
-						<posx>0</posx>
 						<posy>0</posy>
 						<width>38</width>
 						<height>38</height>
@@ -62,7 +55,7 @@
 						<posy>0</posy>
 						<width>330</width>
 						<height>38</height>
-						<font>fontContextMenu</font>
+						<font>FontSize_20</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
@@ -72,13 +65,6 @@
 				<focusedlayout width="310" height="40">
 					<control type="image">
 						<posx>0</posx>
-						<posy>1</posy>
-						<width>330</width>
-						<height>38</height>
-						<texture border="5">button-nofocus.png</texture>
-					</control>
-					<control type="image">
-						<posx>0</posx>
 						<posy>0</posy>
 						<width>38</width>
 						<height>38</height>
@@ -96,7 +82,7 @@
 						<posy>0</posy>
 						<width>330</width>
 						<height>38</height>
-						<font>fontContextMenu</font>
+						<font>FontSize_20</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
@@ -104,19 +90,6 @@
 						<scroll>true</scroll>
 					</control>
 				</focusedlayout>
-			</control>
-
-			<control type="button" id="301">
-				<description>OK</description>
-				<width>186</width>
-				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
-				<label>$ADDON[script.mbox 1022]</label>
 			</control>
 		</control>
 	</controls>
