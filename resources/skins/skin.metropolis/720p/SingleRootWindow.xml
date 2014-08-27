@@ -2469,6 +2469,7 @@ Search for window name
 							<posx>21</posx>
 							<posy>6</posy>
 							<width>260</width>
+							<height>50</height>
 							<font>METF_WeatherDetails7Day</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
@@ -2477,7 +2478,7 @@ Search for window name
 					<control type="group">
 						<control type="image" id="1400015">
 							<posx>2</posx>
-							<posy>23</posy>
+							<posy>27</posy>
 							<width>18</width>
 							<height>18</height>
 							<texture>new/PVR-IsRecording.png</texture>
@@ -2485,8 +2486,9 @@ Search for window name
 						</control>
 						<control type="label" id="1400016">
 							<posx>21</posx>
-							<posy>22</posy>
+							<posy>26</posy>
 							<width>260</width>
+							<height>50</height>
 							<font>METF_WeatherDetails7Day</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
@@ -2500,12 +2502,11 @@ Search for window name
 					<posy>605</posy>
 					<control type="label">
 						<description>PLAYBACK</description>
-						<posx>-40</posx>
+						<posx>-19</posx>
 						<posy>-30</posy>
 						<width>300</width>
 						<height>50</height>
-						<align>center</align>
-						<font>METF_Heading</font>
+						<font>METF_SettingsHeading</font>
 						<textcolor>red</textcolor>
 						<label>$ADDON[script.mbox 1123]</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
@@ -2596,12 +2597,12 @@ Search for window name
 					<!-- Color Keys -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
-							<posx>925</posx>
+							<posx>922</posx>
 							<posy>-47</posy>
 							<width>300</width>
 							<height>40</height>
-							<align>right</align>
 							<itemgap>2</itemgap>
+							<align>right</align>
 							<orientation>horizontal</orientation>
 							<control type="group" id="1400510">
 								<width>48</width>
@@ -2711,13 +2712,13 @@ Search for window name
 							<width>765</width>
 							<height>62</height>
 							<itemgap>4</itemgap>
-							<visible>true</visible>
 							<orientation>horizontal</orientation>
 							<control type="group">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>90</width>
 								<height>62</height>
+								<visible>substring(Window.Property(iTuner1),true) | substring(Window.Property(iTuner2),true) | substring(Window.Property(iTuner_T),true)</visible>
 								<control type="image">
 									<width>104</width>
 									<height>54</height>
@@ -2730,7 +2731,7 @@ Search for window name
 									<width>80</width>
 									<height>40</height>
 									<texture>t1.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 									<visible>substring(Window.Property(iTuner1),true)</visible>
 								</control>
 								<control type="image">
@@ -2739,7 +2740,7 @@ Search for window name
 									<width>80</width>
 									<height>40</height>
 									<texture>t2.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 									<visible>substring(Window.Property(iTuner2),true)</visible>
 								</control>
 								<control type="image">
@@ -2748,6 +2749,7 @@ Search for window name
 									<width>80</width>
 									<height>40</height>
 									<texture>dvb_T.png</texture>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 									<visible>substring(Window.Property(iTuner_T),true)</visible>
 								</control>
 							</control>
@@ -2769,7 +2771,7 @@ Search for window name
 									<width>80</width>
 									<height>40</height>
 									<texture>ageIcon.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 								</control>
 								<control type="label">
 									<posx>18</posx>
@@ -2798,7 +2800,7 @@ Search for window name
 									<width>80</width>
 									<height>40</height>
 									<texture>IconTeletext.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 								</control>
 							</control>
 							<control type="group" id="1400605">
@@ -2819,7 +2821,7 @@ Search for window name
 									<width>80</width>
 									<height>40</height>
 									<texture>IconSubtitle.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 								</control>
 							</control>
 							<control type="group" id="1400606">
@@ -2840,7 +2842,7 @@ Search for window name
 									<width>80</width>
 									<height>20</height>
 									<texture>dolbydigital.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 								</control>
 							</control>
 							<control type="group" id="1400609">
@@ -2861,7 +2863,7 @@ Search for window name
 									<width>80</width>
 									<height>20</height>
 									<texture>dolbydigitalplus.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 								</control>
 							</control>
 							<control type="group" id="1400607">
@@ -2882,7 +2884,7 @@ Search for window name
 									<width>80</width>
 									<height>38</height>
 									<texture>OverlayHD.png</texture>
-									<colordiffuse>89FFFFFF</colordiffuse>
+									<colordiffuse>CCFFFFFF</colordiffuse>
 								</control>
 							</control>
 						</control>
@@ -3061,7 +3063,7 @@ Search for window name
 									<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
 								</control>
 								<control type="label">
-									<description>TimeMs offset</description>
+									<description>Bookmark Time</description>
 									<posx>65</posx>
 									<posy>50</posy>
 									<width>80</width>
@@ -3072,7 +3074,7 @@ Search for window name
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 								<control type="label">
-									<description>Bookmark number</description>
+									<description>Bookmark Number</description>
 									<posx>5</posx>
 									<posy>20</posy>
 									<width>100</width>
@@ -3093,7 +3095,6 @@ Search for window name
 									<bordertexture border="5">button-focus.png</bordertexture>
 									<bordersize>4</bordersize>
 									<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
-									<!--animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation-->
 									<animation effect="zoom" start="100" end="130" center="auto" time="300" tween="quadratic" easing="in">focus</animation>
 								</control>
 								<control type="label">
@@ -3173,7 +3174,7 @@ Search for window name
 
 				<!-- More & Show Bookmarks Labels -->
 				<control type="group">
-					<posx>0</posx>
+					<posx>7</posx>
 					<posy>590</posy>
 					<control type="group">
 						<posx>40</posx>
@@ -3192,7 +3193,7 @@ Search for window name
 							<posy>0</posy>
 							<width>50</width>
 							<height>10</height>
-							<font>METF_DialogSmall</font>
+							<font>METF_WeatherDetails7Day</font>
 							<textcolor>white</textcolor>
 							<label>$ADDON[script.mbox 1122]</label>
 						</control>
@@ -3210,7 +3211,7 @@ Search for window name
 							<posy>0</posy>
 							<width>160</width>
 							<height>10</height>
-							<font>METF_DialogSmall</font>
+							<font>METF_WeatherDetails7Day</font>
 							<textcolor>white</textcolor>
 							<label>$ADDON[script.mbox 1129]</label>
 							<visible>substring(Window.Property(BookMarkShow),true)</visible>
@@ -3222,12 +3223,12 @@ Search for window name
 				<!-- Color Keys -->
 				<control type="group" id="2900509">
 					<control type="grouplist">
-						<posx>210r</posx>
+						<posx>875</posx>
 						<posy>565</posy>
 						<width>300</width>
 						<height>40</height>
-						<itemgap>1</itemgap>
-						<visible>true</visible>
+						<itemgap>2</itemgap>
+						<align>right</align>
 						<orientation>horizontal</orientation>
 						<control type="group" id="2900510">
 							<width>48</width>
@@ -3243,7 +3244,7 @@ Search for window name
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>METF_DialogSmall</font>
+								<font>METF_WeatherDetails7Day</font>
 								<align>center</align>
 								<label></label>
 							</control>
@@ -3262,7 +3263,7 @@ Search for window name
 								<posy>0</posy>
 								<width>80</width>
 								<height>30</height>
-								<font>METF_DialogSmall</font>
+								<font>METF_WeatherDetails7Day</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3281,7 +3282,7 @@ Search for window name
 								<posy>0</posy>
 								<width>50</width>
 								<height>30</height>
-								<font>METF_DialogSmall</font>
+								<font>METF_WeatherDetails7Day</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
@@ -3301,7 +3302,7 @@ Search for window name
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>METF_DialogSmall</font>
+								<font>METF_WeatherDetails7Day</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1124]</label>
 							</control>
@@ -3320,7 +3321,7 @@ Search for window name
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>METF_DialogSmall</font>
+								<font>METF_WeatherDetails7Day</font>
 								<align>center</align>
 								<label>$ADDON[script.mbox 1060]</label>
 							</control>
@@ -3342,8 +3343,18 @@ Search for window name
 
 				<!-- EPG Progress Bar & Info -->
 				<control type="group">
+					<control type="label" id="2900203">
+						<description>PLAYBACK</description>
+						<posx>-40</posx>
+						<posy>580</posy>
+						<width>300</width>
+						<height>50</height>
+						<font>METF_SettingsHeading</font>
+						<textcolor>FFB2D4F5</textcolor>
+						<align>center</align>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
 					<control type="progress" id="2900201">
-						<description>progress control</description>
 						<posx>400</posx>
 						<posy>595</posy>
 						<width>780</width>
@@ -3399,30 +3410,19 @@ Search for window name
 						<textcolor>white</textcolor>
 						<font>METF_PlotTextMedium</font>
 					</control>
-					<control type="label" id="2900203">
-						<description>mode</description>
-						<posx>5</posx>
-						<posy>580</posy>
-						<width>210</width>
-						<height>20</height>
-						<font>METF_HomeMenuSmall</font>
-						<textcolor>FFB2D4F5</textcolor>
-						<align>center</align>
-						<label>$INFO[Control.GetLabel]</label>
-					</control>
 				</control>
 				<!-- Start & End Time -->
 				<control type="group">
 					<posx>300</posx>
-					<posy>590</posy>
+					<posy>588</posy>
 					<control type="label" id="2900221">
 						<description>start</description>
-						<posx>25</posx>
+						<posx>7</posx>
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
 						<textcolor>white</textcolor>
-						<font>METF_PlotTextSmall</font>
+						<font>METF_InfoTextLarger</font>
 						<label>00:00:00</label>
 					</control>
 					<control type="label" id="2900222">
@@ -3432,7 +3432,7 @@ Search for window name
 						<width>100</width>
 						<height>15</height>
 						<textcolor>white</textcolor>
-						<font>METF_PlotTextMedium</font>
+						<font>METF_InfoTextLarger</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
@@ -3440,7 +3440,7 @@ Search for window name
 				<!-- Bookmark Points -->
 				<control type="group">
 					<posx>395</posx>
-					<posy>600</posy>
+					<posy>590</posy>
 					<visible>substring(Window.Property(BookMarkPointShow),true)</visible>
 					<control type="group">
 						<posx>0</posx>
