@@ -2554,12 +2554,12 @@
 			<!-- Color Keys -->
 			<control type="group" id="1400509">
 				<control type="grouplist">
-					<posx>985</posx>
+					<posx>870</posx>
 					<posy>499</posy>
 					<width>300</width>
 					<height>40</height>
 					<itemgap>2</itemgap>
-					<align>center</align>
+					<align>right</align>
 					<orientation>horizontal</orientation>
 					<control type="group" id="1400510">
 						<width>48</width>
@@ -3097,12 +3097,12 @@
 				<!-- Color Keys -->
 				<control type="group" id="2900509">
 					<control type="grouplist">
-						<posx>210r</posx>
+						<posx>880</posx>
 						<posy>560</posy>
 						<width>300</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
-						<visible>true</visible>
+						<align>right</align>
 						<orientation>horizontal</orientation>
 						<control type="group" id="2900510">
 							<width>48</width>
