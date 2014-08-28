@@ -101,7 +101,7 @@ class ExclusiveSettings( object ) :
 		elif aErrorNo == E_STORAGE_ERROR_NOT_HDD :
 			mLines = MR_LANG( 'Device not found' )
 		elif aErrorNo == E_STORAGE_ERROR_MOUNT_TYPE :
-			mLines = MR_LANG( 'Unknown filesystem or not formatted device' )
+			mLines = MR_LANG( 'Unknown filesystem or not formatted' )
 		elif aErrorNo == E_STORAGE_ERROR_STORAGE :
 			mLines = MR_LANG( 'Storage device not changed' )
 		elif aErrorNo == E_STORAGE_ERROR_FORMAT :
@@ -351,6 +351,7 @@ class ExclusiveSettings( object ) :
 		ret = self.ChangeStorage( aSelect )
 		if ret == E_STORAGE_DONE :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( aSelect )
+			"""
 			msg1 = '%s%s' % ( MR_LANG( 'Rebooting in %s second(s)' ) % 5, ING )
 			self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
@@ -358,6 +359,11 @@ class ExclusiveSettings( object ) :
 			self.mDialogShowInit.SetDialogType( 'update' )
 			self.mDialogShowInit.SetAutoCloseTime( 5 )
 			self.mDialogShowInit.doModal( )
+			"""
+			mHead = MR_LANG( 'Please wait' )
+			mLine = MR_LANG( 'System is restarting' ) + '...'
+			xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
+			time.sleep( 2 )
 			self.mDataCache.System_Reboot( )
 
 		else :

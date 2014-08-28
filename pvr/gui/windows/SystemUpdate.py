@@ -609,13 +609,13 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_DOWNLOADING :
 			line = '%s%s'% ( MR_LANG( 'Downloading' ), ING )
 		elif aMsg == E_STRING_CHECK_HDD :
-			line = MR_LANG( 'Check your HDD' )
+			line = MR_LANG( 'Please install HDD first%s before updating from zip file' )% NEW_LINE
 		elif aMsg == E_STRING_CHECK_BLOCK_FLASH :
-			line = MR_LANG( 'Check your internal NAND flash' )
+			line = MR_LANG( 'Check your internal flash' )
 		elif aMsg == E_STRING_CHECK_BLOCK_SIZE :
-			line = MR_LANG( 'Not enough space on NAND flash' )
+			line = MR_LANG( 'Not enough space on internal flash' )
 		elif aMsg == E_STRING_CHECK_NAND_WRITE :
-			line = MR_LANG( 'Failed to write on NAND flash' )
+			line = MR_LANG( 'Failed to write on internal flash' )
 		else :
 			line = aMsg
 
@@ -875,7 +875,7 @@ class SystemUpdate( SettingWindow ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Refresh firmware update' ), CONTEXT_ACTION_REFRESH_CONNECT ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
-			context.append( ContextItem( MR_LANG( 'Get previous versions' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
+			context.append( ContextItem( MR_LANG( 'Download current version' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
 		#if not self.GetStatusFromFirmware( ) :
 		#	context.append( ContextItem( MR_LANG( 'Update from local directory' ), CONTEXT_ACTION_LOAD_LOCAL_VERSION ) )
@@ -1057,7 +1057,7 @@ class SystemUpdate( SettingWindow ) :
 				verList.append( label )
 
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Previous Firmware Versions' ), verList, False, self.mIndexLastVersion )
+			select =  dialog.select( MR_LANG( 'Firmware Version' ), verList, False, self.mIndexLastVersion )
 
 			if select < 0 :
 				return
@@ -1383,7 +1383,7 @@ class SystemUpdate( SettingWindow ) :
 				if E_UPDATE_FIRMWARE_USE_USB :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
-
+				"""
 				msg1 = '%s%s'% ( MR_LANG( 'Rebooting in %s second(s)' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
@@ -1391,13 +1391,18 @@ class SystemUpdate( SettingWindow ) :
 				self.mDialogShowInit.SetDialogType( 'update' )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
+				"""
+				mHead = MR_LANG( 'Please wait' )
+				mLine = MR_LANG( 'System is restarting' ) + '...'
+				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
+				time.sleep( 2 )
 
 				if E_UPDATE_TEST_DEBUG :
 					InitFlash( )
 					self.mStepPage = E_UPDATE_STEP_READY
 					return
 
-				self.OpenBusyDialog( )
+				#self.OpenBusyDialog( )
 				self.mDataCache.System_Reboot( )
 
 
