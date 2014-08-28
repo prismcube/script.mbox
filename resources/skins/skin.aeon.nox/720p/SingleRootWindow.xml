@@ -2659,13 +2659,13 @@
 					<width>510</width>
 					<height>40</height>
 					<itemgap>8</itemgap>
-					<visible>true</visible>
 					<orientation>horizontal</orientation>
 					<control type="group">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>54</width>
 						<height>36</height>
+						<visible>substring(Window.Property(iTuner1),true) | substring(Window.Property(iTuner2),true) | substring(Window.Property(iTuner_T),true)</visible>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>

@@ -2838,12 +2838,12 @@ Search for window name
 					<!-- Color Keys -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
-							<posx>210r</posx>
+							<posx>885</posx>
 							<posy>-35</posy>
 							<width>300</width>
 							<height>40</height>
 							<itemgap>2</itemgap>
-							<visible>true</visible>
+							<align>right</align>
 							<orientation>horizontal</orientation>
 							<control type="group" id="1400510">
 								<width>48</width>
@@ -2953,13 +2953,13 @@ Search for window name
 							<width>510</width>
 							<height>40</height>
 							<itemgap>8</itemgap>
-							<visible>true</visible>
 							<orientation>horizontal</orientation>
 							<control type="group">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>40</height>
+								<visible>substring(Window.Property(iTuner1),true) | substring(Window.Property(iTuner2),true) | substring(Window.Property(iTuner_T),true)</visible>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
@@ -3441,12 +3441,12 @@ Search for window name
 				<!-- Color Keys -->
 				<control type="group" id="2900509">
 					<control type="grouplist">
-						<posx>210r</posx>
+						<posx>880</posx>
 						<posy>565</posy>
 						<width>300</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
-						<visible>true</visible>
+						<align>right</align>
 						<orientation>horizontal</orientation>
 						<control type="group" id="2900510">
 							<width>48</width>
