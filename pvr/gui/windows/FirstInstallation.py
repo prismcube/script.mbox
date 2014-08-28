@@ -22,6 +22,8 @@ class FirstInstallation( FTIWindow ) :
 		FTIWindow.__init__( self, *args, **kwargs )
 		self.mPrevStepNum				= E_STEP_SELECT_LANGUAGE
 		self.mAudioLanguageList			= []
+		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
 		self.mIsChannelSearch			= True
 		self.mConfiguredSatelliteList 	= []
 		self.mFormattedList				= []
@@ -56,6 +58,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mEnable5v		= 0
 		self.mTunerType		= E_TUNER_T
 		self.SetTerrestriaInfo( 0 )
+		self.mBackaudiolang				= ElisPropertyEnum( 'Audio Language', self.mCommander ).GetProp( )
 
 		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 			if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
@@ -82,6 +85,7 @@ class FirstInstallation( FTIWindow ) :
 		if self.mReloadSkinPosition :
 			WinMgr.GetInstance( ).LoadSkinPosition( )
 			self.mReloadSkinPosition = False
+			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( self.mBackaudiolang )
 
 		self.SetPipScreen( )
 		self.SetListControl( self.GetFTIStep( ) )
@@ -190,7 +194,8 @@ class FirstInstallation( FTIWindow ) :
 
 		elif self.GetFTIStep( ) == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
+				self.mBackaudiolang = ElisPropertyEnum( 'Audio Language', self.mCommander ).GetProp( )
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)', True )
 				self.mReloadSkinPosition = True
 				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 					self.SetFTIStep( E_STEP_ANTENNA )
@@ -226,7 +231,8 @@ class FirstInstallation( FTIWindow ) :
 				self.GotoAntennaNextStep( )
 
 			elif groupId == E_FIRST_TIME_INSTALLATION_PREV :
-				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
+				self.mBackaudiolang = ElisPropertyEnum( 'Audio Language', self.mCommander ).GetProp( )
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)', True )
 				self.mReloadSkinPosition = True
 				self.SetFTIStep( E_STEP_VIDEO_AUDIO )
 				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
@@ -307,8 +313,6 @@ class FirstInstallation( FTIWindow ) :
 		self.SetPrevNextButtonLabel( aStep )
 
 		if aStep == E_STEP_SELECT_LANGUAGE :
-			for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
-				self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), XBMC_GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
