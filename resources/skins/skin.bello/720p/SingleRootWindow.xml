@@ -150,9 +150,9 @@ Search for window name
 				<posy>660</posy>
 				<width>500</width>
 				<height>30</height>
-				<font>font28_title</font>
+				<font>FontSize_36B</font>
 				<label>$ADDON[script.mbox 1200]</label>
-				<textcolor>grey</textcolor>
+				<textcolor>99white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
 				<visible>substring(Window.Property(LiveStream),true)</visible>
@@ -199,23 +199,38 @@ Search for window name
 		<control type="group" id="1200000">
 			<visible>substring(Window.Property(CurrentWindow),1200000)</visible>
 			<defaultcontrol always="true">1209000</defaultcontrol>
+			<include>HomeSlideAnimations</include>
 			<include>DefaultRadioBackground</include>
+			<control type="image">
+				<description>Default Background Image</description>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
+				<texture>bg/SKINDEFAULT.jpg</texture>
+			</control>
 
-			<!-- Floor Image -->
+			<control type="image">
+				<description>Background Vignette Image</description>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
+				<texture>windows/bg/bg_vignette.png</texture>
+			</control>
+
 			<control type="image">
 				<posx>-13</posx>
-				<posy>80r</posy>
+				<posy>-7</posy>
 				<width>1306</width>
-				<height>90</height>
-				<texture>floor.png</texture>
-				<animation effect="fade" time="250">Visible</animation>
-				<animation effect="fade" time="250">Hidden</animation>
+				<height>734</height>
+				<texture>bg/colors_pulse.png</texture>
 			</control>
 
 			<!-- PRISMCUBE Logo -->
 			<control type="image">
-				<posx>20</posx>
-				<posy>5</posy>
+				<posx>25</posx>
+				<posy>30</posy>
 				<width>170</width>
 				<height>100</height>
 				<aspectratio aligny="top" align="left">keep</aspectratio>
@@ -227,48 +242,43 @@ Search for window name
 			<!-- Sub Menus -->
 			<control type="group">
 				<posy>400</posy>
-				<animation type="Visible" reversible="false">
+<!--				<animation type="Visible" reversible="false">
 					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
 					<effect type="fade" start="0" end="100" time="300" />
 				</animation>
 				<animation type="Hidden" reversible="false">
 					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
 					<effect type="fade" start="100" end="0" time="300" />
-				</animation>
-				<control type="group" id="1209001">
-					<posx>0</posx>
-					<posy>70</posy>
+				</animation>-->
+				<control type="grouplist" id="1209001">
+					<posx>380</posx>
+					<posy>20</posy>
 					<onup>1209000</onup>
 					<ondown>1200101</ondown>
+					<animation type="Conditional" condition="ControlGroup(1209001).HasFocus">
+						<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in"  />
+						<effect type="slide" start="0,-35" end="0,0" time="350" tween="cubic" easing="out" />
+					</animation>
+					<animation type="Conditional" condition="!ControlGroup(1209001).HasFocus">
+						<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+						<effect type="slide" start="0,0" end="0,-35" time="350" tween="sine" easing="out" />
+					</animation>
 					<!-- Installation Submenu -->
 					<control type="grouplist" id="1209010">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>1280</width>
-						<height>35</height>
+						<width>700</width>
+						<height>155</height>
 						<align>center</align>
-						<onup>1209000</onup>
-						<ondown>1200101</ondown>
+						<onup>1209016</onup>
+						<ondown>1209016</ondown>
 						<itemgap>0</itemgap>
-						<orientation>Horizontal</orientation>
-						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209010</onleft>
-						<onright>1209010</onright>
+						<orientation>Vertical</orientation>
+<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
+						<onleft>1209000</onleft>
+						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(1)</visible>
-						<control type="image" id="1290001">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
-						<control type="button" id="1290101">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>$ADDON[script.mbox 1050]</label>
-						</control>
-						<control type="button" id="1290102">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>$ADDON[script.mbox 1051]</label>
-						</control>
 						<control type="button" id="1290103">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1052]</label>
@@ -297,33 +307,23 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1168]</label>
 						</control>
-						<control type="image" id="1290110">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
 					</control>
 					<!-- XBMC Submenu -->
 					<control type="grouplist" id="1209016">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>1280</width>
-						<height>35</height>
+						<width>700</width>
+						<height>155</height>
 						<align>center</align>
-						<onup>1209000</onup>
-						<ondown>1200101</ondown>
+						<onup>1209016</onup>
+						<ondown>1209016</ondown>
 						<itemgap>0</itemgap>
-						<orientation>Horizontal</orientation>
-						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209016</onleft>
-						<onright>1209016</onright>
+						<orientation>Vertical</orientation>
+<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
+						<onleft>1209000</onleft>
+						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(6)</visible>
-						<control type="image" id="1290002">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
 						<control type="button" id="1290601">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1057]</label>
@@ -365,33 +365,23 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1065]</label>
 						</control>
-						<control type="image" id="1290611">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
 					</control>
 					<!-- EPG Submenu -->
 					<control type="grouplist" id="1209012">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>1280</width>
-						<height>35</height>
+						<width>700</width>
+						<height>155</height>
 						<align>center</align>
-						<onup>1209000</onup>
-						<ondown>1200101</ondown>
+						<onup>1209012</onup>
+						<ondown>1209012</ondown>
 						<itemgap>0</itemgap>
-						<orientation>Horizontal</orientation>
-						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209012</onleft>
-						<onright>1209012</onright>
+						<orientation>Vertical</orientation>
+<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
+						<onleft>1209000</onleft>
+						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(3)</visible>
-						<control type="image" id="1290311">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
 						<control type="button" id="1290312">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1162]</label>
@@ -414,33 +404,23 @@ Search for window name
 							<visible>System.HasAddon("script.crossepg")</visible>
 							<onclick>RunAddon("script.crossepg")</onclick>							
 						</control>
-						<control type="image" id="1290317">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
 					</control>
 					<!-- Timer Submenu -->
 					<control type="grouplist" id="1209013">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>1280</width>
-						<height>35</height>
+						<width>700</width>
+						<height>155</height>
 						<align>center</align>
-						<onup>1209000</onup>
-						<ondown>1200101</ondown>
+						<onup>1209013</onup>
+						<ondown>1209013</ondown>
 						<itemgap>0</itemgap>
-						<orientation>Horizontal</orientation>
-						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209013</onleft>
-						<onright>1209013</onright>
+						<orientation>Vertical</orientation>
+<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
+						<onleft>1209000</onleft>
+						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(9)</visible>
-						<control type="image" id="1290911">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
 						<control type="button" id="1290912">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1135]</label>
@@ -449,33 +429,23 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1136]</label>
 						</control>
-						<control type="image" id="1290914">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
 					</control>
 					<!-- Channel Submenu -->
 					<control type="grouplist" id="1209011">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>1280</width>
-						<height>35</height>
+						<width>700</width>
+						<height>155</height>
 						<align>center</align>
-						<onup>1209000</onup>
-						<ondown>1200101</ondown>
+						<onup>1209011</onup>
+						<ondown>1209011</ondown>
 						<itemgap>0</itemgap>
-						<orientation>Horizontal</orientation>
-						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209011</onleft>
-						<onright>1209011</onright>
+						<orientation>Vertical</orientation>
+<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
+						<onleft>1209000</onleft>
+						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(4)</visible>
-						<control type="image" id="1290411">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
 						<control type="button" id="1290413">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1120]</label>
@@ -488,98 +458,91 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1125]</label>
 						</control>
-						<control type="image" id="1290415">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
 					</control>
 				</control>
 
 				<!-- Main Menu -->
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>1280</width>
-					<height>75</height>
-					<texture border="0,6,0,6">HomeBack.png</texture>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>1280</width>
-					<height>6</height>
-					<texture>HomeOverlay1.png</texture>
-				</control>
-				<control type="fixedlist" id="1209000">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>1280</width>
-					<height>60</height>
+				<control type="wraplist" id="1209000">
+					<posx>-90</posx>
+					<posy>-270</posy>
+					<width>1500</width>
+					<height>720</height>
+					<align>center</align>
 					<onleft>1209000</onleft>
 					<onright>1209000</onright>
 					<onup>1200101</onup>
-					<ondown condition="Control.IsVisible(1209001)">1209001</ondown>
-					<ondown condition="!Control.IsVisible(1209001)">1200101</ondown>
-					<pagecontrol>-</pagecontrol>
+					<ondown condition="Container(1209000).HasFocus(1) | Container(1209000).HasFocus(3) | Container(1209000).HasFocus(4) | Container(1209000).HasFocus(6) | Container(1209000).HasFocus(9)">1209001</ondown>
+<!--					<ondown condition="Control.IsVisible(1209001)">1209001</ondown>
+					<ondown condition="!Control.IsVisible(1209001)">1200101</ondown>-->
+<!--					<pagecontrol>-</pagecontrol>
 					<scrolltime>300</scrolltime>
 					<focusposition>2</focusposition>
 					<movement>1</movement>
+					<orientation>Horizontal</orientation>-->
 					<orientation>Horizontal</orientation>
-					<itemlayout height="60" width="300">
-						<control type="image">
-							<posx>0</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						<control type="image">
-							<posx>299</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						<control type="label">
-							<posx>150</posx>
-							<posy>0</posy>
-							<width>290</width>
-							<height>60</height>
-							<font>font_MainMenu</font>
-							<textcolor>grey3</textcolor>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+					<itemgap>0</itemgap>
+					<orientation>Horizontal</orientation>
+					<focusposition>1</focusposition>
+					<scrolltime tween="Quadratic" easing="out">300</scrolltime>
+					<itemlayout width="430">
+						<control type="group">
+							<animation type="Conditional" condition="true">
+								<effect type="zoom" start="100" end="65" time="0" center="318,200" />
+								<effect type="fade" start="100" end="35" time="0" />
+							</animation>
+							<control type="label">
+								<posx>300</posx>
+								<posy>179</posy>
+								<width>590</width>
+								<font>FontSize_100</font>
+								<textcolor>white</textcolor>
+								<shadowcolor>99000000</shadowcolor>
+								<align>center</align>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
 						</control>
 					</itemlayout>
-					<focusedlayout height="60" width="300">
-						<control type="image">
-							<posx>0</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						<control type="image">
-							<posx>299</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						<control type="label">
-							<posx>150</posx>
-							<posy>0</posy>
-							<width>290</width>
-							<height>60</height>
-							<font>font_MainMenu</font>
-							<textcolor>grey3</textcolor>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-						<control type="label">
+					<focusedlayout width="430">
+						<control type="group">
+							<animation type="Focus" reversible="false" condition="Container(1209000).OnNext | Container(1209000).OnPrevious">
+								<effect type="zoom" start="65" end="100" time="300" tween="sine" easing="out" center="318,230" />
+								<effect type="fade" start="35" end="100" time="300" tween="sine" easing="out" />
+							</animation>
+							<animation type="Unfocus" reversible="false" condition="Container(1209000).OnNext | Container(1209000).OnPrevious">
+								<effect type="zoom" start="100" end="65" time="300" tween="sine" easing="out" center="318,200" />
+								<effect type="fade" start="100" end="35" time="300" tween="sine" easing="out" />
+							</animation>
+							<animation type="Conditional" reversible="false" condition="true">
+								<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in"  />
+								<effect type="slide" start="0,55" end="0,0" time="350" tween="cubic" easing="out" />
+							</animation>
+							<animation type="Conditional" condition="!Control.HasFocus(1200101) + !Control.HasFocus(1200102)">
+								<effect type="zoom" start="80" end="100" time="250" tween="sine" easing="out" center="318,200" />
+								<effect type="fade" start="35" end="100" time="250" tween="sine" easing="out" />
+							</animation>
+							<control type="label">
+								<posx>300</posx>
+								<posy>179</posy>
+								<width>590</width>
+								<font>FontSize_100</font>
+								<textcolor>white</textcolor>
+								<shadowcolor>99000000</shadowcolor>
+								<align>center</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+							<control type="image">
+								<posx>290</posx>
+								<posy>244</posy>
+								<width>21</width>
+								<height>18</height>
+								<texture>buttons/arrow.png</texture>
+								<colordiffuse>CCFFFFFF</colordiffuse>
+								<visible>!Control.HasFocus(1200101) + !Control.HasFocus(1200102) + [[Container(1209000).HasFocus(1)+!ControlGroup(1209010).HasFocus] | [Container(1209000).HasFocus(6)+!ControlGroup(1209016).HasFocus] | [Container(1209000).HasFocus(3)+!ControlGroup(1209012).HasFocus] | [Container(1209000).HasFocus(9)+!ControlGroup(1209013).HasFocus] | [Container(1209000).HasFocus(4)+!ControlGroup(1209011).HasFocus]]</visible>
+								<animation effect="fade" time="200" reversible="false">Visible</animation>
+								<animation effect="fade" time="200" reversible="false">Hidden</animation>
+							</control>
+<!--						<control type="label">
 							<posx>150</posx>
 							<posy>0</posy>
 							<width>290</width>
@@ -591,6 +554,7 @@ Search for window name
 							<label>$INFO[ListItem.Label]</label>
 							<visible>Control.HasFocus(1209000)</visible>
 							<include>VisibleFadeEffect</include>
+						</control>-->
 						</control>
 					</focusedlayout>
 					<content>
@@ -650,121 +614,116 @@ Search for window name
 						</item>
 					</content>
 				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>6</posy>
-					<width>128</width>
-					<height>50</height>
-					<texture>SideFade.png</texture>
-				</control>
-				<control type="image">
-					<posx>128r</posx>
-					<posy>6</posy>
-					<width>128</width>
-					<height>60</height>
-					<texture flipx="true">SideFade.png</texture>
-				</control>
 			</control>
 
 			<!-- RSS Feed and Menu Description -->
 			<control type="group">
 				<posx>0</posx>
-				<posy>33r</posy>
+				<posy>30r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
-				<control type="label">
+<!--				<control type="label">
 					<description>Menu Description</description>
 					<visible>Control.HasFocus(1209000)</visible>
-					<posx>1250</posx>
-					<posy>-27</posy>
+					<posx>68</posx>
+					<posy>-37</posy>
 					<width>1145</width>
 					<height>30</height>
-					<font>font12</font>
+					<font>FontSize_20</font>
 					<label>$INFO[Container(1209000).ListItem.Label2]</label>
-					<align>right</align>
+					<align>center</align>
 					<textcolor>white</textcolor>
 				</control>
 				<control type="label" id="1200100">
-					<description>Menu Description</description>
+					<description>Sub Menu Description</description>
 					<visible>!Control.HasFocus(1209000)</visible>
-					<posx>1250</posx>
-					<posy>-27</posy>
+					<posx>68</posx>
+					<posy>-37</posy>
 					<width>1145</width>
 					<height>30</height>
-					<font>font12</font>
-					<align>right</align>
+					<font>FontSize_20</font>
+					<align>center</align>
 					<textcolor>white</textcolor>
-				</control>
+				</control>-->
 				<control type="rss">
 					<description>RSS Feed</description>
-					<posx>90</posx>
+					<posx>0</posx>
 					<posy>0</posy>
-					<height>30</height>
-					<width>1155</width>
-					<font>font12</font>
+					<width>1250</width>
+					<font>FontSize_20</font>
 					<urlset>1</urlset>
-					<textcolor>blue</textcolor>
+					<textcolor>99white</textcolor>
 					<titlecolor>blue</titlecolor>
-					<headlinecolor>white</headlinecolor>
+					<headlinecolor>99white</headlinecolor>
 					<visible>substring(Window.Property(RssShow),true)</visible>
 				</control>
 				<control type="image">
 					<description>RSS Background</description>
 					<posx>1250</posx>
 					<posy>2</posy>
-					<width>24</width>
-					<height>24</height>
-					<texture>icon-rss.png</texture>
+					<width>22</width>
+					<height>22</height>
+					<texture>rss_icon.png</texture>
 					<visible>substring(Window.Property(RssShow),true)</visible>
 				</control>
 			</control>
 
 			<!-- Favorite Addons -->
 			<control type="group">
-				<posx>20</posx>
-				<posy>55r</posy>
+				<posx>240</posx>
+				<posy>27</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="button" id="1200101">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>45</width>
-					<height>45</height>
-					<texturefocus border="5">floor_buttonFO.png</texturefocus>
-					<texturenofocus border="5">floor_button.png</texturenofocus>
+					<width>1</width>
+					<height>1</height>
 					<onleft>1200102</onleft>
 					<onright>1200102</onright>
-					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>
+<!--					<onup condition="Control.IsVisible(1209001)">1209001</onup>
+					<onup condition="!Control.IsVisible(1209001)">1209000</onup>-->
+					<onup>1209000</onup>
 					<ondown>1209000</ondown>
 				</control>
-				<control type="image">
+				<control type="label">
+					<include>TopSmallLabel</include>
+					<label>$LOCALIZE[1036]</label>
+					<animation effect="fade" start="100" end="70" time="100" tween="sine" easing="in" condition="!Control.HasFocus(1200101)" reversible="true">Conditional</animation>
+					<animation effect="zoom"  start="100" end="95" time="100" tween="sine" easing="in" center="auto" condition="!Control.HasFocus(1200101)" reversible="true">Conditional</animation>
+				</control>
+<!--				<control type="image">
 					<posx>5</posx>
 					<posy>5</posy>
 					<width>35</width>
 					<height>35</height>
 					<aspectratio>keep</aspectratio>
 					<texture>icon_favourites.png</texture>
-				</control>
+				</control>-->
 			</control>
 
 			<!-- Power Button -->
 			<control type="group">
-				<posx>75</posx>
-				<posy>55r</posy>
+				<posx>380</posx>
+				<posy>27</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="button" id="1200102">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>45</width>
-					<height>45</height>
-					<texturefocus border="5">floor_buttonFO.png</texturefocus>
-					<texturenofocus border="5">floor_button.png</texturenofocus>
+					<width>1</width>
+					<height>1</height>
 					<onleft>1200101</onleft>
 					<onright>1200101</onright>
-					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>
+<!--					<onup condition="Control.IsVisible(1209001)">1209001</onup>
+					<onup condition="!Control.IsVisible(1209001)">1209000</onup>-->
+					<onup>1209000</onup>
 					<ondown>1209000</ondown>
 				</control>
-				<control type="image">
+				<control type="label">
+					<include>TopSmallLabel</include>
+					<label>$LOCALIZE[33060]</label>
+					<animation effect="fade" start="100" end="70" time="100" tween="sine" easing="in" condition="!Control.HasFocus(1200102)" reversible="true">Conditional</animation>
+					<animation effect="zoom"  start="100" end="95" time="100" tween="sine" easing="in" center="auto" condition="!Control.HasFocus(1200102)" reversible="true">Conditional</animation>
+				</control>
+<!--				<control type="image">
 					<description>Power Icon</description>
 					<posx>5</posx>
 					<posy>5</posy>
@@ -772,7 +731,7 @@ Search for window name
 					<height>35</height>
 					<aspectratio>keep</aspectratio>
 					<texture>icon_power.png</texture>
-				</control>
+				</control>-->
 			</control>
 
 			<!-- Signal Condition Notification -->
@@ -6568,7 +6527,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<height>50</height>
-				<font>font35_title</font>
+				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1119] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>

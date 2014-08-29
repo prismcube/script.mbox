@@ -88,7 +88,7 @@
 		</control>
 	</include>
 
-	<include name="DefaultCommonTime">
+<!--	<include name="DefaultCommonTime">
 		<control type="label">
 			<description>time label</description>
 			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
@@ -104,6 +104,62 @@
 			<label>$INFO[System.Time]</label>
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+		</control>
+	</include>-->
+
+	<include name="DefaultCommonTime">
+		<control type="group">
+			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
+			<animation type="Conditional" reversible="false" condition="!Window.IsActive(VolumeBar)">
+				<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in"  />
+				<effect type="slide" start="0,35" end="0,0" time="350" tween="cubic" easing="out" />
+			</animation>
+			<animation type="Conditional" reversible="false" condition="Window.IsActive(VolumeBar)">
+				<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+				<effect type="slide" start="0,0" end="0,35" time="350" tween="sine" easing="out" />
+			</animation>
+			<posx>235r</posx>
+			<posy>45</posy>
+			<orientation>horizontal</orientation>
+			<control type="label" id="1">
+				<height>25</height>
+				<width>170</width>
+				<font>FontSize_20</font>
+				<textcolor>blue</textcolor>
+				<shadowcolor>77000000</shadowcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>false</scroll>
+				<label>$INFO[System.Time(hh:mm)]</label>
+			</control>
+			<control type="group" id="1">
+				<visible>substring(system.time,AM,right) | substring(system.time,PM,right)</visible>
+				<posx>170</posx>
+				<width>20</width>
+				<height>20</height>
+				<control type="label" id="1">
+					<visible>substring(system.time,AM,right)</visible>
+					<posx>2</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>18</height>
+					<font>ClockFont</font>
+					<textcolor>blue</textcolor>
+					<shadowcolor>77000000</shadowcolor>
+					<label>31030</label>
+				</control>
+				<control type="label" id="1">
+					<visible>substring(system.time,PM,right)</visible>
+					<posx>2</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>18</height>
+					<textcolor>blue</textcolor>
+					<shadowcolor>77000000</shadowcolor>
+					<font>ClockFont</font>
+					<label>31031</label>
+				</control>
+			</control>
 		</control>
 	</include>
 
@@ -236,10 +292,10 @@
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_24</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>99white</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
 			</control>
 			<control type="label" id="1001021">
@@ -247,10 +303,10 @@
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_24</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
+				<textcolor>99white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble)</visible>
 			</control>
 		</control>
@@ -579,7 +635,7 @@
 	</include>
 
 	<include name="DefaultButtonHomeSubCommonValues">
-		<height>35</height>
+<!--		<height>35</height>
 		<width>180</width>
 		<textwidth>160</textwidth>
 		<align>center</align>
@@ -589,7 +645,58 @@
 		<focusedcolor>white</focusedcolor>
 		<texturefocus border="5">HomeSubFO.png</texturefocus>
 		<texturenofocus border="5">HomeSubNF.png</texturenofocus>
-		<pulseonselect>false</pulseonselect>
+		<pulseonselect>false</pulseonselect>-->
+		<animation type="Conditional" condition="true" reversible="false">
+			<effect type="fade" end="40" time="0" />
+			<effect type="zoom" end="75" time="0" />
+		</animation>
+		<height>50</height>
+		<width>700</width>
+		<align>center</align>
+		<aligny>center</aligny>
+		<font>FontSize_46</font>
+		<textcolor>white</textcolor>
+		<focusedcolor>white</focusedcolor>
+		<shadowcolor>99000000</shadowcolor>
+	</include>
+
+	<include name="DefaultButtonHomeSubCommonValues_Editing">
+		<itemlayout height="46">
+			<control type="label">
+				<animation type="Conditional" condition="true" reversible="false">
+					<effect type="fade" end="40" time="0" />
+					<effect type="zoom" end="75" time="0" />
+				</animation>
+				<height>50</height>
+				<width>700</width>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>FontSize_46</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<shadowcolor>99000000</shadowcolor>
+			</control>
+		</itemlayout>
+		<focusedlayout height="55">
+			<control type="label">
+				<width>700</width>
+				<height>50</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>FontSize_46</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>99000000</shadowcolor>
+<!--				<label>$INFO[ListItem.label]</label>-->
+				<animation type="Focus" condition="ture" reversible="false">
+					<effect type="fade" start="40" end="100" time="200" tween="sine" easing="in" />
+					<effect type="zoom" start="75" end="100" time="200" tween="sine" easing="in" />
+				</animation>
+				<animation type="Unfocus" condition="true" reversible="false">
+					<effect type="fade" start="100" end="40" time="200" tween="sine" easing="out" />
+					<effect type="zoom" start="100" end="75" time="200" tween="sine" easing="out" />
+				</animation>
+			</control>
+		</focusedlayout>
 	</include>
 
 	<include name="DefaultButtonCommonValues">
