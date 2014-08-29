@@ -542,10 +542,7 @@
 	<string id="2359"></string>
 	<string id="2360"></string>
 	<string id="2361"></string>
-	<string id="2362"></string>
 	<string id="2363"></string>
-	<string id="2364"></string>
-	<string id="2365"></string>
 	<string id="3001">En attente</string>
 	<string id="3002">%s pause</string>
 	<string id="3003">%s terminé</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Impossible de trouver le dernier firmware%s Veuillez réessayer</string>
 	<string id="3381">Aucun firmware publié disponible </string>
 	<string id="3382">Téléchargement</string>
-	<string id="3383">Vérifier votre disque dur</string>
-	<string id="3384">Vérifier votre flash NAND interne</string>
-	<string id="3385">Espace insuffisant dans le flash NAND</string>
-	<string id="3386">Impossible d'écrire dans le flash NAND</string>
 	<string id="3387">Information du firmware </string>
 	<string id="3388">Version</string>
 	<string id="3389">Aucune tentative</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Version du firmware</string>
 	<string id="3399">Mise à jour du firmware</string>
 	<string id="3400">Rafraîchir la mise à jour du firmware</string>
-	<string id="3401">Obtenir les versions précédentes</string>
 	<string id="3402"></string>
 	<string id="3403"></string>
 	<string id="3404">Fichier non trouvé</string>
-	<string id="3405">Versions précédentes du firmware</string>
 	<string id="3406">Télécharger le dernier firmware pour votre PRISMCUBE</string>
 	<string id="3407"></string>
 	<string id="3408">Mise à jour du système à partir d'un fichier zip</string>
@@ -1487,7 +1478,6 @@
 	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3942"></string>
 	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">La chaîne sera changée %s minutes plus tard</string>
 	<string id="4048">Puissance</string>
 	<string id="4049">Qualité</string>
+	<string id="4050"></string>
+	<string id="4051">Vérifier votre flash NAND interne</string>
+	<string id="4052">Espace insuffisant dans le flash NAND</string>
+	<string id="4053">Impossible d'écrire dans le flash NAND</string>
+	<string id="4054"></string>
+	<string id="4055"></string>
 </strings>

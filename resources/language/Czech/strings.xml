@@ -542,10 +542,7 @@
 	<string id="2359">LCN Vyhledávání</string>
 	<string id="2360">Změna aktuální cesty nahrávky</string>
 	<string id="2361">Interní</string>
-	<string id="2362"></string>
 	<string id="2363"></string>
-	<string id="2364"></string>
-	<string id="2365"></string>
 	<string id="3001">Čekání</string>
 	<string id="3002">%s vypršel časový limit</string>
 	<string id="3003">%s Dokončené</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Není možné získat nejnovější firmware%s, prosím zkuste to znovu</string>
 	<string id="3381">Firmware není k dispozici</string>
 	<string id="3382">Stěhování</string>
-	<string id="3383">Zkontrolujte HDD</string>
-	<string id="3384">Zkontrolujte, vaši interní NAND flash</string>
-	<string id="3385">Není dostatek místa v NAND flash</string>
-	<string id="3386">Nepodařilo se zapsat na flash NAND</string>
 	<string id="3387">Firmware informace</string>
 	<string id="3388">Verze</string>
 	<string id="3389">Nespustené</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Verze firmwaru</string>
 	<string id="3399">Aktualizace firmwaru</string>
 	<string id="3400">Obnovit aktualizaci firmwaru</string>
-	<string id="3401">Získejte předchozí verze</string>
 	<string id="3402">Aktualizovat z lokálního adresáře </string>
 	<string id="3403">Stahování souboru neúspěšné </string>
 	<string id="3404">soubor nenalezen</string>
-	<string id="3405">Předchozí verze Firmware</string>
 	<string id="3406">Stáhněte si nejnovější firmware pro váš PRISMCUBE</string>
 	<string id="3407">Aktualizace softvéru přes internet</string>
 	<string id="3408">Aktualizace softvéru ze zip souboru</string>
@@ -1487,7 +1478,6 @@
 	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3942"></string>
 	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">Kanál bude změněn o %s min později</string>
 	<string id="4048">Síla</string>
 	<string id="4049">Kvalita</string>
+	<string id="4050"></string>
+	<string id="4051">Zkontrolujte, vaši interní NAND flash</string>
+	<string id="4052">Není dostatek místa v NAND flash</string>
+	<string id="4053">Nepodařilo se zapsat na flash NAND</string>
+	<string id="4054"></string>
+	<string id="4055"></string>
 </strings>

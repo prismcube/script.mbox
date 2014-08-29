@@ -542,10 +542,7 @@
 	<string id="2359">Wyszukiwanie LCN</string>
 	<string id="2360">Zmień domyślną ścieżkę nagrywania</string>
 	<string id="2361">Internal</string>
-	<string id="2362"></string>
 	<string id="2363"></string>
-	<string id="2364"></string>
-	<string id="2365"></string>
 	<string id="3001">Oczekiwanie…</string>
 	<string id="3002">%s upłynął</string>
 	<string id="3003">%s zakończony</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Nie można pobrać aktualnego oprogramowania%s Proszę spróbować ponownie</string>
 	<string id="3381">Brak dostępnego oprogramowania</string>
 	<string id="3382">Pobieranie…</string>
-	<string id="3383">Sprawdź dysk twardy</string>
-	<string id="3384">Sprawdź wewnętrzną pamięć NAND</string>
-	<string id="3385">Za mało miejsca na wewnętrznej pamięci NAND</string>
-	<string id="3386">Niepowodzenie zapisu do pamięci NAND</string>
 	<string id="3387">Informacje o oprogramowaniu</string>
 	<string id="3388">Wersja</string>
 	<string id="3389">Nie sprawdzano</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Wersja oprogramowania</string>
 	<string id="3399">Aktualizacja oprogramowania</string>
 	<string id="3400">Odśwież aktualizację oprogramowania</string>
-	<string id="3401">Pobierz poprzednie wersje</string>
 	<string id="3402">Aktualizacja z lokalnego katalogu</string>
 	<string id="3403">Pobieranie nieudane</string>
 	<string id="3404">Plik nie został odnaleziony</string>
-	<string id="3405">Poprzednie wersje oprogramowania</string>
 	<string id="3406">Pobierz najnowsze oprogramowanie dla odbiornika PRISMCUBE</string>
 	<string id="3407">Aktualizacja oprogramowania przez internet</string>
 	<string id="3408">Aktualizacja oprogramowania z pliku zip</string>
@@ -1487,7 +1478,6 @@
 	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3942"></string>
 	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">Kanał zostanie zmieniony za %s minut</string>
 	<string id="4048">Siła</string>
 	<string id="4049">Jakość</string>
+	<string id="4050"></string>
+	<string id="4051">Sprawdź wewnętrzną pamięć NAND</string>
+	<string id="4052">Za mało miejsca na wewnętrznej pamięci NAND</string>
+	<string id="4053">Niepowodzenie zapisu do pamięci NAND</string>
+	<string id="4054"></string>
+	<string id="4055"></string>
 </strings>

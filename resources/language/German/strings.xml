@@ -542,10 +542,7 @@
 	<string id="2359">LCN Suche</string>
 	<string id="2360">Standart Aufnahmepfad ändern</string>
 	<string id="2361">Intern</string>
-	<string id="2362"></string>
 	<string id="2363"></string>
-	<string id="2364"></string>
-	<string id="2365"></string>
 	<string id="3001">Warten</string>
 	<string id="3002">%s pause</string>
 	<string id="3003">%s fertig</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Konnte letzte Firmware nicht finden%s Bitte erneut versuchen</string>
 	<string id="3381">Keine freigebene Firmware verfügbar</string>
 	<string id="3382">Downloading</string>
-	<string id="3383">Überprüfen Sie ihre HDD</string>
-	<string id="3384">Überprüfen Sie den internen NAND flash</string>
-	<string id="3385">Nicht genügend Platz im internen NAND flash</string>
-	<string id="3386">NAND flash beschreiben fehlgeschlagen</string>
 	<string id="3387">Firmware Information</string>
 	<string id="3388">Version</string>
 	<string id="3389">Nicht versucht</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Firmware Version</string>
 	<string id="3399">Firmware Update</string>
 	<string id="3400">Firmware Update erneuern</string>
-	<string id="3401">Vorherige Version erhalten</string>
 	<string id="3402">Update von lokalen Verzeichnis</string>
 	<string id="3403">File Download fehlgeschlagen</string>
 	<string id="3404">Datei nicht gefunden</string>
-	<string id="3405">Vorherige Firmware Versionen</string>
 	<string id="3406">Download der aktuellsten Firmware ihrer PRISMCUBE</string>
 	<string id="3407">Firmware aktualisieren via Internet</string>
 	<string id="3408">Firmware aktualisieren aus Zip Datei</string>
@@ -1487,7 +1478,6 @@
 	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3942"></string>
 	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">Der Sender wechselt in %s Minuten</string>
 	<string id="4048">Stärke</string>
 	<string id="4049">Qualität</string>
+	<string id="4050"></string>
+	<string id="4051">Überprüfen Sie den internen NAND flash</string>
+	<string id="4052">Nicht genügend Platz im internen NAND flash</string>
+	<string id="4053">NAND flash beschreiben fehlgeschlagen</string>
+	<string id="4054"></string>
+	<string id="4055"></string>
 </strings>

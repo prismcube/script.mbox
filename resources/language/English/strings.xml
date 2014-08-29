@@ -542,10 +542,7 @@
 	<string id="2359">LCN Search</string>
 	<string id="2360">Record Default Path Change</string>
 	<string id="2361">Internal</string>
-	<string id="2362">Xbmc Save Storage</string>
 	<string id="2363">Micro SD Card</string>
-	<string id="2364">USB Storage</string>
-	<string id="2365">Exclusive HDD</string>
 	<string id="3001">Waiting</string>
 	<string id="3002">%s timed out</string>
 	<string id="3003">%s completed</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Could not get the latest firmware%s Please try again</string>
 	<string id="3381">No released firmware available</string>
 	<string id="3382">Downloading</string>
-	<string id="3383">Check your HDD</string>
-	<string id="3384">Check your internal NAND flash</string>
-	<string id="3385">Not enough space on NAND flash</string>
-	<string id="3386">Failed to write on NAND flash</string>
 	<string id="3387">Firmware Information</string>
 	<string id="3388">Version</string>
 	<string id="3389">Not attempted</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Firmware Version</string>
 	<string id="3399">Firmware Update</string>
 	<string id="3400">Refresh firmware update</string>
-	<string id="3401">Get previous versions</string>
 	<string id="3402">Update from local directory</string>
 	<string id="3403">Failed to download file</string>
 	<string id="3404">File not found</string>
-	<string id="3405">Previous Firmware Versions</string>
 	<string id="3406">Download the latest firmware for your PRISMCUBE</string>
 	<string id="3407">Update Firmware via Internet</string>
 	<string id="3408">Update Firmware from zip file</string>
@@ -1487,7 +1478,6 @@
 	<string id="3939">Change Storage</string>
 	<string id="3940">Not enough space left on the device</string>
 	<string id="3941">Device not found</string>
-	<string id="3942">Unknown filesystem or not formatted device</string>
 	<string id="3943">Storage device not changed</string>
 	<string id="3944">Failed to format device</string>
 	<string id="3945">Failed to copy XBMC add-ons</string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">The channel will be changed %s min later</string>
 	<string id="4048">Strength</string>
 	<string id="4049">Quality</string>
+	<string id="4050">Please install HDD first%s before updating from zip file</string>
+	<string id="4051">Check your internal flash</string>
+	<string id="4052">Not enough space on internal flash</string>
+	<string id="4053">Failed to write on internal flash</string>
+	<string id="4054">Download current version</string>
+	<string id="4055">Unknown filesystem or not formatted</string>
 </strings>

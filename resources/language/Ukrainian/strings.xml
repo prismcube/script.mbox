@@ -542,10 +542,7 @@
 	<string id="2359"></string>
 	<string id="2360"></string>
 	<string id="2361"></string>
-	<string id="2362"></string>
 	<string id="2363"></string>
-	<string id="2364"></string>
-	<string id="2365"></string>
 	<string id="3001">Чекайте</string>
 	<string id="3002">%s час вийшов</string>
 	<string id="3003">%s завершено</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Неможливо отримати останнє оновлення%s Спробуйте ще раз</string>
 	<string id="3381">Немає доступних версій ПО</string>
 	<string id="3382">Завантаження</string>
-	<string id="3383">Перевірка Диску</string>
-	<string id="3384">Перевірка внутрішньої NAND пам'яті</string>
-	<string id="3385">Недостатньо місця на NAND накопичувачі</string>
-	<string id="3386">Помилка запису на NAND накопичувач</string>
 	<string id="3387">Інформація про ПО</string>
 	<string id="3388">Версія</string>
 	<string id="3389">Не було спроб</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Версія ПО</string>
 	<string id="3399">Оновлення ПО</string>
 	<string id="3400">Оновити доступність ПО</string>
-	<string id="3401">Отримати попередні версії ПО</string>
 	<string id="3402"></string>
 	<string id="3403"></string>
 	<string id="3404">Файл не знайдено</string>
-	<string id="3405">Попередні Версії ПО</string>
 	<string id="3406">Завантажити останнє ПО ресивера</string>
 	<string id="3407"></string>
 	<string id="3408"></string>
@@ -1487,7 +1478,6 @@
 	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3942"></string>
 	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">Канал буде змінено через %s хвилин</string>
 	<string id="4048">Сигнал</string>
 	<string id="4049">Якість</string>
+	<string id="4050"></string>
+	<string id="4051">Перевірка внутрішньої NAND пам'яті</string>
+	<string id="4052">Недостатньо місця на NAND накопичувачі</string>
+	<string id="4053">Помилка запису на NAND накопичувач</string>
+	<string id="4054"></string>
+	<string id="4055"></string>
 </strings>

@@ -542,10 +542,7 @@
 	<string id="2359"></string>
 	<string id="2360"></string>
 	<string id="2361"></string>
-	<string id="2362"></string>
 	<string id="2363"></string>
-	<string id="2364"></string>
-	<string id="2365"></string>
 	<string id="3001">Attendere</string>
 	<string id="3002">%s timed out</string>
 	<string id="3003">%s completo</string>
@@ -928,10 +925,6 @@
 	<string id="3380">Impossibile ottenere l'ultimo firmware%s Riprovare</string>
 	<string id="3381">Nessun firmware rilasciato disponibile</string>
 	<string id="3382">Download in corso</string>
-	<string id="3383">Controlla il tuo HDD</string>
-	<string id="3384">Controlla la Flash interna</string>
-	<string id="3385">Non c'è abbastanza spazio su flash NAND</string>
-	<string id="3386">Mpossibile scrivere sulla memoria flash NAND</string>
 	<string id="3387">Informazioni firmware</string>
 	<string id="3388">Versione</string>
 	<string id="3389">Non tentato</string>
@@ -946,11 +939,9 @@
 	<string id="3398">Versione firmware</string>
 	<string id="3399">Aggiornamento del firmware</string>
 	<string id="3400">Refresh di aggiornamento del firmware</string>
-	<string id="3401">Ottenere versioni precedenti</string>
 	<string id="3402"></string>
 	<string id="3403"></string>
 	<string id="3404">File non trovato</string>
-	<string id="3405">Versioni firmware precedenti</string>
 	<string id="3406">Scaricare il firmware più recente per il vostro PRISMCUBE</string>
 	<string id="3407"></string>
 	<string id="3408"></string>
@@ -1487,7 +1478,6 @@
 	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3942"></string>
 	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
@@ -1595,4 +1585,10 @@
 	<string id="4047">Il canale sarà cambiato %s min più tardi</string>
 	<string id="4048">Forza</string>
 	<string id="4049">Qualità</string>
+	<string id="4050"></string>
+	<string id="4051">Controlla la Flash interna</string>
+	<string id="4052">Non c'è abbastanza spazio su flash NAND</string>
+	<string id="4053">Mpossibile scrivere sulla memoria flash NAND</string>
+	<string id="4054"></string>
+	<string id="4055"></string>
 </strings>
