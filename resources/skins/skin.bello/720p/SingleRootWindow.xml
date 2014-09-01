@@ -188,7 +188,7 @@ Search for window name
 					<font>font35_title</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>grey2</textcolor>
+					<textcolor>77white</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 			</control>
@@ -1855,7 +1855,7 @@ Search for window name
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>font12</font>
+								<font>FontSize_14</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -2251,8 +2251,8 @@ Search for window name
 									<posy>0</posy>
 									<width>190</width>
 									<height>40</height>
-									<font>font12_title</font>
-									<textcolor>grey3</textcolor>
+									<font>FontSize_14</font>
+									<textcolor>77white</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
@@ -2289,7 +2289,7 @@ Search for window name
 									<posy>0</posy>
 									<width>190</width>
 									<height>40</height>
-									<font>font12_title</font>
+									<font>FontSize_14</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<shadowcolor>ff000000</shadowcolor>
@@ -2913,7 +2913,7 @@ Search for window name
 									<posy>6</posy>
 									<width>50</width>
 									<height>10</height>
-									<font>font15</font>
+									<font>FontSize_14</font>
 									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 								</control>
 							</control>
@@ -4966,7 +4966,7 @@ Search for window name
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>font12</font>
+								<font>FontSize_14</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -5707,7 +5707,7 @@ Search for window name
 				<posy>62</posy>
 				<width>600</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>FontSize_20</font>
 				<textcolor>blue</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -5956,7 +5956,7 @@ Search for window name
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>font12</font>
+								<font>FontSize_14</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -7316,8 +7316,8 @@ Search for window name
 
 		<!-- Hotkeys on Setting Window -->
 		<control type="group">
-			<posx>430r</posx>
-			<posy>645</posy>
+			<posx>425r</posx>
+			<posy>607</posy>
 			<visible>substring(Window.Property(CurrentWindow),2400000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)] | substring(Window.Property(CurrentWindow),2500000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)] | substring(Window.Property(CurrentWindow),1900000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)] | substring(Window.Property(CurrentWindow),1800000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)]</visible>
 			<control type="image">
 				<posx>0</posx>
@@ -7332,7 +7332,8 @@ Search for window name
 				<posy>5</posy>
 				<width>160</width>
 				<height>20</height>
-				<font>font10</font>
+				<font>FontSize_16</font>
+				<textcolor>77white</textcolor>
 				<align>left</align>
 				<label>$ADDON[script.mbox 1101]</label>
 			</control>

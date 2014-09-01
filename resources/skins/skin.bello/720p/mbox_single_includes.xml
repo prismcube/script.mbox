@@ -7101,7 +7101,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDChannelFO.png</texturefocus>
 				<texturenofocus>OSDChannelNF.png</texturenofocus>
 			</control>
@@ -7109,7 +7109,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDIconWarning.png</texturefocus>
 				<texturenofocus>OSDIconInfo.png</texturenofocus>
 			</control>
@@ -7117,7 +7117,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDTeletextFO.png</texturefocus>
 				<texturenofocus>OSDTeletextNF.png</texturenofocus>
 			</control>
@@ -7125,7 +7125,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDSubtitlesFO.png</texturefocus>
 				<texturenofocus>OSDSubtitlesNF.png</texturenofocus>
 			</control>
@@ -7133,7 +7133,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDBookmarksFO.png</texturefocus>
 				<texturenofocus>OSDBookmarksNF.png</texturenofocus>
 			</control>
@@ -7142,7 +7142,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDRecord2.png</texturefocus>
 				<texturenofocus>OSDRecordNF.png</texturenofocus>
 			</control>
@@ -7150,14 +7150,14 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDStopFO.png</texturefocus>
 				<texturenofocus>OSDStopNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003626">
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDVolumeMuteFO.png</texturefocus>
 				<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
 				<onclick>Mute</onclick>
@@ -7166,7 +7166,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDPresetSettingsFO.png</texturefocus>
 				<texturenofocus>OSDPresetSettingsNF.png</texturenofocus>
 			</control>
@@ -7174,7 +7174,7 @@
 				<align>left</align>
 				<width>42</width>
 				<height>35</height>
-				<textcolor>grey3</textcolor>
+				<textcolor>33white</textcolor>
 				<texturefocus>OSDserviceFO.png</texturefocus>
 				<texturenofocus>OSDserviceNF.png</texturenofocus>
 			</control>
