@@ -250,7 +250,7 @@ Search for window name
 					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
 					<effect type="fade" start="100" end="0" time="300" />
 				</animation>-->
-				<control type="grouplist" id="1209001">
+				<control type="group" id="1209001">
 					<posx>380</posx>
 					<posy>20</posy>
 					<onup>1209000</onup>
@@ -270,8 +270,8 @@ Search for window name
 						<width>700</width>
 						<height>155</height>
 						<align>center</align>
-						<onup>1209016</onup>
-						<ondown>1209016</ondown>
+						<onup>1209010</onup>
+						<ondown>1209010</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
 <!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
@@ -279,6 +279,14 @@ Search for window name
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(1)</visible>
+						<control type="button" id="1290101">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>$ADDON[script.mbox 1050]</label>
+						</control>
+						<control type="button" id="1290102">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>$ADDON[script.mbox 1051]</label>
+						</control>
 						<control type="button" id="1290103">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1052]</label>

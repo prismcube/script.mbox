@@ -660,45 +660,6 @@
 		<shadowcolor>99000000</shadowcolor>
 	</include>
 
-	<include name="DefaultButtonHomeSubCommonValues_Editing">
-		<itemlayout height="46">
-			<control type="label">
-				<animation type="Conditional" condition="true" reversible="false">
-					<effect type="fade" end="40" time="0" />
-					<effect type="zoom" end="75" time="0" />
-				</animation>
-				<height>50</height>
-				<width>700</width>
-				<align>center</align>
-				<aligny>center</aligny>
-				<font>FontSize_46</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<shadowcolor>99000000</shadowcolor>
-			</control>
-		</itemlayout>
-		<focusedlayout height="55">
-			<control type="label">
-				<width>700</width>
-				<height>50</height>
-				<align>center</align>
-				<aligny>center</aligny>
-				<font>FontSize_46</font>
-				<textcolor>white</textcolor>
-				<shadowcolor>99000000</shadowcolor>
-<!--				<label>$INFO[ListItem.label]</label>-->
-				<animation type="Focus" condition="ture" reversible="false">
-					<effect type="fade" start="40" end="100" time="200" tween="sine" easing="in" />
-					<effect type="zoom" start="75" end="100" time="200" tween="sine" easing="in" />
-				</animation>
-				<animation type="Unfocus" condition="true" reversible="false">
-					<effect type="fade" start="100" end="40" time="200" tween="sine" easing="out" />
-					<effect type="zoom" start="100" end="75" time="200" tween="sine" easing="out" />
-				</animation>
-			</control>
-		</focusedlayout>
-	</include>
-
 	<include name="DefaultButtonCommonValues">
 		<height>40</height>
 		<width>250</width>
