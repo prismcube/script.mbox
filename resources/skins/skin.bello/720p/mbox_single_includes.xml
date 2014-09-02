@@ -660,7 +660,7 @@
 		<shadowcolor>99000000</shadowcolor>
 	</include>
 
-	<include name="DefaultButtonCommonValues">
+<!--	<include name="DefaultButtonCommonValues">
 		<height>40</height>
 		<width>250</width>
 		<textoffsetx>10</textoffsetx>
@@ -669,6 +669,19 @@
 		<font>font13caps</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus>-</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+	</include>-->
+
+	<include name="DefaultButtonCommonValues">
+		<height>1</height>
+		<width>1</width>
+		<textwidth>160</textwidth>
+		<aligny>center</aligny>
+		<font>FontSize_22</font>
+		<textcolor>white</textcolor>
+		<shadowcolor>77000000</shadowcolor>
+		<align>left</align>
+	    <aligny>center</aligny>
 		<pulseonselect>false</pulseonselect>
 	</include>
 
