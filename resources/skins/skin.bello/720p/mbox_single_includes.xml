@@ -635,17 +635,6 @@
 	</include>
 
 	<include name="DefaultButtonHomeSubCommonValues">
-<!--		<height>35</height>
-		<width>180</width>
-		<textwidth>160</textwidth>
-		<align>center</align>
-		<aligny>center</aligny>
-		<font>font12</font>
-		<textcolor>grey2</textcolor>
-		<focusedcolor>white</focusedcolor>
-		<texturefocus border="5">HomeSubFO.png</texturefocus>
-		<texturenofocus border="5">HomeSubNF.png</texturenofocus>
-		<pulseonselect>false</pulseonselect>-->
 		<animation type="Conditional" condition="true" reversible="false">
 			<effect type="fade" end="40" time="0" />
 			<effect type="zoom" end="75" time="0" />
@@ -675,8 +664,7 @@
 	<include name="DefaultButtonCommonValues">
 		<height>1</height>
 		<width>1</width>
-		<textwidth>160</textwidth>
-		<aligny>center</aligny>
+		<textwidth>165</textwidth>
 		<font>FontSize_22</font>
 		<textcolor>white</textcolor>
 		<shadowcolor>77000000</shadowcolor>
@@ -4431,6 +4419,18 @@
 		<font>font12_title</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+	</include>
+
+	<include name="DefaultButtonMediaSubCommonValues_EPG">
+		<height>20</height>
+		<width>1</width>
+		<textoffsetx>20</textoffsetx>
+		<textwidth>195</textwidth>
+		<aligny>center</aligny>
+		<font>FontSize_22</font>
+		<shadowcolor>77000000</shadowcolor>
+		<textcolor>white</textcolor>
 		<pulseonselect>false</pulseonselect>
 	</include>
 

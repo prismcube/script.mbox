@@ -4558,35 +4558,16 @@ Search for window name
 
 			<!-- Slide Menu -->
 			<control type="group">
-				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">WindowClose</animation>
-				<control type="group">
-					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1</width>
-						<height>727</height>
-						<texture>black-back_noAlpha.png</texture>
-						<animation effect="zoom" start="0,0,1,727" end="0,0,229,727" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
-					</control>
-					<control type="image">
-						<posx>1</posx>
-						<posy>0</posy>
-						<width>12</width>
-						<height>727</height>
-						<texture>MediaBladeSub_Part2.png</texture>
-						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
-					</control>
-				</control>
+				<!--Main slide effect-->
+				<animation effect="slide" start="0,45" end="0,80" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus">Conditional</animation>
+<!--				<animation effect="fade" start="0" end="100" time="300" tween="sine" easing="in" condition="ControlGroup(3309000).HasFocus">Conditional</animation>
+				<animation effect="fade" start="100" end="0" time="300" tween="sine" easing="out" condition="ControlGroup(3309000).HasFocus">WindowClose</animation>-->
+				<animation effect="slide" start="0,80" end="0,45" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus">WindowClose</animation>
 				<control type="group" id="3309001">
-					<posx>-220</posx>
-					<posy>0</posy>
+					<posx>0</posx>
+					<posy>-15</posy>
+					<!--Sub slide panel effect-->
 					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3309001).HasFocus + !Control.HasFocus(3300104) + !Control.HasFocus(3300105)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">WindowClose</animation>
-					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
 					<control type="button">
 						<description>Hidden Button for Mouse</description>
 						<posx>-15</posx>
@@ -4598,56 +4579,58 @@ Search for window name
 						<texturefocus>-</texturefocus>
 						<visible>true</visible>
 					</control>
-					<control type="image">
-						<posx>185</posx>
-						<posy>160</posy>
-						<width>40</width>
-						<height>40</height>
-						<texture>MediaSubSet.png</texture>
-					</control>
-					<!-- Main Slide Menu -->
+				<!-- Main Slide Menu -->
 					<control type="grouplist" id="3309010">
-						<posx>10</posx>
-						<posy>210</posy>
+						<animation type="Visible"  reversible="false">
+							<effect type="fade" start="0" end="100" time="400" tween="sine" easing="in"  />
+							<effect type="slide" start="0,-80" end="0,0" time="350" tween="cubic" easing="out" />
+						</animation>
+						<animation type="Hidden" reversible="false">
+							<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+							<effect type="slide" start="0,0" end="0,-30" time="350" tween="sine" easing="out" />
+						</animation>
+						<posx>45</posx>
+						<posy>20</posy>
 						<width>240</width>
-						<height>550</height>
-						<onleft>3309000</onleft>
-						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
+<!--						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3309010</onup>
-						<ondown>3309010</ondown>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>-->
+						<ondown>3309000</ondown>
 						<itemgap>0</itemgap>
 						<control type="radiobutton" id="3300200">
 							<description>Hide Watched</description>
 							<textwidth>170</textwidth>
-							<include>DefaultButtonMediaSubCommonValues</include>
+							<include>DefaultButtonMediaSubCommonValues_EPG</include> <!--Misc Option sub manu-->
 							<label>$ADDON[script.mbox 1008]</label>
 						</control>
-						<visible>Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus</visible>
+						<visible allowhiddenfocus="true">Control.HasFocus(3300200)</visible>
 					</control>
 					<control type="list" id="3309050">
-						<posx>20</posx>
-						<posy>210</posy>
-						<width>240</width>
-						<height>550</height>
-						<onleft>3309000</onleft>
+						<animation type="Visible"  reversible="false">
+							<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in"  />
+							<effect type="slide" start="0,-70" end="0,-10" time="350" tween="cubic" easing="out" />
+						</animation>
+						<animation type="Hidden" reversible="false">
+							<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+							<effect type="slide" start="0,0" end="0,-40" time="350" tween="sine" easing="out" />
+						</animation>
+						<posx>67</posx>
+						<posy>20</posy>
+						<width>500</width>
+<!--						<itemgap>10</itemgap>-->
+						<align>left</align>
+						<orientation>horizontal</orientation>
+						<onleft>3309050</onleft>
+						<onright>3309050</onright>
 						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
 						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3309020</onup>
-						<ondown>3309020</ondown>
-						<visible>![Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus]</visible>
+						<ondown>3309000</ondown>
+						<visible allowhiddenfocus="true">!Control.HasFocus(3300200) + !ControlGroup(3309000).HasFocus</visible>
+						<!--NAS Groups sub manu-->
 						<itemlayout height="40" width="150">
-							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>210</width>
-								<height>40</height>
-								<texture border="5">button-nofocus.png</texture>
-							</control>
 							<control type="label">
 								<posx>5</posx>
 								<posy>0</posy>
@@ -4655,28 +4638,14 @@ Search for window name
 								<height>40</height>
 								<align>left</align>
 								<aligny>center</aligny>
-								<font>font12</font>
-								<textcolor>grey3</textcolor>
+								<font>FontSize_22</font>
+								<textcolor>77white</textcolor>
 								<label>$INFO[ListItem.Label]</label>
+<!--								<animation effect="fade" start="100" end="50" time="200" tween="cubic" easing="inout" reversible="true">conditional</animation>
+								<animation effect="zoom" end="80" time="200" tween="cubic" easing="inout" center="auto" reversible="true">Unfocus</animation>-->
 							</control>
 						</itemlayout>
 						<focusedlayout height="40" width="150">
-							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>210</width>
-								<height>40</height>
-								<texture border="5">button-focus.png</texture>
-								<visible>Control.HasFocus(3309050)</visible>
-							</control>
-							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>210</width>
-								<height>40</height>
-								<texture border="5">button-nofocus.png</texture>
-								<visible>!Control.HasFocus(3309050)</visible>
-							</control>
 							<control type="label">
 								<posx>5</posx>
 								<posy>0</posy>
@@ -4684,61 +4653,58 @@ Search for window name
 								<height>40</height>
 								<align>left</align>
 								<aligny>center</aligny>
-								<font>font12</font>
+								<font>FontSize_22</font>
 								<textcolor>white</textcolor>
 								<label>$INFO[ListItem.Label]</label>
+<!--								<animation effect="fade" start="100" end="50" time="200" tween="cubic" easing="inout" reversible="true">unfocus</animation>-->
+								<animation effect="zoom" end="105" time="200" tween="cubic" easing="out" center="auto" reversible="true">Focus</animation>
 							</control>
 						</focusedlayout>
 					</control>
 				</control>
-				<!-- Slide Menu Panel -->
-				<include>DefaultSideBladeLeft</include>
-				<!-- Confluence Logo -->
-				<control type="image">
-					<posx>-230</posx>
-					<posy>50</posy>
-					<width>220</width>
-					<height>80</height>
-					<aspectratio>keep</aspectratio>
-					<texture>Confluence_Logo.png</texture>
-				</control>
+
 				<!-- Function Buttons -->
 				<control type="group" id="3309000">
-					<posx>-250</posx>
-					<posy>130</posy>
+					<animation effect="fade" start="0" end="100" time="300" tween="sine" easing="in" condition="ControlGroup(3309000).HasFocus">Conditional</animation>
+					<animation effect="fade" start="100" end="0" time="300" tween="sine" easing="out" condition="ControlGroup(3309000).HasFocus">WindowClose</animation>
+					<!--<posx>-250</posx>
+					<posy>130</posy>-->
+					<posx>60</posx>
+					<posy>-20</posy>
 					<control type="button" id="3300100">
 						<description>View</description>
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
-						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
-						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
-						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3300106</onup>
-						<ondown>3300101</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),common)">1003400</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),thumbnail)">1003410</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),posterwrap)">1003420</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),fanart)">1003430</ondown>
+						<!--<onup>3300106</onup>
+						<ondown>3300101</ondown>-->
+						<onright>3300101</onright>
+						<onleft>3300106</onleft>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3300100)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3300100)" reversible="true">Conditional</animation>
 					</control>
 					<control type="button" id="3300101">
 						<description>Sort</description>
-						<posx>0</posx>
-						<posy>40</posy>
+						<posx>170</posx>
+						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
-						<onright>3300102</onright>
-						<onup>3300100</onup>
-						<ondown>3300104</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),common)">1003400</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),thumbnail)">1003410</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),posterwrap)">1003420</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),fanart)">1003430</ondown>
+						<onright>3300104</onright>
+						<onleft>3300100</onleft>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3300101)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3300101)" reversible="true">Conditional</animation>
 					</control>
 					<control type="togglebutton" id="3300102">
-						<description>Sort Asc</description>
-						<posx>220</posx>
-						<posy>53</posy>
+						<description>Sort asc</description>
+						<posx>0</posx>
+						<posy>0</posy>
 						<onleft>3300101</onleft>
 						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
@@ -4750,67 +4716,65 @@ Search for window name
 					</control>
 					<control type="radiobutton" id="3300104">
 						<description>Extra Options</description>
-						<hitrect x="0" y="120" w="265" h="40" />
-						<posx>0</posx>
-						<posy>80</posy>
+						<hitrect x="0" y="120" w="150" h="40" />
+						<posx>340</posx>
+						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<radiowidth>18</radiowidth>
-						<radioheight>18</radioheight>
-						<radioposx>222</radioposx>
-						<radioposy>12</radioposy>
-						<textureradiofocus>HomeHasSub.png</textureradiofocus>
-						<textureradionofocus>HomeHasSub.png</textureradionofocus>
+						<radiowidth>1</radiowidth>
+						<radioheight>1</radioheight>
+						<radioposx>0</radioposx>
+						<radioposy>0</radioposy>
+						<onclick>SetFocus(3300200)</onclick>
 						<label>$ADDON[script.mbox 1009]</label>
-						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
-						<onright>3309010</onright>
-						<onup>3300101</onup>
-						<ondown>3300105</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),common)">1003400</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),thumbnail)">1003410</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),posterwrap)">1003420</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),fanart)">1003430</ondown>
+						<onright>3300105</onright>
+						<onleft>3300101</onleft>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3300104)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3300104)" reversible="true">Conditional</animation>
 					</control>
 					<control type="button" id="3300105">
 						<description>NAS GROUPS</description>
 						<hitrect x="0" y="120" w="265" h="40" />
-						<posx>0</posx>
-						<posy>120</posy>
+						<posx>510</posx>
+						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<radiowidth>18</radiowidth>
 						<radioheight>18</radioheight>
 						<radioposx>222</radioposx>
 						<radioposy>12</radioposy>
-						<textureradiofocus>HomeHasSub.png</textureradiofocus>
-						<textureradionofocus>HomeHasSub.png</textureradionofocus>
+						<onclick>SetFocus(3309050)</onclick>
 						<label>$ADDON[script.mbox 1171]</label>
-						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
-						<onright>3309050</onright>
-						<onup>3300104</onup>
-						<ondown>3300106</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),common)">1003400</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),thumbnail)">1003410</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),posterwrap)">1003420</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),fanart)">1003430</ondown>
+						<onright>3300106</onright>
+						<onleft>3300104</onleft>
 						<enable>!substring(Container(3309050).CurrentPage,0)</enable>
 						<visible>!substring(Container(3309050).CurrentPage,0)</visible>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3300105)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3300105)" reversible="true">Conditional</animation>
 					</control>
 					<control type="button" id="3300106">
 						<description>ALL ARCHIVES</description>
-						<hitrect x="0" y="120" w="265" h="40" />
-						<posx>0</posx>
-						<posy>160</posy>
+						<hitrect x="0" y="0" w="150" h="40" />
+						<posx>680</posx>
+						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<label>$ADDON[script.mbox 1172]</label>
-						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
-						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
-						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
-						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3300105</onup>
-						<ondown>3300100</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),common)">1003400</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),thumbnail)">1003410</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),posterwrap)">1003420</ondown>
+						<ondown condition="substring(Window.Property(ViewMode),fanart)">1003430</ondown>
+						<onright>3300100</onright>
+						<onleft>3300105</onleft>
 						<enable>Control.IsVisible(3300105)</enable>
 						<visible>Control.IsVisible(3300105)</visible>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3300106)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3300106)" reversible="true">Conditional</animation>
 					</control>
 				</control>
 			</control>
@@ -5749,37 +5713,14 @@ Search for window name
 				<include>DefaultGridEPGView</include>		<!-- Grid View id = 2000		-->
 			</control>
 
-			<!-- Slide Menu -->
+					<!-- Slide Menu -->
 			<control type="group">
-				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
-				<control type="group">
-					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1</width>
-						<height>720</height>
-						<texture>black-back_noAlpha.png</texture>
-						<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
-					</control>
-					<control type="image">
-						<posx>1</posx>
-						<posy>0</posy>
-						<width>12</width>
-						<height>720</height>
-						<texture>MediaBladeSub_Part2.png</texture>
-						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
-					</control>
-				</control>
+				<animation effect="slide" start="0,45" end="0,80" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,80" end="0,45" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus">WindowClose</animation>
 				<control type="group" id="3709001">
-					<posx>-220</posx>
-					<posy>0</posy>
+					<posx>0</posx>
+					<posy>-15</posy>
 					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3709001).HasFocus + !Control.HasFocus(3700101)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">WindowClose</animation>
-					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
 					<control type="button">
 						<description>Hidden Button for Mouse</description>
 						<posx>-15</posx>
@@ -5792,78 +5733,75 @@ Search for window name
 						<texturefocus>-</texturefocus>
 						<visible>true</visible>
 					</control>
-					<control type="image">
-						<posx>185</posx>
-						<posy>120</posy>
-						<width>40</width>
-						<height>40</height>
-						<texture>MediaSubSet.png</texture>
-					</control>
 					<control type="grouplist" id="3709010">
-						<posx>10</posx>
-						<posy>170</posy>
+						<animation type="Visible"  reversible="false">
+							<effect type="fade" start="0" end="100" time="400" tween="sine" easing="in"  />
+							<effect type="slide" start="0,-70" end="0,0" time="350" tween="cubic" easing="out" />
+						</animation>
+						<animation type="Hidden" reversible="false">
+							<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+							<effect type="slide" start="0,0" end="0,-30" time="350" tween="sine" easing="out" />
+						</animation>
+						<posx>45</posx>
+						<posy>20</posy>
 						<width>240</width>
 						<height>550</height>
-						<onleft>3709000</onleft>
-						<onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright>
-						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
-						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
-						<onup>3709010</onup>
-						<ondown>3709010</ondown>
+						<onright>noop</onright>
+						<onleft>noop</onleft>
+						<ondown>3700101</ondown>
 						<itemgap>0</itemgap>
 						<control type="button" id="3700202">
 							<textwidth>170</textwidth>
-							<include>DefaultButtonMediaSubCommonValues</include>
+							<include>DefaultButtonMediaSubCommonValues_EPG</include>
 							<label>$ADDON[script.mbox 1029]</label>
 						</control>
+						<visible allowhiddenfocus="true">Control.HasFocus(3700202)</visible>
 					</control>
 				</control>
-				<!-- Slide Menu Panel -->
-				<include>DefaultSideBladeLeft</include>
-				<!-- Confluence Logo -->
-				<control type="image">
-					<posx>-230</posx>
-					<posy>50</posy>
-					<width>220</width>
-					<height>80</height>
-					<aspectratio>keep</aspectratio>
-					<texture>Confluence_Logo.png</texture>
-				</control>
+
 				<control type="group" id="3709000">
-					<posx>-250</posx>
-					<posy>130</posy>
+					<animation effect="fade" start="0" end="100" time="300" tween="sine" easing="in" condition="ControlGroup(3709000).HasFocus">Conditional</animation>
+					<animation effect="fade" start="100" end="0" time="300" tween="sine" easing="out" condition="ControlGroup(3709000).HasFocus">WindowClose</animation>
+					<!--<posx>-250</posx>
+					<posy>130</posy>-->
+					<posx>62</posx>
+					<posy>-20</posy>
 					<control type="button" id="3700100">
 						<description>View</description>
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<label></label>
-						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
-						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
-						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
-						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
-						<onup>3700101</onup>
-						<ondown>3700101</ondown>
+						<ondown condition="substring(Window.Property(EPGMode),channel)">1003500</ondown>
+						<ondown condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</ondown>
+<!--						<onup>3700101</onup>-->
+						<onleft>3700101</onleft>
+						<onright>3700101</onright>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3700100)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3700100)" reversible="true">Conditional</animation>
 					</control>
 					<control type="radiobutton" id="3700101">
 						<description>Extra Options</description>
 						<hitrect x="0" y="120" w="265" h="40" />
-						<posx>0</posx>
-						<posy>40</posy>
+						<posx>170</posx>
+						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<radiowidth>18</radiowidth>
-						<radioheight>18</radioheight>
-						<radioposx>222</radioposx>
-						<radioposy>12</radioposy>
-						<textureradiofocus>HomeHasSub.png</textureradiofocus>
-						<textureradionofocus>HomeHasSub.png</textureradionofocus>
+						<radiowidth>1</radiowidth>
+						<radioheight>1</radioheight>
+						<radioposx>10</radioposx>
+						<radioposy>10</radioposy>
+						<onclick>SetFocus(3700202)</onclick>
+<!--						<textureradiofocus>HomeHasSub.png</textureradiofocus>
+						<textureradionofocus>HomeHasSub.png</textureradionofocus>-->
 						<label>$ADDON[script.mbox 1009]</label>
-						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
-						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
-						<onright>3709010</onright>
-						<onup>3700100</onup>
-						<ondown>3700100</ondown>
-						<visible>!substring(Window.Property(EPGMode),search)</visible>						
+<!--						<ondown condition="substring(Window.Property(EPGMode),grid)">3702000</ondown>-->
+						<ondown condition="substring(Window.Property(EPGMode),channel)">1003500</ondown>
+						<ondown condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</ondown>
+						<onright>3700100</onright>
+						<onleft>3700100</onleft>
+						<visible>!substring(Window.Property(EPGMode),search)</visible>
+						<animation effect="fade" start="100" end="70" time="200" tween="cubic" easing="inout" condition="!Control.HasFocus(3700101)" reversible="true">Conditional</animation>
+						<animation effect="zoom" start="100" end="90" time="200" tween="cubic" easing="inout" center="auto" condition="!Control.HasFocus(3700101)" reversible="true">Conditional</animation>
 					</control>
 				</control>
 			</control>
@@ -6243,36 +6181,14 @@ Search for window name
 
 			<!-- Slide Menu -->
 			<control type="group">
-				<animation effect="slide" start="0,30" end="0,80" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus">Conditional</animation>
-				<animation effect="fade" start="0" end="100" time="300" tween="sine" easing="in" condition="ControlGroup(4009000).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,-30" end="0,-80" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus">WindowClose</animation>
-				<animation effect="fade" start="100" end="0" time="300" tween="sine" easing="out" condition="ControlGroup(4009000).HasFocus">WindowClose</animation>
-<!--				<control type="group">
-					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1</width>
-						<height>720</height>
-						<texture>MediaBladeSub_Part1.png</texture>
-						<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">Conditional</animation>
-					</control>
-					<control type="image">
-						<posx>1</posx>
-						<posy>0</posy>
-						<width>12</width>
-						<height>720</height>
-						<texture>MediaBladeSub_Part2.png</texture>
-						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">Conditional</animation>
-					</control>
-				</control>-->
-				<!-- Slide Menu Panel -->
-<!--				<include>DefaultSideBladeLeft</include>-->
+				<animation effect="slide" start="0,45" end="0,80" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,80" end="0,45" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
+				<animation effect="fade" start="0" end="100" time="300" tween="sine" easing="in" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
+				<animation effect="fade" start="100" end="0" time="300" tween="sine" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
 				<control type="group" id="4009000">
 					<!--<posx>-250</posx>
 					<posy>130</posy>-->
-					<posx>62</posx>
+					<posx>60</posx>
 					<posy>-20</posy>
 					<control type="button" id="4000100">
 						<description>View</description>
@@ -6280,9 +6196,9 @@ Search for window name
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<label>$ADDON[script.mbox 1021]</label>
-<!--						<onleft>1003610</onleft>
+						<onleft>1003610</onleft>
 						<onright>1003610</onright>
-						<onup>1003610</onup>-->
+						<onup>1003610</onup>
 						<ondown>1003610</ondown>
 					</control>
 				</control>
