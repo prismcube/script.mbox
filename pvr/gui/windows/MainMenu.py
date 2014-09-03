@@ -354,6 +354,30 @@ class MainMenu( BaseWindow ) :
 				mLine = MR_LANG( 'Not allowed operation' )
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
 				return
+
+			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+			if isDownload :
+				msg = MR_LANG( 'Try again after completing firmware update' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+				return
+
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_LIVE :
+				if status.mMode == ElisEnum.E_MODE_PVR :
+					msg = MR_LANG( 'Try again after stopping playback' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+					dialog.doModal( )
+					return
+
+				self.mDataCache.Player_Stop( )
+
+			if self.mDataCache.PIP_IsStarted( ) == True :
+				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Stop( True )
+			
+				
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StartYoutubeTV( )
 				
