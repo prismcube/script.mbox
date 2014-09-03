@@ -557,7 +557,8 @@ class ExclusiveSettings( object ) :
 					CreateDirectory( destPathCopy, fData )
 
 				else :
-					shutil.copy( fData, destPathCopy )
+					#shutil.copy( fData, destPathCopy )
+					os.system( 'cp -af %s %s'% ( fData, destPathCopy ) )					
 					#os.system( 'cp -af %s %s'% ( aSourceList, destPathCopy ) )
 				if not CheckDirectory( destPathCopy ) :
 					os.system( 'sync' )
