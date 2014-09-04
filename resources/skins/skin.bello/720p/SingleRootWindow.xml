@@ -175,10 +175,10 @@ Search for window name
 				<visible>substring(Window.Property(RestartGUI),true)</visible>
 				<control type="image">
 					<posx>0</posx>
-					<posy>0</posy>
+					<posy>10</posy>
 					<width>480</width>
 					<height>230</height>
-					<texture>black-back_noAlpha.png</texture>
+					<texture>dialogs/other/default_bg.png</texture>
 				</control>
 				<control type="label" id="1100100">
 					<posx>0</posx>
@@ -862,7 +862,10 @@ Search for window name
 			</control>-->
 
 			<control type="image">
-				<include>FullscreenDimensions</include>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>windows/bg/bg_diffuse.png</texture>
 				<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
 			</control>
@@ -873,7 +876,7 @@ Search for window name
 				<width>300</width>
 				<height>30</height>
 				<font>FontSize_12</font>
-				<textcolor>grey</textcolor>
+				<textcolor>77white</textcolor>
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 
@@ -4371,7 +4374,10 @@ Search for window name
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
 			<control type="image">
-				<include>FullscreenDimensions</include>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>windows/bg/bg_diffuse.png</texture>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
@@ -4590,7 +4596,7 @@ Search for window name
 							<effect type="slide" start="0,0" end="0,-30" time="350" tween="sine" easing="out" />
 						</animation>
 						<posx>45</posx>
-						<posy>20</posy>
+						<posy>15</posy>
 						<width>240</width>
 <!--						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
@@ -4601,7 +4607,7 @@ Search for window name
 						<control type="radiobutton" id="3300200">
 							<description>Hide Watched</description>
 							<textwidth>170</textwidth>
-							<include>DefaultButtonMediaSubCommonValues_EPG</include> <!--Misc Option sub manu-->
+							<include>DefaultButtonMediaSubCommonValues</include> <!--Misc Option sub manu-->
 							<label>$ADDON[script.mbox 1008]</label>
 						</control>
 						<visible allowhiddenfocus="true">Control.HasFocus(3300200)</visible>
@@ -5515,7 +5521,10 @@ Search for window name
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<!-- Content Panel & Floor Image -->
 				<control type="image">
-					<include>FullscreenDimensions</include>
+					<posx>-13</posx>
+					<posy>-7</posy>
+					<width>1306</width>
+					<height>734</height>
 					<texture>windows/bg/bg_diffuse.png</texture>
 				</control>
 				<control type="image">
@@ -5743,7 +5752,7 @@ Search for window name
 							<effect type="slide" start="0,0" end="0,-30" time="350" tween="sine" easing="out" />
 						</animation>
 						<posx>45</posx>
-						<posy>20</posy>
+						<posy>15</posy>
 						<width>240</width>
 						<height>550</height>
 						<onright>noop</onright>
@@ -5752,7 +5761,7 @@ Search for window name
 						<itemgap>0</itemgap>
 						<control type="button" id="3700202">
 							<textwidth>170</textwidth>
-							<include>DefaultButtonMediaSubCommonValues_EPG</include>
+							<include>DefaultButtonMediaSubCommonValues</include>
 							<label>$ADDON[script.mbox 1029]</label>
 						</control>
 						<visible allowhiddenfocus="true">Control.HasFocus(3700202)</visible>
@@ -6042,7 +6051,10 @@ Search for window name
 			<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
 			<defaultcontrol always="true">4009003</defaultcontrol>
 			<control type="image">
-				<include>FullscreenDimensions</include>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>windows/bg/bg_diffuse.png</texture>
 			</control>
 			<!-- Content Panel & Floor Image -->
@@ -7059,7 +7071,7 @@ Search for window name
 				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
 				-->
-				<texture>backgrounds/RADIOSKIN.jpg</texture>
+				<texture>bg/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image" id="8899">
 				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2900000)</visible>
