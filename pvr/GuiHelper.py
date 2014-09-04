@@ -1318,6 +1318,34 @@ def GetMountByDeviceSize( aDevSize = 0 ) :
 	return ret
 
 
+
+def GetMountDevice( aMountPath = None ) :
+	#aDevice 1: mmc, 2: usb memory, 3: hdd
+	devices = []
+	cmd = "mount | awk '/dev/ {print $1,$3,$5}'"
+	ret = ExecuteShell( cmd ).split( '\n' )	
+
+	for device in ret :
+		device.strip()
+		dev = device.split()
+		if len( dev ) >= 3 and  dev[0].startswith('/dev/') == True and ( dev[2] == 'ext3' or dev[2] == 'ext4' or dev[2]=='vfat' ) :
+			devices.append( dev )
+
+	LOG_TRACE( "devices =%s" %devices )
+		
+	if aMountPath :
+		LOG_TRACE( "LAEL98 DEBUG TEST" )
+		match = []
+		for device in devices :
+			if device[1] == aMountPath :
+				match.append( device )
+				break
+		LOG_TRACE( "match=%s" %match )
+		return match
+
+	return devices
+
+
 def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :
 	#aDevice 1: mmc, 2: usb memory, 3: hdd
 	mountPos = ''

@@ -15,7 +15,7 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage, CheckDirectory, ParseStringInPattern, RemoveDirectory, GetMountPathByDevice
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage, CheckDirectory, ParseStringInPattern, RemoveDirectory, GetMountPathByDevice, GetMountDevice
 
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
@@ -2476,23 +2476,27 @@ class DataCacheMgr( object ) :
 
 
 	def InitStorageProperty( self ) :
+		#aDevice 1: mmc, 2: usb memory, 3: hdd	
 		checked = 0
 		curIdx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
+
 		if curIdx == 0 : #None
 			return
 
-		lenBase = len( E_PATH_FLASH_BASE )
-		mntPath = GetMountPathByDevice( curIdx )
-		#hddpath = self.mDataCache.HDD_GetMountPath( )
-		#1. mount /mnt/hdd0 ?
-		if mntPath and lenBase <= len( mntPath ) and mntPath[:lenBase] == E_PATH_FLASH_BASE :
-			mntPathList = GetMountPathByDevice( -1, mntPath, True )
-			#2.check matched device
-			if mntPathList :
-				if mntPathList[0] == '/dev/mmc' :
+		devices = GetMountDevice(  )
+		if curIdx == 1 : #MMC
+			for device in devices:
+				if device[0].startswith('/dev/mmcblk') == True and  device[1].startswith('/mnt/hdd0') == True:
 					checked = 1
-				elif mntPathList[0] == '/dev/sda' :
-					checked = 3
+					break
+
+		elif curIdx == 3 or curIdx == 2 : #HDD or USB Stick 
+			for device in devices :
+				if device[0].startswith('/dev/sd') == True and  device[1].startswith('/mnt/hdd0/program') == True:
+					checked = curIdx
+					break
+
+		LOG_TRACE( "check storage curIdx=%s checked=%s" %(curIdx, checked ) )
 
 		if checked != curIdx :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( checked )
