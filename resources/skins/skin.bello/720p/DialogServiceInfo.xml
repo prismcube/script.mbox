@@ -14,7 +14,6 @@
 				<posy>-20</posy>
 				<width>630</width>
 				<height>400</height>
-<!--				<texture border="20">DialogBack.png</texture>-->
 				<texture>dialogs/other/default_bg.png</texture>
 				<colordiffuse>FFFF00FF</colordiffuse>
 			</control>

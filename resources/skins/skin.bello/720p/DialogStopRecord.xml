@@ -14,7 +14,6 @@
 					<posy>87</posy>
 					<width>690</width>
 					<height>340</height>
-	<!--				<texture border="40">DialogBack.png</texture>-->
 					<aspectratio>stretch</aspectratio>
 					<texture>dialogs/other/default_bg.png</texture>
 				</control>
@@ -47,7 +46,6 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-<!--					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>-->
 					<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 					<onleft></onleft>
 					<onright></onright>
@@ -105,7 +103,6 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-<!--					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>-->
 					<texture>buttons/settings_fo.png</texture>
 					<onleft></onleft>
 					<onright></onright>
@@ -168,8 +165,6 @@
 					<disabledcolor>44white</disabledcolor>
 					<shadowcolor>55000000</shadowcolor>
 					<align>center</align>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>-->
 					<texturenofocus border="5">dialogs/keyboard/button_nf.png</texturenofocus>
 					<texturefocus border="5">dialogs/keyboard/button_fo.png</texturefocus>
 					<label>[B]$ADDON[script.mbox 1026][/B]</label>

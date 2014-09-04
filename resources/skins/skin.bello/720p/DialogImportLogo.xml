@@ -67,8 +67,6 @@
 			<align>left</align>
 			<aligny>center</aligny>
 			<texture>buttons/settings_fo.png</texture>
-<!--			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>-->
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
 			<ondown>111</ondown>
@@ -118,8 +116,6 @@
 					<font>FontSize_22</font>
 					<align>center</align>
 					<aligny>center</aligny>
-<!--					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>-->
 					<texture>buttons/settings_fo.png</texture>
 					<onup>110</onup>
 					<ondown>114</ondown>
@@ -136,8 +132,6 @@
 					<font>FontSize_22</font>
 					<align>center</align>
 					<aligny>center</aligny>
-<!--					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>-->
 					<texture>buttons/settings_fo.png</texture>
 					<onup>111</onup>
 					<ondown>115</ondown>
@@ -154,8 +148,6 @@
 					<font>FontSize_22</font>
 					<align>center</align>
 					<aligny>center</aligny>
-<!--					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>-->
 					<onup>114</onup>
 					<ondown>119</ondown>
 					<textcolor>77white</textcolor>

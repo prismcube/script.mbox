@@ -12,7 +12,6 @@
 				<posy>-12</posy>
 				<width>670</width>
 				<height>800</height>
-<!--				<texture border="40">DialogBack.png</texture>-->
 				<texture>dialogs/other/default_bg.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>

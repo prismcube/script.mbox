@@ -20,7 +20,6 @@
 				<posy>-185</posy>
 				<width>1700</width>
 				<height>980</height>
-<!--				<texture border="40">DialogBack.png</texture>-->
 				<texture>dialogs/other/bg_textviewer.png</texture>
 			</control>
 			<control type="button" id="104">

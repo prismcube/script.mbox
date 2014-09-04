@@ -635,8 +635,6 @@
 									<posy>27</posy>
 									<width>70</width>
 									<height>13</height>
-<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>-->
 									<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 									<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 									<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -744,8 +742,6 @@
 									<posy>27</posy>
 									<width>70</width>
 									<height>13</height>
-<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>-->
 									<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 									<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 									<midtexture border="1">osd/osd_center_progress.png</midtexture>
