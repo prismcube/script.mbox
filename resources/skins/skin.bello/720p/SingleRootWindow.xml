@@ -1078,7 +1078,6 @@ Search for window name
 							<width>750</width>
 							<height>42</height>
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
-<!--							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>-->
 							<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 							<colordiffuse>FFFF00FF</colordiffuse>
 						</control>
@@ -2120,14 +2119,6 @@ Search for window name
 									<posy>0</posy>
 									<width>230</width>
 									<height>41</height>
-									<texture border="0,2,0,2">MenuItemNF.png</texture>
-									<visible>!Control.HasFocus(1300112)</visible>
-								</control>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>230</width>
-									<height>41</height>
 									<texture>buttons/settings_fo.png</texture>
 									<visible>Control.HasFocus(1300112)</visible>
 								</control>
@@ -2262,8 +2253,7 @@ Search for window name
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
 									<font>FontSize_20</font>
-									<texturefocus>MenuItemFO.png</texturefocus>
-									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<texture>buttons/settings_fo.png</texture>
 									<pulseonselect>false</pulseonselect>
 									<textcolor>77white</textcolor>
 									<focusedcolor>white</focusedcolor>
@@ -2278,9 +2268,9 @@ Search for window name
 						</control>
 						<!-- Scrollbar -->
 						<control type="scrollbar" id="1300503">
-							<posx>220</posx>
+							<posx>230</posx>
 							<posy>170</posy>
-							<width>20</width>
+							<width>10</width>
 							<height>401</height>
 							<visible>![Container(1300102).HasFocus(6) | ControlGroup(1300200).HasFocus]</visible>
 							<include>DefaultWindowFade</include>
@@ -3703,7 +3693,6 @@ Search for window name
 				<posy>-52</posy>
 				<width>1291</width>
 				<height>720</height>
-<!--				<texture border="20">DialogBack.png</texture>-->
 				<texture>bg_settings_Default.png</texture>
 			</control>
 
@@ -3732,7 +3721,6 @@ Search for window name
 						<posy>0</posy>
 						<width>234</width>
 						<height>50</height>
-<!--						<texture border="5">MenuItemNF.png</texture>-->
 						<texture>buttons/catbullet_nf_small.png</texture>
 					</control>
 					<control type="label">
@@ -3753,7 +3741,6 @@ Search for window name
 						<posy>0</posy>
 						<width>234</width>
 						<height>50</height>
-<!--						<texture border="5">MenuItemFO.png</texture>-->
 						<texture>buttons/catbullet_fo_small.png</texture>
 						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1509000)">Conditional</animation>
 					</control>
@@ -3865,7 +3852,6 @@ Search for window name
 				<posy>-52</posy>
 				<width>1291</width>
 				<height>720</height>
-<!--				<texture border="20">DialogBack.png</texture>-->
 				<texture>bg_settings_Default.png</texture>
 			</control>
 
@@ -3897,7 +3883,6 @@ Search for window name
 						<posy>0</posy>
 						<width>234</width>
 						<height>50</height>
-<!--						<texture border="5">MenuItemNF.png</texture>-->
 						<texture>buttons/catbullet_nf_small.png</texture>
 					</control>
 					<control type="label">
@@ -3918,7 +3903,6 @@ Search for window name
 						<posy>0</posy>
 						<width>234</width>
 						<height>50</height>
-<!--						<texture border="5">MenuItemFO.png</texture>-->
 						<texture>buttons/catbullet_fo_small.png</texture>
 						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(4909000)">Conditional</animation>
 					</control>
@@ -3997,7 +3981,6 @@ Search for window name
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>Control.HasFocus(1709000)</visible>
 					</control>
@@ -4034,11 +4017,11 @@ Search for window name
 				<posy>65</posy>
 				<width>20</width>
 				<height>395</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
+				<textureslidernib>-</textureslidernib>
+				<textureslidernibfocus>-</textureslidernibfocus>
 				<onleft>1709000</onleft>
 				<onright>1709000</onright>
 				<showonepage>false</showonepage>
@@ -4058,7 +4041,6 @@ Search for window name
 				<width>1306</width>
 				<height>734</height>
 				<texture>bg/SKINDEFAULT.jpg</texture>
-<!--				<texture>backgrounds/SKINDEFAULT.jpg</texture>-->
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
 			<control type="image">
@@ -4779,7 +4761,6 @@ Search for window name
 					<posy>-50</posy>
 					<width>1280</width>
 					<height>720</height>
-<!--					<texture border="20">DialogBack.png</texture>-->
 					<texture>windows/settings/bg_settings.png</texture>
 				</control>
 
@@ -4797,7 +4778,6 @@ Search for window name
 							<posy>0</posy>
 							<width>295</width>
 							<height>50</height>
-<!--							<texture border="5">MenuItemNF.png</texture>-->
 							<texture>buttons/catbullet_nf.png</texture>
 						</control>
 						<control type="label">
@@ -4818,7 +4798,6 @@ Search for window name
 							<posy>0</posy>
 							<width>295</width>
 							<height>50</height>
-<!--							<texture border="5">MenuItemFO.png</texture>-->
 							<texture>buttons/catbullet_fo.png</texture>
 							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(3409000)">Conditional</animation>
 						</control>
@@ -5050,7 +5029,6 @@ Search for window name
 						<posy>0</posy>
 						<width>224</width>
 						<height>51</height>
-<!--						<texture border="5">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 					</control>
 					<control type="label">
@@ -5161,9 +5139,9 @@ Search for window name
 				<!-- Grid Mode Panel & Floor Image -->
 				<control type="image">
 					<posx>37</posx>
-					<posy>57</posy>
+					<posy>77</posy>
 					<width>1206</width>
-					<height>650</height>
+					<height>630</height>
 <!--					<aspectratio align="center" aligny="center">stretch</aspectratio>
 					<texture border="25">windows/weather/day_panel.png</texture>
 					<colordiffuse>FFcc00cc</colordiffuse>-->
@@ -5171,9 +5149,9 @@ Search for window name
 				</control>
 				<control type="image">
 					<posx>37</posx>
-					<posy>57</posy>
+					<posy>77</posy>
 					<width>1206</width>
-					<height>650</height>
+					<height>630</height>
 					<texture border="30">windows/bg/bg_vignette.png</texture>
 				</control>
 			</control>
@@ -5181,7 +5159,7 @@ Search for window name
 			<!-- Hotkeys -->
 			<control type="grouplist">
 				<posx>42</posx>
-				<posy>665</posy>
+				<posy>675</posy>
 				<width>440</width>
 				<height>32</height>
 				<align>left</align>
@@ -5586,7 +5564,7 @@ Search for window name
 			<control type="label">
 				<include>DefaultWindowFade</include>
 				<posx>63r</posx>
-				<posy>50r</posy>
+				<posy>40r</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>FontSize_18</font>
@@ -6326,8 +6304,6 @@ Search for window name
 								<width>70</width>
 								<height>20</height>
 								<progress>percent</progress>
-<!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>-->
 								<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 								<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 								<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -6363,7 +6339,6 @@ Search for window name
 								<posy>-15</posy>
 								<width>418</width>
 								<height>102</height>
-<!--								<texture border="5">StackFO_white2.png</texture>-->
 								<aspectratio align="center" aligny="center">stretch</aspectratio>
 								<texture border="30">views/thumbnails/focus.png</texture>
 							</control>
@@ -6402,8 +6377,6 @@ Search for window name
 								<width>70</width>
 								<height>20</height>
 								<progress>percent</progress>
-<!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>-->
 								<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 								<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 								<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -6519,7 +6492,6 @@ Search for window name
 								<posy>-15</posy>
 								<width>418</width>
 								<height>102</height>
-<!--								<texture border="5">StackFO_white2.png</texture>-->
 								<aspectratio align="center" aligny="center">stretch</aspectratio>
 								<texture border="30">views/thumbnails/focus.png</texture>
 							</control>

@@ -774,7 +774,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
@@ -903,7 +902,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
@@ -1031,7 +1029,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
@@ -1159,7 +1156,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
@@ -1287,7 +1283,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
@@ -1415,7 +1410,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
@@ -1543,7 +1537,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
@@ -1671,7 +1664,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
@@ -1799,7 +1791,6 @@
 						<posy>0</posy>
 						<width>772</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
@@ -1892,8 +1883,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002103">
@@ -1995,8 +1984,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002203">
@@ -2098,8 +2085,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002303">
@@ -2201,8 +2186,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002403">
@@ -2304,8 +2287,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002503">
@@ -2407,8 +2388,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002603">
@@ -2510,8 +2489,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002703">
@@ -2613,8 +2590,6 @@
 				<posy>15</posy>
 				<width>772</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1002803">
@@ -2717,8 +2692,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1006113,1)</onclick>
@@ -2732,8 +2705,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1006113,-1)</onclick>
@@ -2754,7 +2725,6 @@
 						<posy>0</posy>
 						<width>545</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1006111) | Control.HasFocus(1006112)]</visible>
 					</control>
@@ -2848,8 +2818,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1006123,1)</onclick>
@@ -2863,8 +2831,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1006123,-1)</onclick>
@@ -2885,7 +2851,6 @@
 						<posy>0</posy>
 						<width>545</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1006121) | Control.HasFocus(1006122)]</visible>
 					</control>
@@ -2979,8 +2944,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1006133,1)</onclick>
@@ -2994,8 +2957,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1006133,-1)</onclick>
@@ -3016,7 +2977,6 @@
 						<posy>0</posy>
 						<width>545</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1006131) | Control.HasFocus(1006132)]</visible>
 					</control>
@@ -3110,8 +3070,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_down_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_down_fo.png</texturefocus>
 				<onclick>Control.Move(1006143,1)</onclick>
@@ -3125,8 +3083,6 @@
 				<posy>-3</posy>
 				<width>30</width>
 				<height>44</height>
-<!--				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>-->
 				<texturenofocus>buttons/arrow_up_nf.png</texturenofocus>
 				<texturefocus>buttons/arrow_up_fo.png</texturefocus>
 				<onclick>Control.Move(1006143,-1)</onclick>
@@ -3147,7 +3103,6 @@
 						<posy>0</posy>
 						<width>545</width>
 						<height>39</height>
-<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 						<texture>buttons/settings_fo.png</texture>
 						<visible>[Control.HasFocus(1006141) | Control.HasFocus(1006142)]</visible>
 					</control>
@@ -3240,8 +3195,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006213">
@@ -3341,8 +3294,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006223">
@@ -3442,8 +3393,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>40</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006233">
@@ -3543,8 +3492,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006243">
@@ -3644,8 +3591,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006253">
@@ -3745,8 +3690,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006263">
@@ -3846,8 +3789,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006273">
@@ -3947,8 +3888,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006283">
@@ -4048,8 +3987,6 @@
 				<posy>0</posy>
 				<width>545</width>
 				<height>39</height>
-<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>-->
 				<texture>buttons/settings_fo.png</texture>
 			</control>
 			<control type="list" id="1006293">
@@ -4194,7 +4131,6 @@
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-<!--						<bordertexture border="5">folder-focus.png</bordertexture>-->
 						<texture>osd/quicknav/focus_square.png</texture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
@@ -4518,11 +4454,6 @@
 				<posy>131</posy>
 				<width>10</width>
 				<height>475</height>
-<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
@@ -4808,11 +4739,6 @@
 				<posy>100</posy>
 				<width>10</width>
 				<height>510</height>
-<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="2,16,2,16">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="2,16,2,16">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
@@ -4929,8 +4855,6 @@
 						<width>208</width>
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
-<!--						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>3</bordersize>-->
 						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
 						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
@@ -4943,8 +4867,6 @@
 						<width>248</width>
 						<height>157</height>
 						<aspectratio>stretch</aspectratio>
-<!--						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>3</bordersize>-->
 						<texture border="30">views/thumbnails/focus.png</texture>
 						<animation reversible="false" effect="zoom" start="-20,230,248,157" end="-97,95,402,248" time="300">focus</animation>
 						<animation reversible="false" effect="zoom" end="-20,230,248,157" start="-97,95,402,248" time="300">unfocus</animation>
@@ -5013,11 +4935,6 @@
 				<posy>505</posy>
 				<width>880</width>
 				<height>10</height>
-<!--				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
-				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbar>
 				<texturesliderbarfocus border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbarfocus>
@@ -5189,8 +5106,6 @@
 						<width>144</width>
 						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-<!--						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>4</bordersize>-->
 						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
 						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
@@ -5312,11 +5227,6 @@
 				<posy>277</posy>
 				<width>660</width>
 				<height>10</height>
-<!--				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
-				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbar>
 				<texturesliderbarfocus border="14,0,14,0">views/scrollbar/scrollbar_horizontal.png</texturesliderbarfocus>
@@ -5502,11 +5412,6 @@
 				<posy>137</posy>
 				<width>10</width>
 				<height>478</height>
-<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
@@ -5653,7 +5558,6 @@
 						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 						<midtexture border="1">osd/osd_center_progress.png</midtexture>
 						<righttexture border="1">osd/osd_right_progress.png</righttexture>
-<!--						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>-->
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</itemlayout>
@@ -5749,7 +5653,6 @@
 						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 						<midtexture border="1">osd/osd_center_progress.png</midtexture>
 						<righttexture border="1">osd/osd_right_progress.png</righttexture>
-<!--						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>-->
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</focusedlayout>
@@ -5759,11 +5662,6 @@
 				<posy>131</posy>
 				<width>10</width>
 				<height>484</height>
-<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
@@ -5809,7 +5707,7 @@
 			<!-- Timeline -->
 			<control type="grouplist" id="3701000">
 				<posx>65</posx>
-				<posy>75</posy>
+				<posy>85</posy>
 				<width>1170</width>
 				<height>35</height>
 				<align>left</align>
@@ -5865,7 +5763,7 @@
 				<visible>substring(Window.Property(EPGMode),grid)</visible>
 				<control type="list" id="3702000">
 					<posx>65</posx>
-					<posy>120</posy>
+					<posy>130</posy>
 					<width>1150</width>
 					<height>504</height>
 					<align>left</align>
@@ -5982,7 +5880,7 @@
 			</control>
 			<control type="group" id="3703000">
 				<posx>335</posx>
-				<posy>110</posy>
+				<posy>120</posy>
 				<width>800</width>
 				<height>550</height>
 				<align>left</align>
@@ -6496,13 +6394,6 @@
 				<pagecontrol>1003611</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<itemlayout height="80" width="610">
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>730</width>
-						<height>71</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>-->
 					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
@@ -6674,11 +6565,6 @@
 				<posy>128</posy>
 				<width>10</width>
 				<height>484</height>
-<!--				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>-->
 				<texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">views/scrollbar/scrollbar.png</texturesliderbarfocus>
@@ -7216,7 +7102,6 @@
 					<posy>0</posy>
 					<width>580</width>
 					<height>41</height>
-<!--					<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 					<texture border="0,2,0,2">buttons/settings_fo.png</texture>
 				</control>
 				<!-- Skip Icon -->
