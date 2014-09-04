@@ -1597,7 +1597,7 @@ Search for window name
 						</control>
 						<control type="progress" id="1300306">
 							<posx>-198</posx>
-							<posy>-19</posy>
+							<posy>-17</posy>
 							<width>150</width>
 							<height>15</height>
 							<border>0</border>
@@ -4219,9 +4219,9 @@ Search for window name
 					<posy>24</posy>
 					<control type="progress" id="3300402">
 						<posx>90</posx>
-						<posy>16</posy>
+						<posy>12</posy>
 						<width>150</width>
-						<height>10</height>
+						<height>12</height>
 						<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(PvrPlay),True)</visible>
 					</control>
 					<!-- Play Start Time  -->
