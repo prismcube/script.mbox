@@ -607,7 +607,7 @@
 
 	<include name="DefaultButtonCommonValues">
 		<height>1</height>
-		<width>1</width>
+		<width>170</width>
 		<textwidth>165</textwidth>
 		<font>FontSize_22</font>
 		<textcolor>white</textcolor>
@@ -4231,13 +4231,14 @@
 
 	<include name="DefaultSideBladeLeft">
 		<control type="image">
-			<posx>-820</posx>
+			<posx>-300</posx>
 			<posy>0</posy>
-			<width>846</width>
+			<width>300</width>
 			<height>720</height>
-			<texture>HomeBlade.png</texture>
-			<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
+			<texture>dialogs/other/default_bg.png</texture>
+<!--			<colordiffuse>FFFF00FF</colordiffuse>-->
+			<animation effect="slide" start="-26,0" end="20,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="20,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
 		</control>
 	</include>
 
@@ -4245,7 +4246,7 @@
 		<height>20</height>
 		<width>1</width>
 		<textoffsetx>20</textoffsetx>
-		<textwidth>195</textwidth>
+		<textwidth>160</textwidth>
 		<aligny>center</aligny>
 		<font>FontSize_22</font>
 		<shadowcolor>77000000</shadowcolor>
