@@ -466,17 +466,15 @@ class GlobalEvent( object ) :
 
 			if aStatus == ElisEnum.E_MMC_MOUNT_FAIL :
 				mTitle = MR_LANG( 'Micro SD' )
-				mLines = MR_LANG( 'Remove and insert your Micro SD again' )
+				mLines = MR_LANG( 'Insert your Micro SD again' )
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mTitle, mLines ) )
 
 		if isReboot :
-			mTitle = MR_LANG( 'Initializing Storage' )
-			mLines = '%s%s'% ( MR_LANG( 'Rebooting in %s second(s)' )% 5, ING )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( mTitle, mLines )
-			dialog.SetButtonVisible( False )
-			dialog.SetAutoCloseTime( 5 )
-			dialog.doModal( )
+			time.sleep( 4 )
+			mHead = MR_LANG( 'Initializing Storage' )
+			mLine = MR_LANG( 'System is restarting' ) + '...'
+			xbmc.executebuiltin( 'Notification( %s, %s, 5000, DefaultIconInfo.png )'% ( mHead, mLine ) )
+			time.sleep( 3 )
 			self.mDataCache.System_Reboot( )
 
 
@@ -733,10 +731,6 @@ class GlobalEvent( object ) :
 
 
 	def ShowAttatchDialog( self, aAttatch = False, aMicroSD = False ) :
-		#if xbmcgui.getCurrentWindowDialogId( ) != 9999 :
-		#	LOG_TRACE( 'Another dialog aready popuped!!' )
-		#	return
-
 		useIcon = 'USB.png'
 		mTitle = MR_LANG( 'USB Device' )
 		mLine = MR_LANG( 'Connected' )

@@ -522,12 +522,12 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_STORAGE :
 			if groupId == E_Input04 or groupId == E_Input05 :
-				contextMenu = 1     #format
+				contextMenu = 1     #Format
 				if groupId == E_Input05 :
-					contextMenu = 2 #select storage
+					contextMenu = 2 #Select storage
 				ExclusiveSettings( ).ShowContextMenu( contextMenu )
 				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
-				selectStorage = [MR_LANG('Internal Flash'), MR_LANG('Micro SD'), MR_LANG('USB Stick'), MR_LANG('USB HDD')]
+				selectStorage = [MR_LANG( 'Internal Flash' ), MR_LANG( 'Micro SD' ), MR_LANG( 'USB Stick' ), MR_LANG( 'USB HDD' )]
 				self.SetControlLabel2String( E_Input05, selectStorage[selectidx] )
 				return
 
@@ -1279,7 +1279,8 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press OK button to remove everything in the recording partition' ) )
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 				selectidx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
-				selectStorage = [MR_LANG('Internal Flash'), MR_LANG('Micro SD'), MR_LANG('USB Stick'), MR_LANG('USB HDD')]
+				print 'daniel ------------------- Storage selectidx=%s'% selectidx
+				selectStorage = [MR_LANG( 'Internal Flash' ), MR_LANG( 'Micro SD' ), MR_LANG( 'USB Stick' ), MR_LANG( 'USB HDD' )]
 				self.AddInputControl( E_Input04, MR_LANG( 'Format External Storage' ), '', MR_LANG( 'Press OK button to erase your data from external device' ) )
 				self.AddInputControl( E_Input05, MR_LANG( 'My Storage Device' ), selectStorage[selectidx], MR_LANG( 'Select a device to store the recording files and XBMC add-ons' ) )
 				visibleControlIds = [ E_Input01, E_Input02 ]
