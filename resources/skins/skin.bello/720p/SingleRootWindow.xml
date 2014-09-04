@@ -32,7 +32,6 @@ Search for window name
 
 		<include>DefaultBackground</include>
 		<include>DefaultBackgroundVignette</include>
-		<include>DefaultHeaderTitle</include>
 		<include>DefaultFakeButton</include>
 
 		<!-- E_SettingWindowBackground -->
@@ -989,8 +988,6 @@ Search for window name
 								<posy>20</posy>
 								<width>80</width>
 								<height>13</height>
-								<!--<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-								<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>-->
 								<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 								<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 								<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -1182,8 +1179,6 @@ Search for window name
 									<posy>20</posy>
 									<width>80</width>
 									<height>13</height>
-									<!--<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>-->
 									<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 									<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 									<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -1331,8 +1326,6 @@ Search for window name
 									<posy>20</posy>
 									<width>80</width>
 									<height>13</height>
-									<!--<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>-->
 									<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 									<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 									<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -1831,27 +1824,28 @@ Search for window name
 					<visible>false</visible>
 				</control>
 				<control type="label">
-					<posx>80r</posx>
-					<posy>47r</posy>
+					<posx>52</posx>
+					<posy>57</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>-->
+					<label>[COLOR=blue]$INFO[Container(1300050).NumItems][/COLOR] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
-					<posx>80r</posx>
-					<posy>47r</posy>
+					<posx>52</posx>
+					<posy>57</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
 					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
 					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
@@ -2478,31 +2472,6 @@ Search for window name
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
-					<!-- TV & Radio Icons -->
-					<control type = "group">
-						<posx>265</posx>
-						<posy>-35</posy>
-						<!--<control type="image" id="1400603">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>70</width>
-							<height>30</height>
-							<align>left</align>
-							<texture>tv.png</texture>
-							<visible>substring(Window.Property(ServiceTypeTV),true)</visible>
-						</control>-->
-						<control type="image" id="1400604">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>70</width>
-							<height>30</height>
-							<align>left</align>
-							<texture>icon_radio2.png</texture>
-							<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
-						</control>
-					</control>
-
-					<!-- Button Descriptions  -->
 
 					<!-- Button Icons -->
 					<control type="group">
@@ -3800,8 +3769,6 @@ Search for window name
 							<posy>15</posy>
 							<width>100</width>
 							<height>16</height>
-<!--							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>-->
 							<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 							<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 							<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -4133,7 +4100,7 @@ Search for window name
 			</control>
 
 			<!-- Window Header Image -->
-			<control type="image">
+<!--			<control type="image">
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 				<posx>20</posx>
@@ -4142,14 +4109,14 @@ Search for window name
 				<height>35</height>
 				<aspectratio>keep</aspectratio>
 				<texture>icon_video.png</texture>
-			</control>
+			</control>-->
 
 			<!-- Window Title -->
 			<control type="label" id="1009551">
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
-				<posx>65</posx>
-				<posy>5</posy>
+				<posx>52</posx>
+				<posy>22</posy>
 				<width min="0" max="800">auto</width>
 				<height>30</height>
 				<font>FontSize_40</font>
@@ -4690,58 +4657,62 @@ Search for window name
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
+					<posx>52</posx>
+					<posy>58</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>-->
+					<label>$INFO[Container(1003400).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 				<!-- Item & Page Number for Thumbnail list-->
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
+					<posx>52</posx>
+					<posy>58</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>-->
+					<label>$INFO[Container(1003410).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 				<!-- Item & Page Number for Posterwrap list-->
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
+					<posx>52</posx>
+					<posy>58</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>-->
+					<label>$INFO[Container(1003420).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 				<!-- Item & Page Number for Fanart list-->
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
+					<posx>52</posx>
+					<posy>58</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>-->
+					<label>$INFO[Container(1003430).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
 			</control>
@@ -4912,8 +4883,10 @@ Search for window name
 						<posy>201</posy>
 						<width>350</width>
 						<height>18</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+						<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						<righttexture border="1">osd/osd_right_progress.png</righttexture>
 						<visible>Control.IsVisible(3402602)</visible>
 					</control>
 					<control type="label" id="3402603">
@@ -4929,8 +4902,10 @@ Search for window name
 						<posy>251</posy>
 						<width>350</width>
 						<height>18</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+						<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						<righttexture border="1">osd/osd_right_progress.png</righttexture>
 						<visible>Control.IsVisible(3402603)</visible>
 					</control>
 					<control type="label" id="3402604">
@@ -4946,8 +4921,10 @@ Search for window name
 						<posy>301</posy>
 						<width>350</width>
 						<height>18</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
+						<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						<righttexture border="1">osd/osd_right_progress.png</righttexture>
 						<visible>Control.IsVisible(3402604)</visible>
 					</control>
 				</control>
@@ -5533,31 +5510,33 @@ Search for window name
 			<!-- Item & Page Number for Common list -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>80r</posx>
-				<posy>47r</posy>
+				<posx>52</posx>
+				<posy>58</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>FontSize_18</font>
-				<textcolor>99white</textcolor>
+				<textcolor>blue</textcolor>
 				<scroll>false</scroll>
-				<align>right</align>
+				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+<!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>-->
+				<label>$INFO[Container(1003500).NumItems] $ADDON[script.mbox 1106]</label>
 				<visible>substring(Window.Property(EPGMode),channel) </visible>
 			</control>
 			<!-- Item & Page Number for Big list -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>80r</posx>
-				<posy>47r</posy>
+				<posx>52</posx>
+				<posy>58</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>FontSize_18</font>
-				<textcolor>99white</textcolor>
+				<textcolor>blue</textcolor>
 				<scroll>false</scroll>
-				<align>right</align>
+				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+<!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>-->
+				<label>$INFO[Container(1003510).NumItems] $ADDON[script.mbox 1106]</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			</control>
 			<!-- Item & Page Number for Grid -->
@@ -5568,11 +5547,12 @@ Search for window name
 				<width>340</width>
 				<height>20</height>
 				<font>FontSize_18</font>
-				<textcolor>99white</textcolor>
+				<textcolor>blue</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
+<!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>-->
+				<label>$INFO[Container(3702000).NumItems] $ADDON[script.mbox 1106]</label>
 				<visible>substring(Window.Property(EPGMode), grid)</visible>
 			</control>
 		</control>
@@ -5775,16 +5755,16 @@ Search for window name
 			<!-- Item & Page Number -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>80r</posx>
-				<posy>47r</posy>
+				<posx>55</posx>
+				<posy>57</posy>
 				<width>300</width>
 				<height>20</height>
 				<font>FontSize_18</font>
-				<textcolor>99white</textcolor>
+				<textcolor>blue</textcolor>
 				<scroll>false</scroll>
-				<align>right</align>
+				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
+				<label>$INFO[Container(1003610).NumItems] $ADDON[script.mbox 1106]</label>
 			</control>
 		</control>
 
@@ -5812,8 +5792,6 @@ Search for window name
 						<height>23</height>
 						<color>white</color>
 						<border>0</border>
-<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>-->
 						<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 						<lefttexture border="1">osd/osd_left_progress.png</lefttexture>
 						<midtexture border="1">osd/osd_center_progress.png</midtexture>
@@ -6407,11 +6385,12 @@ Search for window name
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>-->
+					<label>$INFO[Container(4601000).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 
@@ -6818,5 +6797,6 @@ Search for window name
 				</control>
 			</control>
 		</control>
+		<include>DefaultHeaderTitle</include>
 	</controls>
 </window>

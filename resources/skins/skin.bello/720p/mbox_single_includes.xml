@@ -30,6 +30,22 @@
 			<texture>bg/SKINDEFAULT.jpg</texture>
 			<visible>substring(Window.Property(TVRadio),true)</visible>
 		</control>
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>windows/bg/bg_vignette.png</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>bg/colors_pulse.png</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
 	</include>
 
 	<include name="DefaultCommonLiveStatus">
@@ -95,7 +111,7 @@
 				<effect type="slide" start="0,0" end="0,35" time="350" tween="sine" easing="out" />
 			</animation>
 			<posx>235r</posx>
-			<posy>20</posy>
+			<posy>45</posy>
 			<orientation>horizontal</orientation>
 			<control type="label" id="1">
 				<height>25</height>
@@ -295,8 +311,6 @@
 				<posy>350</posy>
 				<width>347</width>
 				<height>25</height>
-<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>-->
 				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 				<midtexture border="1">osd/osd_center_progress.png</midtexture>
 			</control>
@@ -328,8 +342,6 @@
 				<posy>410</posy>
 				<width>347</width>
 				<height>25</height>
-<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>-->
 				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
 				<midtexture border="1">osd/osd_center_progress.png</midtexture>
 			</control>
@@ -7237,7 +7249,7 @@
 
 	<include name="DefaultHeaderTitle">
 		<!-- Installation, System Info -->
-		<control type="image">
+<!--		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<description>Section header image</description>
 			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000) | substring(Window.Property(CurrentWindow),4700000) | substring(Window.Property(CurrentWindow),4900000) | substring(Window.Property(CurrentWindow),5000000)</visible>
@@ -7247,9 +7259,9 @@
 			<height>35</height>
 			<aspectratio>keep</aspectratio>
 			<texture>icon_system.png</texture>
-		</control>
+		</control>-->
 		<!-- EPG, Channel List TV Mode -->
-		<control type="image">
+<!--		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<description>Section header image</description>
 			<visible>[substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | substring(Window.Property(CurrentWindow),1300000) | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000)</visible>
@@ -7259,9 +7271,9 @@
 			<height>28</height>
 			<aspectratio>keep</aspectratio>
 			<texture>icon_tv3.png</texture>
-		</control>
+		</control>-->
 		<!-- EPG, Channel List Radio Mode -->
-		<control type="image">
+<!--		<control type="image">
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<description>Section header image</description>
 			<visible>[substring(Window.Property(CurrentWindow),1300000) + substring(Window.Property(TVRadio),true)] | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid) + substring(Window.Property(TVRadio),true)]</visible>
@@ -7271,13 +7283,13 @@
 			<height>33</height>
 			<aspectratio>keep</aspectratio>
 			<texture>icon_radio3.png</texture>
-		</control>
+		</control>-->
 		<!-- Installation Window Title -->
 		<control type="label" id="1009550">
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000)| substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),1300000) | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000) | substring(Window.Property(CurrentWindow),4700000) | substring(Window.Property(CurrentWindow),4900000) | substring(Window.Property(CurrentWindow),5000000)</visible>
-			<posx>65</posx>
-			<posy>-5</posy>
+			<posx>48</posx>
+			<posy>10</posy>
 			<width min="0" max="800">auto</width>
 			<height>50</height>
 			<font>FontSize_40</font>
