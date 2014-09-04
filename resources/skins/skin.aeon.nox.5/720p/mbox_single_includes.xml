@@ -4525,7 +4525,7 @@
 					<!-- Playback -->
 					<control type="image">
 						<posx>50</posx>
-						<posy>5</posy>
+						<posy>0</posy>
 						<width>64</width>
 						<height>64</height>
 						<texture>OSDPlayNF.png</texture>
