@@ -1571,7 +1571,6 @@
 	<string id="4033"></string>
 	<string id="4034"></string>
 	<string id="4035"></string>
-	<string id="4036"></string>
 	<string id="4037"></string>
 	<string id="4038">L'enregistrement s'est arrêté pour insuffisance%n de mémoire</string>
 	<string id="4039"></string>
@@ -1591,4 +1590,5 @@
 	<string id="4053">Impossible d'écrire dans le flash NAND</string>
 	<string id="4054"></string>
 	<string id="4055"></string>
+	<string id="4056"></string>
 </strings>

@@ -1571,7 +1571,6 @@
 	<string id="4033">Stopping Recording</string>
 	<string id="4034">Stopping Timeshift</string>
 	<string id="4035">XBMC add-on storage</string>
-	<string id="4036">Remove and insert your Micro SD again</string>
 	<string id="4037">Initializing Storage</string>
 	<string id="4038">Recording stopped due to insufficient disk space</string>
 	<string id="4039">Recording stopped due to broken NAS connection</string>
@@ -1591,4 +1590,5 @@
 	<string id="4053">Failed to write on internal flash</string>
 	<string id="4054">Download current version</string>
 	<string id="4055">Unknown filesystem or not formatted</string>
+	<string id="4056">Insert your Micro SD again</string>
 </strings>

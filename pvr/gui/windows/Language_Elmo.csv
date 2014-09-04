@@ -1570,7 +1570,6 @@
 "Stopping Recording";;;;;;;;;;;;;;4033
 "Stopping Timeshift";;;;;;;;;;;;;;4034
 "XBMC add-on storage";;;;;;;;;;;;;;4035
-"Remove and insert your Micro SD again";;;;;;;;;;;;;;4036
 "Initializing Storage";;;;;;;;;;;;;;4037
 "Recording stopped due to insufficient disk space";"Aufnahme gestoppt aufgrund unzureichendem%n Speicherplatz";"Nahrávání se zastavilo kvůli nedostatku%n místa na disku";"Nahrávanie sa zastavilo kvôli nedostatku%n miesta na disku";"Nagrywanie zatrzymane z powodu braku%n miejsca na dysku";"Запись остановлена, недостаточно места на диске";"Запис зупинена, недостатньо місця на диску";"L'enregistrement s'est arrêté pour insuffisance%n de mémoire";"Spazio su disco insufficiente%n Registrazione interrotta";"La grabación se ha detenido por espacio insuficiente en disco";;;;"Recording stopped due to insufficient disk space";4038
 "Recording stopped due to broken NAS connection";"Die Aufnahme wurde gestoppt durch%n gebrochene NAS Verbindung";"Nahrávka skončena po přerušení spojení s NAS";"Nahrávka skončená po prerušení spojenia s NAS";"Nagrywanie zatrzymane z powodu zerwania połączenia z NAS";;;;;;;;;;4039
@@ -1590,3 +1589,4 @@
 "Failed to write on internal flash";"NAND flash beschreiben fehlgeschlagen";"Nepodařilo se zapsat na flash NAND";"Nepodarilo sa zapísať na flash NAND";"Niepowodzenie zapisu do pamięci NAND";"Ошибка записи на NAND накопитель";"Помилка запису на NAND накопичувач";"Impossible d'écrire dans le flash NAND";"Mpossibile scrivere sulla memoria flash NAND";"Fallo de escritura en la NAND Flash";;;;;4053
 "Download current version";;;;;;;;;;;;;;4054
 "Unknown filesystem or not formatted";;;;;;;;;;;;;;4055
+"Insert your Micro SD again";;;;;;;;;;;;;;4056
