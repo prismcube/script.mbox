@@ -278,7 +278,7 @@ class ExclusiveSettings( object ) :
 
 		
 			ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#block power key 1:on, 0:off
-			self.OpenBusyDialog( )
+			#self.OpenBusyDialog( )
 			self.mProcessing = True
 			tShowProcess = threading.Timer( 0, self.AsyncProgressing, [waitMin] )
 			tShowProcess.start( )
@@ -304,7 +304,7 @@ class ExclusiveSettings( object ) :
 			self.mProcessing = False
 			if tShowProcess :
 				tShowProcess.join( )
-			self.CloseBusyDialog( )
+			#self.CloseBusyDialog( )
 
 			if ret :
 				doResult = E_STORAGE_FORMAT_DONE
@@ -468,7 +468,9 @@ class ExclusiveSettings( object ) :
 		if aTitle :
 			mTitle = aTitle
 		self.OpenBusyDialog( )
+		#LOG_TRACE( "aExceptList=%s" %aExceptList ) 
 		pathlist = GetDirectoryAllFilePathList( aSourceList, aExceptList )
+		#LOG_TRACE( "pathlist=%s" %pathlist ) 		
 		self.CloseBusyDialog( )
 		progressDialog = None
 		try :
