@@ -879,6 +879,7 @@ def GetDirectoryAllFilePathList( aPathList, aExceptList = [] ) :
 		ePath = ''
 		if CheckDirectory( pathlist ) :
 			for ( path, dirs, files ) in os.walk( pathlist ) :
+				
 				if exthash.get( path, -1 ) == path :
 					ePath = path
 					LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
@@ -886,7 +887,7 @@ def GetDirectoryAllFilePathList( aPathList, aExceptList = [] ) :
 
 				if ePath : # not copy subdirectories
 					if len( ePath ) < len( path ) and ePath == path[:len(ePath)] :
-						#LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
+						LOG_TRACE( '----------------------copy exceptFile[%s]'% path )
 						continue
 
 				path_ret.append( path )
@@ -1326,7 +1327,7 @@ def GetMountDevice( aMountPath = None ) :
 	ret = ExecuteShell( cmd ).split( '\n' )	
 
 	for device in ret :
-		device.strip()
+		device = device.strip()
 		dev = device.split()
 		if len( dev ) >= 3 and  dev[0].startswith('/dev/') == True and ( dev[2] == 'ext3' or dev[2] == 'ext4' or dev[2]=='vfat' ) :
 			devices.append( dev )
@@ -1334,7 +1335,6 @@ def GetMountDevice( aMountPath = None ) :
 	LOG_TRACE( "devices =%s" %devices )
 		
 	if aMountPath :
-		LOG_TRACE( "LAEL98 DEBUG TEST" )
 		match = []
 		for device in devices :
 			if device[1] == aMountPath :
@@ -1403,6 +1403,57 @@ def GetMountPathByDevice( aDevice = 3, aDevName = None, aReqDevice = False ) :
 			mountPos = ret[0]
 
 	return mountPos
+
+
+def GetDeviceList( ) :
+	deviceInfo = []
+	cmd = "fdisk -l | awk '/Disk \/dev\// { print $1,$2, $5}'"
+	devices = ExecuteShell( cmd ).split( '\n' )	
+	LOG_TRACE( "devices=%s" %devices )
+
+	for device in devices :
+		device = device.strip()
+		dev = device.split()
+		if len( dev ) >= 3 and  dev[1].startswith('/dev/') == True and dev[1].endswith(':') == True :
+			dev_name = dev[1][:-1]
+			dev_short_name =dev_name[dev_name.rfind('/' ):]
+			dev_size = int( dev[2] )
+			cmd = "ls -al /dev/disk/by-id"
+			disks = ExecuteShell( cmd ).split( '\n' )
+
+			find_disk = False
+			vender_name = 'UNKNOWN'
+
+			for disk in disks :
+				disk = disk.strip()
+				if disk.endswith(dev_short_name) == True :
+					find_disk = True
+					vender = disk.split()[8]
+					vender_name = vender.split('_')[0]
+					break
+
+			if find_disk == False :
+				if dev_name.startswith('/dev/mmcblk' ) == True :
+					vender_name = 'Micro SD'
+				elif dev_name.startswith('/dev/sd' ) == True :
+					vender_name = 'Storage Disk'
+
+			vender_name	= vender_name.upper()
+
+			deviceInfo.append( [dev_name, dev_size,  vender_name] )
+
+	LOG_TRACE( "deviceInfo=%s" %deviceInfo )
+
+	return deviceInfo
+
+
+def SizeToString( aSize ) :
+	if aSize < ( 1024 * 1024 * 1024 ) :
+		diskSize = '%0.1fMB'% float( 1.0 * aSize / ( 1024 * 1024 ) )
+	else :
+		diskSize = '%0.1fGB'% float( 1.0 * aSize / ( 1024 * 1024 * 1024 ) )
+
+	return diskSize
 
 
 def GetMountExclusiveDevice( aElementSize = None ) :
