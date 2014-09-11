@@ -21,7 +21,7 @@ class ElmoTimerList( Webinterface ) :
 			sRef = self.makeRef( info.mSid, info.mTsid, info.mOnid )
 			
 			xmlstr +=		'<e2servicereference>%s</e2servicereference>\n' % sRef
-			xmlstr +=		'<e2servicename>%s</e2servicename>\n' % info.mName
+			xmlstr +=		'<e2servicename>%s</e2servicename>\n' % escape(info.mName)
 			xmlstr +=		'<e2eit>%s</e2eit>\n' % str(info.mRecordKey)
 			xmlstr +=		'<e2name>%s</e2name>\n' % escape(info.mName)
 			xmlstr +=		'<e2description></e2description>\n'
