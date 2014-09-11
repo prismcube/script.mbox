@@ -246,6 +246,15 @@ class FirstInstallation( FTIWindow ) :
 
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG_DVBT :
 			self.ChannelSearchConfigDVBT( groupId )
+			if groupId == E_FIRST_TIME_INSTALLATION_PREV :
+				self.OpenBusyDialog( )
+				self.StopScanHelper( )
+				self.CloseBusyDialog( )
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)', True )
+				self.mReloadSkinPosition = True
+				self.SetFTIStep( E_STEP_VIDEO_AUDIO )
+				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+				return
 
 		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			self.TimeSetting( groupId )
