@@ -37,7 +37,7 @@ class ElmoGetServices( Webinterface ) :
 				conditions = sRefParams['comment'].split('_')
 
 				if len(conditions) == 3 : 
-					sql = "select name, sid, tsid, onid  from " + conditions[0] + " where " + conditions[1] + " = '" + self.escapeMinus( conditions[2] ) + "'"
+					sql = "select name, sid, tsid, onid, number as key  from " + conditions[0] + " where " + conditions[1] + " = '" + self.escapeMinus( conditions[2] ) + "'"
 					self.makeChannelListXML( sql )
 					
 				elif "bouquets.radio" in self.params['sRef'] : 
@@ -47,12 +47,12 @@ class ElmoGetServices( Webinterface ) :
 					
 				elif "(type+==+2)" in self.params['sRef'] :
 					# all Radio channels
-					sql = "select name, sid, tsid, onid from tblChannel where serviceType=2 or serviceType=4 order by name"
+					sql = "select name, sid, tsid, onid, number as key from tblChannel where serviceType=2 or serviceType=4 order by name"
 					self.makeChannelListXML( sql )
 					
 				else :
 					# if conditions are not met, assume user asks for all channels. 
-					sql = "select name, sid, tsid, onid from tblChannel where serviceType=1 or serviceType=3 order by name"
+					sql = "select name, sid, tsid, onid, number as key from tblChannel where serviceType=1 or serviceType=3 order by name"
 					self.makeChannelListXML( sql )
 
 			except Exception, e:
@@ -103,6 +103,7 @@ class ElmoGetServices( Webinterface ) :
 			self.xmlStr += '<e2service>\n'
 			self.xmlStr += '	<e2servicereference>' + self.makeRef( row[1], row[2],  row[3] ) + '</e2servicereference>\n'
 			self.xmlStr += '	<e2servicename>' + escape(row[0]) + '</e2servicename>\n'
+			self.xmlStr += '	<key>' + str(row[4]) + '</key>\n'
 			self.xmlStr += '</e2service>\n'	
 	
 		self.xmlStr +='</e2servicelist>\n'

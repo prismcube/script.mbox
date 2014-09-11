@@ -13,7 +13,8 @@ class ElmoGetAllServices( Webinterface ) :
 		# self.currenttime = self.mCommander.Datetime_GetLocalTime()
 
 		self.conn = dbopen.DbOpen('channel.db').getConnection()		
-		sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno, ServiceType from tblChannel group by sid, tsid, onid order by chno"
+		# sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno, ServiceType from tblChannel group by sid, tsid, onid order by chno"
+		sql = "select name, sid, tsid, onid, presentation as chno, ServiceType, key from tblChannel order by chno"
 
 		startTime = time.time()
 
@@ -39,8 +40,6 @@ class ElmoGetAllServices( Webinterface ) :
 		serviceList += '</e2servicelist>\n' 
 		"""
 
-		print 'XML STRING CREATION STARTING AT ' + str(time.time()) 
-		
 		xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
 		xmlStr += '<e2servicelistrecursive>\n'
 
@@ -65,14 +64,13 @@ class ElmoGetAllServices( Webinterface ) :
 			<e2service>\n
 			<e2servicereference>%s</e2servicereference>\n
 			<e2servicename>%s</e2servicename>\n
+			<key>%s</key>
 			</e2service>\n
-			""" % ( self.makeRefServiceType(row[5], row[1], row[2], row[3]), escape(row[0]) )
+			""" % ( self.makeRefServiceType(row[5], row[1], row[2], row[3]), escape(row[0]), row[6] )
 			subXmlStr.append( temp )
 			
 		xmlStr += ''.join(subXmlStr)
 		xmlStr += '</e2servicelistrecursive>\n'
 
-		print 'XML STRING CREATION ENDS AT ' + str(time.time()) 
-		
 		return xmlStr
 		

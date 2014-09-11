@@ -15,12 +15,17 @@ class ElmoGetAllServicesTV( Webinterface ) :
 
 		if 'start' in self.params and 'count' in self.params :
 
-			sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno from tblChannel where ServiceType = 1 or ServiceType = 3 group by sid, tsid, onid "
+			#sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno from tblChannel where ServiceType = 1 or ServiceType = 3 group by sid, tsid, onid "
+			#sql += " order by chno limit " + self.params['start'] + "," + self.params['count']
+
+			sql = "select name, sid, tsid, onid, presentation as chno, key from tblChannel where ServiceType = 1 or ServiceType = 3"
 			sql += " order by chno limit " + self.params['start'] + "," + self.params['count']
 
 		else :
 		
-			sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno from tblChannel where ServiceType = 1 or ServiceType = 3 group by sid, tsid, onid order by chno"
+			# sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno from tblChannel where ServiceType = 1 or ServiceType = 3 group by sid, tsid, onid order by chno"
+
+			sql = "select name, sid, tsid, onid, presentation as chno, key from tblChannel where ServiceType = 1 or ServiceType = 3 order by chno"
 		
 		self.c = self.conn.cursor()
 		self.c.execute(sql)
@@ -67,10 +72,11 @@ class ElmoGetAllServicesTV( Webinterface ) :
 
 			temp = """
 			<e2service>\n
-			<e2servicereference>%s</e2servicereference>\n
-			<e2servicename>%s</e2servicename>\n
+				<e2servicereference>%s</e2servicereference>\n
+				<e2servicename>%s</e2servicename>\n
+				<key>%s</key>\n
 			</e2service>\n
-			""" % ( self.makeRef(row[1], row[2], row[3]), escape( row[0] ) )
+			""" % ( self.makeRef(row[1], row[2], row[3]), escape( row[0] ), row[5] )
 			subStr.append(temp)
 
 		xmlStr += ''.join(subStr)	
