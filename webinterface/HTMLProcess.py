@@ -521,93 +521,120 @@ class RemoteControl(WebPage):
 			pass
 
 		if cmds[1] == "2003" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBRed)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(6)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBRed)' )
 
 		if cmds[1] == "2004" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBGreen)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(7)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBGreen)' )
 
 		if cmds[1] == "2005" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBYellow)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(8)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBYellow)' )
 
 		if cmds[1] == "2006" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBBlue)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(9)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBBlue)' )
 
 		if cmds[1] == "2007" :
 			#not used
 			pass
 
 		if cmds[1] == "2008" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBMediaCenter)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(40)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBMediaCenter)' )
 
 		if cmds[1] == "2009" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBTVRadio)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(52)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBTVRadio)' )
 
 		if cmds[1] == "2010" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBRecord)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(23)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBRecord)' )
 
 		if cmds[1] == "2011" :
-			xbmc.executebuiltin( 'xbmc.Action(Play)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(22)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Play)' )
 
 		if cmds[1] == "2012" :
-			xbmc.executebuiltin( 'xbmc.Action(Stop)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(25)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Stop)' )
 
 		if cmds[1] == "2013" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBRewind)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(21)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBRewind)' )
 
 		if cmds[1] == "2014" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBFF)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(20)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBFF)' )
 
 		if cmds[1] == "2015" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(41)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
 
 		if cmds[1] == "2016" :
-			xbmc.executebuiltin( 'xbmc.Action(info)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(28)' )
+			#xbmc.executebuiltin( 'xbmc.Action(info)' )
 
 		if cmds[1] == "2017" :
-			xbmc.executebuiltin( 'xbmc.Action(Up)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(2)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Up)' )
 
 		if cmds[1] == "2018" :
-			xbmc.executebuiltin( 'xbmc.Action(Left)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(4)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Left)' )
 
 		if cmds[1] == "2019" :
-			xbmc.executebuiltin( 'xbmc.Action(Select)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(1)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Select)' )
 
 		if cmds[1] == "2020" :
-			xbmc.executebuiltin( 'xbmc.Action(Right)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(5)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Right)' )
 
 		if cmds[1] == "2021" :
-			xbmc.executebuiltin( 'xbmc.Action(Down)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(3)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Down)' )
 
 		if cmds[1] == "2022" :
-			xbmc.executebuiltin( 'xbmc.Action(Back)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(31)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Back)' )
 
 		if cmds[1] == "2023" :
-			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(27)' )
+			#xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 
 		if cmds[1] == "2024" :
-			xbmc.executebuiltin( 'xbmc.Action(ContextMenu)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(30)' )
+			#xbmc.executebuiltin( 'xbmc.Action(ContextMenu)' )
 
 		if cmds[1] == "2025" :
-			xbmc.executebuiltin( 'xbmc.Action(VolumeUp)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(37)' )
+			#xbmc.executebuiltin( 'xbmc.Action(VolumeUp)' )
 
 		if cmds[1] == "2026" :
-			xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(35)' )
+			#xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
 
 		if cmds[1] == "2027" :
-			xbmc.executebuiltin( 'xbmc.Action(VolumeDown)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(38)' )
+			#xbmc.executebuiltin( 'xbmc.Action(VolumeDown)' )
 
 		if cmds[1] == "2028" :
-			xbmc.executebuiltin( 'xbmc.Action(Mute)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(34)' )
+			#xbmc.executebuiltin( 'xbmc.Action(Mute)' )
 
 		if cmds[1] == "2029" :
-			xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(36)' )
+			#xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
 
 		if cmds[1] == "2030" :
 			# Teletext Todo
 			pass
 
 		if cmds[1] == "2031" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBSubtitle)' )
+			xbmc.executebuiltin( 'VirtualKey.Send(53)' )
+			#xbmc.executebuiltin( 'xbmc.Action(DVBSubtitle)' )
 
 		if cmds[1] == "2032" :
 			# NumLock Toto
