@@ -249,7 +249,7 @@ class ExclusiveSettings( object ) :
 							break
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( 1.0 * dev_size / ( 1000000 * 1000 ) ) )
+					dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( 1.0 * dev_size / ( 1024 * 1024 * 1024) ) )
 					dialog.doModal( )
 
 					mediaDefault = 100
@@ -390,7 +390,7 @@ class ExclusiveSettings( object ) :
 			return E_STORAGE_ERROR_NOT_SUPPORT_STORAGE
 
 		#FORMAT
-		if isfomated == False :
+		if isfomated == False and new_index !=0 :
 			ret = self.DoFormatStorage( aSelect )
 			if ret != E_STORAGE_FORMAT_DONE :
 				return E_STORAGE_ERROR_CANCEL
@@ -398,7 +398,7 @@ class ExclusiveSettings( object ) :
 		mTitle = MR_LANG( 'Error' )
 		mLines = MR_LANG( 'Failed to change storage device' )
 
-		doResult = E_STORAGE_FORMAT_DONE
+		doResult = E_STORAGE_DONE
 
 		if  new_index !=0 :
 			mTitle = MR_LANG( 'Installed XBMC add-ons' )
