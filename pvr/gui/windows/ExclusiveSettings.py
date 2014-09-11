@@ -249,7 +249,7 @@ class ExclusiveSettings( object ) :
 							break
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( 1.0 * dev_size / ( 1000000 * 1000 ) ) )
+					dialog.SetDialogProperty( MR_LANG( 'Partition Info' ), MR_LANG( 'Maximum media partition size' ) + ' : %0.1f GB'% ( 1.0 * dev_size / ( 1024 * 1024 * 1024) ) )
 					dialog.doModal( )
 
 					mediaDefault = 100
@@ -278,7 +278,7 @@ class ExclusiveSettings( object ) :
 
 		
 			ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#block power key 1:on, 0:off
-			self.OpenBusyDialog( )
+			#self.OpenBusyDialog( )
 			self.mProcessing = True
 			tShowProcess = threading.Timer( 0, self.AsyncProgressing, [waitMin] )
 			tShowProcess.start( )
@@ -304,7 +304,7 @@ class ExclusiveSettings( object ) :
 			self.mProcessing = False
 			if tShowProcess :
 				tShowProcess.join( )
-			self.CloseBusyDialog( )
+			#self.CloseBusyDialog( )
 
 			if ret :
 				doResult = E_STORAGE_FORMAT_DONE
@@ -390,7 +390,7 @@ class ExclusiveSettings( object ) :
 			return E_STORAGE_ERROR_NOT_SUPPORT_STORAGE
 
 		#FORMAT
-		if isfomated == False :
+		if isfomated == False and new_index !=0 :
 			ret = self.DoFormatStorage( aSelect )
 			if ret != E_STORAGE_FORMAT_DONE :
 				return E_STORAGE_ERROR_CANCEL
@@ -398,7 +398,7 @@ class ExclusiveSettings( object ) :
 		mTitle = MR_LANG( 'Error' )
 		mLines = MR_LANG( 'Failed to change storage device' )
 
-		doResult = E_STORAGE_FORMAT_DONE
+		doResult = E_STORAGE_DONE
 
 		if  new_index !=0 :
 			mTitle = MR_LANG( 'Installed XBMC add-ons' )
@@ -468,7 +468,9 @@ class ExclusiveSettings( object ) :
 		if aTitle :
 			mTitle = aTitle
 		self.OpenBusyDialog( )
+		#LOG_TRACE( "aExceptList=%s" %aExceptList ) 
 		pathlist = GetDirectoryAllFilePathList( aSourceList, aExceptList )
+		#LOG_TRACE( "pathlist=%s" %pathlist ) 		
 		self.CloseBusyDialog( )
 		progressDialog = None
 		try :
