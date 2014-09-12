@@ -1548,6 +1548,7 @@ class NullWindow( BaseWindow ) :
 		print 'doliyu test stop youtube'
 		self.mCommander.System_CloseWebPage( )
 		self.mCommander.AppHBBTV_Ready( 0 )
+		self.mCommander.AppMediaPlayer_Control( 0 )		
 		self.mYoutubeTVStarted = False
 		print 'doliyu test stop youtube : end'
 
