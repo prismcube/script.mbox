@@ -243,7 +243,7 @@ Search for window name
 				<posy>400</posy>
 				<control type="group" id="1209001">
 					<posx>380</posx>
-					<posy>20</posy>
+					<posy>0</posy>
 					<onup>1209000</onup>
 					<ondown>1200101</ondown>
 					<animation type="Conditional" condition="ControlGroup(1209001).HasFocus">
@@ -599,6 +599,17 @@ Search for window name
 				<posx>0</posx>
 				<posy>30r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
+				<control type="label" id="1200100">
+					<description>Menu Description</description>
+					<visible>false</visible>
+					<posx>1250</posx>
+					<posy>-27</posy>
+					<width>1145</width>
+					<height>30</height>
+					<font>FontSize_20</font>
+					<align>right</align>
+					<textcolor>white</textcolor>
+				</control>
 				<control type="rss">
 					<description>RSS Feed</description>
 					<posx>0</posx>
