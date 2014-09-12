@@ -6871,7 +6871,7 @@ Search for window name
 		</control>
 
 		<!-- Time & Date -->
-<!--		<include>NullWindowDataTime</include>-->
+		<include>NullWindowDataTime</include>
 		<include>DefaultCommonTime</include>
 <!--		<include>DefaultCommonDate</include>-->
 		<include>DefaultCommonLiveStatus</include>
@@ -6942,8 +6942,8 @@ Search for window name
 						<posy>-30</posy>
 						<width>425</width>
 						<height>30</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
+						<font>FontSize_24</font>
+						<textcolor>white</textcolor>
 						<scroll>false</scroll>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -6957,11 +6957,11 @@ Search for window name
 						<posy>-30</posy>
 						<width>425</width>
 						<height>30</height>
-						<font>font14</font>
+						<font>FontSize_24</font>
 						<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),False)</visible>
 					</control>
 					<control type="label" id="1002006">
@@ -6970,11 +6970,11 @@ Search for window name
 						<posy>-30</posy>
 						<width>425</width>
 						<height>30</height>
-						<font>font14</font>
+						<font>FontSize_24</font>
 						<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),Scramble)</visible>
 					</control>
 					<control type="label" id="1002007">
@@ -6983,11 +6983,11 @@ Search for window name
 						<posy>-30</posy>
 						<width>425</width>
 						<height>30</height>
-						<font>font14</font>
+						<font>FontSize_24</font>
 						<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),NoService)</visible>
 					</control>
 				</control>

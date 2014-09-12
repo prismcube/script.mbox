@@ -67,8 +67,10 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>99white</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(3803)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+<!--				<textcolor>blue</textcolor>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(3803)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>-->
+				<label>$INFO[Control.GetLabel(3803)] $ADDON[script.mbox 1106]</label>
+				<textcolor>blue</textcolor>
 				<visible>Control.IsVisible(3850)</visible>
 			</control>
 			<control type="button" id="3802">
@@ -77,8 +79,8 @@
 				<width>160</width>
 				<height>40</height>
 				<label>$ADDON[script.mbox 1022]</label>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
+				<font>FontSize_22</font>
+				<textcolor>99grey</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
 				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>

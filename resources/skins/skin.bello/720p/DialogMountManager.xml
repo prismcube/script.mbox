@@ -57,8 +57,8 @@
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[Window.Property(NetVolumeUse)]</label>
-								<textcolor>grey3</textcolor>
-								<font>font12</font>
+								<textcolor>77white</textcolor>
+								<font>FontSize_16</font>
 							</control>
 							<control type="image">
 								<posx>-30</posx>

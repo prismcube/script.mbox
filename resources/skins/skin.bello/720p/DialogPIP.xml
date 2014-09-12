@@ -789,11 +789,13 @@
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_14</font>
-					<textcolor>99white</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $ADDON[script.mbox 1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $ADDON[script.mbox 1107]</label>
+<!--					<textcolor>99white</textcolor>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $ADDON[script.mbox 1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $ADDON[script.mbox 1107]</label>-->
+					<textcolor>blue</textcolor>
+					<label>$INFO[Container(4803850).NumItems] $ADDON[script.mbox 1106]</label>
 				</control>
 				<control type="image">
 					<posx>320</posx>

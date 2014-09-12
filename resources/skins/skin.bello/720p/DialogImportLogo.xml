@@ -170,7 +170,7 @@
 				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
 				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
 				<label>$ADDON[script.mbox 1022]</label>
-				<font>font12_title</font>
+				<font>FontSize_22</font>
 				<onup>115</onup>
 				<onleft>119</onleft>
 				<onright>119</onright>
@@ -190,7 +190,7 @@
 				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
 				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
 				<label>$ADDON[script.mbox 1026]</label>
-				<font>font12_title</font>
+				<font>FontSize_22</font>
 				<onup>115</onup>
 				<onleft>118</onleft>
 				<onright>118</onright>

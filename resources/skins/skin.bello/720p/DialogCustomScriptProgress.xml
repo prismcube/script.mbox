@@ -81,7 +81,7 @@
 				<posy>262</posy>
 				<width>160</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>FontSize_22</font>
 				<textcolor>99grey</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
