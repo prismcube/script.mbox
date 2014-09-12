@@ -223,7 +223,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture>bg/colors_pulse.png</texture>
+				<texture>windows/bg/colors_pulse.png</texture>
 			</control>
 
 			<!-- PRISMCUBE Logo -->
