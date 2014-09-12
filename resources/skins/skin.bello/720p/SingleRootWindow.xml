@@ -869,7 +869,7 @@ Search for window name
 
 			<!-- Channels -->
 			<control type="group" id="1300049">
-				<posx>25</posx>
+				<posx>35</posx>
 				<posy>88</posy>
 				<include>DefaultWindowFade</include>
 				<control type="list" id="1300050">
@@ -1413,7 +1413,7 @@ Search for window name
 
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="1300061">
-				<posx>800</posx>
+				<posx>808</posx>
 				<posy>129</posy>
 				<width>10</width>
 				<height>482</height>
@@ -1434,8 +1434,8 @@ Search for window name
 
 			<!-- Channel Mode & Sorting Info -->
 			<control type="group" id="1300020">
-				<posx>5</posx>
-				<posy>80</posy>
+				<posx>-53</posx>
+				<posy>95</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300021">
 					<posx>106</posx>
@@ -1447,7 +1447,7 @@ Search for window name
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="1300022">
-					<posx>800</posx>
+					<posx>842</posx>
 					<posy>5</posy>
 					<width>200</width>
 					<height>28</height>
@@ -2162,7 +2162,7 @@ Search for window name
 									<posy>51</posy>
 									<width>230</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
+									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
 									<font>FontSize_20</font>
@@ -2181,7 +2181,7 @@ Search for window name
 									<posy>90</posy>
 									<width>230</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
+									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
 									<font>FontSize_20</font>
@@ -2205,8 +2205,8 @@ Search for window name
 									<posy>51</posy>
 									<width>230</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
-									<textwidth>195</textwidth>
+									<textoffsetx>10</textoffsetx>
+									<textwidth>175</textwidth>
 									<aligny>center</aligny>
 									<font>FontSize_20</font>
 									<texture>buttons/settings_fo.png</texture>
@@ -2224,8 +2224,8 @@ Search for window name
 									<posy>90</posy>
 									<width>230</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
-									<textwidth>195</textwidth>
+									<textoffsetx>10</textoffsetx>
+									<textwidth>175</textwidth>
 									<aligny>center</aligny>
 									<font>FontSize_20</font>
 									<texture>buttons/settings_fo.png</texture>
@@ -2243,8 +2243,8 @@ Search for window name
 									<posy>90</posy>
 									<width>230</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
-									<textwidth>195</textwidth>
+									<textoffsetx>10</textoffsetx>
+									<textwidth>175</textwidth>
 									<aligny>center</aligny>
 									<font>FontSize_20</font>
 									<texture>buttons/settings_fo.png</texture>
@@ -4057,8 +4057,8 @@ Search for window name
 					<texture>floor.png</texture>
 				</control>-->
 				<control type="group">
-					<posx>850</posx>
-					<posy>122</posy>
+					<posx>851</posx>
+					<posy>127</posy>
 					<width>430</width>
 					<height>600</height>
 					<visible>substring(Window.Property(ViewMode),common)</visible>
@@ -4364,8 +4364,8 @@ Search for window name
 						<posx>0</posx>
 						<posy>80</posy>
 						<include>DefaultButtonCommonValues</include>
-						<radiowidth>18</radiowidth>
-						<radioheight>18</radioheight>
+						<radiowidth>1</radiowidth>
+						<radioheight>1</radioheight>
 						<radioposx>222</radioposx>
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
@@ -5290,16 +5290,16 @@ Search for window name
 					<texture>windows/bg/bg_diffuse.png</texture>
 				</control>
 				<control type="image">
-					<posx>730</posx>
-					<posy>-68</posy>
+					<posx>729</posx>
+					<posy>-63</posy>
 					<width>610</width>
 					<height>900</height>
 					<aspectratio align="center" aligny="center">stretch</aspectratio>
 					<texture>views/list/shine.png</texture>
 				</control>
 				<control type="image">
-					<posx>765</posx>
-					<posy>27</posy>
+					<posx>764</posx>
+					<posy>32</posy>
 					<width>524</width>
 					<height>718</height>
 					<aspectratio align="right" aligny="center">stretch</aspectratio>
@@ -5307,16 +5307,16 @@ Search for window name
 					<bordersize>20</bordersize>
 				</control>
 				<control type="image">
-					<posx>841</posx>
-					<posy>105</posy>
+					<posx>840</posx>
+					<posy>110</posy>
 					<width>369</width>
 					<height>215</height>
 					<aspectratio>stretch</aspectratio>
 					<texture border="25">dialogs/other/iconborder_black.png</texture>
 				</control>
 				<control type="image">
-					<posx>841</posx>
-					<posy>320</posy>
+					<posx>840</posx>
+					<posy>325</posy>
 					<width>369</width>
 					<height>350</height>
 					<align>left</align>
@@ -5329,9 +5329,9 @@ Search for window name
 				<!-- Grid Mode Panel & Floor Image -->
 				<control type="image">
 					<posx>37</posx>
-					<posy>77</posy>
+					<posy>34</posy>
 					<width>1206</width>
-					<height>630</height>
+					<height>673</height>
 <!--					<aspectratio align="center" aligny="center">stretch</aspectratio>
 					<texture border="25">windows/weather/day_panel.png</texture>
 					<colordiffuse>FFcc00cc</colordiffuse>-->
@@ -5339,9 +5339,9 @@ Search for window name
 				</control>
 				<control type="image">
 					<posx>37</posx>
-					<posy>77</posy>
+					<posy>34</posy>
 					<width>1206</width>
-					<height>630</height>
+					<height>673</height>
 					<texture border="30">windows/bg/bg_vignette.png</texture>
 				</control>
 			</control>
@@ -5404,36 +5404,40 @@ Search for window name
 			</control>
 
 			<!-- Current Channel Name in Channel Mode -->
-			<control type="label" id="3700400">
-				<include>DefaultWindowFade</include>
-				<posx>340</posx>
-				<posy>62</posy>
-				<width>600</width>
-				<height>40</height>
-				<font>FontSize_20</font>
-				<textcolor>blue</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label></label>
-				<visible>substring(Window.Property(EPGMode),channel)</visible>
-			</control>
-			<control type="image">
-				<include>DefaultWindowFade</include>
-				<posx>120</posx>
-				<posy>73</posy>
-				<width>23</width>
-				<height>20</height>
-				<texture>TSIconRewind.png</texture>
-				<visible>substring(Window.Property(EPGMode),channel)</visible>
-			</control>
-			<control type="image">
-				<include>DefaultWindowFade</include>
-				<posx>750</posx>
-				<posy>73</posy>
-				<width>23</width>
-				<height>20</height>
-				<texture>TSIconFastForward.png</texture>
-				<visible>substring(Window.Property(EPGMode),channel)</visible>
+			<control type="group">
+				<posx>-18</posx>
+				<posy>22</posy>
+				<control type="label" id="3700400">
+					<include>DefaultWindowFade</include>
+					<posx>340</posx>
+					<posy>62</posy>
+					<width>600</width>
+					<height>40</height>
+					<font>FontSize_20</font>
+					<textcolor>blue</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+					<visible>substring(Window.Property(EPGMode),channel)</visible>
+				</control>
+				<control type="image">
+					<include>DefaultWindowFade</include>
+					<posx>120</posx>
+					<posy>73</posy>
+					<width>23</width>
+					<height>20</height>
+					<texture>TSIconRewind.png</texture>
+					<visible>substring(Window.Property(EPGMode),channel)</visible>
+				</control>
+				<control type="image">
+					<include>DefaultWindowFade</include>
+					<posx>750</posx>
+					<posy>73</posy>
+					<width>23</width>
+					<height>20</height>
+					<texture>TSIconFastForward.png</texture>
+					<visible>substring(Window.Property(EPGMode),channel)</visible>
+				</control>
 			</control>
 
 			<!-- View Types -->
@@ -5456,7 +5460,7 @@ Search for window name
 						<height>660</height>
 						<texture>dialogs/other/default_bg.png</texture>
 						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-						<animation effect="slide" start="0,0" end="265,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">conditional</animation>
+						<animation effect="slide" start="0,0" end="265,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
 					</control>
 				</control>
 				<control type="group" id="3709001">
@@ -5521,8 +5525,8 @@ Search for window name
 						<posx>0</posx>
 						<posy>40</posy>
 						<include>DefaultButtonCommonValues</include>
-						<radiowidth>18</radiowidth>
-						<radioheight>18</radioheight>
+						<radiowidth>1</radiowidth>
+						<radioheight>1</radioheight>
 						<radioposx>222</radioposx>
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
@@ -5843,14 +5847,14 @@ Search for window name
 			<!-- Item & Page Number for Grid -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>63r</posx>
-				<posy>40r</posy>
+				<posx>58</posx>
+				<posy>38</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>FontSize_18</font>
 				<textcolor>blue</textcolor>
 				<scroll>false</scroll>
-				<align>right</align>
+				<align>left</align>
 				<aligny>center</aligny>
 <!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>-->
 				<label>$INFO[Container(3702000).NumItems] $ADDON[script.mbox 1106]</label>
@@ -5875,8 +5879,8 @@ Search for window name
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="group">
-					<posx>850</posx>
-					<posy>122</posy>
+					<posx>848</posx>
+					<posy>127</posy>
 					<width>430</width>
 					<height>600</height>
 					<control type="image">
@@ -6844,11 +6848,12 @@ Search for window name
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>-->
+					<label>$INFO[Container(4601001).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>

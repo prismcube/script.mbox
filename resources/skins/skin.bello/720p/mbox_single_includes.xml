@@ -622,7 +622,7 @@
 		<height>40</height>
 		<width>250</width>
 		<textoffsetx>10</textoffsetx>
-		<textwidth>200</textwidth>
+		<textwidth>220</textwidth>
 		<font>FontSize_22</font>
 		<textcolor>white</textcolor>
 		<shadowcolor>77000000</shadowcolor>
@@ -4196,8 +4196,8 @@
 	<include name="DefaultButtonMediaSubCommonValues">
 		<height>40</height>
 		<width>230</width>
-		<textoffsetx>20</textoffsetx>
-		<textwidth>160</textwidth>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>170</textwidth>
 		<aligny>center</aligny>
 		<alignx>left</alignx>
 		<font>FontSize_22</font>
@@ -4742,7 +4742,7 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>FontSize_18</font>
-							<textcolor>blue</textcolor>
+							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -5260,7 +5260,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),channel)</visible>
 			<control type="list" id="1003500">
-				<posx>70</posx>
+				<posx>47</posx>
 				<posy>131</posy>
 				<width>1200</width>
 				<height>480</height>
@@ -5423,7 +5423,7 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003501">
-				<posx>800</posx>
+				<posx>780</posx>
 				<posy>137</posy>
 				<width>10</width>
 				<height>478</height>
