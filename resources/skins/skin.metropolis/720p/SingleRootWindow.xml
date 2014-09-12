@@ -644,17 +644,17 @@ Search for window name
 					<align>center</align>
 					<textcolor>white</textcolor>
 				</control>
-				<control type="label" id="1200100">
-					<visible>!Control.HasFocus(1209000)</visible>
-					<posx>340</posx>
-					<posy>-130</posy>
-					<width>600</width>
-					<font>METF_SettingsDetail</font>
-					<align>center</align>
-					<textcolor>white</textcolor>
-					<wrapmultiline>true</wrapmultiline>
-				</control>
 			</control-->
+			<control type="label" id="1200100">
+				<visible>false</visible>
+				<posx>340</posx>
+				<posy>-130</posy>
+				<width>600</width>
+				<font>METF_SettingsDetail</font>
+				<align>center</align>
+				<textcolor>white</textcolor>
+				<wrapmultiline>true</wrapmultiline>
+			</control>
 
 			<!-- RSS Feed -->
 			<control type="rss">
