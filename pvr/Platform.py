@@ -262,7 +262,7 @@ class PrismCubePlatform( Platform ) :
 			elif tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBT or tunerType == ElisEnum.E_FRONTEND_SINGLE_DVBC :
 				self.mTunerType = TUNER_TYPE_DVBT
 			else :
-				self.mTunerType = TUNER_TYPE_DVBS_SINGLE
+				self.mTunerType = TUNER_TYPE_NONE
 
 		else :
 			self.mTunerType = TUNER_TYPE_DVBS_DUAL
