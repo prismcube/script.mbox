@@ -34,10 +34,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				self.mInitialized = True
 				self.LoadNoSignalState( )
 				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_NONE :
-					xbmc.executebuiltin( 'ActivateWindow(Home)' )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Tuner not found' ), MR_LANG( 'Only XBMC access allowed without tuner' ) )
-					dialog.doModal( )
+					self.LoadXBMCWithoutTuner( )
 				else :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
@@ -50,10 +47,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
 				LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )
 				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_NONE :
-					xbmc.executebuiltin( 'ActivateWindow(Home)' )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Tuner not found' ), MR_LANG( 'Only XBMC access allowed without tuner' ) )
-					dialog.doModal( )
+					self.LoadXBMCWithoutTuner( )
 				else :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.GetInstance( ).GetLastWindowID( ), lastWindow.GetParentID( ) )
 
@@ -107,7 +101,14 @@ class RootWindow( xbmcgui.WindowXML ) :
 		#LOG_TRACE( '------------------------------###############################------------------------------ focus=%d' %aControlId )
 		#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
 		WinMgr.GetInstance( ).GetCurrentWindow( ).onFocus( aControlId )
-		
+
+
+	def LoadXBMCWithoutTuner( self ) :
+		xbmc.executebuiltin( 'ActivateWindow(Home)' )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Tuner not found' ), MR_LANG( 'Only XBMC access allowed without tuner' ) )
+		dialog.doModal( )
+
 
 	def CheckFirstRun( self ) :
 		if CheckDirectory( '/mtmp/isrunning' ) :
