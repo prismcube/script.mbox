@@ -69,7 +69,7 @@ class ExclusiveSettings( object ) :
 
 
 	def OpenResultDialog( self, aErrorNo ) :
-		LOG_TRACE( '--------------------Error[%s]'% aErrorNo )
+		LOG_TRACE( '--------------------Result[%s]'% aErrorNo )
 		mTitle = MR_LANG( 'Error' )
 		mLines = ''
 		if aErrorNo == E_STORAGE_DONE :
@@ -214,11 +214,10 @@ class ExclusiveSettings( object ) :
 		isformat = True	
 		doResult = E_FORMAT_ERROR_FAILURE
 		mTitle = MR_LANG( 'Format Device' )
-		mLine1 = MR_LANG( 'Formatting will erase ALL data on this device' )
-		mLine2 = MR_LANG( 'This will take a while' )
+		mLine = MR_LANG( 'Formatting will erase all data on this device' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( mTitle, mLine1, mLine2 )
+		dialog.SetDialogProperty( mTitle, mLine )
 		dialog.doModal( )
 		ret = dialog.IsOK( ) == E_DIALOG_STATE_YES
 		if ret == E_DIALOG_STATE_YES :
@@ -294,8 +293,13 @@ class ExclusiveSettings( object ) :
 						return E_FORMAT_ERROR_ABORTED
 
 		
-			ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#block power key 1:on, 0:off
+			ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )	#Block power key 1:on, 0:off
 			#self.OpenBusyDialog( )
+
+			#Block audio while formatting device
+			mute = self.mCommander.Player_GetMute( )
+			self.mCommander.Player_SetMute( True )
+
 			self.mProcessing = True
 			tShowProcess = threading.Timer( 0, self.AsyncProgressing, [waitMin] )
 			tShowProcess.start( )
@@ -322,6 +326,11 @@ class ExclusiveSettings( object ) :
 			if tShowProcess :
 				tShowProcess.join( )
 			#self.CloseBusyDialog( )
+
+			#Sync audio volume and mute on/off after formatting device
+			if mute == False :
+				thread = threading.Timer( 0.3, self.SyncVolume )
+				thread.start( )
 
 			if ret :
 				doResult = E_FORMAT_DONE
@@ -452,6 +461,11 @@ class ExclusiveSettings( object ) :
 			ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).SetPropIndex( new_index )
 
 		return doResult
+
+
+	def SyncVolume ( self ) :
+		self.mCommander.Player_SetMute( False )
+		self.mDataCache.SyncMute( )
 
 
 	def CopyXBMCData( self, aSourceList, aTargetPath, aExceptList = [], aTitle = '', aTargetDevice = None ) :
