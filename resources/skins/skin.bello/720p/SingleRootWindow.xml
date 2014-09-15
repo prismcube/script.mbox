@@ -644,7 +644,7 @@ Search for window name
 				<control type="image">
 					<description>RSS Background</description>
 					<posx>1250</posx>
-					<posy>2</posy>
+					<posy>3</posy>
 					<width>22</width>
 					<height>22</height>
 					<texture>rss_icon.png</texture>
@@ -4064,7 +4064,7 @@ Search for window name
 				<posx>-13</posx>
 				<posy>-150</posy>
 				<width>1386</width>
-				<height>256</height>
+				<height>276</height>
 				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)</visible>
 				<texture flipy="true">HomeNowPlayingBack.png</texture>
 			</control>
