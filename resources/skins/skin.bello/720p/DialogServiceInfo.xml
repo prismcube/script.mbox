@@ -15,7 +15,6 @@
 				<width>630</width>
 				<height>400</height>
 				<texture>dialogs/other/default_bg.png</texture>
-				<colordiffuse>FFFF00FF</colordiffuse>
 			</control>
 			<control type="group">
 				<posx>25</posx>

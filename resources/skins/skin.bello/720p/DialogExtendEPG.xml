@@ -50,7 +50,7 @@
 					<width>100</width>
 					<height>40</height>
 					<font>FontSize_18B</font>
-					<textcolor>purple</textcolor>
+					<textcolor>blue</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1091]</label>
@@ -62,7 +62,7 @@
 					<width>100</width>
 					<height>40</height>
 					<font>FontSize_18B</font>
-					<textcolor>purple</textcolor>
+					<textcolor>blue</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1092]</label>
@@ -74,7 +74,7 @@
 					<width>200</width>
 					<height>40</height>
 					<font>FontSize_18B</font>
-					<textcolor>purple1</textcolor>
+					<textcolor>blue</textcolor>
 					<aligny>center</aligny>
 					<label>$INFO[Window.Property(EPGIndex)]</label>
 					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>

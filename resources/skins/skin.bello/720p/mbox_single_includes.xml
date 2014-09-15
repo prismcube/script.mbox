@@ -68,6 +68,14 @@
 	<include name="NullWindowDataTime">
 		<control type="group">
 			<visible>[ substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),1200000) | substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),2900000) | substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true)</visible>
+			<animation type="Conditional" reversible="false" condition="!Window.IsActive(VolumeBar)">
+				<effect type="fade" start="0" end="100" time="300" tween="sine" easing="in"  />
+				<effect type="slide" start="0,35" end="0,0" time="350" tween="cubic" easing="out" />
+			</animation>
+			<animation type="Conditional" reversible="false" condition="Window.IsActive(VolumeBar)">
+				<effect type="fade" start="100" end="0" time="300" tween="sine" easing="out" />
+				<effect type="slide" start="0,0" end="0,35" time="350" tween="sine" easing="out" />
+			</animation>
 			<posx>235r</posx>
 			<posy>35</posy>
 			<orientation>horizontal</orientation>
