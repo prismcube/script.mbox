@@ -655,21 +655,23 @@
 
 	<include name="DefaultButtonHomeSubCommonValues">
 		<animation type="Conditional" condition="true" reversible="false">
-			<effect type="fade" end="40" time="0" />
+<!--			<effect type="fade" end="40" time="0" />-->
 			<effect type="zoom" end="75" time="0" />
 		</animation>
+<!--		<animation effect="zoom" end="75" time="0" condition="Container(1209000).HasFocus(1) | Container(1209000).HasFocus(3) | Container(1209000).HasFocus(4) | Container(1209000).HasFocus(6) | Container(1209000).HasFocus(9)" reversible="false">Conditional</animation>
+		<animation effect="fade" end="40" time="0" reversible="false">WindowOpen</animation>-->
 		<height>50</height>
 		<width>700</width>
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>FontSize_46</font>
-		<textcolor>white</textcolor>
+		<textcolor>55white</textcolor>
 		<focusedcolor>white</focusedcolor>
-		<shadowcolor>99000000</shadowcolor>
+<!--		<shadowcolor>99000000</shadowcolor>-->
 		<texturefocus>-</texturefocus>
 		<texturenofocus>-</texturenofocus>
-		<animation effect="zoom" start="95" end="130" time="200"tween="sine" easing="in" center="auto" condition="true" reversible="true">Focus</animation>
-		<animation effect="fade" start="40" end="100" time="200" tween="sine" easing="in" condition="true" reversible="true">Focus</animation>
+		<animation effect="zoom" start="75" end="130" time="200"tween="sine" easing="in" center="auto" condition="true" reversible="false">Focus</animation>
+<!--		<animation effect="fade" start="40" end="100" time="200" tween="sine" easing="in" condition="true" reversible="false">Focus</animation>-->
 	</include>
 
 	<include name="DefaultButtonCommonValues">
