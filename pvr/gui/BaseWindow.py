@@ -776,7 +776,7 @@ class BaseWindow( BaseObjectWindow ) :
 		elif aWindowId == WinMgr.WIN_ID_CHANNEL_SCAN_DVBT * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 			self.setProperty( 'SettingBackground', 'True' )
 			self.setProperty( 'DafultBackgroundImage', 'True' )
-			self.setProperty( 'SettingPip', 'True' )
+			self.setProperty( 'SettingPIG', 'True' )
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			for i in range( len( visibleControlIds ) ) :
 				self.getControl( visibleControlIds[i] ).setVisible( True )

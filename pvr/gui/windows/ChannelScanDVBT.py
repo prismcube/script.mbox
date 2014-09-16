@@ -36,6 +36,7 @@ class ChannelScanDVBT( SettingWindow ) :
 
 		self.InitConfig( )
 		self.mInitialized = True
+		self.mEventBus.Register( self )
 		self.SetDefaultControl( )
 
 
