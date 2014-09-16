@@ -277,20 +277,22 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def onEvent( self, aEvent ) :
-		if xbmcgui.getCurrentWindowId( ) == self.mWinId and self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
-			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
-				self.UpdateStatus( aEvent )
+		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
+			if self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG or self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG_DVBT :
+				if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+					self.UpdateStatus( aEvent )
 
 
 	def UpdateStatus( self, aEvent ) :
-		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
+		if self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
+			currentFreq = self.mConfigTransponder.mFrequency
+		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG_DVBT :
+			currentFreq = self.mDVBT_Manual.mFrequency
+
+		if aEvent.mFrequency == currentFreq :
 			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 			if aEvent.mIsLocked :
-			#	if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
-			#else :
-			#	if not self.mDataCache.Get_Player_AVBlank( ) :
-			#		self.mDataCache.Player_AVBlank( True )
 
 
 	def Close( self ) :
