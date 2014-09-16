@@ -1071,7 +1071,6 @@
 	<string id="3532">Show all bookmarks</string>
 	<string id="3533">Make media length longer than %s secs%s to create a chapter</string>
 	<string id="3534">Sort</string>
-	<string id="3535">Please check your recording path setting</string>
 	<string id="3536">Delete All Channels</string>
 	<string id="3537">Are you sure you want to remove%s all your TV and radio channels?</string>
 	<string id="3538">Are you sure you want to remove%s all channels from this favorite group?</string>
@@ -1474,22 +1473,12 @@
 	<string id="3935">Enter New Name</string>
 	<string id="3936">A filename must be at least %d characters long</string>
 	<string id="3937">Done</string>
-	<string id="3938">Cancelled</string>
-	<string id="3939">Change Storage</string>
 	<string id="3940">Not enough space left on the device</string>
 	<string id="3941">Device not found</string>
-	<string id="3943">Storage device not changed</string>
 	<string id="3944">Failed to format device</string>
 	<string id="3945">Failed to copy XBMC add-ons</string>
-	<string id="3946">Failed to restore data</string>
 	<string id="3947">Setting USB stick as storage device is not yet supported</string>
-	<string id="3948">The device is already selected</string>
 	<string id="3949">No device found</string>
-	<string id="3950">Try again after few seconds</string>
-	<string id="3951">Invalid storage size</string>
-	<string id="3952">Micro SD not found</string>
-	<string id="3953">Backup XBMC data</string>
-	<string id="3954">Restore XBMC data</string>
 	<string id="3955">Failed to change storage device</string>
 	<string id="3956">Installed XBMC add-ons</string>
 	<string id="3957">Do you want to copy your add-ons to Micro SD?</string>
@@ -1563,7 +1552,6 @@
 	<string id="4025">Loading new channels...</string>
 	<string id="4026">CrossEPG</string>
 	<string id="4027">Download complete</string>
-	<string id="4028">Now formatting</string>
 	<string id="4029">Now backup data</string>
 	<string id="4030">Rebooting system</string>
 	<string id="4031">Stopping Live</string>
@@ -1591,4 +1579,14 @@
 	<string id="4054">Download current version</string>
 	<string id="4055">Unknown filesystem or not formatted</string>
 	<string id="4056">Insert your Micro SD again</string>
+	<string id="4057">Default HDD recording path cannot be deleted</string>
+	<string id="4058">Check your recording path setting</string>
+	<string id="4059">Only XBMC access allowed without tuner</string>
+	<string id="4060">Tuner not found</string>
+	<string id="4061">Unable to format</string>
+	<string id="4062">Already selected as your storage device</string>
+	<string id="4063">Change Storage Device</string>
+	<string id="4064">Formatting will erase all data on this device</string>
+	<string id="4065">Formatting Device</string>
+	<string id="4066">Copying</string>
 </strings>

@@ -1071,7 +1071,6 @@
 	<string id="3532">Visualizza tutti i segnalibri</string>
 	<string id="3533">Fai il supporto più lungo di %s secondi%s per creare un capitolo</string>
 	<string id="3534">Ordina</string>
-	<string id="3535"></string>
 	<string id="3536">Cancellare tutti i canali</string>
 	<string id="3537">Sei sicuro di voler rimuovere%s tutti i tuoi canali TV e radio?</string>
 	<string id="3538">Sei sicuro di voler rimuovere%s canali tutti da questo gruppo preferito?</string>
@@ -1474,22 +1473,12 @@
 	<string id="3935">Inserire il nuovo nome</string>
 	<string id="3936">Il nome del file deve essere di almeno %d caratteri</string>
 	<string id="3937"></string>
-	<string id="3938"></string>
-	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
-	<string id="3946"></string>
 	<string id="3947"></string>
-	<string id="3948"></string>
 	<string id="3949"></string>
-	<string id="3950"></string>
-	<string id="3951"></string>
-	<string id="3952"></string>
-	<string id="3953"></string>
-	<string id="3954"></string>
 	<string id="3955"></string>
 	<string id="3956"></string>
 	<string id="3957"></string>
@@ -1563,7 +1552,6 @@
 	<string id="4025"></string>
 	<string id="4026"></string>
 	<string id="4027"></string>
-	<string id="4028"></string>
 	<string id="4029"></string>
 	<string id="4030"></string>
 	<string id="4031"></string>
@@ -1591,4 +1579,14 @@
 	<string id="4054"></string>
 	<string id="4055"></string>
 	<string id="4056"></string>
+	<string id="4057"></string>
+	<string id="4058"></string>
+	<string id="4059"></string>
+	<string id="4060"></string>
+	<string id="4061"></string>
+	<string id="4062"></string>
+	<string id="4063"></string>
+	<string id="4064"></string>
+	<string id="4065"></string>
+	<string id="4066"></string>
 </strings>

@@ -1071,7 +1071,6 @@
 	<string id="3532">Показати всі мітки</string>
 	<string id="3533">Відео повинно бути довше %s сек%s для створення розділів</string>
 	<string id="3534">Сортування</string>
-	<string id="3535"></string>
 	<string id="3536">Видалити Всі Канали</string>
 	<string id="3537">Впевнені що хочете видалити всі%s ТВ- і Радіо - канали?</string>
 	<string id="3538">Впевнені що хочете видалити всі%s канали з групи улюблені?</string>
@@ -1474,22 +1473,12 @@
 	<string id="3935">Задати нове ім'я файлу</string>
 	<string id="3936">Назва файлу повинна мати хоча б %d символів</string>
 	<string id="3937"></string>
-	<string id="3938"></string>
-	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
-	<string id="3946"></string>
 	<string id="3947"></string>
-	<string id="3948"></string>
 	<string id="3949"></string>
-	<string id="3950"></string>
-	<string id="3951"></string>
-	<string id="3952"></string>
-	<string id="3953"></string>
-	<string id="3954"></string>
 	<string id="3955"></string>
 	<string id="3956"></string>
 	<string id="3957"></string>
@@ -1563,7 +1552,6 @@
 	<string id="4025"></string>
 	<string id="4026"></string>
 	<string id="4027"></string>
-	<string id="4028"></string>
 	<string id="4029"></string>
 	<string id="4030"></string>
 	<string id="4031"></string>
@@ -1591,4 +1579,14 @@
 	<string id="4054"></string>
 	<string id="4055"></string>
 	<string id="4056"></string>
+	<string id="4057"></string>
+	<string id="4058"></string>
+	<string id="4059"></string>
+	<string id="4060"></string>
+	<string id="4061"></string>
+	<string id="4062"></string>
+	<string id="4063"></string>
+	<string id="4064"></string>
+	<string id="4065"></string>
+	<string id="4066"></string>
 </strings>
