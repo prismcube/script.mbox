@@ -107,7 +107,7 @@ class DialogMgr( object ) :
 
 		self.scriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
 
-		try :	#
+		try :
 			if aDialogId == DIALOG_ID_LNB_FREQUENCY :
 				from pvr.gui.dialogs.DialogLnbFrequency import DialogLnbFrequency		
 				return DialogLnbFrequency( 'DialogLnbFrequency.xml', self.scriptDir )	

@@ -14,7 +14,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		self.mWaiting = False
 
 	def onInit( self ) :
-		LOG_TRACE('LAEL98 TEST self.mInitialized' )
+		LOG_TRACE( 'LAEL98 TEST self.mInitialized' )
 
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
@@ -33,7 +33,10 @@ class RootWindow( xbmcgui.WindowXML ) :
 					self.mDataCache.Splash_StartAndStop( 0 )
 				self.mInitialized = True
 				self.LoadNoSignalState( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_NONE :
+					self.LoadXBMCWithoutTuner( )
+				else :
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 			else :
 				self.syncXBMC( True )						
@@ -43,7 +46,10 @@ class RootWindow( xbmcgui.WindowXML ) :
 				LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 				lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
 				LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.GetInstance( ).GetLastWindowID( ), lastWindow.GetParentID( ) )
+				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_NONE :
+					self.LoadXBMCWithoutTuner( )
+				else :
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.GetInstance( ).GetLastWindowID( ), lastWindow.GetParentID( ) )
 
 		except Exception, ex :
 			import traceback
@@ -59,11 +65,11 @@ class RootWindow( xbmcgui.WindowXML ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
 				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
-			elif aAction.getId( ) == Action.ACTION_VOLUME_DOWN  or aAction.getId( ) == Action.ACTION_VOLUME_DOWN or aAction.getId( ) == Action.ACTION_MUTE :
+			elif aAction.getId( ) == Action.ACTION_VOLUME_DOWN or aAction.getId( ) == Action.ACTION_VOLUME_DOWN or aAction.getId( ) == Action.ACTION_MUTE :
 				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 			else :
-				LOG_ERR("Don nothing in HBBTV Mode ")
+				LOG_ERR("Do nothing on HbbTV mode ")
 				return
 
 		# doliyu test youtube stop
@@ -73,6 +79,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		else :
 			if aAction.getId( ) == Action.ACTION_COLOR_BLUE :
+				print 'daniel --------------- 03'
 				if self.mDataCache.PIP_IsStarted( ) == False and WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( )==False :
 					return -1
 
@@ -82,10 +89,10 @@ class RootWindow( xbmcgui.WindowXML ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
 		if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
-			LOG_ERR("Do nothing in onclick, hbbtv mode is true")
+			LOG_ERR("Do nothing on onclick when Hbbtv mode is true")
 			return
 		elif WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
-			LOG_ERR("Do nothing in onclick, youtubetv mode is true")
+			LOG_ERR("Do nothing on onclick when YouTube TV mode is true")
 			return
 		WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )
 		
@@ -94,7 +101,14 @@ class RootWindow( xbmcgui.WindowXML ) :
 		#LOG_TRACE( '------------------------------###############################------------------------------ focus=%d' %aControlId )
 		#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
 		WinMgr.GetInstance( ).GetCurrentWindow( ).onFocus( aControlId )
-		
+
+
+	def LoadXBMCWithoutTuner( self ) :
+		xbmc.executebuiltin( 'ActivateWindow(Home)' )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Tuner not found' ), MR_LANG( 'Only XBMC access allowed without tuner' ) )
+		dialog.doModal( )
+
 
 	def CheckFirstRun( self ) :
 		if CheckDirectory( '/mtmp/isrunning' ) :

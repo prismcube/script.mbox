@@ -50,6 +50,8 @@ if SUPPORT_CHANNEL_DATABASE == True :
 		from elisinterface.ElisChannelDB_DVBS import ElisChannelDB
 	elif tunertype == TUNER_TYPE_DVBT :
 		from elisinterface.ElisChannelDB_DVBT import ElisChannelDB
+	else :
+		from elisinterface.ElisChannelDB_DVBS import ElisChannelDB
 
 if SUPPORT_TIMER_DATABASE == True :
 	from elisinterface.ElisTimerDB import ElisTimerDB

@@ -69,6 +69,8 @@ class GlobalEvent( object ) :
 			if E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY :
 				if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
 					return
+				if pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_NONE :
+					return
 				if xbmcgui.getCurrentWindowId() == 12005 or xbmcgui.getCurrentWindowId() == 12006 :
 					pass
 				else :

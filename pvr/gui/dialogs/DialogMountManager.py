@@ -383,7 +383,7 @@ class DialogMountManager( SettingDialog ) :
 
 	def DoDeleteVolume( self, aNetVolume = None, aIsUMount = True ) :
 		if not aNetVolume :
-			LOG_TRACE( '[MountManager] Fail, netVolume is None' )
+			LOG_TRACE( '[MountManager] Failed. No NetVolume' )
 			return False
 
 		ret = self.mDataCache.Record_DeleteNetworkVolume( aNetVolume )
@@ -521,7 +521,7 @@ class DialogMountManager( SettingDialog ) :
 				dialog.SetDialogProperty( delTitle, delLine )
 				dialog.doModal( )
 				if dialog.IsOK( ) != E_DIALOG_STATE_YES :
-					LOG_TRACE( '[MountManager] Cancel delete' )
+					LOG_TRACE( '[MountManager] Delete operation aborted' )
 					return
 
 				ret = self.DoDeleteVolume( self.mNetVolume )
@@ -529,7 +529,8 @@ class DialogMountManager( SettingDialog ) :
 					isFail = False
 					#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
 					lblLine = '\'%s\' %s'% ( os.path.basename( self.mNetVolume.mMountPath ), MR_LANG( 'is removed' ) )
-
+				else :
+					lblLine = MR_LANG( 'Default HDD recording path cannot be deleted' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			if isFail :
