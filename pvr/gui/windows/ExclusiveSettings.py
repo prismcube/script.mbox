@@ -527,7 +527,7 @@ class ExclusiveSettings( object ) :
 					progressDialog.close( )
 					return E_STORAGE_ERROR_ABORTED
 
-				strData = MR_LANG( 'Copying data' ) + '...'
+				strData = MR_LANG( 'Copying' ) + '...'
 				progressDialog.update( percent, strData, '%s'% fData[len(E_PATH_FLASH_BASE)+1:], ' ' )
 
 				destPathCopy = '%s%s'% ( aTargetPath, fData[len(E_PATH_FLASH_BASE):] )
