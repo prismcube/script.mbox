@@ -2384,13 +2384,13 @@ class DataCacheMgr( object ) :
 
 	def InitNetworkVolume( self ) :
 		from pvr.GuiHelper import CheckNetworkStatus, RefreshMountToSMB
-		#return value. 1st value :
-		#  inteager < 0 : error No.
-		#  inteager > 0 : failure count
-		#  inteager = 0 : success
+		#Return value. 1st value :
+		#  inteager < 0 : Error No.
+		#  inteager > 0 : Failure count
+		#  inteager = 0 : Success
 
-		#return value. 2nd value :
-		#  lblText : status label
+		#Return value. 2nd value :
+		#  lblText : Status label
 
 		retVal = 0
 		isFail = False

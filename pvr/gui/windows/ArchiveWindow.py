@@ -1019,7 +1019,7 @@ class ArchiveWindow( BaseWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Inaccessible folder' ), lblLine )
 			dialog.doModal( )
 
-		lblTitle = MR_LANG( 'Fail' )
+		lblTitle = MR_LANG( 'Error' )
 		if retVal == 0 :
 			if aExtenal :
 				LOG_TRACE( 'Refreshing volume complete' )
@@ -1029,9 +1029,6 @@ class ArchiveWindow( BaseWindow ) :
 			self.Load( )
 			self.UpdateList( )
 			return
-
-		elif retVal < 0 :
-			lblTitle = MR_LANG( 'Error' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( lblTitle, lblLine )
