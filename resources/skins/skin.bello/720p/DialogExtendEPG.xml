@@ -50,7 +50,7 @@
 					<width>100</width>
 					<height>40</height>
 					<font>FontSize_18B</font>
-					<textcolor>blue</textcolor>
+					<textcolor>77white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1091]</label>
@@ -62,7 +62,7 @@
 					<width>100</width>
 					<height>40</height>
 					<font>FontSize_18B</font>
-					<textcolor>blue</textcolor>
+					<textcolor>77white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>$ADDON[script.mbox 1092]</label>
@@ -74,7 +74,7 @@
 					<width>200</width>
 					<height>40</height>
 					<font>FontSize_18B</font>
-					<textcolor>blue</textcolor>
+					<textcolor>77white</textcolor>
 					<aligny>center</aligny>
 					<label>$INFO[Window.Property(EPGIndex)]</label>
 					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>
@@ -133,6 +133,7 @@
 				<posx>830</posx>
 				<posy>112</posy>
 				<font>FontSize_20</font>
+				<textcolor>white</textcolor>
 				<label>$INFO[Window.Property(EPGTime)]</label>
 			</control>
 			<control type="label">
@@ -140,6 +141,7 @@
 				<posx>830</posx>
 				<posy>92</posy>
 				<font>FontSize_20</font>
+				<textcolor>white</textcolor>
 				<label>$INFO[Window.Property(EPGDate)]</label>
 			</control>
 			<control type="label">
@@ -147,6 +149,7 @@
 				<posx>970</posx>
 				<posy>112</posy>
 				<font>FontSize_20</font>
+				<textcolor>white</textcolor>
 				<label>$INFO[Window.Property(EPGDuration)]</label>
 			</control>
 

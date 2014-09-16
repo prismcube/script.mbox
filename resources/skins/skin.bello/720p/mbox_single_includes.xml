@@ -4233,9 +4233,9 @@
 
 	<include name="DefaultButtonMediaSubCommonValues">
 		<height>40</height>
-		<width>230</width>
+		<width>250</width>
 		<textoffsetx>10</textoffsetx>
-		<textwidth>170</textwidth>
+		<textwidth>220</textwidth>
 		<aligny>center</aligny>
 		<alignx>left</alignx>
 		<font>FontSize_22</font>
