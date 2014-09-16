@@ -1160,7 +1160,7 @@
 								</control>
 								<!-- HD Icon -->
 								<control type="image">
-									<posx>26</posx>
+									<posx>56</posx>
 									<posy>0</posy>
 									<width>24</width>
 									<height>18</height>
