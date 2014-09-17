@@ -25,7 +25,7 @@
 				<include>DialogInput02</include>
 				<control type="group">
 					<posx>22</posx>
-					<posy>-17</posy>
+					<posy>-19</posy>
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>
 			</control>
