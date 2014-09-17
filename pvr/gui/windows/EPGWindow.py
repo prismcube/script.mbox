@@ -2383,6 +2383,9 @@ class EPGWindow( BaseWindow ) :
 					self.RestartEPGUpdateTimer( )					
 					return
 
+		if self.mEPGMode == E_VIEW_GRID :	
+			self.mGridEPGCache = {}
+
 		self.Load( )
 		self.UpdateListUpdateOnly( )
 		if self.mEPGMode == E_VIEW_GRID :	
