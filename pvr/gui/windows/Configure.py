@@ -163,7 +163,8 @@ class Configure( SettingWindow ) :
 		NetMgr.GetInstance( ).SetIsConfigureWindow( True )
 
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
-		self.mVideoOutput	= self.mDataCache.GetVideoOutput( )
+		#self.mVideoOutput	= self.mDataCache.GetVideoOutput( )
+		self.mVideoOutput = ElisPropertyEnum( 'Video Output', self.mCommander ).GetProp( )
 		self.mHDDStatus     = True
 
 		self.SetListControl( )
@@ -313,7 +314,8 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_VIDEO :
 			if groupId == E_SpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_SpinEx01 )
-				self.mDataCache.SetVideoOutput( self.mVideoOutput )
+				#self.mDataCache.SetVideoOutput( self.mVideoOutput )
+				ElisPropertyEnum( 'Video Output', self.mCommander ).SetProp( self.mVideoOutput )
 				self.SetListControl( )
 				return
 
