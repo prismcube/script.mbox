@@ -282,7 +282,7 @@
 			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
 			<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
-			<texture>backgrounds/RADIOSKIN.jpg</texture>
+			<texture>bg/SKINDEFAULT.jpg</texture>
 			<visible>substring(Window.Property(TVRadio),true)</visible>
 		</control>
 		<control type="image" id="8899">
@@ -5951,14 +5951,14 @@
 				<!-- CAS -->
 				<control type="group">
 					<posx>-269</posx>
-					<posy>514</posy>
+					<posy>519</posy>
 					<include>CASInfo</include>
 				</control>
 				<!-- EPG Info -->
 				<control type="label" id="3703503">
 					<posx>0</posx>
-					<posy>510</posy>
-					<width>800</width>
+					<posy>515</posy>
+					<width>880</width>
 					<height>40</height>
 					<font>FontSize_26</font>
 					<textcolor>blue</textcolor>
