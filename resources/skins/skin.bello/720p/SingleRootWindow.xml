@@ -275,8 +275,6 @@ Search for window name
 						<ondown>1209010</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(1)</visible>
@@ -328,8 +326,6 @@ Search for window name
 						<ondown>1209016</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(6)</visible>
@@ -386,8 +382,6 @@ Search for window name
 						<ondown>1209012</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(3)</visible>
@@ -425,8 +419,6 @@ Search for window name
 						<ondown>1209013</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(9)</visible>
@@ -450,8 +442,6 @@ Search for window name
 						<ondown>1209011</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>-->
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(4)</visible>
@@ -665,8 +655,6 @@ Search for window name
 					<height>1</height>
 					<onleft>1200102</onleft>
 					<onright>1200102</onright>
-<!--					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>-->
 					<onup>1209000</onup>
 					<ondown>1209000</ondown>
 				</control>
@@ -691,8 +679,6 @@ Search for window name
 					<height>1</height>
 					<onleft>1200101</onleft>
 					<onright>1200101</onright>
-<!--					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>-->
 					<onup>1209000</onup>
 					<ondown>1209000</ondown>
 				</control>
@@ -1461,7 +1447,7 @@ Search for window name
 				<onup>1300061</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-<!--				<animation effect="fade" start="100" end="0" time="250" condition="!Control.HasFocus(1300061) + !Container.Scrolling">Conditional</animation>-->
+				<!--animation effect="fade" start="100" end="0" time="250" condition="!Control.HasFocus(1300061) + !Container.Scrolling">Conditional</animation-->
 			</control>
 
 			<!-- Channel Mode & Sorting Info -->
@@ -1511,7 +1497,6 @@ Search for window name
 					<width>524</width>
 					<height>718</height>
 					<aspectratio align="right" aligny="center">stretch</aspectratio>
-<!--					<fadetime>100</fadetime>-->
 					<texture border="70">views/list/panel.png</texture>
 					<bordersize>20</bordersize>
 				</control>
@@ -1548,7 +1533,6 @@ Search for window name
 					<height>347</height>
 					<align>left</align>
 					<aspectratio>stretch</aspectratio>
-					<!--<texture background="true" border="25">dialogs/other/iconborder_black.png</texture>-->
 					<texture border="25">dialogs/other/iconborder_black.png</texture>
 					</control>
 				<!-- Short EPG Info Mode -->
@@ -1865,7 +1849,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label-->
 					<label>[COLOR=blue]$INFO[Container(1300050).NumItems][/COLOR] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
@@ -1896,7 +1880,6 @@ Search for window name
 	                    <width>500</width>
 	                    <height>660</height>
 	                    <texture>dialogs/other/default_bg.png</texture>
-<!--	                    <colordiffuse>FFFF00FF</colordiffuse>-->
 	                    <animation effect="slide" start="0,0" end="265,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
 						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
@@ -2347,7 +2330,6 @@ Search for window name
 					<width>1385</width>
 					<height>317</height>
 					<aspectratio align="center" aligny="center">stretch</aspectratio>
-	<!--				<fadetime>100</fadetime>-->
 					<texture border="70">views/list/panel.png</texture>
 					<bordersize>20</bordersize>
 				</control>
@@ -2451,6 +2433,7 @@ Search for window name
 						<label>$ADDON[script.mbox 1123]</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
+					<!-- Channel Logo Background -->
 					<control type="image">
 						<posx>-40</posx>
 						<posy>-37</posy>
@@ -2460,16 +2443,6 @@ Search for window name
 						<colordiffuse>FFEFEFEF</colordiffuse>
 						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
 					</control>
-					<!-- Channel Logo Background -->
-<!--					<control type="image">
-						<posx>-26</posx>
-						<posy>-18</posy>
-						<width>110</width>
-						<height>77</height>
-						<texture>Logo_Background.png</texture>
-						<colordiffuse>FFEFEFEF</colordiffuse>
-						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
-					</control>-->
 					<!-- Channel Logo Icon -->
 					<control type="image">
 						<posx>-26</posx>
@@ -2926,7 +2899,6 @@ Search for window name
 						<width>1385</width>
 						<height>329</height>
 						<aspectratio align="center" aligny="center">stretch</aspectratio>
-		<!--				<fadetime>100</fadetime>-->
 						<texture border="70">views/list/panel.png</texture>
 						<bordersize>20</bordersize>
 					</control>
@@ -4080,14 +4052,6 @@ Search for window name
 			<!-- Content Panel for List Mode -->
 			<control type="group">
 				<include>DefaultWindowFade</include>
-<!--				<control type="image">
-					<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
-					<posx>-13</posx>
-					<posy>100r</posy>
-					<width>1306</width>
-					<height>115</height>
-					<texture>floor.png</texture>
-				</control>-->
 				<control type="group">
 					<posx>851</posx>
 					<posy>127</posy>
@@ -4130,18 +4094,6 @@ Search for window name
 					</control>
 				</control>
 			</control>
-
-			<!-- Window Header Image -->
-<!--			<control type="image">
-				<include>DefaultWindowOpenCloseAnimation</include>
-				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
-				<posx>20</posx>
-				<posy>3</posy>
-				<width>35</width>
-				<height>35</height>
-				<aspectratio>keep</aspectratio>
-				<texture>icon_video.png</texture>
-			</control>-->
 
 			<!-- Window Title -->
 			<control type="label" id="1009551">
@@ -4239,7 +4191,7 @@ Search for window name
 						<texture>dialogs/other/default_bg.png</texture>
 						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 						<animation effect="slide" start="0,0" end="265,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
-<!--						<animation effect="zoom" start="0,0,1,727" end="0,0,229,727" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>-->
+						<!--animation effect="zoom" start="0,0,1,727" end="0,0,229,727" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation-->
 					</control>
 				</control>
 				<control type="group" id="3309001">
@@ -4294,18 +4246,9 @@ Search for window name
 								<posy>0</posy>
 								<width>230</width>
 								<height>40</height>
-<!--								<texture border="5">button-focus.png</texture>-->
 								<texture>buttons/settings_fo.png</texture>
 								<visible>Control.HasFocus(3309050)</visible>
 							</control>
-<!--							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>210</width>
-								<height>40</height>
-								<texture border="5">button-nofocus.png</texture>
-								<visible>!Control.HasFocus(3309050)</visible>
-							</control>-->
 							<control type="label">
 								<posx>5</posx>
 								<posy>0</posy>
@@ -4899,7 +4842,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label-->
 					<label>$INFO[Container(1003400).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
@@ -4914,7 +4857,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label-->
 					<label>$INFO[Container(1003410).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
@@ -4929,7 +4872,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label-->
 					<label>$INFO[Container(1003420).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
@@ -4944,7 +4887,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label-->
 					<label>$INFO[Container(1003430).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
@@ -5346,15 +5289,12 @@ Search for window name
 			</control>
 			<control type="group">
 				<visible>substring(Window.Property(EPGMode),grid)</visible>
-				<!-- Grid Mode Panel & Floor Image -->
+				<!-- Grid Mode Panel Image -->
 				<control type="image">
 					<posx>37</posx>
 					<posy>34</posy>
 					<width>1206</width>
 					<height>673</height>
-<!--					<aspectratio align="center" aligny="center">stretch</aspectratio>
-					<texture border="25">windows/weather/day_panel.png</texture>
-					<colordiffuse>FFcc00cc</colordiffuse>-->
 					<texture border="30">bg/SKINDEFAULT.jpg</texture>
 				</control>
 				<control type="image">
@@ -5789,7 +5729,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-<!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>-->
+				<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label-->
 				<label>$INFO[Container(1003500).NumItems] $ADDON[script.mbox 1106]</label>
 				<visible>substring(Window.Property(EPGMode),channel) </visible>
 			</control>
@@ -5805,7 +5745,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-<!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>-->
+				<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label-->
 				<label>$INFO[Container(1003510).NumItems] $ADDON[script.mbox 1106]</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			</control>
@@ -5821,7 +5761,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-<!--				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>-->
+				<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label-->
 				<label>$INFO[Container(3702000).NumItems] $ADDON[script.mbox 1106]</label>
 				<visible>substring(Window.Property(EPGMode), grid)</visible>
 			</control>
@@ -6303,7 +6243,6 @@ Search for window name
 					<width>508</width>
 					<height>740</height>
 					<texture>bg/bg_SimpleChannel.png</texture>
-<!--					<colordiffuse>FFFF33FF</colordiffuse>-->
 				</control>
 				<control type="image">
 					<posx>872</posx>
@@ -6509,7 +6448,6 @@ Search for window name
 								<posy>2</posy>
 								<width>384</width>
 								<height>68</height>
-<!--								<texture border="5">button-nofocus.png</texture>-->
 								<aspectratio align="center" aligny="center">stretch</aspectratio>
 								<texture border="15">dialogs/other/iconborder_black.png</texture>
 							</control>
@@ -6655,7 +6593,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label-->
 					<label>$INFO[Container(4601000).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
@@ -6681,7 +6619,6 @@ Search for window name
 								<posy>2</posy>
 								<width>384</width>
 								<height>68</height>
-<!--								<texture border="5">button-nofocus.png</texture>-->
 								<aspectratio align="center" aligny="center">stretch</aspectratio>
 								<texture border="15">dialogs/other/iconborder_black.png</texture>
 							</control>
@@ -6791,7 +6728,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-<!--					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>-->
+					<!--label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label-->
 					<label>$INFO[Container(4601001).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
@@ -6801,7 +6738,7 @@ Search for window name
 		<!-- Time & Date -->
 		<include>NullWindowDataTime</include>
 		<include>DefaultCommonTime</include>
-<!--		<include>DefaultCommonDate</include>-->
+		<!--include>DefaultCommonDate</include-->
 		<include>DefaultCommonLiveStatus</include>
 
 		<!-- PIG Image & Radio Mode -->

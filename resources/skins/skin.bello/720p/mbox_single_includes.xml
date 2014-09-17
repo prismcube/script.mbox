@@ -140,7 +140,7 @@
 				<shadowcolor>77000000</shadowcolor>
 				<label>$INFO[System.Date]</label>
 				<include>DefaultWindowOpenCloseAnimation</include>
-<!--				<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>-->
+				<!--animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation-->
 			</control>
 		</control>
 	</include>
@@ -646,11 +646,9 @@
 
 	<include name="DefaultButtonHomeSubCommonValues">
 		<animation type="Conditional" condition="true" reversible="false">
-<!--			<effect type="fade" end="40" time="0" />-->
+			<!--effect type="fade" end="40" time="0" /-->
 			<effect type="zoom" end="75" time="0" />
 		</animation>
-<!--		<animation effect="zoom" end="75" time="0" condition="Container(1209000).HasFocus(1) | Container(1209000).HasFocus(3) | Container(1209000).HasFocus(4) | Container(1209000).HasFocus(6) | Container(1209000).HasFocus(9)" reversible="false">Conditional</animation>
-		<animation effect="fade" end="40" time="0" reversible="false">WindowOpen</animation>-->
 		<height>50</height>
 		<width>700</width>
 		<align>center</align>
@@ -658,11 +656,10 @@
 		<font>FontSize_46</font>
 		<textcolor>55white</textcolor>
 		<focusedcolor>white</focusedcolor>
-<!--		<shadowcolor>99000000</shadowcolor>-->
 		<texturefocus>-</texturefocus>
 		<texturenofocus>-</texturenofocus>
 		<animation effect="zoom" start="100" end="130" time="250"tween="sine" easing="in" center="auto" condition="true" reversible="false">Focus</animation>
-<!--		<animation effect="fade" start="40" end="100" time="200" tween="sine" easing="in" condition="true" reversible="false">Focus</animation>-->
+		<!--animation effect="fade" start="40" end="100" time="200" tween="sine" easing="in" condition="true" reversible="false">Focus</animation-->
 	</include>
 
 	<include name="DefaultButtonCommonValues">
@@ -4197,7 +4194,6 @@
 						<texture>osd/quicknav/focus_square.png</texture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
-<!--						<texture background="true">button-nofocus.png</texture>-->
 					</control>
 					<control type="label">
 						<posx>25</posx>
@@ -4235,7 +4231,7 @@
 			<width>300</width>
 			<height>660</height>
 			<texture>dialogs/other/default_bg.png</texture>
-<!--			<colordiffuse>FFFF00FF</colordiffuse>-->
+			<!--colordiffuse>FFFF00FF</colordiffuse-->
 			<animation effect="slide" start="-26,0" end="20,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="20,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
 		</control>
@@ -4842,8 +4838,6 @@
 						<width>208</width>
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
-<!--						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>3</bordersize>-->
 						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
 						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
@@ -5093,8 +5087,6 @@
 						<width>144</width>
 						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-<!--						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>4</bordersize>-->
 						<bordertexture border="5">dialogs/other/iconborder_black.png</bordertexture>
 						<bordersize>6</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
@@ -5356,8 +5348,6 @@
 						<font>FontSize_22</font>
 						<textcolor>55white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
-<!--						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -5371,8 +5361,6 @@
 						<font>FontSize_22</font>
 						<textcolor>55white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
-<!--						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -5387,8 +5375,6 @@
 						<font>FontSize_22</font>
 						<textcolor>55white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
-<!--						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>-->
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(EPGDate)]</label>
@@ -5432,8 +5418,6 @@
 						<font>FontSize_22</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
-<!--						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -5447,7 +5431,6 @@
 						<font>FontSize_22</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
-<!--						<selectedcolor>selected</selectedcolor>-->
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -5462,7 +5445,6 @@
 						<font>FontSize_22</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>77000000</shadowcolor>
-<!--						<selectedcolor>selected</selectedcolor>-->
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(EPGDate)]</label>
@@ -7299,42 +7281,6 @@
 	</include>
 
 	<include name="DefaultHeaderTitle">
-		<!-- Installation, System Info -->
-<!--		<control type="image">
-			<include>DefaultWindowOpenCloseAnimation</include>
-			<description>Section header image</description>
-			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000) | substring(Window.Property(CurrentWindow),4700000) | substring(Window.Property(CurrentWindow),4900000) | substring(Window.Property(CurrentWindow),5000000)</visible>
-			<posx>20</posx>
-			<posy>3</posy>
-			<width>35</width>
-			<height>35</height>
-			<aspectratio>keep</aspectratio>
-			<texture>icon_system.png</texture>
-		</control>-->
-		<!-- EPG, Channel List TV Mode -->
-<!--		<control type="image">
-			<include>DefaultWindowOpenCloseAnimation</include>
-			<description>Section header image</description>
-			<visible>[substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | substring(Window.Property(CurrentWindow),1300000) | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000)</visible>
-			<posx>20</posx>
-			<posy>8</posy>
-			<width>35</width>
-			<height>28</height>
-			<aspectratio>keep</aspectratio>
-			<texture>icon_tv3.png</texture>
-		</control>-->
-		<!-- EPG, Channel List Radio Mode -->
-<!--		<control type="image">
-			<include>DefaultWindowOpenCloseAnimation</include>
-			<description>Section header image</description>
-			<visible>[substring(Window.Property(CurrentWindow),1300000) + substring(Window.Property(TVRadio),true)] | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid) + substring(Window.Property(TVRadio),true)]</visible>
-			<posx>20</posx>
-			<posy>3</posy>
-			<width>35</width>
-			<height>33</height>
-			<aspectratio>keep</aspectratio>
-			<texture>icon_radio3.png</texture>
-		</control>-->
 		<!-- Installation Window Title -->
 		<control type="label" id="1009550">
 			<include>DefaultWindowOpenCloseAnimation</include>
