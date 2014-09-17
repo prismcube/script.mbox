@@ -46,6 +46,16 @@
 			<texture>windows/bg/colors_pulse.png</texture>
 			<visible>substring(Window.Property(TVRadio),true)</visible>
 		</control>
+		<control type="image">
+			<description>Radio Icon</description>
+			<posx>15</posx>
+			<posy>20</posy>
+			<width>62</width>
+			<height>60</height>
+			<aspectratio>keep</aspectratio>
+			<texture>icon_radio3.png</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
 	</include>
 
 	<include name="DefaultCommonLiveStatus">
@@ -4235,7 +4245,7 @@
 		<height>40</height>
 		<width>250</width>
 		<textoffsetx>10</textoffsetx>
-		<textwidth>220</textwidth>
+		<textwidth>200</textwidth>
 		<aligny>center</aligny>
 		<alignx>left</alignx>
 		<font>FontSize_22</font>

@@ -513,35 +513,19 @@
 					</control>
 				</control>
 
-				<control type="group">
-					<posx>40</posx>
-					<posy>15</posy>
-					<width>300</width>
+				<control type="label">
+					<description>Title</description>
+					<posx>42</posx>
+					<posy>0</posy>
+					<width>340</width>
 					<height>30</height>
-					<control type="image">
-						<description>TV Image</description>
-						<posx>0</posx>
-						<posy>3</posy>
-						<width>35</width>
-						<height>28</height>
-						<aspectratio>keep</aspectratio>
-						<texture>icon_tv3.png</texture>
-						<colordiffuse>8F00FFFF</colordiffuse>
-					</control>
-					<control type="label">
-						<description>Title</description>
-						<posx>42</posx>
-						<posy>2</posy>
-						<width>340</width>
-						<height>30</height>
-						<font>FontSize_22B</font>
-						<textcolor>white</textcolor>
-						<shadowcolor>black</shadowcolor>
-						<scroll>false</scroll>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$ADDON[script.mbox 1201]</label>
-					</control>
+					<font>FontSize_24</font>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<scroll>false</scroll>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$ADDON[script.mbox 1201]</label>
 				</control>
 				<control type="group">
 					<posx>40</posx>

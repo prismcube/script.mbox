@@ -4377,6 +4377,7 @@ Search for window name
 						<description>Hide Watched</description>
 						<posx>0</posx>
 						<posy>80</posy>
+						<radioposx>194</radioposx>
 						<include>DefaultButtonMediaSubCommonValues</include>
 						<label>$ADDON[script.mbox 1008]</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
@@ -6312,47 +6313,21 @@ Search for window name
 					<texture>windows/bg/bg_diffuse.png</texture>
 				</control>
 
-				<!-- Window Header Image & Title -->
-				<control type="group">
-					<posx>890</posx>
-					<posy>5</posy>
+				<!-- Window Header Title -->
+				<control type="label">
+					<description>Sort Mode</description>
+					<visible>substring(Window.Property(TVRadio),true) | !substring(Window.Property(TVRadio),true)</visible>
+					<posx>927</posx>
+					<posy>8</posy>
 					<width>300</width>
 					<height>30</height>
-					<control type="image">
-						<description>TV Icon</description>
-						<visible>!substring(Window.Property(TVRadio),true)</visible>
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>25</height>
-						<aspectratio>keep</aspectratio>
-						<texture>icon_tv3.png</texture>
-					</control>
-					<control type="image">
-						<description>Radio Icon</description>
-						<visible>substring(Window.Property(TVRadio),true)</visible>
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>32</width>
-						<height>30</height>
-						<aspectratio>keep</aspectratio>
-						<texture>icon_radio3.png</texture>
-					</control>
-					<control type="label">
-						<description>Sort Mode</description>
-						<visible>substring(Window.Property(TVRadio),true) | !substring(Window.Property(TVRadio),true)</visible>
-						<posx>42</posx>
-						<posy>2</posy>
-						<width>300</width>
-						<height>30</height>
-						<font>FontSize_22B</font>
-						<textcolor>white</textcolor>
-						<shadowcolor>black</shadowcolor>
-						<scroll>false</scroll>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[Window.Property(SimpleChannelPath)]</label>
-					</control>
+					<font>FontSize_28</font>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<scroll>false</scroll>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$INFO[Window.Property(SimpleChannelPath)]</label>
 				</control>
 
 				<!-- Prev & Next Group -->
