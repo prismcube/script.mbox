@@ -76,9 +76,11 @@ class DialogForceProgress( BaseDialog ) :
 	def DrawProgress( self ) :
 		i = 1
 		while self.mFinish == False :
-			percent = int( 100 / self.mLimitTime * i )
+			percent = float( 100.0 / self.mLimitTime * i )
 			if percent < 95 or self.mEventName != None :
-				self.mCtrlLabelPercent.setLabel( MR_LANG( 'Waiting' ) + ' - %d %%' % percent )
+				if percent <= 1.0 :
+					percent = 1.0
+				self.mCtrlLabelPercent.setLabel( MR_LANG( 'Waiting' ) + ' - %.1f %%' % percent )
 				self.mCtrlProgress.setPercent( percent )
 			
 			if self.mEventName != None and percent > 100 :

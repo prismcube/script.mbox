@@ -1071,7 +1071,6 @@
 	<string id="3532">Afficher tous les signets</string>
 	<string id="3533">Rendre la longueur du média plus grande que %s secondes%s pour créer un chapitre</string>
 	<string id="3534">Trier</string>
-	<string id="3535"></string>
 	<string id="3536">Supprimer toutes les chaînes</string>
 	<string id="3537">Etes-vous sur de vouloir supprimer%s toutes vos chaînes TV et Radio?</string>
 	<string id="3538">Etes-vous sur de vouloir supprimer%s toutes les chaînes de ce groupe favoris?</string>
@@ -1474,22 +1473,12 @@
 	<string id="3935">Entrez un nouveau nom pour ce fichier média</string>
 	<string id="3936">Un nom de fichier doit comporter minimum %d caractères</string>
 	<string id="3937"></string>
-	<string id="3938"></string>
-	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
-	<string id="3946"></string>
 	<string id="3947"></string>
-	<string id="3948"></string>
 	<string id="3949"></string>
-	<string id="3950"></string>
-	<string id="3951"></string>
-	<string id="3952"></string>
-	<string id="3953"></string>
-	<string id="3954"></string>
 	<string id="3955"></string>
 	<string id="3956"></string>
 	<string id="3957"></string>
@@ -1563,7 +1552,6 @@
 	<string id="4025">Chargement des nouvelles chaînes...</string>
 	<string id="4026"></string>
 	<string id="4027"></string>
-	<string id="4028"></string>
 	<string id="4029"></string>
 	<string id="4030"></string>
 	<string id="4031"></string>
@@ -1591,4 +1579,14 @@
 	<string id="4054"></string>
 	<string id="4055"></string>
 	<string id="4056"></string>
+	<string id="4057"></string>
+	<string id="4058"></string>
+	<string id="4059"></string>
+	<string id="4060"></string>
+	<string id="4061"></string>
+	<string id="4062"></string>
+	<string id="4063"></string>
+	<string id="4064"></string>
+	<string id="4065"></string>
+	<string id="4066"></string>
 </strings>

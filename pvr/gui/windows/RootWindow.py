@@ -79,7 +79,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		else :
 			if aAction.getId( ) == Action.ACTION_COLOR_BLUE :
-				print 'daniel --------------- 03'
 				if self.mDataCache.PIP_IsStarted( ) == False and WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckDMXInfo( )==False :
 					return -1
 

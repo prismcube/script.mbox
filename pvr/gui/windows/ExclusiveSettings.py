@@ -50,6 +50,8 @@ class ExclusiveSettings( object ) :
 		self.mSelectAction = -1
 		self.mFormatToSelectHDD = False
 		self.mSelectDeviceList = []
+		self.mProgressThread = None
+		self.mProgress = None
 
 
 	def OpenBusyDialog( self ) :
@@ -161,7 +163,7 @@ class ExclusiveSettings( object ) :
 
 		self.mSelectAction = selectAction
 		if selectAction < 0 :
-			LOG_TRACE( '[Exclusive] Cancelled. Back to the previous window' )
+			LOG_TRACE( 'Cancelled. Back to the previous window' )
 			return
 
 		#if selectAction == defSelect :
@@ -229,12 +231,12 @@ class ExclusiveSettings( object ) :
 
 		if isformat :
 			device = self.mDeviceList[aIndex]
-			waitMin = 5
+			estimated_time = 1
 			dev_name = device[0]
-			dev_size =device[1]
-			waitMin += int( dev_size / ( 30 * 1024 *  1024 * 1024 ) ) #30GB/MIN
+			dev_size = device[1]
+			estimated_time += dev_size / ( 1024 * 1024 * 1024 )  #10GB/MIN
 			
-			LOG_TRACE( 'dev_name=%s dev_size=%s waitMin=%s' %(dev_name, dev_size, waitMin ) )			
+			LOG_TRACE( 'dev_name=%s dev_size=%s estimated_time=%s' %(dev_name, dev_size, estimated_time ) )
 
 			mountList = GetMountDevice( )
 
@@ -250,7 +252,7 @@ class ExclusiveSettings( object ) :
 
 			#USB/HDD FORMAT
 			elif dev_name.startswith('/dev/sd' ) == True :
-				if dev_size < (100 *  1024 * 1024 * 1024 ) : #100GB
+				if dev_size < ( 100 *  1024 * 1024 * 1024 ) : #100GB
 					mntCmd = E_FORMAT_MED_USB
 					for mount in mountList :
 						if mount[0].startswith( dev_name ) == True and mount[1] == '/mmt/hdd0/program' :
@@ -300,9 +302,7 @@ class ExclusiveSettings( object ) :
 			mute = self.mCommander.Player_GetMute( )
 			self.mCommander.Player_SetMute( True )
 
-			self.mProcessing = True
-			tShowProcess = threading.Timer( 0, self.AsyncProgressing, [waitMin] )
-			tShowProcess.start( )
+			self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Formatting Device' ), ING ), estimated_time )
 
 			ret = False
 
@@ -322,10 +322,7 @@ class ExclusiveSettings( object ) :
 					mmcReboot = E_FORMAT_REBOOT
 				ret = self.mCommander.Format_USB_Storage( dev_name )
 
-			self.mProcessing = False
-			if tShowProcess :
-				tShowProcess.join( )
-			#self.CloseBusyDialog( )
+			self.CloseProgress( )
 
 			#Sync audio volume and mute on/off after formatting device
 			if mute == False :
@@ -416,7 +413,7 @@ class ExclusiveSettings( object ) :
 			return E_STORAGE_ERROR_NOT_SUPPORT
 
 		#FORMAT
-		if isfomated == False and new_index !=0 :
+		if isfomated == False and new_index != 0 :
 			ret = self.DoFormatStorage( aSelect )
 			if ret != E_FORMAT_DONE :
 				return E_STORAGE_ERROR_ABORTED
@@ -490,8 +487,6 @@ class ExclusiveSettings( object ) :
 			return E_STORAGE_ERROR_HDD_NOT_FOUND
 
 		if targetSize < sourceSize and targetSize > 0 :
-			print 'daniel ------------- targetSize = %s'%targetSize
-			print 'daniel ------------- sourceSize = %s'%sourceSize
 			return E_STORAGE_ERROR_NO_SPACE
 
 		copyList = []
@@ -532,7 +527,7 @@ class ExclusiveSettings( object ) :
 					progressDialog.close( )
 					return E_STORAGE_ERROR_ABORTED
 
-				strData = MR_LANG( 'Copying data' ) + '...'
+				strData = MR_LANG( 'Copying' ) + '...'
 				progressDialog.update( percent, strData, '%s'% fData[len(E_PATH_FLASH_BASE)+1:], ' ' )
 
 				destPathCopy = '%s%s'% ( aTargetPath, fData[len(E_PATH_FLASH_BASE):] )
@@ -568,41 +563,16 @@ class ExclusiveSettings( object ) :
 		return ret
 
 
-	def AsyncProgressing( self, aWaitMin = 5 ) :
-		#mntCmd = self.mDeviceListSelect[4]
-		mTitle = MR_LANG( 'Format Device' )
-		strReady = MR_LANG( 'Ready' )
-		strInit = ''
-		strInit2= ''
-		percent = 0
-		progressDialog = xbmcgui.DialogProgress( )
-		progressDialog.create( mTitle, strInit )
-		progressDialog.update( percent, strReady )
+	@RunThread
+	def ShowProgress( self, aString, aTime ) :
+		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.mProgress.SetDialogProperty( aTime, aString )
+		self.mProgress.doModal( )
 
-		totalTime = 60 * aWaitMin
-		waitCount = 1
-		while self.mProcessing :
-			percent = int( 1.0 * waitCount / totalTime * 100 )
-			if percent > 99 :
-				percent = 99
-			progressDialog.update( percent, strInit, strInit2 )
-			#LOG_TRACE( '-----------percent[%s] len[%s]'% ( percent,len(strInit)) )
-			if len( strInit ) <= 100 :
-				strInit = '%s.'% strInit
-			elif len( strInit ) >= 100 :
-				strInit2 = '%s.'% strInit2
-			if len( strInit2 ) >= 100 :
-				strInit = ''
-				strInit2 = ''
-				progressDialog.update( percent, ' ', ' ' )
 
-			waitCount += 1
-			time.sleep( 1 )
-
-		progressDialog.update( 100, MR_LANG( 'Done' ) )
-		time.sleep( 1 )
-		progressDialog.update( 0, '', '' )
-		progressDialog.close( )
+	def CloseProgress( self ) :
+		self.mProgress.SetResult( True )
+		self.mProgressThread.join( )
 
 
 	def MakeBackupScript( self ) :

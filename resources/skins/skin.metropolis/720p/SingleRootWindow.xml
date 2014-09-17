@@ -2913,8 +2913,8 @@ Search for window name
 						<height>15</height>
 						<label></label>
 						<font></font>
-						<texturefocus>new/scroll-left-focus.png</texturefocus>
-						<texturenofocus>new/scroll-left.png</texturenofocus>
+						<texturefocus>scroll-left-focus.png</texturefocus>
+						<texturenofocus>scroll-left.png</texturenofocus>
 						<onleft></onleft>
 						<onright>1400706</onright>
 						<onup>1003630</onup>
@@ -2971,8 +2971,8 @@ Search for window name
 						<align>right</align>
 						<label></label>
 						<font></font>
-						<texturefocus>new/scroll-right-focus.png</texturefocus>
-						<texturenofocus>new/scroll-right.png</texturenofocus>
+						<texturefocus>scroll-right-focus.png</texturefocus>
+						<texturenofocus>scroll-right.png</texturenofocus>
 						<onleft>1400702</onleft>
 						<onright></onright>
 						<onup>1003630</onup>
