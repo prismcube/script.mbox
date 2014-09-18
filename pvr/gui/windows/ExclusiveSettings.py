@@ -478,8 +478,9 @@ class ExclusiveSettings( object ) :
 		for ePath in aExceptList :
 			exceptSize += GetDirectorySize( ePath )
 		sourceSize -= exceptSize
-		targetSize = GetDeviceSize( aTargetPath )
-		if aTargetDevice :
+		if aTargetPath == '/media/hdd0':
+			targetSize = GetDeviceSize( '%s/program' %aTargetPath )
+		else:
 			targetSize = GetDeviceSize( aTargetDevice )
 		#LOG_TRACE( '---------------size target[%s][%s][%s] source[%s][%s] exceptList[%s:%s]'% ( targetSize, aTargetDevice, aTargetPath, sourceSize, aSourceList, exceptSize, aExceptList ) )
 
