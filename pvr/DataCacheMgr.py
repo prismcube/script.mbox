@@ -2446,10 +2446,10 @@ class DataCacheMgr( object ) :
 		self.Record_RefreshNetworkVolume( )
 		self.Record_GetNetworkVolume( )
 		if failCount > 0 :
-			lblLine = '%s\n%s'% ( MR_LANG( 'Record path failure' ), failItem[1:] )
+			lblLine = '%s\n%s'% ( MR_LANG( 'Failed to connect to record path' ), failItem[1:] )
 			LOG_TRACE( '[DataCache]%s'% lblLine )
 
-		#1. reload defVolume
+		#1. Reload defVolume
 		volumeList = self.Record_GetNetworkVolume( True )
 		if volumeList and len( volumeList ) > 0 :
 			for netVolume in volumeList :
@@ -2457,12 +2457,12 @@ class DataCacheMgr( object ) :
 					defVolume = netVolume
 					break
 
-		#2. nas only one? must default
+		#2. NAS only one? must default
 		if not self.HDD_GetMountPath( ) and self.mNetVolumeList and len( self.mNetVolumeList ) == 1 :
 			defVolume = self.mNetVolumeList[0]
 			defVolume.mIsDefaultSet = 1
 
-		#3. use not able? change default hdd
+		#3. Use not able? change default HDD
 		if defVolume and defVolume.mIsDefaultSet :
 			defProperty = 1
 			if not defVolume.mOnline or defVolume.mReadOnly :
@@ -2478,7 +2478,7 @@ class DataCacheMgr( object ) :
 
 
 	def InitStorageProperty( self ) :
-		#aDevice 1: mmc, 2: usb memory, 3: hdd	
+		#Device index 1: MMC, 2: USB Stick, 3: HDD
 		checked = 0
 		curIdx = ElisPropertyEnum( 'Xbmc Save Storage', self.mCommander ).GetPropIndex( )
 
