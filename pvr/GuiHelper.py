@@ -1704,19 +1704,19 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	return zipFile
 
 
-def RefreshMountToSMB( aNetVolume ) :
+def RefreshSMBMount( aNetVolume ) :
 	failCount = 0
 	failItem = ''
 
 	if not aNetVolume :
 		return failCount, failItem
 
-	#1. mount scan : not exist? delete leave directory
+	#1. Mount scan : Delete the path if mount directory not exist
 	mntHistory = ExecuteShell( 'mount' )
 	if mntHistory and ( not bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
 		RemoveDirectory( aNetVolume.mMountPath )
 
-	#2. read only? unmount refresh
+	#2. Check read only : Unmount then refresh paths
 	cPattern = re.sub( '/', '\/', aNetVolume.mMountPath )
 	readOnlyCheck = 'cat /proc/mounts |awk \'$2-/%s/ {print $4}\'|awk -F"," \'{print $1}\''% cPattern
 	#LOG_TRACE( 'cmd[%s] result[%s]'% ( readOnlyCheck, ExecuteShell( readOnlyCheck ) ) )
@@ -1725,9 +1725,9 @@ def RefreshMountToSMB( aNetVolume ) :
 		os.system( '/bin/umount -fl %s; rm -rf %s'% ( aNetVolume.mMountPath, aNetVolume.mMountPath ) )
 		time.sleep( 0.1 )
 		mntHistory = ''
-		LOG_TRACE( '[NAS] umount, check read only' )
+		LOG_TRACE( '[NAS] Unmount read only paths' )
 
-	#3. retry mount
+	#3. Retry to mount paths
 	if not mntHistory or ( not bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
 		mntPath = MountToSMB( aNetVolume.mRemoteFullPath, aNetVolume.mMountPath, False )
 		if not mntPath :
@@ -1738,17 +1738,17 @@ def RefreshMountToSMB( aNetVolume ) :
 
 		#LOG_TRACE( '[NAS] mount[%s] ret[%s]'% ( aNetVolume.mMountPath, lblRet ) )
 
-	#4. writable check
+	#4. Check paths if they are writable
 	mntHistory = ExecuteShell( 'mount' )
 	if mntHistory and bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) :
 		checkFile = '%s/writableCheck'% aNetVolume.mMountPath
 		if CreateFile( checkFile ) :
 			RemoveDirectory( checkFile )
-			LOG_TRACE( '[NAS] done, writable' )
+			LOG_TRACE( '[NAS] Mount done' )
 		else :
-			#read only?
+			#Read only?
 			os.system( '/bin/mount -o ro,remount %s'% aNetVolume.mMountPath )
-			LOG_TRACE( '[NAS] remount, readonly' )
+			LOG_TRACE( '[NAS] Remount read only paths' )
 
 	#time.sleep( 0.5 )
 	return failCount, failItem
@@ -1779,7 +1779,7 @@ def CheckNetworkStatus( ) :
 		wifiRet = XBMC_CheckNetworkStatus( )
 		if wifiRet == 'Connected' or wifiRet == 'Busy' :
 			linkStatus = 'up'
-		#LOG_TRACE('network wifi ret[%s] link[%s]'% ( wifiRet, linkStatus ) )
+		#LOG_TRACE( 'Network wifi ret[%s] link[%s]'% ( wifiRet, linkStatus ) )
 
 	if linkStatus != 'down' :
 		retValue = True

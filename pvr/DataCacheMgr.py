@@ -2383,14 +2383,14 @@ class DataCacheMgr( object ) :
 
 
 	def InitNetworkVolume( self ) :
-		from pvr.GuiHelper import CheckNetworkStatus, RefreshMountToSMB
-		#Return value. 1st value :
-		#  inteager < 0 : Error No.
-		#  inteager > 0 : Failure count
-		#  inteager = 0 : Success
+		from pvr.GuiHelper import CheckNetworkStatus, RefreshSMBMount
+		# Return value. 1st value :
+		# inteager < 0 : Error No.
+		# inteager > 0 : Failure count
+		# inteager = 0 : Success
 
-		#Return value. 2nd value :
-		#  lblText : Status label
+		# Return value. 2nd value :
+		# lblText : Status label
 
 		retVal = 0
 		isFail = False
@@ -2431,13 +2431,14 @@ class DataCacheMgr( object ) :
 		failCount = 0
 		failItem = ''
 		defVolume = None
+
 		for netVolume in volumeList :
 			count += 1
 			cmd = netVolume.mMountCmd
 			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
 			LOG_TRACE( ' [DataCache]checkVolume %s'% lblLabel )
 
-			failCount_, failItem_ = RefreshMountToSMB( netVolume )
+			failCount_, failItem_ = RefreshSMBMount( netVolume )
 			failCount += failCount_
 			if failItem_ :
 				failItem += ',%s'% failItem_
@@ -2445,34 +2446,36 @@ class DataCacheMgr( object ) :
 
 		self.Record_RefreshNetworkVolume( )
 		self.Record_GetNetworkVolume( )
+
 		if failCount > 0 :
 			lblLine = '%s\n%s'% ( MR_LANG( 'Failed to connect to record path' ), failItem[1:] )
 			LOG_TRACE( '[DataCache]%s'% lblLine )
 
-		#1. Reload defVolume
-		volumeList = self.Record_GetNetworkVolume( True )
-		if volumeList and len( volumeList ) > 0 :
-			for netVolume in volumeList :
-				if netVolume.mIsDefaultSet :
-					defVolume = netVolume
-					break
+		if ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( ) != 0 :
+			#1. Reload defVolume
+			volumeList = self.Record_GetNetworkVolume( True )
+			if volumeList and len( volumeList ) > 0 :
+				for netVolume in volumeList :
+					if netVolume.mIsDefaultSet :
+						defVolume = netVolume
+						break
 
-		#2. NAS only one? must default
-		if not self.HDD_GetMountPath( ) and self.mNetVolumeList and len( self.mNetVolumeList ) == 1 :
-			defVolume = self.mNetVolumeList[0]
-			defVolume.mIsDefaultSet = 1
+			#2. NAS only one? must default
+			if not self.HDD_GetMountPath( ) and self.mNetVolumeList and len( self.mNetVolumeList ) == 1 :
+				defVolume = self.mNetVolumeList[0]
+				defVolume.mIsDefaultSet = 1
 
-		#3. Use not able? change default HDD
-		if defVolume and defVolume.mIsDefaultSet :
-			defProperty = 1
-			if not defVolume.mOnline or defVolume.mReadOnly :
-				defProperty = 0
-				defVolume.mIsDefaultSet = 0
-				LOG_TRACE( '[DataCache]changed reset path : HDD' )
+			#3. Use not able? change default HDD
+			if defVolume and defVolume.mIsDefaultSet :
+				defProperty = 1
+				if not defVolume.mOnline or defVolume.mReadOnly :
+					defProperty = 0
+					defVolume.mIsDefaultSet = 0
+					LOG_TRACE( '[DataCache]changed reset path : HDD' )
 
-			self.Record_SetDefaultVolume( defVolume )
-			ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
-			self.Record_GetNetworkVolume( )
+				self.Record_SetDefaultVolume( defVolume )
+				ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
+				self.Record_GetNetworkVolume( )
 
 		return failCount, lblLine
 

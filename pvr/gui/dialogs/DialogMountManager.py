@@ -705,7 +705,7 @@ class DialogMountManager( SettingDialog ) :
 
 		default_lblPercent = '%s%%, %s %s'% ( default_usePercent, default_byte, MR_LANG( 'Free' ) )
 
-		#select size
+		#Select size
 		lblbyte = '%sMB'% self.mNetVolume.mFreeMB
 		if self.mNetVolume.mFreeMB > 1024 :
 			lblbyte = '%sGB'% ( self.mNetVolume.mFreeMB / 1024 )
@@ -724,12 +724,12 @@ class DialogMountManager( SettingDialog ) :
 
 		lblPercent = '%s%%, %s %s'% ( usePercent, lblbyte, MR_LANG( 'Free' ) )
 
-		#default info
+		#Default info
 		#self.mCtrlLabelDefaultPath.setLabel( default_Path )
 		#self.mCtrlLabelDefaultUse.setLabel( default_lblPercent )
 		#self.mCtrlProgressDefaultUse.setPercent( default_usePercent )
 
-		#select info
+		#Select info
 		self.mCtrlProgressUse.setPercent( usePercent )
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.setProperty( 'NetVolumeConnect', lblOnline )
@@ -825,7 +825,7 @@ class DialogMountManager( SettingDialog ) :
 				defVolume = netVolume
 			self.SetControlLabel2String( E_DialogInput03, lblLabel )
 
-			failCount_, failItem_ = RefreshMountToSMB( netVolume )
+			failCount_, failItem_ = RefreshSMBMount( netVolume )
 			failCount += failCount_
 			if failItem_ :
 				failItem += ',%s'% failItem_

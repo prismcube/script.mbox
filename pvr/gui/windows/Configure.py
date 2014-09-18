@@ -894,7 +894,7 @@ class Configure( SettingWindow ) :
 			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
 			self.SetControlLabel2String( E_Input03, lblLabel )
 
-			failCount_, failItem_ = RefreshMountToSMB( netVolume )
+			failCount_, failItem_ = RefreshSMBMount( netVolume )
 			failCount += failCount_
 			if failItem_ :
 				failItem += ',%s'% failItem_
@@ -1508,12 +1508,10 @@ class Configure( SettingWindow ) :
 					return
 
 			self.ConnectEthernet( )
-			"""
 			if E_SUPPORT_EXTEND_RECORD_PATH :
 				netVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
 				if netVolumeList and len( netVolumeList ) > 0 :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).DoRefreshNetVolume( True )
-			"""
 
 
 	def WifiSetting( self, aControlId ) :
