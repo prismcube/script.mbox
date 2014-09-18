@@ -224,10 +224,10 @@ class TunerConfigMgr( object ) :
 			if tuner2ConfiguredList :
 				for i in range( len( tuner2ConfiguredList ) ) :
 					tuner2ConfiguredList[i].mTunerIndex = E_TUNER_2
-					#if self.GetTunerTypeByTunerIndex( E_TUNER_1 ) == E_ONE_CABLE :
-					#	tuner2ConfiguredList[i].mOneCablePin		= ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
-					#	tuner2ConfiguredList[i].mOneCableUBSlot		= ElisPropertyInt( 'Tuner2 SCR' , self.mCommander ).GetProp( )
-					#	tuner2ConfiguredList[i].mOneCableUBFreq		= ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).GetProp( )
+					if self.GetTunerTypeByTunerIndex( E_TUNER_1 ) == E_ONE_CABLE :
+						tuner2ConfiguredList[i].mOneCablePin		= ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
+						tuner2ConfiguredList[i].mOneCableUBSlot		= ElisPropertyInt( 'Tuner2 SCR' , self.mCommander ).GetProp( )
+						tuner2ConfiguredList[i].mOneCableUBFreq		= ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).GetProp( )
 				
 		else :
 			if len( tuner2ConfiguredList ) > 0 :
