@@ -324,7 +324,7 @@ class Configure( SettingWindow ) :
 				self.SetListControl( ) 
 
 			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_Input01 :
-				self.ShowHdmiFormat( )
+				self.ShowHDMIFormat( )
 
 			else :
 				self.ControlSelect( )
@@ -669,7 +669,7 @@ class Configure( SettingWindow ) :
 						self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 
 
-	def ShowHdmiFormat( self ) :
+	def ShowHDMIFormat( self ) :
 		hdmiList = []
 		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
 		propCount = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetIndexCount( )
@@ -1508,10 +1508,12 @@ class Configure( SettingWindow ) :
 					return
 
 			self.ConnectEthernet( )
+			"""
 			if E_SUPPORT_EXTEND_RECORD_PATH :
 				netVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
 				if netVolumeList and len( netVolumeList ) > 0 :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).DoRefreshNetVolume( True )
+			"""
 
 
 	def WifiSetting( self, aControlId ) :
@@ -1832,7 +1834,10 @@ class Configure( SettingWindow ) :
 			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK :
 				if ( count % 50 ) == 0 :
 					self.CheckNetworkStatus( )
-			count = count + 1
+			if count < sys.maxint :
+				count = count + 1
+			else :
+				count = 0
 			time.sleep( TIME_SEC_CHECK_NET_STATUS )
 
 

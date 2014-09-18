@@ -204,7 +204,7 @@ class FirstInstallation( FTIWindow ) :
 				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 			elif groupId == E_Input01 :
-				self.ShowHdmiFormat( )
+				self.ShowHDMIFormat( )
 
 			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 				self.ControlSelect( )
@@ -711,7 +711,7 @@ class FirstInstallation( FTIWindow ) :
 					self.SetEnableControl( E_SpinEx03, False )
 
 
-	def ShowHdmiFormat( self ) :
+	def ShowHDMIFormat( self ) :
 		hdmiList = []
 		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
 		propCount = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetIndexCount( )

@@ -311,7 +311,7 @@ class MainMenu( BaseWindow ) :
 				self.mDataCache.Player_Stop( )
 
 			if not CheckHdd( True ) :
-				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
+				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without a storage device' )% NEW_LINE
 				if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an external storage' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

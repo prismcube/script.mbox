@@ -101,7 +101,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 				self.DrawItem( )
 
 			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_DialogInput02 :
-				self.ShowHdmiFormat( )
+				self.ShowHDMIFormat( )
 
 			elif groupId == E_DialogInput01 :
 				self.ShowAudioTrack( )
@@ -185,7 +185,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.SetFocus( defaultFocus )
 
 
-	def ShowHdmiFormat( self ) :
+	def ShowHDMIFormat( self ) :
 		hdmiList = []
 		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
 		propCount = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetIndexCount( )
@@ -198,7 +198,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		dialog.doModal( )
 
 		selectAction = dialog.GetSelectedAction( )
-		#LOG_TRACE( '------select hdmi[%s]'% selectAction )
+		#LOG_TRACE( '------HDMI[%s]'% selectAction )
 
 		if selectAction > -1 :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
