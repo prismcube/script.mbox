@@ -484,6 +484,8 @@ class NullWindow( BaseWindow ) :
 				ret = self.mDataCache.ToggleTVRadio( )
 				if ret :
 					self.Close( )
+					cur_channel =  self.mDataCache.Channel_GetCurrent( )
+					self.mDataCache.SetAVBlankByChannel( cur_channel )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :

@@ -365,6 +365,8 @@ class LivePlate( LivePlateWindow ) :
 					self.SetRadioScreen( )
 					self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 					self.ChannelTune( INIT_CHANNEL )
+					cur_channel =  self.mDataCache.Channel_GetCurrent( )
+					self.mDataCache.SetAVBlankByChannel( cur_channel )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
