@@ -1071,7 +1071,6 @@
 	<string id="3532">Alle Markierungen anzeigen</string>
 	<string id="3533">Machen Sie das Medium länger als %s Sek%s um ein Kapitel zu erstellen</string>
 	<string id="3534">Sortieren</string>
-	<string id="3535">Bitte prüfen Sie die Aufnahme Pfad Einstellungen</string>
 	<string id="3536">Alle Kanäle löschen</string>
 	<string id="3537">Sind Sie sicher dass Sie alle%s Fernseh und Radiokanäle löschen wollen?</string>
 	<string id="3538">Sind Sie sicher dass Sie alle%s Kanäle aus der Favoritengruppe löschen wollen?</string>
@@ -1474,22 +1473,12 @@
 	<string id="3935">Neuen namen eingeben</string>
 	<string id="3936">Ein Dateiname muss mindestens %d Zeichen lang sein</string>
 	<string id="3937"></string>
-	<string id="3938"></string>
-	<string id="3939"></string>
 	<string id="3940"></string>
 	<string id="3941"></string>
-	<string id="3943"></string>
 	<string id="3944"></string>
 	<string id="3945"></string>
-	<string id="3946"></string>
 	<string id="3947"></string>
-	<string id="3948"></string>
 	<string id="3949"></string>
-	<string id="3950"></string>
-	<string id="3951"></string>
-	<string id="3952"></string>
-	<string id="3953"></string>
-	<string id="3954"></string>
 	<string id="3955"></string>
 	<string id="3956"></string>
 	<string id="3957"></string>
@@ -1563,7 +1552,6 @@
 	<string id="4025">Lade neue Sender... </string>
 	<string id="4026">CrossEPG</string>
 	<string id="4027">Download fertig</string>
-	<string id="4028"></string>
 	<string id="4029"></string>
 	<string id="4030"></string>
 	<string id="4031"></string>
@@ -1591,4 +1579,14 @@
 	<string id="4054"></string>
 	<string id="4055"></string>
 	<string id="4056"></string>
+	<string id="4057"></string>
+	<string id="4058"></string>
+	<string id="4059"></string>
+	<string id="4060"></string>
+	<string id="4061"></string>
+	<string id="4062"></string>
+	<string id="4063"></string>
+	<string id="4064"></string>
+	<string id="4065"></string>
+	<string id="4066"></string>
 </strings>

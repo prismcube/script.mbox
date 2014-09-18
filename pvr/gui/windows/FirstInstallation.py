@@ -55,7 +55,6 @@ class FirstInstallation( FTIWindow ) :
 		self.mDVBT_Manual = ElisIDVBTCarrier( )
 		self.mDVBT_Auto = []
 		self.mTerrestrial = 'None'
-		self.mEnable5v		= 0
 		self.mTunerType		= E_TUNER_T
 		self.SetTerrestriaInfo( 0 )
 		self.mBackaudiolang				= ElisPropertyEnum( 'Audio Language', self.mCommander ).GetProp( )
@@ -477,7 +476,7 @@ class FirstInstallation( FTIWindow ) :
 				self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT_Manual.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
 				self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )				
 				self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
-				self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Enable 5V for active antenna' ), USER_ENUM_LIST_ON_OFF, self.mEnable5v, MR_LANG( 'Select enable 5v for active antenna' ) )		
+				self.AddEnumControl( E_SpinEx04, 'Antenna 5V', MR_LANG( 'Enable 5V for active antenna' ), MR_LANG( 'Select enable 5v for active antenna' ) )
 				networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 				self.AddEnumControl( E_SpinEx05, 'Network Search', None, networkSearchDescription )
 				self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
@@ -1236,10 +1235,7 @@ class FirstInstallation( FTIWindow ) :
 		elif aControlId == E_SpinEx02 :
 			self.mDVBT_Manual.mBand = self.GetSelectedIndex( E_SpinEx02 )
 
-		elif aControlId == E_SpinEx04 :
-			self.mEnable5v = self.GetSelectedIndex( E_SpinEx04 )
-
-		elif aControlId == E_SpinEx05 or aControlId == E_SpinEx06 :
+		elif aControlId == E_SpinEx04 or aControlId == E_SpinEx05 or aControlId == E_SpinEx06 :
 			self.ControlSelect( )
 			return
 

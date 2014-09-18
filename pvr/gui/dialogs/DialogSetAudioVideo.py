@@ -12,12 +12,12 @@ class DialogSetAudioVideo( SettingDialog ) :
 		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
 		self.mIsOk					= False
-		self.mSelectIdx				= 0
+		self.mSelectIdx				= E_VIDEO_HDMI
 		self.mSelectName			= ''
 		self.mAudioTrack			= []
 		self.mMode					= CONTEXT_ACTION_VIDEO_SETTING
 
-		self.mVideoOutput			= self.mDataCache.GetVideoOutput( )
+		self.mVideoOutput			= 0
 		self.mAnalogAscpect			= E_16_9
 		self.mAsyncVideoSetThread 	= None
 		self.mBusyVideoSetting		= False
@@ -25,6 +25,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def onInit( self ) :
+		self.mVideoOutput = ElisPropertyEnum( 'Video Output', self.mCommander ).GetProp( )	
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
@@ -89,9 +90,9 @@ class DialogSetAudioVideo( SettingDialog ) :
 			groupId = self.GetGroupId( aControlId )
 			if groupId == E_DialogSpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_DialogSpinEx01 )
-				self.mDataCache.SetVideoOutput( self.mVideoOutput )
+				#self.mDataCache.SetVideoOutput( self.mVideoOutput )
+				ElisPropertyEnum( 'Video Output', self.mCommander ).SetProp( self.mVideoOutput )
 				time.sleep( 0.02 )
-				self.DrawItem( )
 				return
 
 			elif self.mVideoOutput == E_VIDEO_ANALOG and groupId == E_DialogSpinEx02 :

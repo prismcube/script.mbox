@@ -1443,8 +1443,9 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlBasePIPLabelNoService.setPosition( 0, int( ( ah - 10 ) / 2 ) )
 		#self.mCtrlLabelChannel.setPosition( 5, ah - 25 )
 
-		self.mCtrlBasePIPImageBlank.setWidth( aw )
-		self.mCtrlBasePIPImageBlank.setHeight( ah )
+		self.mCtrlBasePIPImageBlank.setPosition( -1, -1 )
+		self.mCtrlBasePIPImageBlank.setWidth( aw+5 )
+		self.mCtrlBasePIPImageBlank.setHeight( ah+4 )
 
 		"""
 		if self.mDataCache.GetMediaCenter( ) :
