@@ -1,0 +1,249 @@
+<window>
+	<defaultcontrol always="true">103</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<posx>480</posx>
+			<posy>145</posy>
+            <include>DefaultDialogCloseEffect</include>
+            <!-- Panel -->
+			<control type="image">
+				<posx>-604</posx>
+				<posy>-64</posy>
+				<width>1538</width>
+				<height>460</height>
+				<texture>dialogs/keyboard/numpad-bg.png</texture>
+			</control>
+			<control type="label" id="4">
+				<description>Edit Text</description>
+				<posx>10</posx>
+				<posy>87</posy>
+				<width>310</width>
+				<height>50</height>
+				<font>FontSize_34</font>
+				<textcolor>77white</textcolor>
+				<disabledcolor>33white</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="label" id="1">
+				<description>Title</description>
+				<posx>-5</posx>
+				<posy>47</posy>
+				<width>340</width>
+				<height>40</height>
+				<font>FontSize_32</font>
+				<textcolor>white</textcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<wrapmultiline>true</wrapmultiline>
+			</control>
+			<control type="group">
+				<posx>30</posx>
+				<posy>150</posy>
+				<control type="button" id="101">
+					<description>1</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>105</onleft>
+					<onright>102</onright>
+					<onup>106</onup>
+					<ondown>106</ondown>
+				</control>
+				<control type="button" id="102">
+					<description>2</description>
+					<posx>55</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<focusedcolor>black</focusedcolor>
+					<onleft>101</onleft>
+					<onright>103</onright>
+					<onup>107</onup>
+					<ondown>107</ondown>
+				</control>
+				<control type="button" id="103">
+					<description>3</description>
+					<posx>110</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>102</onleft>
+					<onright>104</onright>
+					<onup>108</onup>
+					<ondown>108</ondown>
+				</control>
+				<control type="button" id="104">
+					<description>4</description>
+					<posx>165</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>103</onleft>
+					<onright>105</onright>
+					<onup>109</onup>
+					<ondown>109</ondown>
+				</control>
+				<control type="button" id="105">
+					<description>5</description>
+					<posx>220</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>104</onleft>
+					<onright>101</onright>
+					<onup>100</onup>
+					<ondown>100</ondown>
+				</control>
+				<control type="button" id="106">
+					<description>6</description>
+					<posx>0</posx>
+					<posy>55</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>100</onleft>
+					<onright>107</onright>
+					<onup>101</onup>
+					<ondown>101</ondown>
+				</control>
+				<control type="button" id="107">
+					<description>7</description>
+					<posx>55</posx>
+					<posy>55</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>106</onleft>
+					<onright>108</onright>
+					<onup>102</onup>
+					<ondown>102</ondown>
+				</control>
+				<control type="button" id="108">
+					<description>8</description>
+					<posx>110</posx>
+					<posy>55</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>107</onleft>
+					<onright>109</onright>
+					<onup>103</onup>
+					<ondown>103</ondown>
+				</control>
+				<control type="button" id="109">
+					<description>9</description>
+					<posx>165</posx>
+					<posy>55</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>108</onleft>
+					<onright>100</onright>
+					<onup>104</onup>
+					<ondown>104</ondown>
+				</control>
+				<control type="button" id="100">
+					<description>0</description>
+					<posx>220</posx>
+					<posy>55</posy>
+					<width>48</width>
+					<height>48</height>
+					<texturenofocus border="6,8,6,8">dialogs/keyboard/button_nf.png</texturenofocus>
+					<texturefocus border="6,8,6,8">dialogs/keyboard/button_fo.png</texturefocus>
+					<align>left</align>
+					<aligny>top</aligny>
+					<font>FontSize_16B</font>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>5</textoffsety>
+					<textcolor>99grey</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onleft>109</onleft>
+					<onright>106</onright>
+					<onup>105</onup>
+					<ondown>105</ondown>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

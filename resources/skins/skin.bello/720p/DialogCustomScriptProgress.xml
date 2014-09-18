@@ -1,0 +1,97 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<defaultcontrol always="true">300</defaultcontrol>
+	<controls>
+		<control type="group">
+			<posx>340</posx>
+			<posy>195</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
+			<control type="image">
+				<posx>-330</posx>
+				<posy>-310</posy>
+				<width>1270</width>
+				<height>927</height>
+				<texture>dialogs/other/bg_ok.png</texture>
+			</control>
+			<control type="label" id="200">
+				<description>Title</description>
+				<posx>40</posx>
+				<posy>38</posy>
+				<width>530</width>
+				<height>30</height>
+				<font>FontSize_36</font>
+				<label>$ADDON[script.mbox 1126]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="button" id="301">
+				<description>Close Window</description>
+				<posx>520</posx>
+				<posy>2</posy>
+				<width>60</width>
+				<height>28</height>
+				<label>-</label>
+				<font>-</font>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+				<onleft>300</onleft>
+				<onright>300</onright>
+				<onup>300</onup>
+				<ondown>300</ondown>
+			</control>
+			<control type="label" id="201">
+				<description>Dialog Message 1</description>
+				<posx>30</posx>
+				<posy>210</posy>
+				<width>550</width>
+				<height>30</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<haspath>true</haspath>
+				<font>FontSize_20</font>
+				<textcolor>77white</textcolor>
+				<shadowcolor>99000000</shadowcolor>
+			</control>
+			<control type="textbox" id="202">
+				<posx>35</posx>
+				<posy>85</posy>
+				<width>535</width>
+				<height>90</height>
+				<visible>true</visible>
+				<colordiffuse>FFFFFFFF</colordiffuse>
+				<font>FontSize_20</font>
+				<textcolor>77white</textcolor>
+				<wrapmultiline>true</wrapmultiline>
+				<label>$INFO[Window.Property(ShellDescription)]</label>
+			</control>
+			<control type="progress" id="400">
+				<posx>30</posx>
+				<posy>235</posy>
+				<width>550</width>
+				<height>25</height>
+				<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+				<midtexture border="1">osd/osd_center_progress.png</midtexture>
+			</control>
+			<control type="button" id="300">
+				<description>Cancel</description>
+				<posx>225</posx>
+				<posy>262</posy>
+				<width>160</width>
+				<height>40</height>
+				<font>FontSize_22</font>
+				<textcolor>99grey</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
+				<align>center</align>
+				<onleft>301</onleft>
+				<onright>301</onright>
+				<onup>301</onup>
+				<ondown>301</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

@@ -1,0 +1,120 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
+			<control type="image" id="9001">
+				<posx>-30</posx>
+				<posy>-19</posy>
+				<width>675</width>
+				<height>460</height>
+				<texture>dialogs/other/default_bg.png</texture>
+			</control>
+			<control type="button" id="1006995">
+				<description>Close Window</description>
+				<posx>520</posx>
+				<posy>14</posy>
+				<width>45</width>
+				<height>20</height>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
+				<onleft>1006997</onleft>
+				<onright>1006999</onright>
+			</control>
+			<control type="label" id="1003005">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>33</posy>
+				<width>570</width>
+				<font>FontSize_34</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="group" id="9000">
+				<posx>37</posx>
+				<posy>-8</posy>
+				<!-- Recording Name -->
+				<control type="label" id ="101">
+					<posx>0</posx>
+					<posy>7</posy>
+					<width>540</width>
+					<height>37</height>
+					<font>FontSize_20</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<!-- Recording -->
+				<include>DialogSpinEx01</include>
+				<!-- Timeshift Duration -->
+				<include>DialogInput04</include>
+				<!-- Start Time -->
+				<include>DialogInput01</include>
+				<!-- End Time -->
+				<include>DialogInput02</include>
+				<!-- Duration -->
+				<include>DialogInput03</include>
+				<!-- Recording Path -->
+				<include>DialogInput05</include>
+				<include>DialogInput06</include>
+				<control type="group">
+					<posx>-67</posx>
+					<posy>305</posy>
+					<control type="group" id="300">
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="progress" id="301">
+							<description>Progressbar</description>
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<texturebg border="1">osd/osd_bg_progress_big.png</texturebg>
+							<midtexture border="1">osd/osd_center_progress.png</midtexture>
+						</control>
+						<control type="label" id="302">
+							<posx>105</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>77white</textcolor>
+							<font>FontSize_16</font>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
+					</control>
+				</control>
+				<control type="group">
+					<posx>22</posx>
+					<posy>-16</posy>
+					<!-- OK & Cancel Buttons -->
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

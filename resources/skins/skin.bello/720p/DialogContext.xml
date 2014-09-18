@@ -1,0 +1,112 @@
+<window>
+	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,36)</onload>					<!--Input Item Height-->
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>600</posx>
+			<posy>200</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<!-- Top, Middle and Bottom Panels -->
+			<control type="image">
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>370</width>
+				<height>30</height>
+				<texture border="20,19,20,0">DialogContext_Top.png</texture>
+			</control>
+			<control type="image" id="100">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>370</width>
+				<texture border="25,5,25,5">DialogContext_Middle.png</texture>
+			</control>
+			<control type="image" id="101">
+				<posx>0</posx>
+				<width>370</width>
+				<height>25</height>
+				<texture border="20,0,19,20">DialogContext_Bottom.png</texture>
+			</control>
+			<control type="button" id="103">
+				<description>Close Window</description>
+				<posx>290</posx>
+				<posy>-27</posy>
+				<width>60</width>
+				<height>28</height>
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<onleft>102</onleft>
+				<onright>102</onright>
+				<label>-</label>
+				<font>-</font>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+			</control>
+			<control type="list" id="102">
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>330</width>
+				<height>520</height>						<!--Change Property ItemHeight * MAX_ITEM(13) -->
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<onleft>103</onleft>
+				<onright>103</onright>
+				<itemlayout width="310" height="36" >		<!--Change Property ItemHeight-->
+					<!-- Selection Icon -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(mark),true)</visible>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>FontSize_20</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>55white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>		
+				</itemlayout>
+				<focusedlayout width="310" height="36">		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<texture border="0,2,0,2">buttons/settings_fo.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<!-- Selection Icon -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(mark),true)</visible>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>FontSize_20</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</controls>
+</window>

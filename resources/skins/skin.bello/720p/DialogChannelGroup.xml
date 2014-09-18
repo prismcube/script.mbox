@@ -1,0 +1,220 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="3900">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>375</posx>
+			<posy>85</posy>
+			<!-- Panel -->
+			<control type="image">
+				<posx>-120</posx>
+				<posy>-195</posy>
+				<width>768</width>
+				<height>905</height>
+				<texture>dialogs/other/bg_textviewer.png</texture>
+			</control>
+			<control type="button" id="3901">
+				<description>Close Window</description>
+				<posx>450</posx>
+				<posy>-26</posy>
+				<width>60</width>
+				<height>28</height>
+				<font>-</font>
+				<texturenofocus>DialogCloseButton_nf.png</texturenofocus>
+				<texturefocus>DialogCloseButton_fo.png</texturefocus>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>3904</onup>
+				<ondown>1003950</ondown>
+			</control>
+			<control type="label" id="3902">
+				<description>Title</description>
+				<posx>30</posx>
+				<posy>10</posy>
+				<width>470</width>
+				<height>30</height>
+				<font>FontSize_36</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="3903">
+				<textcolor>grey2</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+				<visible>false</visible>
+			</control>
+			<control type="label">
+				<posx>495</posx>
+				<posy>457</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>FontSize_18</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+<!--				<textcolor>99white</textcolor>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>-->
+				<textcolor>blue</textcolor>
+				<label>$INFO[Container(1003960).NumItems] $ADDON[script.mbox 1106]</label>
+				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
+			</control>
+			<control type="label">
+				<posx>495</posx>
+				<posy>482</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>FontSize_18</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+<!--				<textcolor>99white</textcolor>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>-->
+				<textcolor>blue</textcolor>
+				<label>$INFO[Container(1003960).NumItems] $ADDON[script.mbox 1106]</label>
+				<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
+			</control>
+			<control type="button" id="3904">
+				<description>OK</description>
+				<posx>20</posx>
+				<posy>474</posy>
+				<width>160</width>
+				<height>40</height>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>FontSize_22</font>
+				<textcolor>99grey</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="10,0,10,0">dialogs/keyboard/button_nf.png</texturenofocus>
+				<texturefocus border="10,0,10,0">dialogs/keyboard/button_fo.png</texturefocus>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>1003950</onup>
+				<ondown>3901</ondown>
+				<visible>false</visible>
+			</control>
+
+			<!-- Hotkey -->
+			<control type="group">
+				<posx>20</posx>
+				<posy>541</posy>
+				<visible>Control.IsVisible(3904)</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>20</posx>
+					<posy>-6</posy>
+					<width>470</width>
+					<height>30</height>
+					<font>FontSize_14</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>77white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>$ADDON[script.mbox 1138]</label>
+				</control>
+			</control>
+
+			<!-- Color Keys -->
+			<control type="group">
+				<posx>25</posx>
+				<posy>517</posy>
+				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
+				<control type="group">
+					<posx>0</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>12</width>
+						<height>12</height>
+						<colordiffuse>FFFF0000</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>FontSize_14</font>
+						<align>left</align>
+						<label>Satellite</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>120</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>12</width>
+						<height>12</height>
+						<colordiffuse>FF00FF00</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>FontSize_14</font>
+						<align>left</align>
+						<label>FTA/CAS</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>240</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>12</width>
+						<height>12</height>
+						<colordiffuse>FFFFFF00</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>FontSize_14</font>
+						<align>left</align>
+						<label>Provider</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>360</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>12</width>
+						<height>12</height>
+						<colordiffuse>FF0050FF</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>FontSize_14</font>
+						<align>left</align>
+						<label>Favorite</label>
+					</control>
+				</control>
+			</control>
+			<!-- Channels -->
+			<control type="group">
+				<posy>-5</posy>
+				<include>DefaultSelectGroup</include>
+			</control>
+		</control>
+	</controls>
+</window>
