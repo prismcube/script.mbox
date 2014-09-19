@@ -1859,11 +1859,12 @@ Search for window name
 					<width>340</width>
 					<height>20</height>
 					<font>FontSize_18</font>
-					<textcolor>99white</textcolor>
+					<textcolor>blue</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label>
+					<!--label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label-->
+					<label>$INFO[Control.GetLabel(1300401)] $ADDON[script.mbox 1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>

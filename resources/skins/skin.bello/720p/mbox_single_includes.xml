@@ -711,7 +711,7 @@
 		<align>left</align>
 		<aligny>center</aligny>
 		<font>FontSize_20</font>
-		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturefocus border="5">-</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 	</include>
@@ -782,7 +782,7 @@
 		<textwidth>110</textwidth>
 		<aligny>center</aligny>
 		<font>FontSize_18B</font>
-		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturefocus border="5">-</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 	</include>
@@ -5767,7 +5767,7 @@
 					<align>left</align>
 					<aligny>center</aligny>
 					<font>FontSize_18B</font>
-					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturefocus border="5">button-nofocus.png</texturefocus>
 					<texturenofocus border="5">button-nofocus.png</texturenofocus>
 					<pulseonselect>false</pulseonselect>
 				</control>
