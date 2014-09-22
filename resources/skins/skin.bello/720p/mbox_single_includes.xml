@@ -6775,7 +6775,7 @@
 			<control type="image">
 				<posx>-37</posx>
 				<posy>-2</posy>
-				<width>120</width>
+				<width>127</width>
 				<height>60</height>
 				<texture>OSDSeekFrame.png</texture>
 				<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
@@ -6790,7 +6790,7 @@
 				<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Rewind)</visible>
 			</control>
 			<control type="image">
-				<posx>57</posx>
+				<posx>64</posx>
 				<posy>13</posy>
 				<width>13</width>
 				<height>45</height>
