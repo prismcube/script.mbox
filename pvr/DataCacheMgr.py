@@ -3785,7 +3785,12 @@ class DataCacheMgr( object ) :
 
 
 	def Get_FreeTssCount( self ) :
-		return self.mCommander.Get_FreeTssCount( )
+		if self.mPlatform.GetProduct( ) == PRODUCT_RUBY :
+			return 5
+		elif self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			return self.mCommander.Get_FreeTssCount( )
+		else :
+			return self.mCommander.Get_FreeTssCount( )
 
 
 	def Is_TimeshiftRecording( self ) :

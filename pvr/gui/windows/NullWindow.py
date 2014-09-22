@@ -1602,6 +1602,8 @@ class NullWindow( BaseWindow ) :
 
 
 	def CheckDMXInfo( self, aTimeshiftStop=True ) :
+		if self.mPlatform.GetProduct( ) == PRODUCT_RUBY :
+			return True
 		dmxAvail = True
 
 		mTitle = MR_LANG( 'Maximum number of demux reached' )
