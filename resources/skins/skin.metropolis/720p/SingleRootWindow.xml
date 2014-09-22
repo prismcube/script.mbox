@@ -3331,7 +3331,7 @@ Search for window name
 
 				<!-- Funtion Buttons -->
 				<control type="group">
-					<posx>230</posx>
+					<posx>210</posx>
 					<posy>575</posy>
 					<include>TimeshiftPlateFocusButton</include>
 				</control>

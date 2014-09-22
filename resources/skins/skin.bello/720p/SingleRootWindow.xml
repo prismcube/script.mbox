@@ -3223,7 +3223,7 @@ Search for window name
 
 				<!-- Funtion Buttons -->
 				<control type="group">
-					<posx>230</posx>
+					<posx>229</posx>
 					<posy>575</posy>
 					<include>TimeshiftPlateFocusButton</include>
 				</control>
@@ -3289,9 +3289,9 @@ Search for window name
 						<font>FontSize_18</font>
 					</control>
 					<control type="label" id="2900203">
-						<posx>45</posx>
+						<posx>40</posx>
 						<posy>580</posy>
-						<width>200</width>
+						<width>180</width>
 						<height>20</height>
 						<font>FontSize_30B</font>
 						<textcolor>FFB2D4F5</textcolor>
@@ -3306,7 +3306,7 @@ Search for window name
 					<posy>590</posy>
 					<control type="label" id="2900221">
 						<description>Start</description>
-						<posx>25</posx>
+						<posx>27</posx>
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
@@ -6178,7 +6178,7 @@ Search for window name
 				<height>50</height>
 				<font>FontSize_40B</font>
 				<label>[I]$ADDON[script.mbox 1119] [/I]</label>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
 			</control>
 			<control type="label">

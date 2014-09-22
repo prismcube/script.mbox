@@ -303,6 +303,7 @@ class ExclusiveSettings( object ) :
 			self.mCommander.Player_SetMute( True )
 
 			self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Formatting Device' ), ING ), estimated_time )
+			time.sleep( 1 )
 
 			ret = False
 
