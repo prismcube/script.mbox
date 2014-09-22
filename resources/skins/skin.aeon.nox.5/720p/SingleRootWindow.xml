@@ -3204,7 +3204,7 @@
 
 				<!-- Funtion Buttons -->
 				<control type="group">
-					<posx>230</posx>
+					<posx>217</posx>
 					<posy>575</posy>
 					<include>SetVideoSpeed</include>
 				</control>

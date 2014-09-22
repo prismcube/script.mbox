@@ -6775,7 +6775,7 @@
 			<control type="image">
 				<posx>-37</posx>
 				<posy>-2</posy>
-				<width>127</width>
+				<width>125</width>
 				<height>60</height>
 				<texture>OSDSeekFrame.png</texture>
 				<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
